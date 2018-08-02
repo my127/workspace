@@ -27,7 +27,8 @@ class Expression extends SymfonyExpressionLanguage
 
     private function addDefaultFunctions()
     {
-        $this->addFunction(ExpressionFunction::fromPhp('getenv',   'env'));
-        $this->addFunction(ExpressionFunction::fromPhp('var_dump', 'debug'));
+        $this->addFunction(ExpressionFunction::fromPhp('getenv',            'env'));
+        $this->addFunction(ExpressionFunction::fromPhp('var_dump',          'debug'));
+        $this->addFunction(ExpressionFunction::fromPhp('file_get_contents', 'file'));
     }
 }

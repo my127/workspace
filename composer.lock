@@ -554,12 +554,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/my127/php-library.git",
-                "reference": "daaefaf5cc8d4c7f0f9b626e3f0849f7573808e0"
+                "reference": "d25fd86ca5e59b89b61b8368658de9e24755b274"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/my127/php-library/zipball/daaefaf5cc8d4c7f0f9b626e3f0849f7573808e0",
-                "reference": "daaefaf5cc8d4c7f0f9b626e3f0849f7573808e0",
+                "url": "https://api.github.com/repos/my127/php-library/zipball/d25fd86ca5e59b89b61b8368658de9e24755b274",
+                "reference": "d25fd86ca5e59b89b61b8368658de9e24755b274",
                 "shasum": ""
             },
             "require": {
@@ -593,7 +593,7 @@
                 }
             ],
             "description": "my127 PHP Library",
-            "time": "2018-07-23T09:10:38+00:00"
+            "time": "2018-08-02T09:53:31+00:00"
         },
         {
             "name": "nesbot/carbon",

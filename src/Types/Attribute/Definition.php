@@ -6,6 +6,10 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
+    public const PRIORITY_DEFAULT  = 1;
+    public const PRIORITY_NORMAL   = 2;
+    public const PRIORITY_OVERRIDE = 3;
+
     /** @var string */
     private $key;
 
@@ -20,6 +24,9 @@ class Definition implements WorkspaceDefinition
 
     /** @var string */
     private $type;
+
+    /** @var int */
+    private $priority;
 
     public function getKey(): string
     {
@@ -44,5 +51,10 @@ class Definition implements WorkspaceDefinition
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getPriority(): int
+    {
+        return $this->priority;
     }
 }

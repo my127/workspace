@@ -8,7 +8,17 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['attribute', 'attributes'];
+    const TYPES = [
+
+        'attribute.default',
+        'attributes.default',
+
+        'attribute',
+        'attributes',
+
+        'attribute.override',
+        'attributes.override'
+    ];
 
     /*
      * example
@@ -34,11 +44,20 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     /** @var ReflectionProperty[] */
     private $properties = [];
 
+    private $priorityMap = [
+        'attribute.default'   => Definition::PRIORITY_DEFAULT,
+        'attributes.default'  => Definition::PRIORITY_DEFAULT,
+        'attribute'           => Definition::PRIORITY_NORMAL,
+        'attributes'          => Definition::PRIORITY_NORMAL,
+        'attribute.override'  => Definition::PRIORITY_OVERRIDE,
+        'attributes.override' => Definition::PRIORITY_OVERRIDE
+    ];
+
     public function __construct()
     {
         $this->prototype = new Definition();
 
-        foreach (['key', 'value', 'path', 'scope', 'type'] as $name) {
+        foreach (['key', 'value', 'path', 'scope', 'type', 'priority'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -46,10 +65,13 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     public function create(array $data): WorkspaceDefinition
     {
-        $values = ['type' => $data['type']];
+        $values = [
+            'type'     => $data['type'],
+            'priority' => $this->priorityMap[$data['type']]
+        ];
 
         $this->parseMetaData($values, $data['metadata']);
-        $this->parseDeclaration($values, $data['type'], $data['declaration']);
+        $this->parseDeclaration($values, $data['declaration']);
         $this->parseBody($values, $data['body']);
 
         $definition = clone $this->prototype;
@@ -67,18 +89,9 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, string $type, $declaration)
+    private function parseDeclaration(array &$values, $declaration)
     {
-        switch ($type) {
-
-            case 'attribute':
-                $values['key'] = substr($declaration, 11, -2);
-                break;
-
-            case 'attributes':
-                $values['key'] = '~';
-                break;
-        }
+        $values['key'] = (strpos($values['type'], 'attributes') === 0) ? '~' : substr($declaration, strlen($values['type']) + 2, -2);
     }
 
     private function parseBody(array &$values, $body)

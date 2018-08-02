@@ -12,14 +12,36 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 
 class Builder implements EnvironmentBuilder
 {
-    const PRECEDENCE_HARNESS_STANDARD   = 2;
-    const PRECEDENCE_GLOBAL_STANDARD    = 4;
-    const PRECEDENCE_WORKSPACE_STANDARD = 6;
+    const PRECEDENCE_HARNESS_DEFAULT    = 1;
+    const PRECEDENCE_WORKSPACE_DEFAULT  = 2;
+    const PRECEDENCE_GLOBAL_DEFAULT     = 3;
 
+    const PRECEDENCE_HARNESS_NORMAL     = 4;
+    const PRECEDENCE_WORKSPACE_NORMAL   = 5;
+    const PRECEDENCE_GLOBAL_NORMAL      = 6;
+
+    const PRECEDENCE_HARNESS_OVERRIDE   = 7;
+    const PRECEDENCE_WORKSPACE_OVERRIDE = 8;
+    const PRECEDENCE_GLOBAL_OVERRIDE    = 9;
 
     private $attributes;
     private $expressionLanguage;
     private $twigBuilder;
+
+    private $precedenceMap =
+    [
+        WorkspaceDefinition::SCOPE_GLOBAL.Definition::PRIORITY_DEFAULT     => self::PRECEDENCE_GLOBAL_DEFAULT,
+        WorkspaceDefinition::SCOPE_GLOBAL.Definition::PRIORITY_NORMAL      => self::PRECEDENCE_GLOBAL_NORMAL,
+        WorkspaceDefinition::SCOPE_GLOBAL.Definition::PRIORITY_OVERRIDE    => self::PRECEDENCE_GLOBAL_OVERRIDE,
+
+        WorkspaceDefinition::SCOPE_WORKSPACE.Definition::PRIORITY_DEFAULT  => self::PRECEDENCE_WORKSPACE_DEFAULT,
+        WorkspaceDefinition::SCOPE_WORKSPACE.Definition::PRIORITY_NORMAL   => self::PRECEDENCE_WORKSPACE_NORMAL,
+        WorkspaceDefinition::SCOPE_WORKSPACE.Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_WORKSPACE_OVERRIDE,
+
+        WorkspaceDefinition::SCOPE_HARNESS.Definition::PRIORITY_DEFAULT    => self::PRECEDENCE_HARNESS_DEFAULT,
+        WorkspaceDefinition::SCOPE_HARNESS.Definition::PRIORITY_NORMAL     => self::PRECEDENCE_HARNESS_NORMAL,
+        WorkspaceDefinition::SCOPE_HARNESS.Definition::PRIORITY_OVERRIDE   => self::PRECEDENCE_HARNESS_OVERRIDE,
+    ];
 
     public function __construct(Collection $attributes, Expression $expressionLanguage, TwigEnvironmentBuilder $twigBuilder)
     {
@@ -30,7 +52,7 @@ class Builder implements EnvironmentBuilder
 
     public function build(DefinitionCollection $definitions)
     {
-        foreach (['attribute', 'attributes'] as $type) {
+        foreach (DefinitionFactory::TYPES as $type) {
             foreach ($definitions->findByType($type) as $definition) {
                 /** @var Definition $definition */
                 if ($definition->getKey() == '~') {
@@ -57,15 +79,6 @@ class Builder implements EnvironmentBuilder
 
     private function resolveAttributePrecedence(Definition $definition): int
     {
-        switch ($definition->getScope()) {
-
-            case WorkspaceDefinition::SCOPE_HARNESS:
-                return self::PRECEDENCE_HARNESS_STANDARD;
-
-            case WorkspaceDefinition::SCOPE_WORKSPACE:
-                return self::PRECEDENCE_WORKSPACE_STANDARD;
-        }
-
-        return self::PRECEDENCE_GLOBAL_STANDARD;
+        return $this->precedenceMap[$definition->getScope().$definition->getPriority()];
     }
 }

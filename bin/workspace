@@ -1,0 +1,50 @@
+#!/usr/bin/env php
+<?php
+
+use my127\Workspace\Application;
+use my127\Workspace\Installer\Installer;
+use Symfony\Component\DependencyInjection\Container;
+
+require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../config/_compiled/container.php';
+
+function main(): void
+{
+    if (!isInstalled()) {
+        install();
+    }
+
+    putenv('PATH='.home().'/.my127/workspace/bin:'.getenv('PATH'));
+    application()->run();
+}
+
+function application(): Application
+{
+    /** @var Application $application */
+    $application = (new ApplicationServiceContainer())->get(Application::class);
+
+    return $application;
+}
+
+function home(): string
+{
+    return $_SERVER['HOME'];
+}
+
+function isInstalled(): bool
+{
+    $installDirectory = home().'/.my127/workspace';
+
+    if (!file_exists($installDirectory.'/.installed') || sha1_file($installDirectory.'/build') != sha1_file(__DIR__.'/../home/build')) {
+        return false;
+    }
+
+    return true;
+}
+
+function install(): void
+{
+    Installer::install(home());
+}
+
+main();

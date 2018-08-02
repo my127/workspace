@@ -1,0 +1,54 @@
+#!/bin/bash
+
+DIR=""
+
+main()
+{
+    if [ "$1" != "proxy" ]; then
+        echo "Service by the name '${1}' does not exist."
+        exit 1
+    fi
+
+    if [ "$2" = "enable" ]; then
+        enable $1
+        exit
+    fi
+
+    if [ "$2" = "disable" ]; then
+        disable $1
+        exit
+    fi
+
+    echo "Action '$2' unrecognised."
+    exit 1
+}
+
+enable()
+{
+    if [ ! "$(docker ps | grep my127ws-$1)" ]; then
+        if [ "$(docker ps -aq -f name=my127ws-$1)" ]; then
+            { cd "${DIR}/docker/service"; run docker-compose -p my127ws rm --force $1; }
+        fi
+        { cd "${DIR}/docker/service"; run docker-compose -p my127ws up --build -d $1; }
+    fi
+}
+
+disable()
+{
+    if [ "$(docker ps | grep my127ws-$1)" ]; then
+        { cd "${DIR}/docker/service"; run docker-compose -p my127ws rm --stop --force $1; }
+    fi
+}
+
+bootstrap()
+{
+    DIR="$(cd "$(dirname "$0")" && cd ../ && pwd)"
+    . "$DIR/lib/sidekick.sh"
+
+    if [ ! "$(docker network ls | grep my127ws)" ]; then
+        run docker network create my127ws
+    fi
+}
+
+bootstrap
+main $@

@@ -1,0 +1,21 @@
+---
+
+workspace('global'):
+  description: Manage and create your various workspaces
+
+command('create <name> [<harness> [--no-install] ]', 'create'): |
+  #!php(cwd:/)
+
+  $ws->create($input->getArgument('name'), $input->getArgument('harness'));
+
+  if ($input->getOption('no-install') !== true) {
+      $ws->run('install');
+  }
+
+command('global proxy enable'): |
+  #!bash
+  ws.service proxy enable
+
+command('global proxy disable'): |
+  #!bash
+  ws.service proxy disable

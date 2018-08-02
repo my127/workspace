@@ -1,0 +1,69 @@
+---
+
+# NOTE: This configuration is not used directly, bin/build generates a PHP representation as _compiled/container.php
+# which is used instead.
+
+services:
+
+  # -- config-global
+
+  _defaults:
+    autowire: true
+    public: false
+
+  # -- config-type
+
+  _instanceof:
+
+    my127\Console\Application\Plugin\Plugin:
+      tags: [application.plugin]
+
+    my127\Console\Application\Action\Action:
+      tags: [application.action]
+
+    my127\Workspace\Definition\Factory:
+      tags: [definition.factory]
+
+    my127\Workspace\Environment\Builder:
+      tags: [environment.builder]
+
+    my127\Workspace\Interpreter\Executor:
+      tags: [interpreter.executor]
+
+    my127\Workspace\Interpreter\Filter:
+      tags: [interpreter.filter]
+
+    my127\Workspace\Path\Path:
+      tags: [path]
+
+    Symfony\Component\EventDispatcher\EventSubscriberInterface:
+      tags: [event.subscriber]
+
+  # -- autoload
+
+  my127\Workspace\:
+    resource: '../src/*'
+
+  my127\Console\:
+    resource: '../vendor/my127/my127/src/Console/src/*'
+
+  # -- require
+
+  Symfony\Component\EventDispatcher\EventDispatcher:
+    class: Symfony\Component\EventDispatcher\EventDispatcher
+
+  Symfony\Component\Console\Output\ConsoleOutput:
+    class: Symfony\Component\Console\Output\ConsoleOutput
+
+  Symfony\Component\Console\Input\ArgvInput:
+    class: Symfony\Component\Console\Input\ArgvInput
+
+  Symfony\Component\Console\Helper\QuestionHelper:
+    class: Symfony\Component\Console\Helper\QuestionHelper
+
+  # -- config-general
+
+  my127\Workspace\Application:
+    public: true
+
+  my127\Workspace\Path\Path: '@my127\Workspace\Path\Composite'

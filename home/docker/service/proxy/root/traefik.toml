@@ -1,0 +1,19 @@
+
+defaultEntryPoints = ["http", "https"]
+
+[file]
+  directory = "/config"
+  watch = true
+
+[web]
+address = ":8080"
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/letsencrypt/my127.site.crt"
+      keyFile  = "/letsencrypt/my127.site.key"

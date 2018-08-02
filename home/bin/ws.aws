@@ -1,0 +1,21 @@
+#!/bin/bash
+
+DIR=""
+
+main()
+{
+    docker run --user $UID:$UID --env AWS_ACCESS_KEY_ID="$AWS_ID" --env AWS_SECRET_ACCESS_KEY="$AWS_KEY" -v "$PWD:/mount" --rm my127ws-aws aws $@
+}
+
+bootstrap()
+{
+    DIR="$(cd "$(dirname "$0")" && cd ../ && pwd)"
+    . "$DIR/lib/sidekick.sh"
+
+    if [ ! "$(docker image ls my127ws-aws | grep my127ws-aws)" ]; then
+        run docker build -t my127ws-aws "$DIR/docker/aws"
+    fi
+}
+
+bootstrap
+main $@

@@ -1,0 +1,22 @@
+version: '3'
+services:
+  proxy:
+    container_name: my127ws-proxy
+    build:
+      context: proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      - traefik.frontend.rule=Host:my127.site
+      - traefik.port=8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.config/my127ws/proxy:/config
+    networks:
+      - my127ws
+    command: ['--docker']
+networks:
+  my127ws:
+    external: true

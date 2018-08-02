@@ -1,0 +1,12 @@
+{
+  "chmod": "0755",
+  "main": "bin/workspace",
+  "output": "my127ws.phar",
+  "directories-bin": [
+    "config",
+    "home",
+    "vendor/twig/twig/lib",
+    "vendor/twig/twig/src"
+  ],
+  "stub": true
+}

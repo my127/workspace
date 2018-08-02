@@ -1,0 +1,95 @@
+#!/usr/bin/env php
+<?php
+
+use my127\Workspace\Application;
+use my127\Workspace\Definition\Loader;
+use my127\Workspace\Environment\BuilderCollection;
+use my127\Workspace\Interpreter\Interpreter;
+use my127\Workspace\Path\Composite as CompositePath;
+use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+function main()
+{
+    buildStaticContainer();
+}
+
+function buildStaticContainer(): void
+{
+    $loader = new YamlFileLoader($container = new ContainerBuilder(), new FileLocator([__DIR__.'/../config']));
+    $loader->load('services.yml');
+
+    $container->addCompilerPass(new class() implements CompilerPassInterface
+    {
+        public function process(ContainerBuilder $container)
+        {
+            // application
+
+            $application = $container->getDefinition(Application::class);
+
+            foreach ($container->findTaggedServiceIds('application.plugin') as $id => $tags) {
+                $application->addMethodCall('plugin', [new Reference($id)]);
+            }
+
+            // definition loader
+
+            $loader = $container->getDefinition(Loader::class);
+
+            foreach ($container->findTaggedServiceIds('definition.factory') as $id => $tags) {
+                $loader->addMethodCall('addDefinitionFactory', [new Reference($id)]);
+            }
+
+            // environment builder
+
+            $builders = $container->getDefinition(BuilderCollection::class);
+
+            foreach ($container->findTaggedServiceIds('environment.builder') as $id => $tags) {
+                $builders->addMethodCall('add', [new Reference($id)]);
+            }
+
+            // interpreter
+
+            $interpreter = $container->getDefinition(Interpreter::class);
+
+            foreach ($container->findTaggedServiceIds('interpreter.executor') as $id => $tags) {
+                $interpreter->addMethodCall('addExecutor', [new Reference(($id))]);
+            }
+
+            foreach ($container->findTaggedServiceIds('interpreter.filter') as $id => $tags) {
+                $interpreter->addMethodCall('addFilter', [new Reference($id)]);
+            }
+
+            // composite path
+
+            $path = $container->getDefinition(CompositePath::class);
+
+            foreach ($container->findTaggedServiceIds('path') as $id => $tags) {
+                if (!in_array($id, ['my127\Workspace\Path\Composite', 'my127\Workspace\Path\Path'])) {
+                    $path->addMethodCall('add', [new Reference($id)]);
+                }
+            }
+        }
+    });
+
+    $container->addCompilerPass(new RegisterListenersPass(EventDispatcher::class, 'event.listener', 'event.subscriber'));
+
+    $container->compile(true);
+
+    $dumper = new PhpDumper($container);
+    $dumper->setProxyDumper(new ProxyDumper());
+
+    file_put_contents(__DIR__.'/../config/_compiled/container.php', $dumper->dump([
+        'class' => 'ApplicationServiceContainer'
+    ]));
+}
+
+main();

@@ -34,14 +34,18 @@ class Loader
 
     public function load(string $file)
     {
-        foreach ($this->getDeclarationsFromFile($file) as $data) {
+        $files = is_file($file) ? [$file] : $this->getFilesFromPattern($file);
 
-            if ($data['type'] === 'import') {
-                $this->loadFromImportDeclaration($data);
-                continue;
+        foreach ($files as $file) {
+            foreach ($this->getDeclarationsFromFile($file) as $data) {
+
+                if ($data['type'] === 'import') {
+                    $this->loadFromImportDeclaration($data);
+                    continue;
+                }
+
+                $this->definitions->add($this->factories[$data['type']]->create($data));
             }
-
-            $this->definitions->add($this->factories[$data['type']]->create($data));
         }
     }
 
@@ -117,5 +121,14 @@ class Loader
         }
 
         return Definition::SCOPE_GLOBAL;
+    }
+
+    private function getFilesFromPattern(string $pattern)
+    {
+        if (($files = glob($pattern)) !== false) {
+            return $files;
+        }
+
+        throw new Exception("Invalid Pattern '{$pattern}'.");
     }
 }

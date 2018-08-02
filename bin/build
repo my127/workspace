@@ -87,6 +87,10 @@ function buildStaticContainer(): void
     $dumper = new PhpDumper($container);
     $dumper->setProxyDumper(new ProxyDumper());
 
+    if (!is_dir($dir = __DIR__.'/../config/_compiled')) {
+        mkdir($dir, 0755, true);
+    }
+
     file_put_contents(__DIR__.'/../config/_compiled/container.php', $dumper->dump([
         'class' => 'ApplicationServiceContainer'
     ]));

@@ -57,6 +57,7 @@ class Environment
 
         $this->loader->load(__DIR__.'/../../config/harness/repository.yml');
         $this->loader->load($this->workspacePath.'/workspace.yml');
+        $this->loader->load(home().'/.config/my127/workspace/*.yml');
 
         $extra = [
             $this->workspacePath.'/workspace.override.yml',

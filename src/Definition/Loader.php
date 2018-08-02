@@ -20,6 +20,8 @@ class Loader
     /** @var string */
     private $harnessPath;
 
+    const PATTERN_REPLACE_ENV_VARS = "/\=\{env\(['\"]{1}(?P<name>.*)',[\s]*'(?P<default>.*)['\"]{1}\)\}/";
+
     public function __construct(Collection $definitions)
     {
         $this->definitions = $definitions;
@@ -34,6 +36,8 @@ class Loader
 
     public function load(string $file)
     {
+        $file = $this->expandEnvVars($file);
+
         $files = is_file($file) ? [$file] : $this->getFilesFromPattern($file);
 
         foreach ($files as $file) {
@@ -91,12 +95,7 @@ class Loader
         $files = is_array($data['body'])?$data['body']:[$data['body']];
 
         foreach ($files as $relativeFile) {
-
-            if (!file_exists($file = $cwd.DIRECTORY_SEPARATOR.$relativeFile)) {
-                throw new Exception("File '{$file}' not found.");
-            }
-
-            $this->load($file);
+            $this->load($cwd.DIRECTORY_SEPARATOR.$relativeFile);
         }
     }
 
@@ -130,5 +129,15 @@ class Loader
         }
 
         throw new Exception("Invalid Pattern '{$pattern}'.");
+    }
+
+    private function expandEnvVars(string $file)
+    {
+        return preg_replace_callback(self::PATTERN_REPLACE_ENV_VARS, [$this, 'replaceEnvVar'], $file);
+    }
+
+    private function replaceEnvVar(array $match)
+    {
+        return getenv($match['name'])?:$match['default'];
     }
 }

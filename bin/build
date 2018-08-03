@@ -6,7 +6,6 @@ use my127\Workspace\Definition\Loader;
 use my127\Workspace\Environment\BuilderCollection;
 use my127\Workspace\Interpreter\Interpreter;
 use my127\Workspace\Path\Composite as CompositePath;
-use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -85,7 +84,6 @@ function buildStaticContainer(): void
     $container->compile(true);
 
     $dumper = new PhpDumper($container);
-    $dumper->setProxyDumper(new ProxyDumper());
 
     if (!is_dir($dir = __DIR__.'/../config/_compiled')) {
         mkdir($dir, 0755, true);

@@ -4,15 +4,7 @@
     "type": "application",
     "require": {
         "php": ">=7.2",
-        "ext-curl": "*",
-        "ext-intl": "*",
-        "ext-mbstring": "*",
-        "ext-xml": "*",
-        "doctrine/cache": "^1.7",
-        "guzzlehttp/guzzle": "^6.3",
         "illuminate/support": "^5.6",
-        "knplabs/gaufrette": "^0.6.0",
-        "gaufrette/local-adapter": "^0.4.0",
         "my127/my127": "dev-master",
         "symfony/config": "^4.1",
         "symfony/console": "^4.1",
@@ -20,7 +12,6 @@
         "symfony/expression-language": "^4.1",
         "symfony/finder": "^4.1",
         "symfony/process": "^4.1",
-        "symfony/proxy-manager-bridge": "^4.1",
         "symfony/yaml": "^4.1",
         "twig/twig": "^2.4"
     },

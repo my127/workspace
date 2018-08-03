@@ -3,7 +3,7 @@
 namespace my127\Workspace\Types\Attribute;
 
 use ArrayAccess;
-use Illuminate\Support\Arr;
+use my127\Workspace\Utility\Arr;
 use my127\Workspace\Expression\Expression;
 
 class Collection implements ArrayAccess

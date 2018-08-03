@@ -4,7 +4,6 @@
     "type": "application",
     "require": {
         "php": ">=7.2",
-        "illuminate/support": "^5.6",
         "my127/my127": "dev-master",
         "symfony/config": "^4.1",
         "symfony/console": "^4.1",

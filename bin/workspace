@@ -28,7 +28,7 @@ function application(): Application
 
 function home(): string
 {
-    return $_SERVER['HOME'];
+    return $_SERVER['MY127WS_HOME']??$_SERVER['HOME'];
 }
 
 function isInstalled(): bool

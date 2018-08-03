@@ -21,7 +21,7 @@
         "psr-4": {"my127\\Workspace\\": "src/"}
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --testdox",
+        "test": "composer compile && vendor/bin/phpunit --testdox",
         "compile": "date -u > home/build && bin/build && box compile"
     }
 }

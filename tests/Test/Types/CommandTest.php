@@ -12,6 +12,6 @@ class CommandTest extends TestCase
     {
         Fixture::workspace('command/basic');
 
-        $this->assertEquals("Hello World", shell_exec('ws speak'));
+        $this->assertEquals("Hello World", run('speak'));
     }
 }

@@ -1,3 +1,4 @@
+/.phpunit*
 /home/build
 /config/_compiled/*
 /vendor

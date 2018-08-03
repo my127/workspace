@@ -64,11 +64,11 @@ class Installer
                 $this->workspace->run('install --from-step=5');
                 break;
             case 5:
+                $this->startRequiredServices($this->harness->getRequiredServices());
                 $this->workspace->trigger('after.harness.install');
                 $this->workspace->run('install --from-step=6');
                 break;
             case 6:
-                $this->startRequiredServices($this->harness->getRequiredServices());
                 $this->workspace->trigger('harness.installed');
                 break;
         }

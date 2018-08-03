@@ -24,8 +24,8 @@ class Filesystem
         return $path;
     }
 
-    public static function rrmdir($src) {
-
+    public static function rrmdir($src)
+    {
         $dir = opendir($src);
 
         while(false !== ($file = readdir($dir))) {

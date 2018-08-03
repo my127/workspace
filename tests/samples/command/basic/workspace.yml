@@ -1,0 +1,7 @@
+
+workspace('test'):
+  description: 'Hello'
+
+command('speak'): |
+  #!bash
+  echo -n "Hello World"

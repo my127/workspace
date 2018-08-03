@@ -14,10 +14,14 @@
         "symfony/yaml": "^4.1",
         "twig/twig": "^2.4"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
     "autoload": {
         "psr-4": {"my127\\Workspace\\": "src/"}
     },
     "scripts": {
+        "test": "vendor/bin/phpunit --testdox",
         "compile": "date -u > home/build && bin/build && box compile"
     }
 }

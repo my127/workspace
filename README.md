@@ -1,1 +1,1 @@
-![travis-ci](https://travis-ci.org/my127/workspace.svg?branch=0.1.x)
+[![Build Status](https://travis-ci.org/my127/workspace.svg?branch=0.1.x)](https://travis-ci.org/my127/workspace)

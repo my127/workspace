@@ -10,6 +10,7 @@ use my127\Workspace\Environment\Environment;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Twig\EnvironmentBuilder as TwigEnvironmentBuilder;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
+use Symfony\Component\Yaml\Yaml;
 
 class Builder implements EnvironmentBuilder
 {
@@ -62,6 +63,10 @@ class Builder implements EnvironmentBuilder
                     $this->attributes->set($definition->getKey(), $definition->getValue(), $this->resolveAttributePrecedence($definition));
                 }
             }
+        }
+
+        if (($attributes = getenv('MY127WS_ATTRIBUTES')) !== false) {
+            $this->attributes->add(Yaml::parse($attributes), 10);
         }
 
         $this->expressionLanguage->addFunction(new ExpressionFunction('attr',

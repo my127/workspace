@@ -1,6 +1,4 @@
 
-workspace('phpunit-test'): ~
-
 attribute.default('key.4'): 'Hello From workspace.default'
 
 attribute.default('key.5'): 'Hello From workspace.default'

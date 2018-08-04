@@ -1,6 +1,4 @@
 
-workspace('phpunit'): ~
-
 attribute('message'): Hello World
 
 confd('workspace:/config'):

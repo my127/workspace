@@ -11,8 +11,6 @@ class CommandTest extends TestCase
     public function bash_can_be_used_as_an_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('speak'): |
   #!bash
   echo -n "Hello World"
@@ -26,8 +24,6 @@ EOD
     public function php_can_be_used_as_an_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('speak'): |
   #!php
   echo "Hello World";
@@ -41,8 +37,6 @@ EOD
     public function environment_variables_are_passed_through_to_the_bash_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('speak'):
   env:
     MESSAGE: Sample Value
@@ -59,8 +53,6 @@ EOD
     public function environment_variables_are_passed_through_to_the_php_intepreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('speak'):
   env:
     MESSAGE: Sample Value
@@ -77,8 +69,6 @@ EOD
     public function working_directory_of_workspace_can_be_used_with_the_bash_interpreter()
     {
         $path = Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('working-directory'): |
   #!bash(workspace:/test1)
   pwd
@@ -98,8 +88,6 @@ EOD
     public function working_directory_of_cwd_can_be_used_with_the_bash_interpreter()
     {
         $path = Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('working-directory'): |
   #!bash(cwd:/)
   pwd
@@ -118,8 +106,6 @@ EOD
     public function working_directory_of_workspace_can_be_used_with_the_php_interpreter()
     {
         $path = Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('working-directory'): |
   #!php(workspace:/test1)
   echo getcwd();
@@ -139,8 +125,6 @@ EOD
     public function working_directory_of_cwd_can_be_used_with_the_php_interpreter()
     {
         $path = Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 command('working-directory'): |
   #!php(cwd:/)
   echo getcwd();
@@ -159,8 +143,6 @@ EOD
     public function attribute_filter_can_be_used_with_the_bash_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('message'): Hello World
 
 command('speak'): |
@@ -176,8 +158,6 @@ EOD
     public function attribute_filter_can_be_used_with_the_php_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('message'): Hello World
 
 command('speak'): |
@@ -193,8 +173,6 @@ EOD
     public function expression_filter_can_be_used_with_the_bash_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('message'): Hello
 
 command('speak'): |
@@ -210,8 +188,6 @@ EOD
     public function expression_filter_can_be_used_with_the_php_interpreter()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('message'): Hello
 
 command('speak'): |
@@ -227,8 +203,6 @@ EOD
     public function environment_variable_values_can_be_expressions()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('message'): Hello
 
 command('speak'):

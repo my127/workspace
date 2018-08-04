@@ -11,8 +11,6 @@ class SubscriberTest extends TestCase
     public function subscriber_script_is_run_when_appropriate_event_is_triggered()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 on('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -30,8 +28,6 @@ EOD
     public function after_can_be_used_as_a_shorthand_for_event_names_prefixed_with_after()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 after('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -49,8 +45,6 @@ EOD
     public function before_can_be_used_as_a_shorthand_for_event_names_prefixed_with_before()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 before('custom.event'): |
   #!bash
   echo -n "Hello World"

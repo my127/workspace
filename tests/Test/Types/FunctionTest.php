@@ -11,8 +11,6 @@ class FunctionTest extends TestCase
     public function bash_can_be_used_as_an_interpreter_for_a_function()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 function('add', [v1, v2]): |
   #!bash
   ="$((v1+v2))"
@@ -30,8 +28,6 @@ EOD
     public function php_can_be_used_as_an_interpreter_for_a_function()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 function('add', [v1, v2]): |
   #!php
   =$v1+$v2;
@@ -49,8 +45,6 @@ EOD
     public function bash_function_can_make_use_of_environment_variables()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -71,8 +65,6 @@ EOD
     public function php_function_can_make_use_of_environment_variables()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -93,8 +85,6 @@ EOD
     public function functions_are_available_within_attribute_expressions()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('answer'): = add(2, 2)
 
 function('add', [v1, v2]): |

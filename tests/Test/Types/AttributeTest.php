@@ -11,8 +11,6 @@ class AttributeTest extends TestCase
     public function normal_attribute_key_can_be_set_and_retrieved()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('message'): Hello World
 
 command('speak'): |
@@ -28,8 +26,6 @@ EOD
     public function normal_attribute_root_object_can_be_set_and_retrieved()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attributes:
   my:
     message: Hello World
@@ -48,8 +44,6 @@ EOD
     public function attribute_value_can_be_an_expression()
     {
         Fixture::workspace(<<<'EOD'
-workspace('phpunit'): ~
-
 attribute('db'):
   driver: mysql
   host: localhost

@@ -8,9 +8,237 @@ use PHPUnit\Framework\TestCase;
 class CommandTest extends TestCase
 {
     /** @test */
-    public function bash_hello_world()
+    public function bash_can_be_used_as_an_interpreter()
     {
-        Fixture::workspace('command/basic');
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('speak'): |
+  #!bash
+  echo -n "Hello World"
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
+
+    /** @test */
+    public function php_can_be_used_as_an_interpreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('speak'): |
+  #!php
+  echo "Hello World";
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
+
+    /** @test */
+    public function environment_variables_are_passed_through_to_the_bash_interpreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('speak'):
+  env:
+    MESSAGE: Sample Value
+  exec: |
+    #!bash
+    echo -n "${MESSAGE}"
+EOD
+        );
+
+        $this->assertEquals("Sample Value", run('speak'));
+    }
+
+    /** @test */
+    public function environment_variables_are_passed_through_to_the_php_intepreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('speak'):
+  env:
+    MESSAGE: Sample Value
+  exec: |
+    #!php
+    echo getenv('MESSAGE');
+EOD
+        );
+
+        $this->assertEquals("Sample Value", run('speak'));
+    }
+
+    /** @test */
+    public function working_directory_of_workspace_can_be_used_with_the_bash_interpreter()
+    {
+        $path = Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('working-directory'): |
+  #!bash(workspace:/test1)
+  pwd
+EOD
+        );
+
+        mkdir($path.'/test1');
+        mkdir($path.'/test2');
+
+        chdir($path.'/test2');
+
+        // even though we're running the command from test2 the script should still be executed within test1
+        $this->assertEquals($path.'/test1'."\n", run('working-directory'));
+    }
+
+    /** @test */
+    public function working_directory_of_cwd_can_be_used_with_the_bash_interpreter()
+    {
+        $path = Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('working-directory'): |
+  #!bash(cwd:/)
+  pwd
+EOD
+        );
+
+        mkdir($path.'/test1');
+        mkdir($path.'/test2');
+
+        chdir($path.'/test2');
+
+        $this->assertEquals($path.'/test2'."\n", run('working-directory'));
+    }
+
+    /** @test */
+    public function working_directory_of_workspace_can_be_used_with_the_php_interpreter()
+    {
+        $path = Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('working-directory'): |
+  #!php(workspace:/test1)
+  echo getcwd();
+EOD
+        );
+
+        mkdir($path.'/test1');
+        mkdir($path.'/test2');
+
+        chdir($path.'/test2');
+
+        // even though we're running the command from test2 the script should still be executed within test1
+        $this->assertEquals($path.'/test1', run('working-directory'));
+    }
+
+    /** @test */
+    public function working_directory_of_cwd_can_be_used_with_the_php_interpreter()
+    {
+        $path = Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+command('working-directory'): |
+  #!php(cwd:/)
+  echo getcwd();
+EOD
+        );
+
+        mkdir($path.'/test1');
+        mkdir($path.'/test2');
+
+        chdir($path.'/test2');
+
+        $this->assertEquals($path.'/test2', run('working-directory'));
+    }
+
+    /** @test */
+    public function attribute_filter_can_be_used_with_the_bash_interpreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+attribute('message'): Hello World
+
+command('speak'): |
+  #!bash|@
+  echo -n "@('message')"
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
+
+    /** @test */
+    public function attribute_filter_can_be_used_with_the_php_interpreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+attribute('message'): Hello World
+
+command('speak'): |
+  #!php|@
+  echo "@('message')";
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
+
+    /** @test */
+    public function expression_filter_can_be_used_with_the_bash_interpreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+attribute('message'): Hello
+
+command('speak'): |
+  #!bash|=
+  echo -n "={ @('message') ~ ' ' ~ 'World' }"
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
+
+    /** @test */
+    public function expression_filter_can_be_used_with_the_php_interpreter()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+attribute('message'): Hello
+
+command('speak'): |
+  #!php|=
+  echo "={ @('message') ~ ' ' ~ 'World' }";
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
+
+    /** @test */
+    public function environment_variable_values_can_be_expressions()
+    {
+        Fixture::workspace(<<<'EOD'
+workspace('phpunit'): ~
+
+attribute('message'): Hello
+
+command('speak'):
+  env:
+    MESSAGE: = @('message') ~ ' ' ~ 'World'
+  exec: |
+    #!bash
+    echo -n "${MESSAGE}"
+EOD
+        );
 
         $this->assertEquals("Hello World", run('speak'));
     }

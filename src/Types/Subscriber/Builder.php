@@ -4,6 +4,7 @@ namespace my127\Workspace\Types\Subscriber;
 
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
+use my127\Workspace\Environment\Environment;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Interpreter\Interpreter;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -26,7 +27,7 @@ class Builder implements EnvironmentBuilder
         $this->interpreter = $interpreter;
     }
 
-    public function build(DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach (DefinitionFactory::getTypes() as $type) {
             foreach ($definitions->findByType($type) as $definition) {

@@ -9,6 +9,7 @@ use my127\Console\Usage\Input;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
+use my127\Workspace\Environment\Environment;
 use my127\Workspace\Interpreter\Executors\PHP\Executor as PHPExecutor;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -30,7 +31,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
         $this->phpExecutor = $phpExecutor;
     }
 
-    public function build(DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         /** @var Definition $definition */
         if (($definition = $definitions->findOneByType(Definition::TYPE)) === null) {

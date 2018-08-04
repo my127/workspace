@@ -6,6 +6,7 @@ use Exception;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
+use my127\Workspace\Environment\Environment;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Twig\EnvironmentBuilder as TwigEnvironmentBuilder;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
@@ -50,7 +51,7 @@ class Builder implements EnvironmentBuilder
         $this->twigBuilder        = $twigBuilder;
     }
 
-    public function build(DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach (DefinitionFactory::TYPES as $type) {
             foreach ($definitions->findByType($type) as $definition) {

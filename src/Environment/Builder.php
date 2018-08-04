@@ -6,5 +6,5 @@ use my127\Workspace\Definition\Collection as DefinitionCollection;
 
 interface Builder
 {
-    public function build(DefinitionCollection $definitions);
+    public function build(Environment $environment, DefinitionCollection $definitions);
 }

@@ -5,6 +5,7 @@ namespace my127\Workspace\Types\DynamicFunction;
 use Exception;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
+use my127\Workspace\Environment\Environment;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Interpreter\Interpreter;
 use my127\Workspace\Twig\EnvironmentBuilder as TwigEnvironmentBuilder;
@@ -31,9 +32,8 @@ class Builder implements EnvironmentBuilder
         $this->expression  = $expression;
     }
 
-    public function build(DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
-
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
             /** @var Definition $definition */
             $this->collection->add(new DynamicFunction($this->interpreter, $definition));

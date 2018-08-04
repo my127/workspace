@@ -5,6 +5,7 @@ namespace my127\Workspace\Types\Command;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder   as EnvironmentBuilder;
+use my127\Workspace\Environment\Environment;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Interpreter\Interpreter;
 
@@ -26,7 +27,7 @@ class Builder implements EnvironmentBuilder
         $this->expression  = $expression;
     }
 
-    public function build(DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         /** @var Definition $definition */
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {

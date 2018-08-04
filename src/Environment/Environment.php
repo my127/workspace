@@ -41,7 +41,7 @@ class Environment
 
         /** @var Builder $builder */
         foreach ($this->builders as $builder) {
-            $builder->build($this->definitions);
+            $builder->build($this, $this->definitions);
         }
     }
 

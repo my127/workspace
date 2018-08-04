@@ -1,0 +1,30 @@
+
+workspace('phpunit-test'): ~
+
+attribute.default('key.4'): 'Hello From workspace.default'
+
+attribute.default('key.5'): 'Hello From workspace.default'
+attribute('key.5'): 'Hello From workspace.normal'
+
+attribute.default('key.6'): 'Hello From workspace.default'
+attribute('key.6'): 'Hello From workspace.normal'
+attribute.override('key.6'): 'Hello From workspace.override'
+
+attribute.default('key.7'): 'Hello From workspace.default'
+attribute('key.7'): 'Hello From workspace.normal'
+attribute.override('key.7'): 'Hello From workspace.override'
+
+attribute.default('key.8'): 'Hello From workspace.default'
+attribute('key.8'): 'Hello From workspace.normal'
+attribute.override('key.8'): 'Hello From workspace.override'
+
+attribute.default('key.9'): 'Hello From workspace.default'
+attribute('key.9'): 'Hello From workspace.normal'
+attribute.override('key.9'): 'Hello From workspace.override'
+
+command('get <key>'): |
+  #!php
+  echo $ws($input->getArgument('key'));
+
+import:
+  - ../global.yml

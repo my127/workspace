@@ -1,0 +1,9 @@
+
+attribute.default('key.7'): 'Hello From global.default'
+
+attribute.default('key.8'): 'Hello From global.default'
+attribute('key.8'): 'Hello From global.normal'
+
+attribute.default('key.9'): 'Hello From global.default'
+attribute('key.9'): 'Hello From global.normal'
+attribute.override('key.9'): 'Hello From global.override'

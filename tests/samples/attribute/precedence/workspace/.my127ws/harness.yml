@@ -1,0 +1,35 @@
+
+harness('test'): ~
+
+attribute.default('key.1'): 'Hello From harness.default'
+
+attribute.default('key.2'): 'Hello From harness.default'
+attribute('key.2'): 'Hello From harness.normal'
+
+attribute.default('key.3'): 'Hello From harness.default'
+attribute('key.3'): 'Hello From harness.normal'
+attribute.override('key.3'): 'Hello From harness.override'
+
+attribute.default('key.4'): 'Hello From harness.default'
+attribute('key.4'): 'Hello From harness.normal'
+attribute.override('key.4'): 'Hello From harness.override'
+
+attribute.default('key.5'): 'Hello From harness.default'
+attribute('key.5'): 'Hello From harness.normal'
+attribute.override('key.5'): 'Hello From harness.override'
+
+attribute.default('key.6'): 'Hello From harness.default'
+attribute('key.6'): 'Hello From harness.normal'
+attribute.override('key.6'): 'Hello From harness.override'
+
+attribute.default('key.7'): 'Hello From harness.default'
+attribute('key.7'): 'Hello From harness.normal'
+attribute.override('key.7'): 'Hello From harness.override'
+
+attribute.default('key.8'): 'Hello From harness.default'
+attribute('key.8'): 'Hello From harness.normal'
+attribute.override('key.8'): 'Hello From harness.override'
+
+attribute.default('key.9'): 'Hello From harness.default'
+attribute('key.9'): 'Hello From harness.normal'
+attribute.override('key.9'): 'Hello From harness.override'

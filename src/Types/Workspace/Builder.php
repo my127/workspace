@@ -7,6 +7,7 @@ use my127\Console\Application\Event\BeforeActionEvent;
 use my127\Console\Application\Executor;
 use my127\Console\Usage\Input;
 use my127\Workspace\Application;
+use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
 use my127\Workspace\Environment\Environment;
@@ -33,17 +34,22 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
     public function build(Environment $environment, DefinitionCollection $definitions)
     {
-        /** @var Definition $definition */
-        if (($definition = $definitions->findOneByType(Definition::TYPE)) === null) {
-            throw new Exception("No workspace declared");
+        if (($definition = $definitions->findOneByType(Definition::TYPE)) !== null) {
+            /** @var Definition $definition */
+            $this->workspace->name        = $definition->name;
+            $this->workspace->description = $definition->description;
+            $this->workspace->path        = $definition->path;
+            $this->workspace->harnessName = $definition->harnessName;
+            $this->workspace->overlay     = $definition->overlay;
+            $this->workspace->scope       = $definition->scope;
+        } else {
+            $this->workspace->name        = basename($environment->getWorkspacePath());
+            $this->workspace->description = '';
+            $this->workspace->path        = $environment->getWorkspacePath();
+            $this->workspace->harnessName = null;
+            $this->workspace->overlay     = null;
+            $this->workspace->scope       = WorkspaceDefinition::SCOPE_WORKSPACE;
         }
-
-        $this->workspace->name        = $definition->name;
-        $this->workspace->description = $definition->description;
-        $this->workspace->path        = $definition->path;
-        $this->workspace->harnessName = $definition->harnessName;
-        $this->workspace->overlay     = $definition->overlay;
-        $this->workspace->scope       = $definition->scope;
 
         $this->phpExecutor->setGlobal('ws', $this->workspace);
 

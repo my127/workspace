@@ -6,7 +6,6 @@ language: php
 
 php:
   - 7.2
-  - 7.3
 
 install:
   - wget https://github.com/humbug/box/releases/download/3.0.0-beta.4/box.phar && chmod +x box.phar && sudo mv box.phar /usr/local/bin/box

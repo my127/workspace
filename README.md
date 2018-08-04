@@ -8,14 +8,14 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 
 #### Installation
 
-#### Using an existing harness
-
-#### How to override and extend a workspace
+#### Creating a workspace
 
 ### Anatomy of a workspace
 
 #### Key Concepts
-
+ - [Workspace](docs/concepts/workspace.md)
+ - [Harness](docs/concepts/harness.md)
+ 
 #### Available Types
 
  - [Attribute](docs/types/attribute.md)

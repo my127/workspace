@@ -9,7 +9,7 @@ command('usage pattern', 'help page'):
   env:
     - NAME: Value
   exec: |
-    #!interpreter(path:/location')|filter
+    #!interpreter(path:/location)|filter
     script
 ```
 

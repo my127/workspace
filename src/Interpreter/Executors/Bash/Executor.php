@@ -48,7 +48,7 @@ class Executor implements InterpreterExecutor
                  .". {$home}/.my127/workspace/lib/sidekick.sh\n";
 
         foreach ($args as $key => $value) {
-            $header .= $key.'=\"'.addslashes($value).'\"'."\n";
+            $header .= $key.'="'.addslashes($value).'"'."\n";
         }
 
         $script = escapeshellarg(preg_replace('/^.+\n/', $header, $script));

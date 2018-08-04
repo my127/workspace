@@ -23,12 +23,14 @@ class Filter implements InterpreterFilter
     public function apply(string $script): string
     {
         foreach ($this->findAllExpressionsInString($script) as $expression) {
+
             $script = str_replace(
                 $expression,
                 $this->expression->evaluate(trim(substr($expression, 2, -1))),
                 $script
             );
         }
+
 
         return $script;
     }

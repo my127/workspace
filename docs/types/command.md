@@ -82,4 +82,4 @@ command('assets download'):
     passthru ws.aws s3 sync ={ @('aws.s3') ~ '/assets/development' } assets/development
 ```
 
-Thre may be times when you need more complex logic than a simple replacement, in these cases the expression filter `|=` can be used. 
+There may be times when you need more complex logic than a simple replacement, in these cases the expression filter `|=` can be used. 

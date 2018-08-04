@@ -50,7 +50,7 @@ class Builder implements EnvironmentBuilder
                     throw new Exception("Compilation of the '{$function->getName()}' function within Types\DynamicFunction\Builder is not supported.");
                 },
                 function ($arguments, ...$args) use ($function) {
-                    call_user_func_array($function, $args);
+                    return call_user_func_array($function, $args);
                 }
             );
         }

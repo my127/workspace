@@ -2,7 +2,7 @@
 
 define('WS', realpath(__DIR__.'/../my127ws.phar'));
 
-function run($command): string {
+function run($command) {
     return shell_exec(WS.' '.$command);
 }
 

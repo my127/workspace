@@ -1,0 +1,11 @@
+
+workspace('phpunit'): ~
+
+attribute('message'): Hello World
+
+confd('workspace:/config'):
+  - { src: test.txt.twig, dst: workspace:/test.txt }
+
+command('apply config'): |
+  #!php
+  $ws->confd('workspace:/config')->apply();

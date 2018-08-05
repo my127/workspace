@@ -20,7 +20,7 @@ class Terminal
         $this->question = $question;
     }
 
-    public function ask(string $message, $default = null): string
+    public function ask(string $message, $default = null)
     {
         $response = $this->question->ask($this->argv, $this->output, new Question($message.': '));
         return (!empty($response))?$response:$default;

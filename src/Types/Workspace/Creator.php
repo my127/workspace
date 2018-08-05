@@ -15,7 +15,6 @@ class Creator
             $template[] = "  harness: $harness";
         }
 
-        $template[] = "attribute('namespace'): {$name}";
         $template[] = "";
 
         file_put_contents('workspace.yml', implode("\n", $template));

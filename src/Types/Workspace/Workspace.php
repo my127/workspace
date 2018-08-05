@@ -2,6 +2,7 @@
 
 namespace my127\Workspace\Types\Workspace;
 
+use ArrayAccess;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
@@ -12,7 +13,7 @@ use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\PackageRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class Workspace extends Definition
+class Workspace extends Definition implements ArrayAccess
 {
     private $packages;
     private $confd;
@@ -85,13 +86,33 @@ class Workspace extends Definition
         $this->dispatcher->dispatch($event);
     }
 
-    public function __invoke($attribute)
+    public function __invoke(string $command)
     {
-        return $this->attributes->get($attribute);
+        $this->run($command);
     }
 
     public function __call($name, $arguments)
     {
         return call_user_func_array($this->functions->get($name), $arguments);
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->attributes[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->attributes->get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->attributes->set($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->attributes[$offset]);
     }
 }

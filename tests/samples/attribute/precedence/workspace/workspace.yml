@@ -22,7 +22,7 @@ attribute.override('key.9'): 'Hello From workspace.override'
 
 command('get <key>'): |
   #!php
-  echo $ws($input->getArgument('key'));
+  echo $ws[$input->getArgument('key')];
 
 import:
   - ../global.yml

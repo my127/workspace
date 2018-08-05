@@ -61,6 +61,7 @@ class Environment
         $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath.'/.my127ws');
 
         $this->loader->load(__DIR__.'/../../config/harness/repository.yml');
+        $this->loader->load(__DIR__.'/../../config/workspace/global.yml');
         $this->loader->load($this->workspacePath.'/workspace.yml');
         $this->loader->load(home().'/.config/my127/workspace/*.yml');
 

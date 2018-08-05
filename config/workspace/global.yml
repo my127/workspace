@@ -1,0 +1,8 @@
+
+command('global proxy enable'): |
+  #!bash
+  ws.service proxy enable
+
+command('global proxy disable'): |
+  #!bash
+  ws.service proxy disable

@@ -9,13 +9,5 @@ command('create <name> [<harness> [--no-install] ]', 'create'): |
   $ws->create($input->getArgument('name'), $input->getArgument('harness'));
 
   if ($input->getOption('no-install') !== true) {
-      $ws->run('install');
+      $ws('install');
   }
-
-command('global proxy enable'): |
-  #!bash
-  ws.service proxy enable
-
-command('global proxy disable'): |
-  #!bash
-  ws.service proxy disable

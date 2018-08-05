@@ -5,7 +5,10 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 ## Documentation
 
 ### Getting Started
-
+#### Requirements
+ - `PHP-7.2+`
+ - `docker 17.04.0+`
+ - `docker-compose (compose file version 3.1+)`
 #### Installation
 ```
 wget https://github.com/my127/workspace/releases/download/0.1.0-alpha.2/my127ws.phar \

@@ -4,6 +4,7 @@ namespace my127\Workspace\Environment;
 
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Definition\Loader as DefinitionLoader;
+use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Utility\Filesystem;
 
 class Environment
@@ -11,6 +12,7 @@ class Environment
     private $definitions;
     private $loader;
     private $builders;
+    private $attributes;
 
     /** @var string */
     private $workspacePath;
@@ -18,11 +20,12 @@ class Environment
     /** @var string */
     private $harnessPath;
 
-    public function __construct(DefinitionLoader $loader, DefinitionCollection $definitions, BuilderCollection $builders)
+    public function __construct(DefinitionLoader $loader, DefinitionCollection $definitions, BuilderCollection $builders, AttributeCollection $attributes)
     {
         $this->loader      = $loader;
         $this->definitions = $definitions;
         $this->builders    = $builders;
+        $this->attributes  = $attributes;
     }
 
     public function getWorkspacePath(): string
@@ -43,6 +46,8 @@ class Environment
         foreach ($this->builders as $builder) {
             $builder->build($this, $this->definitions);
         }
+
+        $this->attributes->set('host.os', strtolower(PHP_OS_FAMILY));
     }
 
     private function prepareEnvironmentForBuild()

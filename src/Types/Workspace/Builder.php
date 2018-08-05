@@ -12,24 +12,23 @@ use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
 use my127\Workspace\Environment\Environment;
 use my127\Workspace\Interpreter\Executors\PHP\Executor as PHPExecutor;
+use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
+use my127\Workspace\Types\Attribute\Builder as AttributeBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberInterface
 {
-    /** @var Application */
     private $application;
-
-    /** @var Workspace */
     private $workspace;
-
-    /** @var PHPExecutor */
     private $phpExecutor;
+    private $attributes;
 
-    public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor)
+    public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor, AttributeCollection $attributes)
     {
         $this->application = $application;
         $this->workspace   = $workspace;
         $this->phpExecutor = $phpExecutor;
+        $this->attributes  = $attributes;
     }
 
     public function build(Environment $environment, DefinitionCollection $definitions)
@@ -52,6 +51,18 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
         }
 
         $this->phpExecutor->setGlobal('ws', $this->workspace);
+
+        $this->attributes->add(
+            [
+                'workspace' => [
+                    'name'        => $this->workspace->name,
+                    'description' => $this->workspace->description,
+                    'harness'     => $this->workspace->harnessName
+                ],
+                'namespace' => $this->workspace->name
+            ],
+            AttributeBuilder::PRECEDENCE_WORKSPACE_DEFAULT
+        );
 
         if ($this->workspace->hasHarness()) {
             $this->application->section('install')

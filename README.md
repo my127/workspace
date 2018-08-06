@@ -11,7 +11,7 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
  - `docker-compose (compose file version 3.1+)`
 #### Installation
 ```
-wget https://github.com/my127/workspace/releases/download/0.1.0-alpha.2/my127ws.phar \
+wget https://github.com/my127/workspace/releases/download/0.1.0-alpha.3/my127ws.phar \
    && chmod +x my127ws.phar \
    && sudo mv my127ws.phar /usr/local/bin/ws
 ```

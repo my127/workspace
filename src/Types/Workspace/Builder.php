@@ -11,6 +11,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
 use my127\Workspace\Environment\Environment;
+use my127\Workspace\Expression\Expression;
 use my127\Workspace\Interpreter\Executors\PHP\Executor as PHPExecutor;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Attribute\Builder as AttributeBuilder;
@@ -22,13 +23,15 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
     private $workspace;
     private $phpExecutor;
     private $attributes;
+    private $expression;
 
-    public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor, AttributeCollection $attributes)
+    public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor, AttributeCollection $attributes, Expression $expression)
     {
         $this->application = $application;
         $this->workspace   = $workspace;
         $this->phpExecutor = $phpExecutor;
         $this->attributes  = $attributes;
+        $this->expression  = $expression;
     }
 
     public function build(Environment $environment, DefinitionCollection $definitions)
@@ -75,6 +78,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
     public function setInputGlobal(BeforeActionEvent $event)
     {
+        $this->expression->setGlobal('input', $event->getInput());
         $this->phpExecutor->setGlobal('input', $event->getInput());
     }
 

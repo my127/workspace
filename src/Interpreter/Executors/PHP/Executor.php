@@ -37,8 +37,6 @@ class Executor implements InterpreterExecutor
 
     private function run(string $script, array $args = [], string $cwd = null, array $env = [])
     {
-
-
         $this->environment['cwd'] = getcwd();
         $this->environment['env'] = [];
 

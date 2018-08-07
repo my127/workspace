@@ -2,6 +2,7 @@
 
 namespace my127\Workspace\Interpreter\Executors\Bash;
 
+use Exception;
 use my127\Workspace\Interpreter\Executor as InterpreterExecutor;
 use Symfony\Component\Process\Process;
 
@@ -14,6 +15,10 @@ class Executor implements InterpreterExecutor
         $process = $this->getScriptProcess($script, $args, $cwd, $env);
         $process->setTimeout(3600);
         $process->run(function ($type, $buffer) { echo $buffer; });
+
+        if ($process->getExitCode() !== 0) {
+            exit(1);
+        }
     }
 
     public function capture(string $script, array $args = [], string $cwd = null, array $env = []): string
@@ -27,6 +32,10 @@ class Executor implements InterpreterExecutor
         $process = $this->getScriptProcess($script, $args, $cwd, $env);
         $process->setTimeout(3600);
         $process->run();
+
+        if ($process->getExitCode() !== 0) {
+            exit(1);
+        }
 
         return $process->getOutput();
     }

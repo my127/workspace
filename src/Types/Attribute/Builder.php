@@ -65,8 +65,26 @@ class Builder implements EnvironmentBuilder
             }
         }
 
-        if (($attributes = getenv('MY127WS_ATTRIBUTES')) !== false) {
-            $this->attributes->add(Yaml::parse($attributes), 10);
+        foreach (getenv() as $key => $value) {
+
+            if (strpos($key, 'MY127WS_ATTR_') !== 0) {
+                continue;
+            }
+
+            $attributes = Yaml::parse($value);
+
+            if (is_string($attributes)) {
+                // @todo debug in jenkins as to whats going on
+                // some ci environments (jenkins) double quote the env variable
+                $attributes = Yaml::parse($attributes);
+            }
+
+            if (!is_array($attributes)) {
+                throw new Exception('MY127WS_ATTRIBUTES must be a YAML object.');
+            }
+
+            $this->attributes->add($attributes, 10);
+
         }
 
         $this->expressionLanguage->addFunction(new ExpressionFunction('attr',

@@ -63,6 +63,12 @@ class Workspace extends Definition implements ArrayAccess
         $installer->install($step);
     }
 
+    public function refresh(): void
+    {
+        $refresher = new Refresh($this, $this->harness, $this->confd);
+        $refresher->refresh();
+    }
+
     public function run(string $command): void
     {
         preg_match_all ('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $command, $matches); // https://stackoverflow.com/a/34871367

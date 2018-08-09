@@ -15,6 +15,8 @@ use my127\Workspace\Expression\Expression;
 use my127\Workspace\Interpreter\Executors\PHP\Executor as PHPExecutor;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Attribute\Builder as AttributeBuilder;
+use my127\Workspace\Types\Confd\Definition as ConfdDefinition;
+use my127\Workspace\Types\Harness\Definition as HarnessDefinition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberInterface
@@ -66,6 +68,14 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             ],
             AttributeBuilder::PRECEDENCE_WORKSPACE_DEFAULT
         );
+
+        if ($definitions->hasType(ConfdDefinition::TYPE) || $definitions->hasType(HarnessDefinition::TYPE)) {
+            $this->application->section('refresh')
+                ->usage('refresh')
+                ->action(function() {
+                    $this->workspace->refresh();
+                });
+        }
 
         if ($this->workspace->hasHarness()) {
             $this->application->section('install')

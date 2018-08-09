@@ -17,6 +17,11 @@ class Collection
         return $this->definitions[$type]??[];
     }
 
+    public function hasType(string $type): bool
+    {
+        return isset($this->definitions[$type]);
+    }
+
     public function findOneByType(string $type): ?Definition
     {
         return $this->definitions[$type][0]??null;

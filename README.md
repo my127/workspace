@@ -30,6 +30,7 @@ wget https://github.com/my127/workspace/releases/download/0.1.0-alpha.3/my127ws.
  - [Attribute](docs/types/attribute.md)
  - [Command](docs/types/command.md)
  - [Confd](docs/types/confd.md)
+ - [Crypt](docs/types/crypt.md)
  - [Function](docs/types/function.md)
  - [Harness](docs/types/harness.md)
    - [Repository](docs/types/harness-repository.md)

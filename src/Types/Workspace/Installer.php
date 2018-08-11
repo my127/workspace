@@ -5,6 +5,7 @@ namespace my127\Workspace\Types\Workspace;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Factory as ConfdFactory;
+use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\Package;
 use my127\Workspace\Types\Harness\Repository\PackageRepository;
@@ -20,6 +21,7 @@ class Installer
     private $attributes;
     private $path;
     private $confd;
+    private $crypt;
 
     public function __construct(
         Workspace $workspace,
@@ -28,7 +30,8 @@ class Installer
         Terminal $terminal,
         AttributeCollection $attributes,
         Path $path,
-        ConfdFactory $confd)
+        ConfdFactory $confd,
+        Crypt $crypt)
     {
         $this->workspace  = $workspace;
         $this->packages   = $packages;
@@ -37,6 +40,7 @@ class Installer
         $this->attributes = $attributes;
         $this->path       = $path;
         $this->confd      = $confd;
+        $this->crypt      = $crypt;
     }
 
     public function install($step = null)
@@ -95,7 +99,9 @@ class Installer
         foreach (['standard', 'secret'] as $type) {
             foreach ($required[$type] ?? [] as $attribute) {
                 if (!isset($this->attributes[$attribute])) {
-                    $attributes[$type][$attribute] = $this->terminal->ask($attribute);
+                    $response = $this->terminal->ask($attribute);
+                    $attributes[$type][$attribute] = ($type == 'standard') ?
+                        $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
                 }
             }
         }
@@ -105,7 +111,7 @@ class Installer
         }
 
         if (!empty($attributes['secret'])) {
-            $this->writeOutAttributes('workspace.override.yml', $attributes['secret']);
+            $this->writeOutAttributes('workspace.yml', $attributes['secret']);
         }
     }
 

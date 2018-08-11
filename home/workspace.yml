@@ -6,8 +6,11 @@ workspace('global'):
 command('create <name> [<harness> [--no-install] ]', 'create'): |
   #!php(cwd:/)
 
-  $ws->create($input->getArgument('name'), $input->getArgument('harness'));
+  $name    = $input->getArgument('name');
+  $harness = $input->getArgument('harness');
+
+  $ws->create($name, $harness);
 
   if ($input->getOption('no-install') !== true) {
-      $ws('install');
+      $ws->exec("cd $name; ws install");
   }

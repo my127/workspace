@@ -34,6 +34,19 @@ class Builder implements EnvironmentBuilder
             $this->crypt->addKey(new Key($definition->getName(), $definition->getKey()));
         }
 
+        if (($default = getenv('MY127WS_KEY')) !== false) {
+            $this->crypt->addKey(new Key('default', $default));
+        }
+
+        foreach (getenv() as $key => $value) {
+
+            if (strpos($key, 'MY127WS_KEY_') !== 0) {
+                continue;
+            }
+
+            $this->crypt->addKey(new Key(strtolower(substr($key, strrpos($key, '_'))), $value));
+        }
+
         $this->expressionLanguage->addFunction(new ExpressionFunction('decrypt',
             function () {
                 throw new Exception("Compilation of the 'decrypt' function within Types\Crypt\Builder is not supported.");

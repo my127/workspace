@@ -8,6 +8,7 @@ use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Confd;
 use my127\Workspace\Types\Confd\Factory as ConfdFactory;
+use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\DynamicFunction\Collection as DynamicFunctionCollection;
 use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\PackageRepository;
@@ -24,6 +25,7 @@ class Workspace extends Definition implements ArrayAccess
     private $harness;
     private $terminal;
     private $pathResolver;
+    private $crypt;
 
     public function __construct(
         Creator $creator,
@@ -34,7 +36,8 @@ class Workspace extends Definition implements ArrayAccess
         AttributeCollection $attributes,
         Harness $harness,
         Terminal $terminal,
-        Path $pathResolver)
+        Path $pathResolver,
+        Crypt $crypt)
     {
         $this->packages     = $packages;
         $this->confd        = $confd;
@@ -45,6 +48,7 @@ class Workspace extends Definition implements ArrayAccess
         $this->harness      = $harness;
         $this->terminal     = $terminal;
         $this->pathResolver = $pathResolver;
+        $this->crypt        = $crypt;
     }
 
     public function hasHarness(): bool
@@ -59,7 +63,17 @@ class Workspace extends Definition implements ArrayAccess
 
     public function install($step = null): void
     {
-        $installer = new Installer($this, $this->harness, $this->packages, $this->terminal, $this->attributes, $this->pathResolver, $this->confd);
+        $installer = new Installer(
+            $this,
+            $this->harness,
+            $this->packages,
+            $this->terminal,
+            $this->attributes,
+            $this->pathResolver,
+            $this->confd,
+            $this->crypt
+        );
+
         $installer->install($step);
     }
 

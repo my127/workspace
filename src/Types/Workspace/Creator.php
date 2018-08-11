@@ -2,21 +2,37 @@
 
 namespace my127\Workspace\Types\Workspace;
 
+use Exception;
+use my127\Workspace\Types\Crypt\Key;
+
 class Creator
 {
     public function create(string $name, ?string $harness = null)
     {
-        $template = [];
-        $template[] = "";
-        $template[] = "workspace('{$name}'):";
-        $template[] = "  description: generated local workspace for {$name}.";
+        $dir = './'.$name;
 
-        if (null !== $harness) {
-            $template[] = "  harness: $harness";
+        if (is_dir('./'.$name)) {
+            throw new Exception("directory '{$dir}' already exists.");
         }
 
-        $template[] = "";
+        mkdir($dir);
 
-        file_put_contents('workspace.yml', implode("\n", $template));
+        $workspace = [];
+        $workspace[] = "";
+        $workspace[] = "workspace('{$name}'):";
+        $workspace[] = "  description: generated local workspace for {$name}.";
+
+        if (null !== $harness) {
+            $workspace[] = "  harness: $harness";
+        }
+
+        $workspace[] = "";
+
+        $override = [];
+        $override[] = "key('default'): ".(new Key('default'))->getKeyAsHex();
+        $override[] = "";
+
+        file_put_contents($dir.'/workspace.yml', implode("\n", $workspace));
+        file_put_contents($dir.'/workspace.override.yml', implode("\n", $override));
     }
 }

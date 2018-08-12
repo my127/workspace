@@ -2,7 +2,7 @@
 attribute('message'): Hello World
 
 confd('workspace:/config'):
-  - { src: test.txt.twig, dst: workspace:/test.txt }
+  - { src: test.txt, dst: workspace:/test.txt }
 
 command('apply config'): |
   #!php

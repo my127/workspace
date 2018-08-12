@@ -2,33 +2,30 @@
 
 namespace my127\Workspace\Types\Confd;
 
+use my127\Workspace\Expression\Expression;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Twig\Loader\Filesystem;
 use Twig_Environment;
 
 class Confd
 {
-    /** @var Definition */
     private $definition;
-
-    /** @var Twig_Environment */
     private $twig;
-
-    /** @var Path */
     private $path;
+    private $expression;
 
     /** @var string */
     private $rootPath;
 
-    public function __construct(Path $path, Definition $definition, Twig_Environment $twig)
+    public function __construct(Path $path, Definition $definition, Twig_Environment $twig, Expression $expression)
     {
         $this->definition = $definition;
         $this->twig       = $twig;
         $this->path       = $path;
+        $this->expression = $expression;
 
         /** @var $loader Filesystem */
         $loader = $twig->getLoader();
-
         $this->rootPath = $loader->getRootPath();
     }
 
@@ -36,12 +33,16 @@ class Confd
     {
         foreach ($this->definition->getTemplates() as $path) {
 
+            if (isset($path['when']) && $this->expression->evaluate($path['when']) === false) {
+                continue;
+            }
+
             if (is_string($path)) {
                 $src = $path.'.twig';
-                $dst = $this->resolveDstFromSrc($path);
+                $dst = $this->resolveDstFromSrc($src);
             } else {
-                $src = $path['src'];
-                $dst = $this->path->getRealPath($path['dst']);
+                $src = $path['src'].'.twig';
+                $dst = isset($path['dst']) ? $this->path->getRealPath($path['dst']) : $this->resolveDstFromSrc($src);
             }
 
             $dir = dirname($dst);
@@ -56,6 +57,6 @@ class Confd
 
     private function resolveDstFromSrc(string $path): string
     {
-        return $this->rootPath.'/'.$path;
+        return $this->rootPath.'/'.substr($path, 0, -5);
     }
 }

@@ -1,0 +1,8 @@
+
+harness.repository.package('my127/magento2:master'):
+  type: tar.gz
+  url: https://github.com/my127/workspace-docker-magento2/tarball/master
+
+harness.repository.package('my127/drupal8:master'):
+  type: tar.gz
+  url: https://github.com/my127/workspace-docker-drupal8/tarball/master

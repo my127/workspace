@@ -1,28 +1,26 @@
 <?php
 
-namespace my127\Workspace\Types\Harness\Repository;
+namespace my127\Workspace\Types\Harness\Repository\Source;
 
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    public const TYPE = 'harness.repository';
+    const TYPE = 'harness.repository.source';
 
-    /** @var string */
     private $path;
-
-    /** @var string */
-    private $name;
-
-    /** @var array */
-    private $packages;
-
-    /** @var int */
     private $scope;
+    private $name;
+    private $url;
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 
     public function getPath(): string
@@ -30,18 +28,13 @@ class Definition implements WorkspaceDefinition
         return $this->path;
     }
 
-    public function getPackages(): array
+    public function getType(): string
     {
-        return $this->packages;
+        return self::TYPE;
     }
 
     public function getScope(): int
     {
         return $this->scope;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
     }
 }

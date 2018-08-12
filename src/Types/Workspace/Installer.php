@@ -7,8 +7,8 @@ use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Factory as ConfdFactory;
 use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\Harness\Harness;
-use my127\Workspace\Types\Harness\Repository\Package;
-use my127\Workspace\Types\Harness\Repository\PackageRepository;
+use my127\Workspace\Types\Harness\Repository\Package\Package;
+use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\Yaml\Yaml;
 use my127\Workspace\Path\Path;
 
@@ -26,7 +26,7 @@ class Installer
     public function __construct(
         Workspace $workspace,
         Harness $harness,
-        PackageRepository $packages,
+        Repository $packages,
         Terminal $terminal,
         AttributeCollection $attributes,
         Path $path,
@@ -84,7 +84,7 @@ class Installer
 
         if (!is_dir($harnessInstallPath)) {
             mkdir($harnessInstallPath, 0755, true);
-            file_put_contents('.my127ws/harness.tar.gz', file_get_contents($package->getURL()));
+            file_put_contents('.my127ws/harness.tar.gz', file_get_contents($package->getDist()['url']));
             passthru('tar -zxf .my127ws/harness.tar.gz --strip=1 -C .my127ws && rm -f rm -f .my127ws/harness.tar.gz');
         }
     }

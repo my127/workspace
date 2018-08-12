@@ -11,7 +11,7 @@ use my127\Workspace\Types\Confd\Factory as ConfdFactory;
 use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\DynamicFunction\Collection as DynamicFunctionCollection;
 use my127\Workspace\Types\Harness\Harness;
-use my127\Workspace\Types\Harness\Repository\PackageRepository;
+use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Workspace extends Definition implements ArrayAccess
@@ -29,7 +29,7 @@ class Workspace extends Definition implements ArrayAccess
 
     public function __construct(
         Creator $creator,
-        PackageRepository $packages,
+        Repository $packages,
         ConfdFactory $confd,
         EventDispatcher $dispatcher,
         DynamicFunctionCollection $functions,

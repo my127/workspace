@@ -1,39 +1,30 @@
 <?php
 
-namespace my127\Workspace\Types\Harness\Repository;
+namespace my127\Workspace\Types\Harness\Repository\Source;
 
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Factory as WorkspaceDefinitionFactory;
-use my127\Workspace\Types\Harness\Repository\Definition;
 use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['harness.repository'];
+    const TYPES = ['harness.repository.source'];
 
     /*
      * example
      * -------
-     * harness.repository('~'):
-     *   magento2:
-     *     latest:
-     *       url: 'https://github.com/my127/workspace-docker-magento2/master.tar.gz'
-     *       type: 'tar.gz'
+     * harness.repository.source('name'): https://example.com/harnesses.json
      *
      * internal representation
      * -----------------------
-     * type: harness.repository
+     * type: harness.repository.source
      * metadata:
      *   path: directory where this definition was loaded from
-     * declaration: harness.repository($name)
+     * declaration: harness.repository.source('name')
      * body:
-     *   magento2: # name of the harness package
-     *     latest: # version of the package
-     *       url: https://github.com/my127/workspace-docker-magento2/master.tar.gz
-     *       type: tar.gz
+     *   https://example.com/harnesses.json
      */
 
-    /** @var Definition */
     private $prototype;
 
     /** @var ReflectionProperty[] */
@@ -43,7 +34,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $this->prototype = new Definition();
 
-        foreach (['name', 'packages', 'path', 'scope'] as $name) {
+        foreach (['name', 'url', 'path', 'scope'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -74,12 +65,12 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseDeclaration(array &$values, $declaration)
     {
-        $values['name'] = substr($declaration, 20, -2);
+        $values['name'] = substr($declaration, 27, -2);
     }
 
     private function parseBody(array &$values, $body)
     {
-        $values['packages'] = $body;
+        $values['url'] = $body;
     }
 
     public static function getTypes(): array

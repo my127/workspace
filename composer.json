@@ -5,6 +5,7 @@
     "require": {
         "php": ">=7.2",
         "ext-sodium": ">=7.2",
+        "ext-json": ">=7.2",
         "my127/my127": "dev-master",
         "symfony/config": "^4.1",
         "symfony/console": "^4.1",

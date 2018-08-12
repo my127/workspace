@@ -216,4 +216,47 @@ EOD
 
         $this->assertEquals("Hello World", run('speak'));
     }
+
+    /** @test */
+    public function console_input_is_made_available_to_the_expression_filter()
+    {
+        Fixture::workspace(<<<'EOD'
+command('hello <name>'): |
+  #!bash|=
+  echo -n "hello ={ input.argument('name') }"
+EOD
+        );
+
+        $this->assertEquals("hello world", run('hello world'));
+    }
+
+    /** @test */
+    public function positional_commands_from_input_can_be_accessed()
+    {
+        Fixture::workspace(<<<'EOD'
+command('state (enable|disable)'): |
+  #!bash|=
+  echo -n "={ input.command(-1) }"
+EOD
+        );
+
+        $this->assertEquals("disable", run('state disable'));
+        $this->assertEquals("enable",  run('state enable'));
+    }
+
+    /** @test */
+    public function console_input_can_be_used_as_expression_for_env_variable()
+    {
+        Fixture::workspace(<<<'EOD'
+command('hello <name>'):
+  env:
+    NAME: = input.argument('name')
+  exec: |
+    #!bash
+    echo -n "hello ${NAME}"
+EOD
+        );
+
+        $this->assertEquals("hello world", run('hello world'));
+    }
 }

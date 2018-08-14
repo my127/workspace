@@ -78,4 +78,19 @@ EOD
 
         $this->assertEquals(basename($path), run('get workspace name'));
     }
+
+    /** @test */
+    public function workspace_exec_method_is_made_available_to_expressions()
+    {
+        Fixture::workspace(<<<'EOD'
+attribute('message'): = exec("echo -n 'Hello World'")
+        
+command('speak'): |
+  #!bash|@
+  echo -n "@('message')"
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
 }

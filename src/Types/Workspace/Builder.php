@@ -69,6 +69,10 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             AttributeBuilder::PRECEDENCE_WORKSPACE_DEFAULT
         );
 
+        $this->expression->register('exec', function() {}, function ($args, $cmd) {
+             return $this->workspace->exec($cmd);
+        });
+
         if ($definitions->hasType(ConfdDefinition::TYPE) || $definitions->hasType(HarnessDefinition::TYPE)) {
             $this->application->section('refresh')
                 ->usage('refresh')

@@ -91,9 +91,10 @@ class Workspace extends Definition implements ArrayAccess
         application()->run($argv);
     }
 
-    public function exec(string $cmd)
+    public function exec(string $cmd): string
     {
-        passthru($cmd);
+        exec($cmd, $output);
+        return implode("\n", $output);
     }
 
     public function confd(string $directory): Confd

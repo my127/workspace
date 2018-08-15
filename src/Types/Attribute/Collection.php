@@ -92,7 +92,7 @@ class Collection implements ArrayAccess
 
         while (($segment = array_pop($segments)) !== null) {
 
-            if (!isset($array[$segment])) {
+            if (!array_key_exists($segment, $array)) {
                 return false;
             }
 

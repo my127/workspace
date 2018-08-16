@@ -61,7 +61,62 @@ EOD
     }
 
     /** @test */
-    public function attribute_precidence_is_respected()
+    public function isset_returns_false_when_attribute_is_not_defined()
+    {
+        Fixture::workspace(<<<'EOD'
+command('isset'): |
+  #!php
+  echo (isset($ws['message'])) ? 'yes' : 'no';
+EOD
+        );
+
+        $this->assertEquals('no', run('isset'));
+    }
+
+    /** @test */
+    public function isset_returns_true_when_attribute_is_defined_and_has_a_value()
+    {
+        Fixture::workspace(<<<'EOD'
+attribute('message'): Hello World
+command('isset'): |
+  #!php
+  echo (isset($ws['message'])) ? 'yes' : 'no';
+EOD
+        );
+
+        $this->assertEquals('yes', run('isset'));
+    }
+
+    /** @test */
+    public function isset_returns_true_even_when_attribute_value_is_null()
+    {
+        Fixture::workspace(<<<'EOD'
+attribute('message'): null
+command('isset'): |
+  #!php
+  echo (isset($ws['message'])) ? 'yes' : 'no';
+EOD
+        );
+
+        $this->assertEquals('yes', run('isset'));
+    }
+
+    /** @test */
+    public function null_values_are_also_represented_internally_as_null()
+    {
+        Fixture::workspace(<<<'EOD'
+attribute('message'): null
+command('isnull'): |
+  #!php
+  echo (is_null($ws['message'])) ? 'yes' : 'no';
+EOD
+        );
+
+        $this->assertEquals('yes', run('isnull'));
+    }
+
+    /** @test */
+    public function attribute_precedence_is_respected()
     {
         $path = Fixture::sampleData('attribute/precedence');
 

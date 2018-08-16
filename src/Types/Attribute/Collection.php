@@ -84,7 +84,7 @@ class Collection implements ArrayAccess
         $array = &$this->cache;
 
         if (strpos($offset, '.') === false) {
-            return isset($array[$offset]);
+            return array_key_exists($offset, $array);
         }
 
         $segments = explode('.', $offset);

@@ -97,6 +97,11 @@ class Workspace extends Definition implements ArrayAccess
         return implode("\n", $output);
     }
 
+    public function passthru(string $cmd): void
+    {
+        passthru($cmd);
+    }
+
     public function confd(string $directory): Confd
     {
         return $this->confd->create($directory);

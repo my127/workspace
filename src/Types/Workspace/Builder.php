@@ -73,6 +73,10 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
              return $this->workspace->exec($cmd);
         });
 
+        $this->expression->register('passthru', function() {}, function ($args, $cmd) {
+            $this->workspace->passthru($cmd);
+        });
+
         if ($definitions->hasType(ConfdDefinition::TYPE) || $definitions->hasType(HarnessDefinition::TYPE)) {
             $this->application->section('refresh')
                 ->usage('refresh')

@@ -12,5 +12,5 @@ command('create <name> [<harness> [--no-install] ]', 'create'): |
   $ws->create($name, $harness);
 
   if ($input->getOption('no-install') !== true) {
-      $ws->exec("cd $name; ws install");
+      $ws->passthru("cd $name; ws install");
   }

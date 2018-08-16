@@ -93,4 +93,17 @@ EOD
 
         $this->assertEquals("Hello World", run('speak'));
     }
+
+    /** @test */
+    public function php_passthru_is_available_to_the_workspace_helper()
+    {
+        Fixture::workspace(<<<'EOD'
+command('speak'): |
+  #!php
+  $ws->passthru('echo -n "Hello World"');
+EOD
+        );
+
+        $this->assertEquals("Hello World", run('speak'));
+    }
 }

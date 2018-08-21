@@ -2,9 +2,7 @@
 
 namespace my127\Workspace\Interpreter\Executors\Bash;
 
-use Exception;
 use my127\Workspace\Interpreter\Executor as InterpreterExecutor;
-use Symfony\Component\Process\Process;
 
 class Executor implements InterpreterExecutor
 {
@@ -12,12 +10,10 @@ class Executor implements InterpreterExecutor
 
     public function exec(string $script, array $args = [], string $cwd = null, array $env = []): void
     {
-        $process = $this->getScriptProcess($script, $args, $cwd, $env);
-        $process->setTimeout(3600);
-        $process->run(function ($type, $buffer) { echo $buffer; });
+        passthru($this->buildCommand($script, $args, $cwd, $env), $status);
 
-        if ($process->getExitCode() !== 0) {
-            exit(1);
+        if ($status !== 0) {
+            exit($status);
         }
     }
 
@@ -29,15 +25,13 @@ class Executor implements InterpreterExecutor
             $script = substr_replace($script, 'echo -n ', $pos, 1);
         }
 
-        $process = $this->getScriptProcess($script, $args, $cwd, $env);
-        $process->setTimeout(3600);
-        $process->run();
+        exec($this->buildCommand($script, $args, $cwd, $env), $output, $status);
 
-        if ($process->getExitCode() !== 0) {
-            exit(1);
+        if ($status !== 0) {
+            exit($status);
         }
 
-        return $process->getOutput();
+        return implode("\n", $output);
     }
 
     public function getName(): string
@@ -45,12 +39,7 @@ class Executor implements InterpreterExecutor
         return self::NAME;
     }
 
-    private function getScriptProcess(string $script, array $args, ?string $cwd, array $env): Process
-    {
-        return new Process($this->buildCommand($script, $args), $cwd??getcwd(), $env);
-    }
-
-    private function buildCommand(string $script, array $args = []): string
+    private function buildCommand(string $script, array $args, ?string $cwd, array $env): string
     {
         $home   = home();
         $header = "#!/bin/bash\n"
@@ -60,9 +49,12 @@ class Executor implements InterpreterExecutor
             $header .= $key.'="'.addslashes($value).'"'."\n";
         }
 
-        $script = escapeshellarg(preg_replace('/^.+\n/', $header, $script));
-        $cmd    = 'echo '.$script.' | bash';
+        foreach ($env as $key => $value) {
+            $header .= $key.'="'.addslashes($value).'"'."\n";
+        }
 
-        return $cmd;
+        $header .= 'cd '.$cwd??getcwd();
+
+        return 'bash -c '.escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
     }
 }

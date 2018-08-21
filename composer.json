@@ -10,7 +10,6 @@
         "symfony/dependency-injection": "^4.1",
         "symfony/expression-language": "^4.1",
         "symfony/finder": "^4.1",
-        "symfony/process": "^4.1",
         "symfony/yaml": "^4.1",
         "twig/twig": "^2.4"
     },

@@ -10,7 +10,7 @@
   ],
   "files-bin": [
     "home/service/logger/.env",
-    "home/service/mailcatcher/.env",
+    "home/service/mail/.env",
     "home/service/proxy/.env"
   ],
   "blacklist": [

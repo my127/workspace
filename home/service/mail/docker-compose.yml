@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    restart: always
+    labels:
+      - traefik.frontend.rule=Host:mail.my127.site
+      - traefik.port=8025
+    networks:
+      - private
+      - shared
+networks:
+  private:
+    external: false
+  shared:
+    external:
+      name: $TRAEFIK_NETWORK

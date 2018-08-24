@@ -8,8 +8,13 @@
     "vendor/twig/twig/lib",
     "vendor/twig/twig/src"
   ],
+  "files-bin": [
+    "home/service/logger/.env",
+    "home/service/mailcatcher/.env",
+    "home/service/proxy/.env"
+  ],
   "blacklist": [
-
+ 
     "vendor/symfony/cache/Adapter/TraceableAdapter.php",
     "vendor/symfony/cache/Adapter/SimpleCacheAdapter.php",
     "vendor/symfony/cache/Adapter/DoctrineAdapter.php",

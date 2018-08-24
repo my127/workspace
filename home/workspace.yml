@@ -5,12 +5,11 @@ workspace('global'):
 
 command('create <name> [<harness> [--no-install] ]', 'create'): |
   #!php(cwd:/)
-
-  $name    = $input->getArgument('name');
-  $harness = $input->getArgument('harness');
+  $name    = $input->argument('name');
+  $harness = $input->argument('harness');
 
   $ws->create($name, $harness);
 
-  if ($input->getOption('no-install') !== true) {
+  if ($input->option('no-install') !== true) {
       $ws->passthru("cd $name; ws install");
   }

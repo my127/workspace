@@ -1,0 +1,38 @@
+
+setup:
+  kibana:
+    host: "kibana:5601"
+    protocol: "http"
+  dashboards:
+    enabled: true
+    always_kibana: true
+    retry:
+      enabled: true
+      interval: 15
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+processors:
+  - decode_json_fields:
+      fields: ["log"]
+      target: ""
+      overwrite_keys: true
+  - add_docker_metadata: ~
+ 
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  template:
+    name: "filebeat"
+    path: "fields.yml"
+    overwrite: false
+  protocol: "http"
+
+logging.to_files: true
+logging.to_syslog: false

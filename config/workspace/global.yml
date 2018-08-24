@@ -1,8 +1,4 @@
 
-command('global proxy enable'): |
-  #!bash
-  ws.service proxy enable
-
-command('global proxy disable'): |
-  #!bash
-  ws.service proxy disable
+command('global service <name> <action>', 'global service'): |
+  #!bash|=
+  ws.service ={input.argument('name')} ={input.argument('action')}

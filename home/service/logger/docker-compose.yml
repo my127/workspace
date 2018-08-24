@@ -1,0 +1,52 @@
+version: "3.5"
+
+services:
+
+  kibana:
+    build:
+      context: kibana
+    depends_on:
+      - elasticsearch
+    labels:
+      - traefik.backend=kibana
+      - traefik.frontend.rule=Host:kibana.my127.site
+      - traefik.docker.network=${TRAEFIK_NETWORK}
+      - traefik.port=5601
+    networks:
+      - shared
+      - private
+
+  elasticsearch:
+    build:
+      context: elasticsearch
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+    labels:
+      - traefik.enable=false
+    networks:
+      - private
+
+  filebeat:
+    build:
+      context: filebeat
+    depends_on:
+      - elasticsearch
+      - kibana
+    volumes:
+     - filebeat_data:/usr/share/filebeat/data:rw
+     - /var/lib/docker/containers:/var/lib/docker/containers
+     - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.enable=false
+    networks:
+      - private
+
+volumes:
+  filebeat_data: ~
+
+networks:
+  private:
+    external: false
+  shared:
+    external:
+      name: $TRAEFIK_NETWORK

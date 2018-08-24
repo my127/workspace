@@ -1,5 +1,6 @@
 #!/bin/bash
 
+VERSION="0.1.0"
 DIR=""
 
 main()
@@ -13,7 +14,7 @@ bootstrap()
     . "$DIR/lib/sidekick.sh"
 
     if [ ! "$(docker image ls my127ws-aws | grep my127ws-aws)" ]; then
-        run docker build -t my127ws-aws "$DIR/docker/utility/aws"
+        run docker build -t my127ws-aws "$DIR/utility/aws"
     fi
 }
 

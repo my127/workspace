@@ -20,6 +20,7 @@ class Installer
 
         passthru('chmod +x '.$path.'/bin/*');
         passthru('chmod +x '.$path.'/lib/*.sh');
+        passthru('chmod +x '.$path.'/service/*/init.sh');
 
         touch($path.'/.installed');
     }

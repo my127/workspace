@@ -41,6 +41,22 @@ services:
     networks:
       - private
 
+  metricbeat:
+    build:
+      context: metricbeat
+    depends_on:
+      - elasticsearch
+      - kibana
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+    command: ["-system.hostfs=/hostfs"]
+    labels:
+      - traefik.enable=false
+    networks:
+      - private
+
 volumes:
   filebeat_data: ~
 

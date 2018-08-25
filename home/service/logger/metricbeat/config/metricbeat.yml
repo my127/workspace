@@ -1,0 +1,30 @@
+
+setup:
+  kibana:
+    host: "kibana:5601"
+    protocol: "http"
+  dashboards:
+    enabled: true
+    always_kibana: true
+    retry:
+      enabled: true
+      interval: 15
+
+metricbeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+metricbeat.modules:
+  - module: docker
+    metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 10s
+ 
+fields:
+  env: dev
+ 
+output:
+  elasticsearch:
+    hosts: ["elasticsearch:9200"]
+    protocol: "http"

@@ -4,6 +4,5 @@ USER root
 
 COPY config /usr/share/filebeat
 
-RUN mkdir /usr/share/filebeat/dockerlogs \
-  && chown -R root /usr/share/filebeat \
+RUN chown -R root /usr/share/filebeat \
   && chmod -R go-w /usr/share/filebeat

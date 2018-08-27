@@ -28,3 +28,11 @@ output:
   elasticsearch:
     hosts: ["elasticsearch:9200"]
     protocol: "http"
+
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/metricbeat
+  name: metricbeat
+  keepfiles: 7
+  permissions: 0644

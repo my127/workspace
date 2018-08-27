@@ -50,7 +50,7 @@ class Executor implements InterpreterExecutor
         }
 
         foreach ($env as $key => $value) {
-            $header .= $key.'="'.addslashes($value).'"'."\n";
+            $header .= 'export '.$key.'="'.addslashes($value).'"'."\n";
         }
 
         $header .= 'cd '.$cwd??getcwd();

@@ -8,8 +8,8 @@ use ReflectionProperty;
 
 class Repository
 {
-    const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9-]+))?$/';
-    const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
+    const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
+    const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
 
     private $packages = [];
     private $sources  = [];
@@ -47,7 +47,7 @@ class Repository
 
         $harness = $match['harness'];
         $vendor  = empty($match['vendor'])  ? 'my127'  : $match['vendor'];
-        $version = $this->resolvePackageVersion($vendor.'/'.$harness, empty($match['version']) ? 'master' : $match['version']);
+        $version = $this->resolvePackageVersion($vendor.'/'.$harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
 
         return $this->hydrate([
             'name'    => $harness,
@@ -88,15 +88,11 @@ class Repository
 
         if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
 
-            $collection = $this->packages[$name];
+            $collection = array_keys($this->packages[$name]);
 
-            $major = $match['major'];
+            $major = $match['major']??'x';
             $minor = $match['minor']??'x';
             $patch = $match['patch']??'x';
-
-            if (is_numeric($patch) && $minor == 'x') {
-                throw new Exception("Invalid version string '{$version}'.");
-            }
 
             $candidate = null;
 
@@ -104,7 +100,7 @@ class Repository
 
                 $semver = explode('.', substr($version, 1));
 
-                if ($semver[0] != $major) {
+                if (is_numeric($major) && $semver[0] != $major) {
                     continue;
                 }
 

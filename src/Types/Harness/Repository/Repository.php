@@ -75,7 +75,7 @@ class Repository
                 continue;
             }
 
-            array_merge($this->packages, json_decode(file_get_contents($source['url'])));
+            $this->packages = array_merge($this->packages, json_decode(file_get_contents($source['url']), true));
             $this->sources[$k]['imported'] = true;
         }
     }

@@ -10,10 +10,9 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
  - `docker 17.04.0+`
  - `docker-compose (compose file version 3.1+)`
 #### Installation
+Download the `ws` file from the [Latest Release](https://github.com/my127/workspace/releases/latest) make executable and move to a location in your PATH, eg.
 ```
-wget https://github.com/my127/workspace/releases/download/0.1.0-alpha.3/my127ws.phar \
-   && chmod +x my127ws.phar \
-   && sudo mv my127ws.phar /usr/local/bin/ws
+chmod +x ws && sudo mv ws /usr/local/bin/ws
 ```
 #### Creating a workspace
 ```

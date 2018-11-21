@@ -85,7 +85,7 @@ class Installer
         if (!is_dir($harnessInstallPath)) {
             mkdir($harnessInstallPath, 0755, true);
             file_put_contents('.my127ws/harness.tar.gz', file_get_contents($package->getDist()['url']));
-            passthru('tar -zxf .my127ws/harness.tar.gz --strip=1 -C .my127ws && rm -f rm -f .my127ws/harness.tar.gz');
+            passthru('tar -zxf .my127ws/harness.tar.gz --strip=1 -C .my127ws && rm -f .my127ws/harness.tar.gz');
         }
     }
 

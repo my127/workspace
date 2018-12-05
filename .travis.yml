@@ -7,14 +7,7 @@ language: php
 php:
   - 7.2
 
-before_install:
-  - sudo add-apt-repository ppa:ondrej/php -y
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libsodium-dev
-
 install:
-  # Manually install libsodium, because the TravicCi image doesn't provide PHP7.2 with libsodium
-  - printf "\n" | pecl install libsodium
   # Add box to allow the my127ws phar to be built
   - wget https://github.com/humbug/box/releases/download/3.0.0-beta.4/box.phar && chmod +x box.phar && sudo mv box.phar /usr/local/bin/box
   - composer install

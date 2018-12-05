@@ -1,6 +1,10 @@
 
 defaultEntryPoints = ["http", "https"]
 
+[accessLog]
+
+[traefikLog]
+
 [file]
   directory = "/config"
   watch = true

@@ -12,4 +12,6 @@ install:
   - wget https://github.com/humbug/box/releases/download/3.0.0-beta.4/box.phar && chmod +x box.phar && sudo mv box.phar /usr/local/bin/box
   - composer install
 
-script: composer test
+script:
+  - composer test
+  - find . -type f ! -path "./.git/*" ! -path "./bin/workspace" ! -path "./bin/build" -and \( -name "*.sh" -or -perm -0111 \) -exec shellcheck --exclude=SC1008,SC1091 {} +

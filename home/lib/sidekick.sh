@@ -13,7 +13,7 @@ prompt()
 {
     if [ "${RUN_CWD}" != "$(pwd)" ]; then
         RUN_CWD="$(pwd)"
-        echo -e "\033[1m[\033[0m$(pwd)\033[1m]:\033[0m"
+        echo -e "\\033[1m[\\033[0m$(pwd)\\033[1m]:\\033[0m"
     fi
 }
 
@@ -22,12 +22,12 @@ run()
     if [ "${VERBOSE}" = "no" ]; then
         prompt
 
-        echo "  > ${@}"
-        setCommandIndicator $INDICATOR_RUNNING
-        $@ > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
+        echo "  > $*"
+        setCommandIndicator "$INDICATOR_RUNNING"
+        bash -c "$@" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
 
-        if [ "$?" != "0" ]; then
-            setCommandIndicator $INDICATOR_ERROR
+        if ! bash -c "$@" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
+            setCommandIndicator "$INDICATOR_ERROR"
 
             (>&2 cat /tmp/my127ws-stderr.txt)
 
@@ -38,10 +38,10 @@ run()
 
             exit 1
         else
-            setCommandIndicator $INDICATOR_SUCCESS
+            setCommandIndicator "$INDICATOR_SUCCESS"
         fi
     else
-        passthru $@
+        passthru "$@"
     fi
 }
 
@@ -49,9 +49,10 @@ passthru()
 {
     prompt
 
-    echo -e "\033[${INDICATOR_PASSTHRU}■\033[0m > ${@}"
-    $@
+    echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
+    bash -c "$@"
 
+    # shellcheck disable=SC2181
     if [ "$?" != "0" ]; then
         exit
     fi
@@ -59,9 +60,9 @@ passthru()
 
 setCommandIndicator()
 {
-    echo -ne "\033[1A";
-    echo -ne "\033[$1"
+    echo -ne "\\033[1A";
+    echo -ne "\\033[$1"
     echo -n "■"
-    echo -ne "\033[0m"
-    echo -ne "\033[1E";
+    echo -ne "\\033[0m"
+    echo -ne "\\033[1E";
 }

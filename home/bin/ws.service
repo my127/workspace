@@ -14,18 +14,19 @@ main()
 
     shift
 
-    ${DIR}/service/${service}/init.sh $@
+    "${DIR}/service/${service}/init.sh" "$@"
 }
 
 bootstrap()
 {
     DIR="$(cd "$(dirname "$0")" && cd ../ && pwd)"
-    . "$DIR/lib/sidekick.sh"
+    # shellcheck source=../lib/sidekick.sh
+    source "$DIR/lib/sidekick.sh"
 
-    if [ ! "$(docker network ls | grep ${TRAEFIK_NETWORK})" ]; then
-        run docker network create $TRAEFIK_NETWORK
+    if ! docker network ls | grep "${TRAEFIK_NETWORK}"; then
+        run docker network create "$TRAEFIK_NETWORK"
     fi
 }
 
 bootstrap
-main $@
+main "$@"

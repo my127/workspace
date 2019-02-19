@@ -2,6 +2,7 @@
 
 namespace my127\Workspace\Types\Workspace;
 
+use Exception;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Factory as ConfdFactory;
@@ -23,6 +24,22 @@ class Installer
     private $confd;
     private $crypt;
 
+    public const STEP_DOWNLOAD            = 1;
+    public const STEP_OVERLAY             = 2;
+    public const STEP_VALIDATE_ATTRIBUTES = 3;
+    public const STEP_PREPARE             = 4;
+    public const STEP_ENABLE_DEPENDENCIES = 5;
+    public const STEP_TRIGGER_INSTALLED   = 6;
+
+    private $stepMap = [
+        'download'     => self::STEP_DOWNLOAD,
+        'overlay'      => self::STEP_OVERLAY,
+        'validate'     => self::STEP_VALIDATE_ATTRIBUTES,
+        'prepare'      => self::STEP_PREPARE,
+        'dependencies' => self::STEP_ENABLE_DEPENDENCIES,
+        'installed'    => self::STEP_TRIGGER_INSTALLED
+    ];
+
     public function __construct(
         Workspace $workspace,
         Harness $harness,
@@ -43,38 +60,52 @@ class Installer
         $this->crypt      = $crypt;
     }
 
-    public function install($step = null)
+    public function getStep(?string $step) {
+
+        if (!isset($this->stepMap[$step])) {
+            throw new Exception("Step '{$step}' is not recognised.");
+        }
+
+        return $this->stepMap[$step];
+    }
+
+    public function install($step = null, $cascade = true, $events = true)
     {
         $package = $this->packages->get($this->workspace->getHarnessName());
 
-        switch ($step??1) {
-            case 1:
-                $this->workspace->trigger('before.harness.install');
+        switch ($step) {
+            case self::STEP_DOWNLOAD:
+                if ($events) {
+                    $this->workspace->trigger('before.harness.install');
+                }
                 $this->downloadAndExtractHarnessPackage($package);
-                $this->workspace->run('install --from-step=2');
                 break;
-            case 2:
+            case self::STEP_OVERLAY:
                 if (($overlayPath = $this->workspace->getOverlayPath()) !== null) {
                     $this->applyOverlayDirectory($overlayPath);
                 }
-                $this->workspace->run('install --from-step=3');
                 break;
-            case 3:
+            case self::STEP_VALIDATE_ATTRIBUTES:
                 $this->ensureRequiredAttributesArePresent($this->harness->getRequiredAttributes());
-                $this->workspace->run('install --from-step=4');
                 break;
-            case 4:
+            case self::STEP_PREPARE:
                 $this->applyConfiguration($this->harness->getRequiredConfdPaths());
-                $this->workspace->run('install --from-step=5');
                 break;
-            case 5:
+            case self::STEP_ENABLE_DEPENDENCIES:
                 $this->startRequiredServices($this->harness->getRequiredServices());
-                $this->workspace->trigger('after.harness.install');
-                $this->workspace->run('install --from-step=6');
+                if ($events) {
+                    $this->workspace->trigger('after.harness.install');
+                }
                 break;
-            case 6:
-                $this->workspace->trigger('harness.installed');
+            case self::STEP_TRIGGER_INSTALLED:
+                if ($events) {
+                    $this->workspace->trigger('harness.installed');
+                }
                 break;
+        }
+
+        if ($cascade && $step < self::STEP_TRIGGER_INSTALLED) {
+            $this->workspace->run('install --step='.($step + 1));
         }
     }
 

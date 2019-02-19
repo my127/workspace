@@ -3,6 +3,7 @@
 namespace my127\Workspace\Types\Workspace;
 
 use ArrayAccess;
+use my127\Console\Usage\Input;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
@@ -61,7 +62,7 @@ class Workspace extends Definition implements ArrayAccess
         $this->creator->create($name, $harness);
     }
 
-    public function install($step = null): void
+    public function install(Input $input): void
     {
         $installer = new Installer(
             $this,
@@ -74,7 +75,16 @@ class Workspace extends Definition implements ArrayAccess
             $this->crypt
         );
 
-        $installer->install($step);
+        $step    = $input->getOption('step')??1;
+        $cascade = true;
+        $events  = !$input->getOption('skip-events');
+
+        if (!is_numeric($step)) {
+            $cascade = false;
+            $step    = $installer->getStep($step);
+        }
+
+        $installer->install($step, $cascade, $events);
     }
 
     public function refresh(): void

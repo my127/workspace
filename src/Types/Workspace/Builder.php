@@ -86,10 +86,26 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
         }
 
         if ($this->workspace->hasHarness()) {
+
             $this->application->section('install')
-                ->usage('install [--from-step=<step>]')
+                ->usage('install')
+                ->option('--step=<step>   Step from which to start installer.')
+                ->option('--skip-events   If set events will not be triggered.')
                 ->action(function(Input $input) {
-                    $this->workspace->install($input->getOption('from-step'));
+                    $this->workspace->install($input);
+                });
+
+            $this->application->section('harness download')
+                ->usage('harness download')
+                ->action(function(Input $input) {
+                    $this->workspace->run('install --step=download');
+                });
+
+            $this->application->section('harness prepare')
+                ->usage('harness prepare')
+                ->action(function(Input $input) {
+                    $this->workspace->run('install --step=overlay');
+                    $this->workspace->run('install --step=prepare');
                 });
         }
     }

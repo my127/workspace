@@ -17,7 +17,7 @@ main()
 
 enable()
 {
-    if [ ! -f .flag-built ]; then 
+    if [ ! -f .flag-built ]; then
         run docker-compose -p my127ws-logger up -d --build
         touch .flag-built
     else
@@ -33,10 +33,11 @@ disable()
 bootstrap()
 {
     DIR="$(cd "$(dirname "$0")" && pwd)"
-    . "$DIR/../../lib/sidekick.sh"
+    # shellcheck source=../../lib/sidekick.sh
+    source "$DIR/../../lib/sidekick.sh"
 
-    cd $DIR
+    cd "$DIR" || exit 1
 }
 
 bootstrap
-main $@
+main "$@"

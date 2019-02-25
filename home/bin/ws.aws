@@ -4,18 +4,20 @@ DIR=""
 
 main()
 {
-    docker run --user $UID:$UID --env AWS_ACCESS_KEY_ID="$AWS_ID" --env AWS_SECRET_ACCESS_KEY="$AWS_KEY" -v "$PWD:/mount" --rm my127ws-aws aws "$@"
+    if command -v aws >/dev/null 2>&1; then
+        AWS_ACCESS_KEY_ID="$AWS_ID" AWS_SECRET_ACCESS_KEY="$AWS_KEY" aws $@
+    else
+        if [ ! "$(docker image ls my127ws-aws | grep my127ws-aws)" ]; then
+            run docker build -t my127ws-aws "$DIR/utility/aws"
+        fi
+        docker run --user $UID:$UID --env AWS_ACCESS_KEY_ID="$AWS_ID" --env AWS_SECRET_ACCESS_KEY="$AWS_KEY" -v "$PWD:/mount" --rm my127ws-aws aws $@
+    fi
 }
 
 bootstrap()
 {
     DIR="$(cd "$(dirname "$0")" && cd ../ && pwd)"
-    # shellcheck source=../lib/sidekick.sh
-    source "$DIR/lib/sidekick.sh"
-
-    if ! docker image ls my127ws-aws | grep my127ws-aws; then
-        run docker build -t my127ws-aws "$DIR/utility/aws"
-    fi
+    . "$DIR/lib/sidekick.sh"
 }
 
 bootstrap

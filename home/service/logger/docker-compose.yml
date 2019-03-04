@@ -5,20 +5,16 @@ services:
   kibana:
     build:
       context: kibana
-    depends_on:
-      - elasticsearch
+    links:
+      - elasticsearch:elasticsearch
     labels:
       - traefik.backend=kibana
       - traefik.frontend.rule=Host:kibana.my127.site
       - traefik.docker.network=${TRAEFIK_NETWORK}
       - traefik.port=5601
     networks:
-      shared:
-        aliases:
-          - monitoring_kibana
-      private:
-        aliases:
-          - kibana
+      - private
+      - shared
 
   elasticsearch:
     build:
@@ -28,9 +24,7 @@ services:
     labels:
       - traefik.enable=false
     networks:
-      private:
-        aliases:
-          - elasticsearch
+      - private
 
   filebeat:
     build:
@@ -45,9 +39,7 @@ services:
     labels:
       - traefik.enable=false
     networks:
-      private:
-        aliases:
-          - filebeat
+      - private
 
   metricbeat:
     build:
@@ -63,12 +55,8 @@ services:
     labels:
       - traefik.enable=false
     networks:
-      private:
-        aliases:
-          - metricbeat
-      monitoring:
-        aliases:
-          - monitoring_metricbeat
+      - private
+      - monitoring
 
 volumes:
   filebeat_data: ~

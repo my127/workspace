@@ -13,8 +13,12 @@ services:
       - traefik.docker.network=${TRAEFIK_NETWORK}
       - traefik.port=5601
     networks:
-      - shared
-      - private
+      shared:
+        aliases:
+          - monitoring_kibana
+      private:
+        aliases:
+          - kibana
 
   elasticsearch:
     build:
@@ -24,7 +28,9 @@ services:
     labels:
       - traefik.enable=false
     networks:
-      - private
+      private:
+        aliases:
+          - elasticsearch
 
   filebeat:
     build:
@@ -39,7 +45,9 @@ services:
     labels:
       - traefik.enable=false
     networks:
-      - private
+      private:
+        aliases:
+          - filebeat
 
   metricbeat:
     build:
@@ -55,8 +63,12 @@ services:
     labels:
       - traefik.enable=false
     networks:
-      - private
-      - shared
+      private:
+        aliases:
+          - metricbeat
+      monitoring:
+        aliases:
+          - monitoring_metricbeat
 
 volumes:
   filebeat_data: ~
@@ -64,6 +76,9 @@ volumes:
 networks:
   private:
     external: false
+  monitoring:
+    external:
+      name: ${TRAEFIK_NETWORK}_monitoring
   shared:
     external:
-      name: $TRAEFIK_NETWORK
+      name: ${TRAEFIK_NETWORK}

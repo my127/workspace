@@ -16,8 +16,15 @@ services:
       - ~/.config/my127ws/proxy:/config
       - ./traefik/root/tls:/tls
     networks:
-      - private
-      - shared
+      private:
+        aliases:
+          - traefik
+      shared:
+        aliases:
+          - global_traefik
+      monitoring:
+        aliases:
+          - global_traefik
     command: ['--docker']
 networks:
   private:
@@ -25,3 +32,6 @@ networks:
   shared:
     external:
       name: $TRAEFIK_NETWORK
+  monitoring:
+    external:
+      name: ${TRAEFIK_NETWORK}_monitoring

@@ -7,8 +7,12 @@ services:
       - traefik.frontend.rule=Host:mail.my127.site
       - traefik.port=8025
     networks:
-      - private
-      - shared
+      private:
+        aliases:
+          - mailhog
+      shared:
+        aliases:
+          - global_mailhog
 networks:
   private:
     external: false

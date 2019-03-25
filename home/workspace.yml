@@ -13,3 +13,11 @@ command('create <name> [<harness> [--no-install] ]', 'create'): |
   if ($input->option('no-install') !== true) {
       $ws->passthru("cd $name; ws install");
   }
+
+attributes.default:
+  global:
+    service:
+      proxy:
+        https:
+          crt: https://my127.io/workspace/my127.site.crt
+          key: https://my127.io/workspace/my127.site.key

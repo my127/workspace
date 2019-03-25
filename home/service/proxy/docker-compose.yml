@@ -14,6 +14,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.config/my127ws/proxy:/config
+      - ./traefik/root/tls:/tls
     networks:
       - private
       - shared

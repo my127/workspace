@@ -18,23 +18,23 @@ main()
 }
 
 enable()
-{(
+(
     cd "$DIR"
 
     if ! docker ps | grep my127ws-proxy > /dev/null; then
         run docker-compose -p my127ws-proxy rm --force traefik
         run docker-compose -p my127ws-proxy up --build -d traefik
     fi
-)}
+)
 
 disable()
-{(
+(
     cd "$DIR"
 
     if docker ps | grep my127ws-proxy > /dev/null; then
         run docker-compose -p my127ws-proxy rm --stop --force traefik
     fi
-)}
+)
 
 bootstrap()
 {

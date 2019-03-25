@@ -19,17 +19,19 @@ prompt()
 
 run()
 {
-    if [ "${VERBOSE}" = "no" ]; then
+    local COMMAND="$*"
+
+    if [ "$VERBOSE" = "no" ]; then
+
         prompt
+        echo "  > ${COMMAND[*]}"
+        setCommandIndicator $INDICATOR_RUNNING
 
-        echo "  > $*"
-        setCommandIndicator "$INDICATOR_RUNNING"
-        bash -c "$@" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
+        if ! bash -c "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
 
-        if ! bash -c "$@" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
-            setCommandIndicator "$INDICATOR_ERROR"
+            setCommandIndicator $INDICATOR_ERROR
 
-            (>&2 cat /tmp/my127ws-stderr.txt)
+            cat /tmp/my127ws-stderr.txt
 
             echo "----------------------------------"
             echo "Full Logs :-"
@@ -37,20 +39,23 @@ run()
             echo "  stdout: /tmp/my127ws-stderr.txt"
 
             exit 1
+            
         else
-            setCommandIndicator "$INDICATOR_SUCCESS"
+            setCommandIndicator $INDICATOR_SUCCESS
         fi
     else
-        passthru "$@"
+        passthru "${COMMAND[@]}"
     fi
 }
 
 passthru()
 {
+    local COMMAND="$*"
+
     prompt
 
     echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
-    bash -c "$@"
+    bash -c "${COMMAND[@]}"
 
     # shellcheck disable=SC2181
     if [ "$?" != "0" ]; then

@@ -23,7 +23,7 @@ bootstrap()
     # shellcheck source=../lib/sidekick.sh
     source "$DIR/lib/sidekick.sh"
 
-    if ! docker network ls | grep "${TRAEFIK_NETWORK}"; then
+    if ! docker network ls | grep "${TRAEFIK_NETWORK}" > /dev/null; then
         run docker network create "$TRAEFIK_NETWORK"
     fi
 }

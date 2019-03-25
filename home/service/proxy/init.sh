@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 DIR=""
 
 main()
@@ -16,21 +18,23 @@ main()
 }
 
 enable()
-{
-    if ! docker ps | grep my127ws-proxy; then
-        if docker ps -aq -f name=my127ws-proxy; then
-            { cd "${DIR}" || exit 1; run docker-compose -p my127ws-proxy rm --force traefik; }
-        fi
-        { cd "${DIR}" || exit 1; run docker-compose -p my127ws-proxy up --build -d traefik; }
+{(
+    cd "$DIR"
+
+    if ! docker ps | grep my127ws-proxy > /dev/null; then
+        run docker-compose -p my127ws-proxy rm --force traefik
+        run docker-compose -p my127ws-proxy up --build -d traefik
     fi
-}
+)}
 
 disable()
-{
-    if docker ps | grep my127ws-proxy; then
-        { cd "${DIR}" || exit 1; run docker-compose -p my127ws-proxy rm --stop --force traefik; }
+{(
+    cd "$DIR"
+
+    if docker ps | grep my127ws-proxy > /dev/null; then
+        run docker-compose -p my127ws-proxy rm --stop --force traefik
     fi
-}
+)}
 
 bootstrap()
 {

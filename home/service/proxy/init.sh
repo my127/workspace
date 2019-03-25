@@ -15,6 +15,11 @@ main()
         disable
         exit
     fi
+
+    if [ "$1" = "restart" ]; then
+        restart
+        exit
+    fi
 }
 
 enable()
@@ -22,8 +27,15 @@ enable()
     cd "$DIR"
 
     if ! docker ps | grep my127ws-proxy > /dev/null; then
-        run docker-compose -p my127ws-proxy rm --force traefik
-        run docker-compose -p my127ws-proxy up --build -d traefik
+
+        if [ ! -d "traefik/root/tls" ]; then
+            run "mkdir -p traefik/root/tls"
+        fi
+
+        run "curl $(ws global config get global.service.proxy.https.crt) > traefik/root/tls/my127.site.crt"
+        run "curl $(ws global config get global.service.proxy.https.key) > traefik/root/tls/my127.site.key"
+        run "docker-compose -p my127ws-proxy rm --force traefik"
+        run "docker-compose -p my127ws-proxy up --build -d traefik"
     fi
 )
 
@@ -32,9 +44,15 @@ disable()
     cd "$DIR"
 
     if docker ps | grep my127ws-proxy > /dev/null; then
-        run docker-compose -p my127ws-proxy rm --stop --force traefik
+        run "docker-compose -p my127ws-proxy rm --stop --force traefik"
     fi
 )
+
+restart()
+{
+    disable
+    enable
+}
 
 bootstrap()
 {

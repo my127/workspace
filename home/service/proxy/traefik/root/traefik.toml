@@ -19,5 +19,5 @@ address = ":8080"
   address = ":443"
     [entryPoints.https.tls]
       [[entryPoints.https.tls.certificates]]
-      certFile = "/letsencrypt/my127.site.crt"
-      keyFile  = "/letsencrypt/my127.site.key"
+      certFile = "/tls/my127.site.crt"
+      keyFile  = "/tls/my127.site.key"

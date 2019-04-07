@@ -55,12 +55,7 @@ passthru()
     prompt
 
     echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
-    bash -c "${COMMAND[@]}"
-
-    # shellcheck disable=SC2181
-    if [ "$?" != "0" ]; then
-        exit
-    fi
+    bash -e -c "${COMMAND[@]}"
 }
 
 setCommandIndicator()

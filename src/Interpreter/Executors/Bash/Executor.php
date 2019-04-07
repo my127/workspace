@@ -55,6 +55,6 @@ class Executor implements InterpreterExecutor
 
         $header .= 'cd '.$cwd??getcwd();
 
-        return 'bash -c '.escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
+        return 'bash -e -c '.escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
     }
 }

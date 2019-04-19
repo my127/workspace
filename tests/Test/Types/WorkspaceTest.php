@@ -83,15 +83,15 @@ EOD
     public function workspace_exec_method_is_made_available_to_expressions()
     {
         Fixture::workspace(<<<'EOD'
-attribute('message'): = exec("echo -n 'Hello World'")
+attribute('message'): = exec("echo 'Hello World'")
         
 command('speak'): |
   #!bash|@
-  echo -n "@('message')"
+  echo "@('message')"
 EOD
         );
 
-        $this->assertEquals("Hello World", run('speak'));
+        $this->assertEquals("Hello World\n", run('speak'));
     }
 
     /** @test */
@@ -100,10 +100,10 @@ EOD
         Fixture::workspace(<<<'EOD'
 command('speak'): |
   #!php
-  $ws->passthru('echo -n "Hello World"');
+  $ws->passthru('echo "Hello World"');
 EOD
         );
 
-        $this->assertEquals("Hello World", run('speak'));
+        $this->assertEquals("Hello World\n", run('speak'));
     }
 }

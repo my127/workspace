@@ -10,7 +10,19 @@ class Executor implements InterpreterExecutor
 
     public function exec(string $script, array $args = [], string $cwd = null, array $env = []): void
     {
-        passthru($this->buildCommand($script, $args, $cwd, $env), $status);
+        $descriptorSpec = [
+            0 => STDIN,
+            1 => STDOUT,
+            2 => STDERR
+        ];
+
+        $pipes = [];
+        $process = proc_open($this->buildCommand($script, $args, $cwd, $env), $descriptorSpec, $pipes);
+
+        $status = 255;
+        if (is_resource($process)) {
+            $status = proc_close($process);
+        }
 
         if ($status !== 0) {
             exit($status);

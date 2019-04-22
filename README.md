@@ -7,6 +7,7 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 ### Getting Started
 #### Requirements
  - `PHP-7.2+`
+ - `sodium` php extension installed and activated in php.ini if it's not enabled by default 
  - `docker 17.04.0+`
  - `docker-compose (compose file version 3.1+)`
 #### Installation

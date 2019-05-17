@@ -36,7 +36,7 @@ run()
             echo "----------------------------------"
             echo "Full Logs :-"
             echo "  stdout: /tmp/my127ws-stdout.txt"
-            echo "  stdout: /tmp/my127ws-stderr.txt"
+            echo "  stderr: /tmp/my127ws-stderr.txt"
 
             exit 1
             

@@ -28,7 +28,7 @@ class Subscriber
         $env    = $this->evaluateEnvironmentVariables($this->definition->getEnvironmentVariables());
         $script = $this->definition->getExec();
 
-        $this->interpreter->script($script)->exec($env);
+        $this->interpreter->script($script)->exec([], $env);
     }
 
     private function evaluateEnvironmentVariables(array $env): array

@@ -25,6 +25,26 @@ EOD
     }
 
     /** @test */
+    public function subscriber_script_is_run_with_env_when_triggered()
+    {
+        Fixture::workspace(<<<'EOD'
+on('custom.event'):
+  env:
+    EXAMPLE: test
+  exec: |
+    #!bash
+    echo -n "Hello World, $EXAMPLE"
+
+command('hi'): |
+  #!php
+  $ws->trigger('custom.event');
+EOD
+        );
+
+        $this->assertEquals("Hello World, test", run('hi'));
+    }
+
+    /** @test */
     public function after_can_be_used_as_a_shorthand_for_event_names_prefixed_with_after()
     {
         Fixture::workspace(<<<'EOD'

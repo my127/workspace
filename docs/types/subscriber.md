@@ -7,7 +7,7 @@ There are several built-in events, you can also dispatch your own. Subscribers a
 ```
 on('event.name'):
   env:
-    - NAME: Value
+    NAME: Value
   exec: |
     #!interpreter(path:/location)|filter
     script
@@ -33,7 +33,7 @@ Note: The event name in the above example would be `after.harness.install`.
 on('my.event'): |
   #!bash
   echo "This is my custom event."
-  
+
 command('hi'): |
   #!php
   $ws->trigger('my.event');

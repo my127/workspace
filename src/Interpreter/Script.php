@@ -34,7 +34,7 @@ class Script
         return $this->executor->capture($this->script, $this->buildArgList($args), $this->cwd, $env);
     }
 
-    private function buildArgList(?array $args)
+    private function buildArgList(?array $args) : array
     {
         if (null === $args) {
             return [];

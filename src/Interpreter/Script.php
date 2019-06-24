@@ -40,6 +40,6 @@ class Script
             return [];
         }
 
-        return array_combine($this->arguments, $args);
+        return array_combine($this->arguments, array_pad($args, count($this->arguments), null));
     }
 }

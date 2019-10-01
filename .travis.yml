@@ -4,10 +4,20 @@ os:
 sudo: required
 language: php
 
-php:
-  - 7.2
+matrix:
+  include:
+    - php: 7.2
+      env: LIBSODIUM=1
+    - php: 7.3
+      env: LIBSODIUM=0
+
+before_install:
+  - if [[ "$LIBSODIUM" == "1" ]]; then sudo add-apt-repository ppa:ondrej/php -y; fi
+  - if [[ "$LIBSODIUM" == "1" ]]; then sudo apt-get -q update; fi
+  - if [[ "$LIBSODIUM" == "1" ]]; then sudo apt-get -y install libsodium-dev; fi
 
 install:
+  - if [[ "$LIBSODIUM" == "1" ]]; then pecl install libsodium; fi
   # Add box to allow the my127ws phar to be built
   - wget https://github.com/humbug/box/releases/download/3.6.0/box.phar && chmod +x box.phar && sudo mv box.phar /usr/local/bin/box
   - composer install

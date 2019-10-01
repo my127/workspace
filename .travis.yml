@@ -10,7 +10,7 @@ php:
   - 7.4
 
 install:
-  - apt-get install -y php-libsodium
+  - sudo apt-get install -y php-libsodium
   # Add box to allow the my127ws phar to be built
   - wget https://github.com/humbug/box/releases/download/3.6.0/box.phar && chmod +x box.phar && sudo mv box.phar /usr/local/bin/box
   - composer install

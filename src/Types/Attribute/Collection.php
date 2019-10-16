@@ -72,7 +72,7 @@ class Collection implements ArrayAccess
 
     private function isExpression($value): bool
     {
-        return (is_string($value)) && ($value[0] == '=');
+        return is_string($value) && $value != "" && $value[0] == '=';
     }
 
     public function offsetExists($offset)

@@ -29,7 +29,7 @@ class Script
         $this->executor->exec($this->script, $this->buildArgList($args), $this->cwd, $env);
     }
 
-    public function capture(?array $args = [], ?array $env = []): string
+    public function capture(?array $args = [], ?array $env = [])
     {
         return $this->executor->capture($this->script, $this->buildArgList($args), $this->cwd, $env);
     }

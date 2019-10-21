@@ -100,4 +100,21 @@ EOD
 
         $this->assertEquals("4", run('hi'));
     }
+
+    /** @test */
+    public function functions_are_able_to_return_non_scalar_types()
+    {
+        Fixture::workspace(<<<'EOD'
+function('array', [v1, v2]): |
+  #!php
+  = [$v1, $v2];
+
+command('array <v1> <v2>'): |
+  #!php
+  echo json_encode($ws->array($input->getArgument('v1'), $input->getArgument('v2')));
+EOD
+        );
+
+        $this->assertEquals('["2","2"]', run('array 2 2'));
+    }
 }

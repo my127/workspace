@@ -19,7 +19,7 @@ class Executor implements InterpreterExecutor
         $this->run($script, $args, $cwd, $env);
     }
 
-    public function capture(string $script, array $args = [], string $cwd = null, array $env = []): string
+    public function capture(string $script, array $args = [], string $cwd = null, array $env = [])
     {
         $pos = strrpos($script, "\n") + 1;
 

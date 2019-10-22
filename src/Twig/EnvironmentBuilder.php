@@ -38,7 +38,9 @@ class EnvironmentBuilder
         $directory = $this->path->getRealPath($path);
 
         $loader      = new Filesystem([$directory], $directory);
-        $environment = new Twig_Environment($loader);
+        $environment = new Twig_Environment($loader, [
+            'autoescape' => false
+        ]);
 
         foreach ($this->functions as $function) {
             $environment->addFunction($function);

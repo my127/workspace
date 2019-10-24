@@ -26,7 +26,8 @@ chmod +x ws && sudo mv ws /usr/local/bin/ws
 
 ##### Workspace
  
-`workspace` describes both the CLI tool `ws` and the project environment itself. It is dependent on a harness definition.
+`workspace` describes both the CLI tool `ws` and the project environment itself. It is not inherently dependant on a 
+a platform specific harness and _can_ be used in isolation to orchestrate a project environment. 
  
 ##### Harness
  
@@ -36,14 +37,15 @@ chmod +x ws && sudo mv ws /usr/local/bin/ws
  1. *Skeleton* - a project stub applied when the workspace is first created with a given harness 
  2. *Overlay* - concrete files that are always applied to the workspace
  
- We currently have harnesses to support the following frameworks: 
+ Harnesses currently exist for the following platforms: 
  
- * Magento 1 & 2
- * Drupal 8
- * Spryker
- * Akeneo
- * Node
- * Wordpress
+ * [Magento 1](https://github.com/inviqa/harness-magento1)
+ * [Magento 2](https://github.com/inviqa/harness-magento2)
+ * [Drupal 8]((https://github.com/inviqa/harness-drupal8))
+ * [Spryker](https://github.com/inviqa/harness-spryker)
+ * [Akeneo](https://github.com/inviqa/harness-akeneo)
+ * [Node](https://github.com/inviqa/harness-node)
+ * [Wordpress](https://github.com/inviqa/harness-wordpress)
  
 ## Commands
 
@@ -51,7 +53,16 @@ By default a workspace project ships with the following commands:
 
 | Command                                    | Description                                             |
 |---                                         |---                                                      |
+|`ws global`                                 |Run a global command                                     |
+|`ws create`                                 |Create a project from a given harness                    |
+|`ws secret`                                 |Encrypt/Decrypt keys                                     |
+|`ws harness`                                |Run harness commands eg. download, prepare               |
 |`ws install`                                |Install project                                          |
+
+A workspace project utilising a harness would typically expose the following commands in addition:
+
+| Command                                    | Description                                             |
+|---                                         |---                                                      |
 |`ws enable`                                 |Start a previously disabled environment                  |
 |`ws disable`                                |Shutdown environment                                     |
 |`ws destroy`                                |Back to the drawing board                                |
@@ -72,16 +83,16 @@ templating language to facilitate applying customisations required by each harne
  - [Confd](docs/types/confd.md)
  - [Crypt](docs/types/crypt.md)
  - [Function](docs/types/function.md)
- - [Harness](docs/types/harness.md)
-   - [Repository](docs/types/harness-repository.md)
+ - Harness - Todo
+   - Repository - Todo
  - [Subscriber](docs/types/subscriber.md)
  - [Workspace](docs/types/workspace.md)
 
 #### Interpreters
 
- - [Bash](docs/interpreters/bash.md)
+ - Bash - Todo
  - [PHP](docs/interpreters/php.md)
  
 ### Tutorials
 
- - [Creating a simple harness](docs/tutorials/create-harness.md)
+- To-do

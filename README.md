@@ -15,6 +15,11 @@ Download the `ws` file from the [Latest Release](https://github.com/my127/worksp
 ```
 chmod +x ws && sudo mv ws /usr/local/bin/ws
 ```
+
+Confirm you can run the `ws` command, e.g.
+```
+ws --help
+```
 #### Creating a workspace
 ```
 # TODO

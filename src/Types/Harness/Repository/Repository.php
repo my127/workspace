@@ -96,9 +96,9 @@ class Repository
 
             $candidate = null;
 
-            foreach ($collection as $version) {
+            foreach ($collection as $availVersion) {
 
-                $semver = explode('.', substr($version, 1));
+                $semver = explode('.', substr($availVersion, 1));
 
                 if (is_numeric($major) && $semver[0] != $major) {
                     continue;
@@ -112,13 +112,13 @@ class Repository
                     continue;
                 }
 
-                if ($candidate == null || version_compare(substr($version, 1), substr($candidate, 1), '>')) {
-                    $candidate = $version;
+                if ($candidate == null || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
+                    $candidate = $availVersion;
                 }
             }
 
             if ($candidate !== null) {
-                return $version;
+                return $availVersion;
             }
         }
 

@@ -11,10 +11,6 @@ setup_app_volume_permissions()
             usermod  -u 1000 build
             groupmod -g 1000 build
             ;;
-        "host-osx-dockersync")
-            usermod  -u 1000 build
-            groupmod -g 1000 build
-            ;;
         *)
             exit 1
     esac

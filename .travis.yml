@@ -10,6 +10,8 @@ matrix:
       env: LIBSODIUM=1
     - php: 7.3
       env: LIBSODIUM=0
+    - php: 7.4
+      env: LIBSODIUM=0
 
 before_install:
   - if [[ "$LIBSODIUM" == "1" ]]; then sudo add-apt-repository ppa:ondrej/php -y; fi

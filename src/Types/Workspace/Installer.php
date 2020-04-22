@@ -90,6 +90,9 @@ class Installer
                 break;
             case self::STEP_PREPARE:
                 $this->applyConfiguration($this->harness->getRequiredConfdPaths());
+                if ($events) {
+                    $this->workspace->trigger('after.harness.prepare');
+                }
                 break;
             case self::STEP_ENABLE_DEPENDENCIES:
                 $this->startRequiredServices($this->harness->getRequiredServices());

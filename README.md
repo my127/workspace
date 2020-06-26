@@ -8,6 +8,7 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 #### Requirements
  - `PHP-7.2+`
  - `sodium` php extension installed and activated in php.ini if it's not enabled by default
+ - `curl` if you wish to use the global traefik proxy
  - `docker 17.04.0+`
  - `docker-compose (compose file version 3.1+)`
 #### Installation

@@ -54,7 +54,7 @@ passthru()
 
     prompt
 
-    echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
+    echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")"
     "${COMMAND[@]}"
 }
 

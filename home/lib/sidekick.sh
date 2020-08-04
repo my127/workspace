@@ -19,17 +19,31 @@ prompt()
 
 run()
 {
-    local COMMAND="$*"
+    local -r COMMAND_DEPRECATED="$*"
+    local -r COMMAND="$@"
+    local DEPRECATED_MODE=no
+
+    if [[ "${COMMAND[0]}" = *" "* ]]; then
+      echo "deprecated: support for passing multiple arguments in passthru '${COMMAND_DEPRECATED[*]}' will be removed in a future version" >&2
+      echo "a future major version will only support passthru ${COMMAND_DEPRECATED[*]}" >&2
+      DEPRECATED_MODE=yes
+    fi
 
     if [ "$VERBOSE" = "no" ]; then
 
         prompt
-        echo "  > ${COMMAND[*]}"
-        setCommandIndicator $INDICATOR_RUNNING
+        if [ "${DEPRECATED_MODE}" = "yes" ]; then
+            echo "  > ${COMMAND_DEPRECATED[*]}"
+            setCommandIndicator "${INDICATOR_RUNNING}"
+            bash -c "${COMMAND_DEPRECATED[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
+        else
+            echo "  >$(printf ' %q' "${COMMAND[@]}")"
+            setCommandIndicator "${INDICATOR_RUNNING}"
+            "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
+        fi
 
-        if ! bash -c "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
-
-            setCommandIndicator $INDICATOR_ERROR
+        if [ "$?" -gt 0 ] then
+            setCommandIndicator "${INDICATOR_ERROR}"
 
             cat /tmp/my127ws-stderr.txt
 
@@ -39,10 +53,11 @@ run()
             echo "  stderr: /tmp/my127ws-stderr.txt"
 
             exit 1
-            
         else
-            setCommandIndicator $INDICATOR_SUCCESS
+            setCommandIndicator "${INDICATOR_SUCCESS}"
         fi
+    elif [ "${DEPRECATED_MODE}" = "yes" ]; then
+        passthru "${COMMAND_DEPRECATED[@]}"
     else
         passthru "${COMMAND[@]}"
     fi
@@ -50,12 +65,25 @@ run()
 
 passthru()
 {
-    local COMMAND="$*"
+    local -r COMMAND_DEPRECATED="$*"
+    local -r COMMAND="$@"
+    local DEPRECATED_MODE=no
+
+    if [[ "${COMMAND[0]}" = *" "* ]]; then
+        echo "deprecated: support for passing multiple arguments in passthru '${COMMAND_DEPRECATED[*]}' will be removed in a future version" >&2
+        echo "a future major version will only support passthru ${COMMAND_DEPRECATED[*]}" >&2
+        DEPRECATED_MODE=yes
+    fi
 
     prompt
 
-    echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
-    bash -e -c "${COMMAND[@]}"
+    if [ "${DEPRECATED_MODE}" = "yes" ]; then
+        echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
+        bash -e -c "${COMMAND_DEPRECATED[@]}"
+    else
+        echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")"
+        "${COMMAND[@]}"
+    fi
 }
 
 setCommandIndicator()

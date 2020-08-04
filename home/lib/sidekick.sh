@@ -25,11 +25,11 @@ run()
 
         prompt
         echo "  >$(printf ' %q' "${COMMAND[@]}")"
-        setCommandIndicator $INDICATOR_RUNNING
+        setCommandIndicator "$INDICATOR_RUNNING"
 
         if ! "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
 
-            setCommandIndicator $INDICATOR_ERROR
+            setCommandIndicator "$INDICATOR_ERROR"
 
             cat /tmp/my127ws-stderr.txt
 
@@ -41,7 +41,7 @@ run()
             exit 1
             
         else
-            setCommandIndicator $INDICATOR_SUCCESS
+            setCommandIndicator "$INDICATOR_SUCCESS"
         fi
     else
         passthru "${COMMAND[@]}"
@@ -55,7 +55,8 @@ passthru()
     prompt
 
     echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")"
-    "${COMMAND[@]}"
+    if ! "${COMMAND[@]}"; then
+    fi
 }
 
 setCommandIndicator()

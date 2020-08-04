@@ -19,15 +19,15 @@ prompt()
 
 run()
 {
-    local COMMAND="$*"
+    local COMMAND="$@"
 
     if [ "$VERBOSE" = "no" ]; then
 
         prompt
-        echo "  > ${COMMAND[*]}"
+        echo "  >$(printf ' %q' "${COMMAND[@]}")"
         setCommandIndicator $INDICATOR_RUNNING
 
-        if ! bash -c "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
+        if ! "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
 
             setCommandIndicator $INDICATOR_ERROR
 

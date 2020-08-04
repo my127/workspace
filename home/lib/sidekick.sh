@@ -56,6 +56,7 @@ passthru()
 
     echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")"
     if ! "${COMMAND[@]}"; then
+        exit 1
     fi
 }
 

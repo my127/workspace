@@ -50,12 +50,12 @@ run()
 
 passthru()
 {
-    local COMMAND="$*"
+    local COMMAND="$@"
 
     prompt
 
     echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
-    bash -e -c "${COMMAND[@]}"
+    "${COMMAND[@]}"
 }
 
 setCommandIndicator()

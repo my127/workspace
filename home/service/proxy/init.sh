@@ -32,8 +32,8 @@ enable()
             run mkdir -p traefik/root/tls
         fi
 
-        run bash -c "curl $(ws global config get global.service.proxy.https.crt) > traefik/root/tls/my127.site.crt"
-        run bash -c "curl $(ws global config get global.service.proxy.https.key) > traefik/root/tls/my127.site.key"
+        run curl --fail --location --output traefik/root/tls/my127.site.crt "$(ws global config get global.service.proxy.https.crt)"
+        run curl --fail --location --output traefik/root/tls/my127.site.key "$(ws global config get global.service.proxy.https.key)"
         run docker-compose -p my127ws-proxy rm --force traefik
         run docker-compose -p my127ws-proxy up --build -d traefik
     fi

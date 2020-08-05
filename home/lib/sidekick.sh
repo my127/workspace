@@ -24,11 +24,6 @@ run()
     local DEPRECATED_MODE=no
 
     if [[ "${COMMAND[0]}" = *" "* ]]; then
-        echo "deprecated: support for passing multiple arguments in the following line will be removed in a future version" >&2
-        echo "run '${COMMAND_DEPRECATED[*]}'" >&2
-        echo "a future major version will only support:" >&2
-        echo "run ${COMMAND_DEPRECATED[*]}" >&2
-        echo >&2
         DEPRECATED_MODE=yes
     fi
 
@@ -73,11 +68,6 @@ passthru()
     local DEPRECATED_MODE=no
 
     if [[ "${COMMAND[0]}" = *" "* ]]; then
-        echo "deprecated: support for passing multiple arguments in the following line will be removed in a future version" >&2
-        echo "passthru '${COMMAND_DEPRECATED[*]}'" >&2
-        echo "a future major version will only support:" >&2
-        echo "passthru ${COMMAND_DEPRECATED[*]}" >&2
-        echo >&2
         DEPRECATED_MODE=yes
     fi
 

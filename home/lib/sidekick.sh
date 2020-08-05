@@ -20,13 +20,16 @@ prompt()
 run()
 {
     local -r COMMAND_DEPRECATED="$*"
-    local -r COMMAND="$@"
+    local -r COMMAND=("$@")
     local DEPRECATED_MODE=no
 
     if [[ "${COMMAND[0]}" = *" "* ]]; then
-      echo "deprecated: support for passing multiple arguments in passthru '${COMMAND_DEPRECATED[*]}' will be removed in a future version" >&2
-      echo "a future major version will only support passthru ${COMMAND_DEPRECATED[*]}" >&2
-      DEPRECATED_MODE=yes
+        echo "deprecated: support for passing multiple arguments in the following line will be removed in a future version" >&2
+        echo "run '${COMMAND_DEPRECATED[*]}'" >&2
+        echo "a future major version will only support:" >&2
+        echo "run ${COMMAND_DEPRECATED[*]}" >&2
+        echo >&2
+        DEPRECATED_MODE=yes
     fi
 
     if [ "$VERBOSE" = "no" ]; then
@@ -42,7 +45,7 @@ run()
             "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
         fi
 
-        if [ "$?" -gt 0 ] then
+        if [ "$?" -gt 0 ]; then
             setCommandIndicator "${INDICATOR_ERROR}"
 
             cat /tmp/my127ws-stderr.txt
@@ -66,12 +69,15 @@ run()
 passthru()
 {
     local -r COMMAND_DEPRECATED="$*"
-    local -r COMMAND="$@"
+    local -r COMMAND=("$@")
     local DEPRECATED_MODE=no
 
     if [[ "${COMMAND[0]}" = *" "* ]]; then
-        echo "deprecated: support for passing multiple arguments in passthru '${COMMAND_DEPRECATED[*]}' will be removed in a future version" >&2
-        echo "a future major version will only support passthru ${COMMAND_DEPRECATED[*]}" >&2
+        echo "deprecated: support for passing multiple arguments in the following line will be removed in a future version" >&2
+        echo "passthru '${COMMAND_DEPRECATED[*]}'" >&2
+        echo "a future major version will only support:" >&2
+        echo "passthru ${COMMAND_DEPRECATED[*]}" >&2
+        echo >&2
         DEPRECATED_MODE=yes
     fi
 

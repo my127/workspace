@@ -75,7 +75,7 @@ passthru()
 
     if [ "${DEPRECATED_MODE}" = "yes" ]; then
         echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*" >&2
-        if ! bash -e -c "${COMMAND_DEPRECATED[@]}" >&2; then
+        if ! bash -e -c "${COMMAND_DEPRECATED[@]}"; then
             exit 1
         fi
     else

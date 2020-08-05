@@ -13,7 +13,7 @@ prompt()
 {
     if [ "${RUN_CWD}" != "$(pwd)" ]; then
         RUN_CWD="$(pwd)"
-        echo -e "\\033[1m[\\033[0m$(pwd)\\033[1m]:\\033[0m"
+        echo -e "\\033[1m[\\033[0m$(pwd)\\033[1m]:\\033[0m" >&2
     fi
 }
 
@@ -36,11 +36,11 @@ run()
 
         prompt
         if [ "${DEPRECATED_MODE}" = "yes" ]; then
-            echo "  > ${COMMAND_DEPRECATED[*]}"
+            echo "  > ${COMMAND_DEPRECATED[*]}" >&2
             setCommandIndicator "${INDICATOR_RUNNING}"
             bash -c "${COMMAND_DEPRECATED[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
         else
-            echo "  >$(printf ' %q' "${COMMAND[@]}")"
+            echo "  >$(printf ' %q' "${COMMAND[@]}")" >&2
             setCommandIndicator "${INDICATOR_RUNNING}"
             "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
         fi
@@ -50,10 +50,10 @@ run()
 
             cat /tmp/my127ws-stderr.txt
 
-            echo "----------------------------------"
-            echo "Full Logs :-"
-            echo "  stdout: /tmp/my127ws-stdout.txt"
-            echo "  stderr: /tmp/my127ws-stderr.txt"
+            echo "----------------------------------" >&2
+            echo "Full Logs :-" >&2
+            echo "  stdout: /tmp/my127ws-stdout.txt" >&2
+            echo "  stderr: /tmp/my127ws-stderr.txt" >&2
 
             exit 1
         else
@@ -84,19 +84,19 @@ passthru()
     prompt
 
     if [ "${DEPRECATED_MODE}" = "yes" ]; then
-        echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*"
-        bash -e -c "${COMMAND_DEPRECATED[@]}"
+        echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*" >&2
+        bash -e -c "${COMMAND_DEPRECATED[@]}" >&2
     else
-        echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")"
+        echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")" >&2
         "${COMMAND[@]}"
     fi
 }
 
 setCommandIndicator()
 {
-    echo -ne "\\033[1A";
-    echo -ne "\\033[$1"
-    echo -n "■"
-    echo -ne "\\033[0m"
-    echo -ne "\\033[1E";
+    echo -ne "\\033[1A" >&2 
+    echo -ne "\\033[$1" >&2
+    echo -n "■" >&2
+    echo -ne "\\033[0m" >&2
+    echo -ne "\\033[1E" >&2
 }

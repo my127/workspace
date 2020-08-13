@@ -5,13 +5,13 @@
     "require": {
         "php": ">=7.2",
         "my127/my127": "dev-master",
-        "symfony/config": "^4.1",
-        "symfony/console": "^4.1",
-        "symfony/dependency-injection": "^4.1",
-        "symfony/expression-language": "^4.1",
-        "symfony/finder": "^4.1",
-        "symfony/yaml": "^4.1",
-        "twig/twig": "^2.4"
+        "symfony/config": "^4.4",
+        "symfony/console": "^4.4",
+        "symfony/dependency-injection": "^4.4",
+        "symfony/expression-language": "^4.4",
+        "symfony/finder": "^4.4",
+        "symfony/yaml": "^4.4",
+        "twig/twig": "^2.13"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5"

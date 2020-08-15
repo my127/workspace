@@ -44,6 +44,12 @@ class Expression extends SymfonyExpressionLanguage
         $this->addFunction(ExpressionFunction::fromPhp('getenv',            'env'));
         $this->addFunction(ExpressionFunction::fromPhp('var_dump',          'debug'));
         $this->addFunction(ExpressionFunction::fromPhp('file_get_contents', 'file'));
+        $this->addFunction(ExpressionFunction::fromPhp('join',              'join'));
+        $this->addFunction(ExpressionFunction::fromPhp('max',               'max'));
+        $this->addFunction(ExpressionFunction::fromPhp('min',               'min'));
+        $this->addFunction(ExpressionFunction::fromPhp('range',             'range'));
+        $this->addFunction(ExpressionFunction::fromPhp('explode',           'split'));
+        
 
         $this->register(
             'file',

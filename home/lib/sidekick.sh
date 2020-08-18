@@ -20,7 +20,7 @@ prompt()
 run()
 {
     local -r COMMAND_DEPRECATED="$*"
-    local -r COMMAND=("$@")
+    local COMMAND=("$@")
     local DEPRECATED_MODE=no
 
     if [[ "${COMMAND[0]}" = *" "* ]]; then
@@ -32,15 +32,15 @@ run()
         prompt
         if [ "${DEPRECATED_MODE}" = "yes" ]; then
             echo "  > ${COMMAND_DEPRECATED[*]}" >&2
-            setCommandIndicator "${INDICATOR_RUNNING}"
-            bash -c "${COMMAND_DEPRECATED[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
+            COMMAND=(bash -c "${COMMAND_DEPRECATED[@]}")
         else
             echo "  >$(printf ' %q' "${COMMAND[@]}")" >&2
-            setCommandIndicator "${INDICATOR_RUNNING}"
-            "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
         fi
+        setCommandIndicator "${INDICATOR_RUNNING}"
 
-        if [ "$?" -gt 0 ]; then
+        if "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt; then
+            setCommandIndicator "${INDICATOR_SUCCESS}"
+        else
             setCommandIndicator "${INDICATOR_ERROR}"
 
             cat /tmp/my127ws-stderr.txt
@@ -51,8 +51,6 @@ run()
             echo "  stderr: /tmp/my127ws-stderr.txt" >&2
 
             exit 1
-        else
-            setCommandIndicator "${INDICATOR_SUCCESS}"
         fi
     elif [ "${DEPRECATED_MODE}" = "yes" ]; then
         passthru "${COMMAND_DEPRECATED[@]}"

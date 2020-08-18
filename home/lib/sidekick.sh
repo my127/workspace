@@ -50,7 +50,7 @@ run()
             echo "  stdout: /tmp/my127ws-stdout.txt" >&2
             echo "  stderr: /tmp/my127ws-stderr.txt" >&2
 
-            exit 1
+            return 1
         fi
     elif [ "${DEPRECATED_MODE}" = "yes" ]; then
         passthru "${COMMAND_DEPRECATED[@]}"
@@ -74,12 +74,12 @@ passthru()
     if [ "${DEPRECATED_MODE}" = "yes" ]; then
         echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*" >&2
         if ! bash -e -c "${COMMAND_DEPRECATED[@]}"; then
-            exit 1
+            return 1
         fi
     else
         echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")" >&2
         if ! "${COMMAND[@]}"; then
-            exit 1
+            return 1
         fi
     fi
 }

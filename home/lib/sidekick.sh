@@ -73,14 +73,10 @@ passthru()
 
     if [ "${DEPRECATED_MODE}" = "yes" ]; then
         echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*" >&2
-        if ! bash -e -c "${COMMAND_DEPRECATED[@]}"; then
-            return 1
-        fi
+        bash -e -c "${COMMAND_DEPRECATED[@]}"
     else
         echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m >$(printf ' %q' "${COMMAND[@]}")" >&2
-        if ! "${COMMAND[@]}"; then
-            return 1
-        fi
+        "${COMMAND[@]}"
     fi
 }
 

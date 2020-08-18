@@ -40,6 +40,7 @@ run()
             "${COMMAND[@]}" > /tmp/my127ws-stdout.txt 2> /tmp/my127ws-stderr.txt
         fi
 
+        # shellcheck disable=SC2181
         if [ "$?" -gt 0 ]; then
             setCommandIndicator "${INDICATOR_ERROR}"
 

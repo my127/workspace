@@ -39,6 +39,9 @@ function buildStaticContainer(): void
                 $application->addMethodCall('plugin', [new Reference($id)]);
             }
 
+            $buildVersion = $this->getBuildVersion();
+            $application->addArgument($buildVersion);
+
             // definition loader
 
             $loader = $container->getDefinition(Loader::class);
@@ -76,6 +79,11 @@ function buildStaticContainer(): void
                     $path->addMethodCall('add', [new Reference($id)]);
                 }
             }
+        }
+
+        private function getBuildVersion(): string
+        {
+            return exec('git rev-parse --abbrev-ref HEAD');
         }
     });
 

@@ -14,9 +14,9 @@ class Application extends ConsoleApplication
     /** @var Environment */
     private $environment;
 
-    public function __construct(Environment $environment, Executor $executor, EventDispatcher $dispatcher)
+    public function __construct(string $version, Environment $environment, Executor $executor, EventDispatcher $dispatcher)
     {
-        parent::__construct('ws', '', self::VERSION, $executor, $dispatcher);
+        parent::__construct('ws', '', $version ?? self::VERSION, $executor, $dispatcher);
         $this->environment = $environment;
     }
 

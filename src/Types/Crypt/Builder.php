@@ -61,13 +61,17 @@ class Builder implements EnvironmentBuilder
         });
 
         if ($definitions->hasType(KeyDefinition::TYPE)) {
+
+            $this->application->section('secret encrypt-file')
+                ->usage('secret encrypt-file <path_to_file> [<key>]')
+                ->action(function (Input $input) {
+                    echo $this->crypt->encrypt(file_get_contents($input->getArgument('path_to_file')), $input->getArgument('key') ?? 'default') . "\n";
+                });
+
             $this->application->section('secret encrypt')
                 ->usage('secret encrypt <message> [<key>]')
                 ->action(function (Input $input) {
-                    $key = $input->getArgument('key');
-                    $key = $key instanceof OptionValue ? $key->value() : $key;
-                    $key = $key ?? 'default';
-                    echo $this->crypt->encrypt($input->getArgument('message'), $key) . "\n";
+                    echo $this->crypt->encrypt($input->getArgument('message'), $input->getArgument('key') ?? 'default') . "\n";
                 });
 
             $this->application->section('secret decrypt')

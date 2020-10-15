@@ -15,13 +15,44 @@ use Symfony\Component\Yaml\Yaml;
 
 class Installer
 {
+    /**
+     * @var Workspace
+     */
     private $workspace;
+
+    /**
+     * @var Repository
+     */
     private $packages;
+
+    /**
+     * @var Harness
+     */
     private $harness;
+
+    /**
+     * @var Terminal
+     */
     private $terminal;
+
+    /**
+     * @var AttributeCollection
+     */
     private $attributes;
+
+    /**
+     * @var Path
+     */
     private $path;
+
+    /**
+     * @var ConfdFactory
+     */
     private $confd;
+
+    /**
+     * @var Crypt
+     */
     private $crypt;
 
     public const STEP_DOWNLOAD = 1;
@@ -141,7 +172,7 @@ class Installer
         }
     }
 
-    private function downloadAndExtractHarnessPackage(Package $package)
+    private function downloadAndExtractHarnessPackage(Package $package): void
     {
         $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
         file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));
@@ -149,33 +180,60 @@ class Installer
         unlink($packageTarball);
     }
 
-    private function ensureRequiredAttributesArePresent(array $required)
+    private function ensureRequiredAttributesArePresent(array $required): void
     {
         $attributes = [
-            'standard' => [],
-            'secret' => [],
+            'standard'      => [],
+            'standard_file' => [],
+            'secret'        => [],
+            'secret_file'   => []
         ];
 
         foreach (['standard', 'secret'] as $type) {
             foreach ($required[$type] ?? [] as $attribute) {
-                if (!isset($this->attributes[$attribute])) {
-                    $response = $this->terminal->ask($attribute);
-                    $attributes[$type][$attribute] = ($type == 'standard') ?
-                        $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
+                if (isset($this->attributes[$attribute]) && $this->attributes[$attribute] !== null) {
+                    continue;
                 }
+
+                $response = $this->terminal->ask($attribute);
+                if (empty($response)) {
+                    $response = '';
+                }
+                $attributes[$type][$attribute] = ($type == 'standard') ?
+                    $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
             }
         }
 
-        if (!empty($attributes['standard'])) {
-            $this->writeOutAttributes('workspace.yml', $attributes['standard']);
+        foreach (['standard_file', 'secret_file'] as $type) {
+            foreach ($required[$type] ?? [] as $attribute) {
+                if (isset($this->attributes[$attribute]) && $this->attributes[$attribute] !== null) {
+                    continue;
+                }
+
+                $response = $this->terminal->ask('File path to read for ' . $attribute);
+                if (empty($response)) {
+                    $attributes[$type][$attribute] = '';
+                    continue;
+                }
+
+                if (file_exists($response) && is_readable($response) && is_file($response)) {
+                    $response = file_get_contents($response);
+                } else {
+                    throw new Exception('Could not read file "' . $response . '"');
+                }
+                $attributes[$type][$attribute] = ($type == 'standard_file') ?
+                    $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
+            }
         }
 
-        if (!empty($attributes['secret'])) {
-            $this->writeOutAttributes('workspace.yml', $attributes['secret']);
+        array_filter($attributes);
+
+        foreach ($attributes as $attributesOfType) {
+            $this->writeOutAttributes('workspace.yml', $attributesOfType);
         }
     }
 
-    private function writeOutAttributes($file, $attributes)
+    private function writeOutAttributes($file, $attributes): void
     {
         $content = "\n";
 
@@ -186,14 +244,14 @@ class Installer
         file_put_contents($this->path->getRealPath('workspace:/' . $file), $content, FILE_APPEND);
     }
 
-    private function applyConfiguration(array $paths)
+    private function applyConfiguration(array $paths): void
     {
         foreach ($paths as $path) {
             $this->confd->create($path)->apply();
         }
     }
 
-    private function applyOverlayDirectory(string $getOverlayPath)
+    private function applyOverlayDirectory(string $getOverlayPath): void
     {
         $src = $this->path->getRealPath('workspace:/' . $getOverlayPath) . '/';
         $dst = $this->path->getRealPath('harness:/');
@@ -203,7 +261,7 @@ class Installer
         }
     }
 
-    private function startRequiredServices(array $requiredServices)
+    private function startRequiredServices(array $requiredServices): void
     {
         foreach ($requiredServices as $service) {
             $this->workspace->exec('ws.service ' . $service . ' enable');

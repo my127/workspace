@@ -58,4 +58,20 @@ EOD
             'MY127WS_KEY' => '81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100',
         ])->getOutput()));
     }
+
+    /** @test */
+    public function secret_files_can_encrypted_and_decrypted_given_a_key()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
+EOD
+        );
+
+        $contents = $this->workspace()->getContents('workspace.yml');
+        $encrypted = trim($this->workspaceCommand('secret encrypt-file "workspace.yml"')->getOutput());
+        $decrypted = trim($this->workspaceCommand('secret decrypt "' . $encrypted . '"')->getOutput());
+
+        $this->assertTrue($encrypted != $contents);
+        $this->assertTrue($decrypted == $contents);
+    }
 }

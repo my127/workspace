@@ -12,11 +12,15 @@ key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 
 ### Using an encrypted value
 
+First, you MUST avoid inserting the secret into your shell history:
+* `HISTCONTROL=ignoreboth` (bash) `
+* `setopt histignorespace` (zsh)
+
 ```
 workspace.override.yml:
 key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 
->>> ws secret encrypt "Hello World"
+>>> <space>ws secret encrypt "Hello World"
 YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoi98rFejkefPnZG1CjzGeFyvSAMgafKv2TIjtpOjI7czoyNzoiSwcG2YiM3vV8CdZXgxDM2q+ZmRmPRNyz7OgcIjt9
 
 workspace.yml:

@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1
+    labels:
+      - traefik.backend=jaeger
+      - traefik.frontend.rule=Host:jaeger.my127.site
+      - traefik.docker.network=my127ws
+      - traefik.port=16686
+    networks:
+      - shared
+
+networks:
+  shared:
+    external:
+      name: $TRAEFIK_NETWORK

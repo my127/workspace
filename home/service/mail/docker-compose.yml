@@ -2,7 +2,7 @@ version: '3'
 services:
   mailhog:
     image: mailhog/mailhog:v1.0.1
-    restart: always
+    restart: unless_stopped
     labels:
       - traefik.frontend.rule=Host:mail.my127.site
       - traefik.port=8025

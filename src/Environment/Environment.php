@@ -38,6 +38,16 @@ class Environment
         return $this->harnessPath;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return array|mixed|null
+     */
+    public function getAttribute(string $key)
+    {
+        return $this->attributes->get($key);
+    }
+
     public function build()
     {
         $this->prepareEnvironmentForBuild();

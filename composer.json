@@ -3,7 +3,7 @@
     "description": "Quickly create and manage project workspaces.",
     "type": "application",
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "my127/my127": "dev-master",
         "symfony/config": "^4.4",
         "symfony/console": "^4.4",

@@ -42,10 +42,6 @@ RUN apt-get update -qq \
 
 WORKDIR /app
 
-RUN composer global require "hirak/prestissimo" --no-interaction --no-ansi --quiet --no-progress --prefer-dist \
- && composer clear-cache --no-ansi --quiet \
- && chmod -R go-w ~/.composer/vendor
-
 COPY ./tools/builder/root/ /
 
 ENTRYPOINT ["/entrypoint.sh"]

@@ -27,12 +27,16 @@ enable()
     cd "$DIR"
 
     run docker-compose -p my127ws-tracing up -d
+    run cp -pR "$DIR/traefik/root/config/tracing.toml" "$DIR/../proxy/traefik/root/config/"
 )
 
 disable()
 (
     cd "$DIR"
 
+    if [ -f "$DIR/../proxy/traefik/root/config/tracing.toml" ]; then
+      run rm -f "$DIR/../proxy/traefik/root/config/tracing.toml"
+    fi
     run docker-compose -p my127ws-tracing down -v --rmi local
 )
 

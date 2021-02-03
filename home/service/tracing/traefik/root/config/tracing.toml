@@ -1,0 +1,5 @@
+[tracing]
+  [tracing.jaeger]
+    samplingServerURL = "http://jaeger:5778/sampling"
+    localAgentHostPort = "jaeger:6831"
+    traceContextHeaderName = "my127-trace-id"

@@ -9,6 +9,10 @@ defaultEntryPoints = ["http", "https"]
   directory = "/config"
   watch = true
 
+[file]
+  directory = "/config_plugins"
+  watch = true
+
 [web]
 address = ":8080"
 

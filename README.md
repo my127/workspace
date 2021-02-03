@@ -54,7 +54,9 @@ ws --help
 
 ### Building
 
-To build workspace, you can run the `build.sh` script after first installing [humbug/box].
+First install development dependencies by running `composer install`. This will set up [humbug/box] as well. 
+
+To build workspace, you can run the `build.sh` script.
 
 To test the build in multiple PHP versions, there is a docker-compose.yml provided.
 

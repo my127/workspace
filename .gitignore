@@ -2,4 +2,6 @@
 /home/build
 /config/_compiled/*
 /vendor
+/vendor-bin/**/vendor
+/vendor-bin/**/composer.lock
 /my127ws.phar

@@ -8,10 +8,8 @@ services:
       - traefik.frontend.rule=Host:tracing.my127.site
       - traefik.docker.network=my127ws
       - traefik.port=16686
-    networks:
-      - shared
 
 networks:
-  shared:
+  default:
     external:
       name: $TRAEFIK_NETWORK

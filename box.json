@@ -1,5 +1,4 @@
 {
-  "chmod": "0755",
   "main": "bin/workspace",
   "output": "my127ws.phar",
   "directories-bin": [
@@ -94,7 +93,5 @@
     "vendor/symfony/console/Exception/RuntimeException.php",
     "vendor/symfony/console/Exception/InvalidOptionException.php",
     "vendor/symfony/console/Exception/LogicException.php"
-  ],
-
-  "stub": true
+  ]
 }

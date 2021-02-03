@@ -32,6 +32,10 @@ enable()
             run mkdir -p traefik/root/tls
         fi
 
+        if [ ! -L "traefik/root/config/custom_config" ]; then
+          (cd traefik/root/config && ln -sf ~/.config/my127ws/proxy custom_config)
+        fi
+
         run curl --fail --location --output traefik/root/tls/my127.site.crt "$(ws global config get global.service.proxy.https.crt)"
         run curl --fail --location --output traefik/root/tls/my127.site.key "$(ws global config get global.service.proxy.https.key)"
         run docker-compose -p my127ws-proxy rm --force traefik

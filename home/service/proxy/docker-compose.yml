@@ -13,8 +13,7 @@ services:
       - co.elastic.logs/module=traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.config/my127ws/proxy:/config
-      - ./traefik/root/config:/config_plugins
+      - ./traefik/root/config:/config
       - ./traefik/root/tls:/tls
     networks:
       - private

@@ -2,6 +2,7 @@ version: "3.7"
 services:
   jaeger:
     image: jaegertracing/all-in-one:1
+    restart: unless-stopped
     labels:
       - traefik.backend=jaeger
       - traefik.frontend.rule=Host:jaeger.my127.site

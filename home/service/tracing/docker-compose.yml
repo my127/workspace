@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.backend=jaeger
-      - traefik.frontend.rule=Host:jaeger.my127.site
+      - traefik.frontend.rule=Host:tracing.my127.site
       - traefik.docker.network=my127ws
       - traefik.port=16686
     networks:

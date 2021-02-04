@@ -20,6 +20,11 @@ main()
         restart
         exit
     fi
+
+    if [ "$1" = "reloadconfig" ]; then
+        reloadconfig
+        exit
+    fi
 }
 
 enable()
@@ -56,6 +61,12 @@ restart()
 {
     disable
     enable
+}
+
+reloadconfig()
+{
+    cd "$DIR"
+    run docker-compose -p my127ws-proxy restart traefik
 }
 
 bootstrap()

@@ -29,6 +29,7 @@ enable()
     run docker-compose -p my127ws-tracing pull
     run docker-compose -p my127ws-tracing up -d
     run cp -pR "$DIR/traefik/root/config/tracing.toml" "$DIR/../proxy/traefik/root/config/"
+    passthru ws global service proxy reloadconfig
 )
 
 disable()
@@ -38,6 +39,7 @@ disable()
     if [ -f "$DIR/../proxy/traefik/root/config/tracing.toml" ]; then
       run rm -f "$DIR/../proxy/traefik/root/config/tracing.toml"
     fi
+    passthru ws global service proxy reloadconfig
     run docker-compose -p my127ws-tracing down -v --rmi local
 )
 

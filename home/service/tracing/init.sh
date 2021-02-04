@@ -28,24 +28,31 @@ enable()
 
     run docker-compose -p my127ws-tracing pull
     run docker-compose -p my127ws-tracing up -d
-    run cp -pR "$DIR/traefik/root/config/tracing.toml" "$DIR/../proxy/traefik/root/config/"
-    passthru ws global service proxy reloadconfig
+    local TRAEFIK_CONFIG="${DIR}/../proxy/traefik/root/traefik.toml"
+    cp "${TRAEFIK_CONFIG}" "${TRAEFIK_CONFIG}.before-tracing-active"
+    sed 's/\[inactive.tracing\]/\[tracing\]/' "${TRAEFIK_CONFIG}.before-tracing-active" > "${TRAEFIK_CONFIG}"
+    rm "${TRAEFIK_CONFIG}.before-tracing-active"
+    passthru ws global service proxy restart
 )
 
 disable()
 (
+    local DO_PROXY_RESTART="${1:-yes}"
     cd "$DIR"
 
-    if [ -f "$DIR/../proxy/traefik/root/config/tracing.toml" ]; then
-      run rm -f "$DIR/../proxy/traefik/root/config/tracing.toml"
-    fi
-    passthru ws global service proxy reloadconfig
+    local TRAEFIK_CONFIG="${DIR}/../proxy/traefik/root/traefik.toml"
+    cp "${TRAEFIK_CONFIG}" "${TRAEFIK_CONFIG}.before-tracing-inactive"
+    sed 's/\[tracing\]/\[inactive.tracing\]/' "${TRAEFIK_CONFIG}.before-tracing-inactive" > "${TRAEFIK_CONFIG}"
+    rm "${TRAEFIK_CONFIG}.before-tracing-inactive"
     run docker-compose -p my127ws-tracing down -v --rmi local
+    if [ "$DO_PROXY_RESTART" = "yes" ]; then
+      passthru ws global service proxy restart
+    fi
 )
 
 restart()
 {
-    disable
+    disable "no"
     enable
 }
 

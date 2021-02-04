@@ -21,3 +21,10 @@ address = ":8080"
       [[entryPoints.https.tls.certificates]]
       certFile = "/tls/my127.site.crt"
       keyFile  = "/tls/my127.site.key"
+
+[inactive.tracing]
+  backend = "jaeger"
+  [tracing.jaeger]
+    samplingServerURL = "http://jaeger:5778/sampling"
+    localAgentHostPort = "jaeger:6831"
+    traceContextHeaderName = "my127-trace-id"

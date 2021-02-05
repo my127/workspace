@@ -4,6 +4,8 @@ namespace my127\Workspace\Types\Workspace;
 
 use ArrayAccess;
 use my127\Console\Usage\Input;
+use my127\Console\Usage\Model\BooleanOptionValue;
+use my127\Console\Usage\Model\StringOptionValue;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
@@ -75,9 +77,11 @@ class Workspace extends Definition implements ArrayAccess
             $this->crypt
         );
 
-        $step    = $input->getOption('step')??1;
+        $step = $input->getOption('step');
+        $step = $step instanceof StringOptionValue ? $step->value() : '1';
         $cascade = true;
-        $events  = !$input->getOption('skip-events');
+        $events = $input->getOption('skip-events');
+        $events = $events instanceof BooleanOptionValue ? !$events->value() : true;
 
         if (!is_numeric($step)) {
             $cascade = false;

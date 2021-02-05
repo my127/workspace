@@ -78,7 +78,7 @@ class Workspace extends Definition implements ArrayAccess
         );
 
         $step = $input->getOption('step');
-        $step = $step instanceof StringOptionValue ? $step->value() : '1';
+        $step = $step instanceof StringOptionValue ? $step->value() : '';
         $cascade = true;
         $events = $input->getOption('skip-events');
         $events = $events instanceof BooleanOptionValue ? !$events->value() : true;

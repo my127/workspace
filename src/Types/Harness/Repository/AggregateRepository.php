@@ -6,10 +6,10 @@ use my127\Workspace\Types\Harness\Repository\Package\Package;
 
 class AggregateRepository implements Repository
 {
-    /** @var PackageRepository */
+    /** @var Repository */
     private $packageRepository;
 
-    /** @var ArchiveRepository */
+    /** @var Repository */
     private $archiveRepository;
 
     public function __construct(Repository $packageRepository, Repository $archiveRepository)

@@ -12,16 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/my127/php-library.git",
-                "reference": "8c1a4ef6d02877c367810c5e4b4fa348a3321238"
+                "reference": "ac6cc7c9445cff3733ceeedcbf773c75abd5be7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/my127/php-library/zipball/8c1a4ef6d02877c367810c5e4b4fa348a3321238",
-                "reference": "8c1a4ef6d02877c367810c5e4b4fa348a3321238",
+                "url": "https://api.github.com/repos/my127/php-library/zipball/ac6cc7c9445cff3733ceeedcbf773c75abd5be7a",
+                "reference": "ac6cc7c9445cff3733ceeedcbf773c75abd5be7a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2",
+                "php": ">=7.3",
                 "symfony/event-dispatcher": "^4.0"
             },
             "replace": {
@@ -29,9 +29,9 @@
                 "my127/fsm": "self.version"
             },
             "require-dev": {
-                "phpspec/phpspec": "^4.0",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "^2.3"
+                "phpspec/phpspec": "^7.0",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "default-branch": true,
             "type": "library",
@@ -56,7 +56,7 @@
                 "issues": "https://github.com/my127/php-library/issues",
                 "source": "https://github.com/my127/php-library/tree/master"
             },
-            "time": "2018-08-12T11:54:36+00:00"
+            "time": "2021-03-04T14:46:02+00:00"
         },
         {
             "name": "psr/cache",

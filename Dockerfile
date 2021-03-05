@@ -26,11 +26,6 @@ RUN apt-get update -qq \
  # Create the build user \
  && useradd --create-home --system build \
  \
- # Install box \
- && wget https://github.com/humbug/box/releases/download/3.8.4/box.phar \
- && chmod +x box.phar \
- && mv box.phar /usr/local/bin/box \
- \
  # Install composer for PHP dependencies \
  && wget https://getcomposer.org/installer -O /tmp/composer-setup.php -q \
  && [ "$(wget https://composer.github.io/installer.sig -O - -q)" = "$(sha384sum /tmp/composer-setup.php | awk '{ print $1 }')" ] \
@@ -41,10 +36,6 @@ RUN apt-get update -qq \
  && mkdir /app
 
 WORKDIR /app
-
-RUN composer global require "hirak/prestissimo" --no-interaction --no-ansi --quiet --no-progress --prefer-dist \
- && composer clear-cache --no-ansi --quiet \
- && chmod -R go-w ~/.composer/vendor
 
 COPY ./tools/builder/root/ /
 

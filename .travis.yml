@@ -6,24 +6,13 @@ language: php
 
 matrix:
   include:
-    - php: 7.2
-      env: LIBSODIUM=1
     - php: 7.3
-      env: LIBSODIUM=0
     - php: 7.4
-      env: LIBSODIUM=0
-
-before_install:
-  - if [[ "$LIBSODIUM" == "1" ]]; then sudo add-apt-repository ppa:ondrej/php -y; fi
-  - if [[ "$LIBSODIUM" == "1" ]]; then sudo apt-get -q update; fi
-  - if [[ "$LIBSODIUM" == "1" ]]; then sudo apt-get -y install libsodium-dev; fi
+    - php: 8.0
 
 install:
-  - if [[ "$LIBSODIUM" == "1" ]]; then pecl install libsodium; fi
-  # Add box to allow the my127ws phar to be built
-  - wget https://github.com/humbug/box/releases/download/3.8.4/box.phar && chmod +x box.phar && sudo mv box.phar /usr/local/bin/box
   - composer install
 
 script:
   - composer test
-  - find . -type f ! -path "./.git/*" ! -path "./bin/workspace" ! -path "./bin/build" ! -path "./vendor/*" ! -name "*.phar" ! -name "*.php" -and \( -name "*.sh" -or -perm -0111 \) -exec shellcheck --exclude=SC1008,SC1091 {} +
+  - find . -type f ! -path "./.git/*" ! -path "./bin/workspace" ! -path "./bin/build" ! -path "./vendor/*" ! -path "./vendor-bin/*" ! -name "*.phar" ! -name "*.php" -and \( -name "*.sh" -or -perm -0111 \) -exec shellcheck --exclude=SC1008,SC1091 {} +

@@ -6,14 +6,17 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 
 ### Getting Started
 #### Requirements
- - `PHP-7.2+`
+ - `PHP-7.3+`
  - `sodium` php extension installed and activated in php.ini if it's not enabled by default
  - `curl` if you wish to use the global traefik proxy
  - `docker 17.04.0+`
  - `docker-compose (compose file version 3.1+)`
+
 #### Installation
+
 Download the `ws` file from the [Latest Release](https://github.com/my127/workspace/releases/latest) make executable and move to a location in your PATH, eg.
-```
+```bash
+curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.1.3/ws
 chmod +x ws && sudo mv ws /usr/local/bin/ws
 ```
 
@@ -21,10 +24,12 @@ Confirm you can run the `ws` command, e.g.
 ```
 ws --help
 ```
+
 #### Creating a workspace
 ```
 # TODO
 ```
+
 ### Anatomy of a workspace
 
 #### Key Concepts
@@ -54,7 +59,9 @@ ws --help
 
 ### Building
 
-To build workspace, you can run the `build.sh` script after first installing [humbug/box].
+First install development dependencies by running `composer install`. This will set up [humbug/box] as well.
+
+To build workspace, you can run the `build.sh` script.
 
 To test the build in multiple PHP versions, there is a docker-compose.yml provided.
 
@@ -73,9 +80,9 @@ HOST_OS_FAMILY=darwin docker-compose up -d
 
 You can now do:
 ```bash
-docker-compose exec -u build builder72 /app/build.sh
 docker-compose exec -u build builder73 /app/build.sh
 docker-compose exec -u build builder74 /app/build.sh
+docker-compose exec -u build builder80 /app/build.sh
 ```
 
 [humbug/box]: https://github.com/humbug/box

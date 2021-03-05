@@ -89,7 +89,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
             $this->application->section('install')
                 ->usage('install')
-                ->option('--step=<step>   Step from which to start installer.')
+                ->option('--step=<step>   Step from which to start installer. [default: 1]')
                 ->option('--skip-events   If set events will not be triggered.')
                 ->action(function(Input $input) {
                     $this->workspace->install($input);

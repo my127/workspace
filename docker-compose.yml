@@ -21,7 +21,7 @@ services:
     volumes:
       - .:/app
 
-  builder8:
+  builder80:
     build:
       context: .
       args:

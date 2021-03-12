@@ -4,8 +4,9 @@ namespace Test\my127\Workspace\Types;
 
 use Fixture;
 use PHPUnit\Framework\TestCase;
+use my127\Workspace\Tests\IntegrationTestCase;
 
-class CommandTest extends TestCase
+class CommandTest extends IntegrationTestCase
 {
     /** @test */
     public function bash_can_be_used_as_an_interpreter()
@@ -68,38 +69,40 @@ EOD
     /** @test */
     public function working_directory_of_workspace_can_be_used_with_the_bash_interpreter()
     {
-        $path = $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->workspace()->put('workspace.yml', <<<'EOD'
 command('working-directory'): |
   #!bash(workspace:/test1)
   pwd
 EOD
         );
-
-        mkdir($path.'/test1');
-        mkdir($path.'/test2');
-
-        chdir($path.'/test2');
+        $this->workspace()->mkdir('test1');
+        $this->workspace()->mkdir('test2');
 
         // even though we're running the command from test2 the script should still be executed within test1
-        $this->assertEquals($path.'/test1'."\n", $this->ws('working-directory')->getOutput());
+        $this->assertEquals(
+            $this->workspace()->path('test1') . "\n",
+            $this->ws('working-directory', 'test1')->getOutput()
+        );
     }
 
     /** @test */
     public function working_directory_of_cwd_can_be_used_with_the_bash_interpreter()
     {
-        $path = $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->workspace()->put('workspace.yml', <<<'EOD'
 command('working-directory'): |
   #!bash(cwd:/)
   pwd
 EOD
         );
 
-        mkdir($path.'/test1');
-        mkdir($path.'/test2');
+        $this->workspace()->mkdir('test1');
+        $this->workspace()->mkdir('test2');
 
-        chdir($path.'/test2');
-
-        $this->assertEquals($path.'/test2'."\n", $this->ws('working-directory')->getOutput());
+        // even though we're running the command from test2 the script should still be executed within test1
+        $this->assertEquals(
+            $this->workspace()->path('test2') . "\n",
+            $this->ws('working-directory', 'test2')->getOutput()
+        );
     }
 
     /** @test */
@@ -112,13 +115,14 @@ command('working-directory'): |
 EOD
         );
 
-        mkdir($path.'/test1');
-        mkdir($path.'/test2');
-
-        chdir($path.'/test2');
+        $this->workspace()->mkdir('test1');
+        $this->workspace()->mkdir('test2');
 
         // even though we're running the command from test2 the script should still be executed within test1
-        $this->assertEquals($path.'/test1', $this->ws('working-directory')->getOutput());
+        $this->assertEquals(
+            $this->workspace()->path('test1'),
+            $this->ws('working-directory', 'test2')->getOutput()
+        );
     }
 
     /** @test */
@@ -131,12 +135,15 @@ command('working-directory'): |
 EOD
         );
 
-        mkdir($path.'/test1');
-        mkdir($path.'/test2');
+        $this->workspace()->mkdir('test1');
+        $this->workspace()->mkdir('test2');
 
-        chdir($path.'/test2');
-
-        $this->assertEquals($path.'/test2', $this->ws('working-directory')->getOutput());
+        // even though we're running the command from test2 the script should still be executed within test1
+        // TODO: this doesn't seem correct
+        $this->assertEquals(
+            $this->workspace()->path('test2'),
+            $this->ws('working-directory', 'test2')->getOutput()
+        );
     }
 
     /** @test */
@@ -172,7 +179,7 @@ EOD
     /** @test */
     public function expression_filter_can_be_used_with_the_bash_interpreter()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->workspace()->put('workspace.yml', <<<'EOD'
 attribute('message'): Hello
 
 command('speak'): |
@@ -187,7 +194,7 @@ EOD
     /** @test */
     public function expression_filter_can_be_used_with_the_php_interpreter()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->workspace()->put('workspace.yml', <<<'EOD'
 attribute('message'): Hello
 
 command('speak'): |

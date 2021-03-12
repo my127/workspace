@@ -121,6 +121,7 @@ EOD
     {
         $this->workspace()->loadSample('attribute/precedence');
 
+        // @todo: Make this use a dataprovider
         $this->assertEquals('Hello From harness.default',  $this->ws('get "key.1"', 'workspace')->getOutput());
         $this->assertEquals('Hello From harness.normal',   $this->ws('get "key.2"', 'workspace')->getOutput());
         $this->assertEquals('Hello From harness.override', $this->ws('get "key.3"', 'workspace')->getOutput());

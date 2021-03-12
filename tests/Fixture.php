@@ -35,6 +35,13 @@ class Fixture
         return self::$WORKSPACE_DIR;
     }
 
+    public static function putWorkspace(string $contents): string
+    {
+        $path = self::$WORKSPACE_DIR.'/workspace.yml';
+        file_put_contents($path, $contents);
+        return $path;
+    }
+
     public static function workspace($declarations)
     {
         self::clean();

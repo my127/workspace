@@ -3,6 +3,7 @@
 namespace Test\my127\Workspace\Types;
 
 use Fixture;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
@@ -116,22 +117,29 @@ EOD
         $this->assertEquals('yes', $this->workspaceCommand('isnull')->getOutput());
     }
 
-    /** @test */
-    public function attribute_precedence_is_respected()
+    /** 
+     * @test 
+     * @dataProvider provide_attribute_precedence_is_respected
+     */
+    public function attribute_precedence_is_respected(string $attribute, string $expected)
     {
         $this->workspace()->loadSample('attribute/precedence');
+        $this->assertEquals($expected, $this->workspaceCommand(sprintf(
+            'get "%s"',
+            $attribute
+        ), 'workspace')->getOutput());
+    }
 
-        // @todo: Make this use a dataprovider
-        $this->assertEquals('Hello From harness.default',  $this->workspaceCommand('get "key.1"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From harness.normal',   $this->workspaceCommand('get "key.2"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From harness.override', $this->workspaceCommand('get "key.3"', 'workspace')->getOutput());
-
-        $this->assertEquals('Hello From harness.override',   $this->workspaceCommand('get "key.4"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From harness.override',   $this->workspaceCommand('get "key.5"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From workspace.override', $this->workspaceCommand('get "key.6"', 'workspace')->getOutput());
-
-        $this->assertEquals('Hello From workspace.override', $this->workspaceCommand('get "key.7"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From workspace.override', $this->workspaceCommand('get "key.8"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From global.override',    $this->workspaceCommand('get "key.9"', 'workspace')->getOutput());
+    public function provide_attribute_precedence_is_respected(): Generator
+    {
+        yield ['key.1', 'Hello From harness.default'];
+        yield ['key.2', 'Hello From harness.normal'];
+        yield ['key.3', 'Hello From harness.override'];
+        yield ['key.4', 'Hello From harness.override'];
+        yield ['key.5', 'Hello From harness.override'];
+        yield ['key.6', 'Hello From workspace.override'];
+        yield ['key.7', 'Hello From workspace.override'];
+        yield ['key.8', 'Hello From workspace.override'];
+        yield ['key.9', 'Hello From global.override'];
     }
 }

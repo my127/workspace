@@ -11,7 +11,7 @@ class BashTest extends IntegrationTestCase
     /** @test */
     public function bash_can_be_used_as_an_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!bash
   echo -n "Hello World"

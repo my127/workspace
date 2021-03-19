@@ -10,7 +10,7 @@ class WorkspaceTest extends IntegrationTestCase
     /** @test */
     public function workspace_declaration_is_optional()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('hi'): |
   #!bash
   echo -n "Hello World"
@@ -23,7 +23,7 @@ EOD
     /** @test */
     public function workspace_name_is_made_available_as_attribute()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'): ~
 
 command('get workspace name'): |
@@ -38,7 +38,7 @@ EOD
     /** @test */
     public function workspace_description_is_made_available_as_attribute()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'):
   description: Example description
 
@@ -54,7 +54,7 @@ EOD
     /** @test */
     public function namespace_attribute_is_made_available_and_defaults_to_workspace_name()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'): ~
 
 command('get namespace'): |
@@ -69,7 +69,7 @@ EOD
     /** @test */
     public function when_not_declared_workspace_name_is_basename_of_containing_directory()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('get workspace name'): |
   #!bash|@
   echo -n "@('workspace.name')"
@@ -82,7 +82,7 @@ EOD
     /** @test */
     public function workspace_exec_method_is_made_available_to_expressions()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): = exec("echo 'Hello World'")
         
 command('speak'): |
@@ -97,7 +97,7 @@ EOD
     /** @test */
     public function php_passthru_is_available_to_the_workspace_helper()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!php
   $ws->passthru('echo "Hello World"');

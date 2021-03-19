@@ -11,7 +11,7 @@ class AttributeTest extends IntegrationTestCase
     /** @test */
     public function normal_attribute_key_can_be_set_and_retrieved()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -26,7 +26,7 @@ EOD
     /** @test */
     public function normal_attribute_root_object_can_be_set_and_retrieved()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attributes:
   my:
     message: Hello World
@@ -44,7 +44,7 @@ EOD
     /** @test */
     public function attribute_value_can_be_an_expression()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('db'):
   driver: mysql
   host: localhost
@@ -64,7 +64,7 @@ EOD
     /** @test */
     public function isset_returns_false_when_attribute_is_not_defined()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('isset'): |
   #!php
   echo (isset($ws['message'])) ? 'yes' : 'no';
@@ -77,7 +77,7 @@ EOD
     /** @test */
     public function isset_returns_true_when_attribute_is_defined_and_has_a_value()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 command('isset'): |
   #!php
@@ -91,7 +91,7 @@ EOD
     /** @test */
     public function isset_returns_true_even_when_attribute_value_is_null()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): null
 command('isset'): |
   #!php
@@ -105,7 +105,7 @@ EOD
     /** @test */
     public function null_values_are_also_represented_internally_as_null()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): null
 command('isnull'): |
   #!php

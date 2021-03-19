@@ -11,7 +11,7 @@ class AttributesTest extends IntegrationTestCase
     /** @test */
     public function host_os_family_is_made_available_as_an_attribute()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('get host os family'): |
   #!php
   echo $ws['host.os'];

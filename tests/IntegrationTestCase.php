@@ -29,4 +29,9 @@ class IntegrationTestCase extends TestCase
 
         return $process;
     }
+
+    public function createWorkspaceYml(string $contents): void
+    {
+        $this->workspace()->put('workspace.yml', $contents);
+    }
 }

@@ -11,7 +11,7 @@ class SubscriberTest extends IntegrationTestCase
     /** @test */
     public function subscriber_script_is_run_when_appropriate_event_is_triggered()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 on('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -28,7 +28,7 @@ EOD
     /** @test */
     public function subscriber_script_is_run_with_env_when_triggered()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 on('custom.event'):
   env:
     EXAMPLE: test
@@ -48,7 +48,7 @@ EOD
     /** @test */
     public function after_can_be_used_as_a_shorthand_for_event_names_prefixed_with_after()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 after('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -65,7 +65,7 @@ EOD
     /** @test */
     public function before_can_be_used_as_a_shorthand_for_event_names_prefixed_with_before()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 before('custom.event'): |
   #!bash
   echo -n "Hello World"

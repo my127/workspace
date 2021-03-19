@@ -11,7 +11,7 @@ class FunctionTest extends IntegrationTestCase
     /** @test */
     public function bash_can_be_used_as_an_interpreter_for_a_function()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('add', [v1, v2]): |
   #!bash
   ="$((v1+v2))"
@@ -28,7 +28,7 @@ EOD
     /** @test */
     public function php_can_be_used_as_an_interpreter_for_a_function()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('add', [v1, v2]): |
   #!php
   =$v1+$v2;
@@ -45,7 +45,7 @@ EOD
     /** @test */
     public function bash_function_can_make_use_of_environment_variables()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -65,7 +65,7 @@ EOD
     /** @test */
     public function php_function_can_make_use_of_environment_variables()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -85,7 +85,7 @@ EOD
     /** @test */
     public function functions_are_available_within_attribute_expressions()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('answer'): = add(2, 2)
 
 function('add', [v1, v2]): |
@@ -105,7 +105,7 @@ EOD
     /** @test */
     public function functions_are_able_to_return_non_scalar_types()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('array', [v1, v2]): |
   #!php
   = [$v1, $v2];

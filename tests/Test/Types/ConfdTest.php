@@ -106,6 +106,6 @@ EOD
     private function workspaceWithSampleData(string $workspace, string $sampleName)
     {
         $this->workspace()->loadSample($sampleName);
-        $this->workspace()->put('workspace.yml', $workspace);
+        $this->createWorkspaceYml($workspace);
     }
 }

@@ -11,7 +11,7 @@ class CommandTest extends IntegrationTestCase
     /** @test */
     public function bash_can_be_used_as_an_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!bash
   echo -n "Hello World"
@@ -24,7 +24,7 @@ EOD
     /** @test */
     public function php_can_be_used_as_an_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!php
   echo "Hello World";
@@ -37,7 +37,7 @@ EOD
     /** @test */
     public function environment_variables_are_passed_through_to_the_bash_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'):
   env:
     MESSAGE: Sample Value
@@ -53,7 +53,7 @@ EOD
     /** @test */
     public function environment_variables_are_passed_through_to_the_php_intepreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'):
   env:
     MESSAGE: Sample Value
@@ -69,7 +69,7 @@ EOD
     /** @test */
     public function working_directory_of_workspace_can_be_used_with_the_bash_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('working-directory'): |
   #!bash(workspace:/test1)
   pwd
@@ -88,7 +88,7 @@ EOD
     /** @test */
     public function working_directory_of_cwd_can_be_used_with_the_bash_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('working-directory'): |
   #!bash(cwd:/)
   pwd
@@ -108,7 +108,7 @@ EOD
     /** @test */
     public function working_directory_of_workspace_can_be_used_with_the_php_interpreter()
     {
-        $path = $this->workspace()->put('workspace.yml', <<<'EOD'
+        $path = $this->createWorkspaceYml(<<<'EOD'
 command('working-directory'): |
   #!php(workspace:/test1)
   echo getcwd();
@@ -128,7 +128,7 @@ EOD
     /** @test */
     public function working_directory_of_cwd_can_be_used_with_the_php_interpreter()
     {
-        $path = $this->workspace()->put('workspace.yml', <<<'EOD'
+        $path = $this->createWorkspaceYml(<<<'EOD'
 command('working-directory'): |
   #!php(cwd:/)
   echo getcwd();
@@ -149,7 +149,7 @@ EOD
     /** @test */
     public function attribute_filter_can_be_used_with_the_bash_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -164,7 +164,7 @@ EOD
     /** @test */
     public function attribute_filter_can_be_used_with_the_php_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -179,7 +179,7 @@ EOD
     /** @test */
     public function expression_filter_can_be_used_with_the_bash_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello
 
 command('speak'): |
@@ -194,7 +194,7 @@ EOD
     /** @test */
     public function expression_filter_can_be_used_with_the_php_interpreter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello
 
 command('speak'): |
@@ -209,7 +209,7 @@ EOD
     /** @test */
     public function environment_variable_values_can_be_expressions()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello
 
 command('speak'):
@@ -227,7 +227,7 @@ EOD
     /** @test */
     public function console_input_is_made_available_to_the_expression_filter()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('hello <name>'): |
   #!bash|=
   echo -n "hello ={ input.argument('name') }"
@@ -240,7 +240,7 @@ EOD
     /** @test */
     public function positional_commands_from_input_can_be_accessed()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('state (enable|disable)'): |
   #!bash|=
   echo -n "={ input.command(-1) }"
@@ -254,7 +254,7 @@ EOD
     /** @test */
     public function console_input_can_be_used_as_expression_for_env_variable()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('hello <name>'):
   env:
     NAME: = input.argument('name')

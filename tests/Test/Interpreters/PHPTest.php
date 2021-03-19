@@ -11,7 +11,7 @@ class PHPTest extends IntegrationTestCase
     /** @test */
     public function helper_can_access_attributes_using_array_access_interface()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -26,7 +26,7 @@ EOD
     /** @test */
     public function helper_can_call_dynamically_declared_functions()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 
 function('add', [v1, v2]): |
   #!php
@@ -45,7 +45,7 @@ EOD
     /** @test */
     public function helper_can_run_declared_commands()
     {
-        $this->workspace()->put('workspace.yml', <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('cmdA'): |
   #!php
   echo $ws('cmdB');

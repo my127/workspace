@@ -12,7 +12,7 @@ class ConfdTest extends IntegrationTestCase
     public function attributes_are_available_to_templates()
     {
         $path = $this->workspace()->loadSample('confd/attributes');
-        $this->ws('apply config');
+        $this->workspaceCommand('apply config');
 
         $this->assertEquals('Hello World', $this->workspace()->getContents('test.txt'));
     }
@@ -21,7 +21,7 @@ class ConfdTest extends IntegrationTestCase
     public function functions_are_available_to_templates()
     {
         $path = $this->workspace()->loadSample('confd/functions');
-        $this->ws('apply config');
+        $this->workspaceCommand('apply config');
 
         $this->assertEquals('6', $this->workspace()->getContents('test.txt'));
     }
@@ -39,7 +39,7 @@ command('apply config'): |
 EOD
             , 'confd/simple');
 
-        $this->ws('apply config');
+        $this->workspaceCommand('apply config');
 
         $this->assertEquals($this->workspace()->getContents('sample1.txt.twig'), $this->workspace()->getContents('sample1.txt'));
     }
@@ -57,7 +57,7 @@ command('apply config'): |
 EOD
             , 'confd/simple');
 
-        $this->ws('apply config');
+        $this->workspaceCommand('apply config');
 
         $this->assertEquals($this->workspace()->getContents('sample1.txt.twig'), $this->workspace()->getContents('sample1.txt'));
     }
@@ -76,7 +76,7 @@ command('apply config'): |
 EOD
             , 'confd/simple');
 
-        $this->ws('apply config');
+        $this->workspaceCommand('apply config');
 
         $this->assertTrue($this->workspace()->exists('sample1.txt'));
         $this->assertFalse($this->workspace()->exists('sample2.txt'));
@@ -95,7 +95,7 @@ command('apply config'): |
 EOD
         , 'confd/simple');
 
-        $this->ws('apply config');
+        $this->workspaceCommand('apply config');
 
         $this->assertEquals(
             $this->workspace()->getContents('sample1.txt.twig'),

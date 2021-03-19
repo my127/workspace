@@ -20,7 +20,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -37,7 +37,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
 
@@ -58,7 +58,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("mysql:host=localhost;dbname=application", $this->ws('speak')->getOutput());
+        $this->assertEquals("mysql:host=localhost;dbname=application", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -71,7 +71,7 @@ command('isset'): |
 EOD
         );
 
-        $this->assertEquals('no', $this->ws('isset')->getOutput());
+        $this->assertEquals('no', $this->workspaceCommand('isset')->getOutput());
     }
 
     /** @test */
@@ -85,7 +85,7 @@ command('isset'): |
 EOD
         );
 
-        $this->assertEquals('yes', $this->ws('isset')->getOutput());
+        $this->assertEquals('yes', $this->workspaceCommand('isset')->getOutput());
     }
 
     /** @test */
@@ -99,7 +99,7 @@ command('isset'): |
 EOD
         );
 
-        $this->assertEquals('yes', $this->ws('isset')->getOutput());
+        $this->assertEquals('yes', $this->workspaceCommand('isset')->getOutput());
     }
 
     /** @test */
@@ -113,7 +113,7 @@ command('isnull'): |
 EOD
         );
 
-        $this->assertEquals('yes', $this->ws('isnull')->getOutput());
+        $this->assertEquals('yes', $this->workspaceCommand('isnull')->getOutput());
     }
 
     /** @test */
@@ -122,16 +122,16 @@ EOD
         $this->workspace()->loadSample('attribute/precedence');
 
         // @todo: Make this use a dataprovider
-        $this->assertEquals('Hello From harness.default',  $this->ws('get "key.1"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From harness.normal',   $this->ws('get "key.2"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From harness.override', $this->ws('get "key.3"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From harness.default',  $this->workspaceCommand('get "key.1"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From harness.normal',   $this->workspaceCommand('get "key.2"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From harness.override', $this->workspaceCommand('get "key.3"', 'workspace')->getOutput());
 
-        $this->assertEquals('Hello From harness.override',   $this->ws('get "key.4"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From harness.override',   $this->ws('get "key.5"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From workspace.override', $this->ws('get "key.6"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From harness.override',   $this->workspaceCommand('get "key.4"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From harness.override',   $this->workspaceCommand('get "key.5"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From workspace.override', $this->workspaceCommand('get "key.6"', 'workspace')->getOutput());
 
-        $this->assertEquals('Hello From workspace.override', $this->ws('get "key.7"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From workspace.override', $this->ws('get "key.8"', 'workspace')->getOutput());
-        $this->assertEquals('Hello From global.override',    $this->ws('get "key.9"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From workspace.override', $this->workspaceCommand('get "key.7"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From workspace.override', $this->workspaceCommand('get "key.8"', 'workspace')->getOutput());
+        $this->assertEquals('Hello From global.override',    $this->workspaceCommand('get "key.9"', 'workspace')->getOutput());
     }
 }

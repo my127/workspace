@@ -22,7 +22,7 @@ command('add <v1> <v2>'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->ws('add 2 2')->getOutput());
+        $this->assertEquals("4", $this->workspaceCommand('add 2 2')->getOutput());
     }
 
     /** @test */
@@ -39,7 +39,7 @@ command('add <v1> <v2>'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->ws('add 2 2')->getOutput());
+        $this->assertEquals("4", $this->workspaceCommand('add 2 2')->getOutput());
     }
 
     /** @test */
@@ -59,7 +59,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -79,7 +79,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -99,7 +99,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->ws('hi')->getOutput());
+        $this->assertEquals("4", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -116,6 +116,6 @@ command('array <v1> <v2>'): |
 EOD
         );
 
-        $this->assertEquals('["2","2"]', $this->ws('array 2 2')->getOutput());
+        $this->assertEquals('["2","2"]', $this->workspaceCommand('array 2 2')->getOutput());
     }
 }

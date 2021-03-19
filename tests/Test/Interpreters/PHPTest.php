@@ -20,7 +20,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -38,7 +38,7 @@ command('calculate'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->ws('calculate')->getOutput()
+        $this->assertEquals("4", $this->workspaceCommand('calculate')->getOutput()
         );
     }
 
@@ -56,7 +56,7 @@ command('cmdB'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('cmdA')->getOutput()
+        $this->assertEquals("Hello World", $this->workspaceCommand('cmdA')->getOutput()
         );
     }
 }

@@ -17,7 +17,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -32,7 +32,7 @@ command('get workspace name'): |
 EOD
         );
 
-        $this->assertEquals("acme", $this->ws('get workspace name')->getOutput());
+        $this->assertEquals("acme", $this->workspaceCommand('get workspace name')->getOutput());
     }
 
     /** @test */
@@ -48,7 +48,7 @@ command('get workspace description'): |
 EOD
         );
 
-        $this->assertEquals("Example description", $this->ws('get workspace description')->getOutput());
+        $this->assertEquals("Example description", $this->workspaceCommand('get workspace description')->getOutput());
     }
 
     /** @test */
@@ -63,7 +63,7 @@ command('get namespace'): |
 EOD
         );
 
-        $this->assertEquals("acme", $this->ws('get namespace')->getOutput());
+        $this->assertEquals("acme", $this->workspaceCommand('get namespace')->getOutput());
     }
 
     /** @test */
@@ -76,7 +76,7 @@ command('get workspace name'): |
 EOD
         );
 
-        $this->assertEquals(basename($this->workspace()->path()), $this->ws('get workspace name')->getOutput());
+        $this->assertEquals(basename($this->workspace()->path()), $this->workspaceCommand('get workspace name')->getOutput());
     }
 
     /** @test */
@@ -91,7 +91,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World\n", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World\n", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -104,6 +104,6 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World\n", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World\n", $this->workspaceCommand('speak')->getOutput());
     }
 }

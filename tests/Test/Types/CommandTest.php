@@ -18,7 +18,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -31,7 +31,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -47,7 +47,7 @@ command('speak'):
 EOD
         );
 
-        $this->assertEquals("Sample Value", $this->ws('speak')->getOutput());
+        $this->assertEquals("Sample Value", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -63,7 +63,7 @@ command('speak'):
 EOD
         );
 
-        $this->assertEquals("Sample Value", $this->ws('speak')->getOutput());
+        $this->assertEquals("Sample Value", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -81,7 +81,7 @@ EOD
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
             $this->workspace()->path('test1') . "\n",
-            $this->ws('working-directory', 'test1')->getOutput()
+            $this->workspaceCommand('working-directory', 'test1')->getOutput()
         );
     }
 
@@ -101,7 +101,7 @@ EOD
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
             $this->workspace()->path('test2') . "\n",
-            $this->ws('working-directory', 'test2')->getOutput()
+            $this->workspaceCommand('working-directory', 'test2')->getOutput()
         );
     }
 
@@ -121,7 +121,7 @@ EOD
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
             $this->workspace()->path('test1'),
-            $this->ws('working-directory', 'test2')->getOutput()
+            $this->workspaceCommand('working-directory', 'test2')->getOutput()
         );
     }
 
@@ -142,7 +142,7 @@ EOD
         // TODO: this doesn't seem correct
         $this->assertEquals(
             $this->workspace()->path('test2'),
-            $this->ws('working-directory', 'test2')->getOutput()
+            $this->workspaceCommand('working-directory', 'test2')->getOutput()
         );
     }
 
@@ -158,7 +158,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -173,7 +173,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -188,7 +188,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -203,7 +203,7 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -221,7 +221,7 @@ command('speak'):
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('speak')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
@@ -234,7 +234,7 @@ command('hello <name>'): |
 EOD
         );
 
-        $this->assertEquals("hello world", $this->ws('hello world')->getOutput());
+        $this->assertEquals("hello world", $this->workspaceCommand('hello world')->getOutput());
     }
 
     /** @test */
@@ -247,8 +247,8 @@ command('state (enable|disable)'): |
 EOD
         );
 
-        $this->assertEquals("disable", $this->ws('state disable')->getOutput());
-        $this->assertEquals("enable",  $this->ws('state enable')->getOutput());
+        $this->assertEquals("disable", $this->workspaceCommand('state disable')->getOutput());
+        $this->assertEquals("enable",  $this->workspaceCommand('state enable')->getOutput());
     }
 
     /** @test */
@@ -264,6 +264,6 @@ command('hello <name>'):
 EOD
         );
 
-        $this->assertEquals("hello world", $this->ws('hello world')->getOutput());
+        $this->assertEquals("hello world", $this->workspaceCommand('hello world')->getOutput());
     }
 }

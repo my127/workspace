@@ -20,7 +20,7 @@ EOD
 
         $this->assertEquals(
             "Hello World",
-            $this->ws('speak')->getOutput()
+            $this->workspaceCommand('speak')->getOutput()
         );
     }
 }

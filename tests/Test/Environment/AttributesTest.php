@@ -20,7 +20,7 @@ EOD
 
         $this->assertEquals(
             strtolower(PHP_OS_FAMILY),
-            $this->ws('get host os family')->getOutput()
+            $this->workspaceCommand('get host os family')->getOutput()
         );
     }
 }

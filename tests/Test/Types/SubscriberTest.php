@@ -22,7 +22,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -42,7 +42,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World, test", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World, test", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -59,7 +59,7 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
@@ -76,6 +76,6 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->ws('hi')->getOutput());
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 }

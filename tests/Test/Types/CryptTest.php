@@ -17,8 +17,8 @@ key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 EOD
         );
 
-        $encrypted = trim($this->ws('secret encrypt "Hello World"')->getOutput());
-        $decrypted = trim($this->ws('secret decrypt "'.$encrypted.'"')->getOutput());
+        $encrypted = trim($this->workspaceCommand('secret encrypt "Hello World"')->getOutput());
+        $decrypted = trim($this->workspaceCommand('secret decrypt "'.$encrypted.'"')->getOutput());
 
         $this->assertTrue($encrypted != "Hello World");
         $this->assertTrue($decrypted == "Hello World");
@@ -40,7 +40,7 @@ command('hello'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", trim($this->ws('hello')->getOutput()));
+        $this->assertEquals("Hello World", trim($this->workspaceCommand('hello')->getOutput()));
     }
 
     /** @test */
@@ -57,7 +57,7 @@ command('hello'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", trim($this->ws('hello', '/', [
+        $this->assertEquals("Hello World", trim($this->workspaceCommand('hello', '/', [
             'MY127WS_KEY' => '81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100',
         ])->getOutput()));
     }

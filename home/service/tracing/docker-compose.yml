@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+      # Work around IPv6 ::1 not working on some docker desktop for mac installs by telling
+      # the Jaeger tracer client that the all in one distribution creates for "jaeger-query"
+      # to use IPv4.
+      JAEGER_AGENT_HOST: 127.0.0.1
+    labels:
+      - traefik.backend=my127ws-tracing-jaeger
+      - traefik.frontend.rule=Host:tracing.my127.site
+      - traefik.docker.network=my127ws
+      - traefik.port=16686
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: $TRAEFIK_NETWORK

@@ -3,7 +3,7 @@ services:
   traefik:
     container_name: my127ws-proxy
     build: traefik
-    restart: always
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443

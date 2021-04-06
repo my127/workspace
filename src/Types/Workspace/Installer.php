@@ -82,13 +82,22 @@ class Installer
                 break;
             case self::STEP_OVERLAY:
                 if (($overlayPath = $this->workspace->getOverlayPath()) !== null) {
+                    if ($events) {
+                        $this->workspace->trigger('before.harness.overlay');
+                    }
                     $this->applyOverlayDirectory($overlayPath);
+                    if ($events) {
+                        $this->workspace->trigger('after.harness.overlay');
+                    }
                 }
                 break;
             case self::STEP_VALIDATE_ATTRIBUTES:
                 $this->ensureRequiredAttributesArePresent($this->harness->getRequiredAttributes());
                 break;
             case self::STEP_PREPARE:
+                if ($events) {
+                    $this->workspace->trigger('before.harness.prepare');
+                }
                 $this->applyConfiguration($this->harness->getRequiredConfdPaths());
                 if ($events) {
                     $this->workspace->trigger('after.harness.prepare');

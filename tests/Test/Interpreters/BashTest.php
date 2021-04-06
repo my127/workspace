@@ -4,19 +4,23 @@ namespace Test\my127\Workspace\Interpreters;
 
 use Fixture;
 use PHPUnit\Framework\TestCase;
+use my127\Workspace\Tests\IntegrationTestCase;
 
-class BashTest extends TestCase
+class BashTest extends IntegrationTestCase
 {
     /** @test */
     public function bash_can_be_used_as_an_interpreter()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!bash
   echo -n "Hello World"
 EOD
         );
 
-        $this->assertEquals("Hello World", run('speak'));
+        $this->assertEquals(
+            "Hello World",
+            $this->workspaceCommand('speak')->getOutput()
+        );
     }
 }

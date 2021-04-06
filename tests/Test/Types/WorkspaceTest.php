@@ -2,28 +2,28 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
 use PHPUnit\Framework\TestCase;
+use my127\Workspace\Tests\IntegrationTestCase;
 
-class WorkspaceTest extends TestCase
+class WorkspaceTest extends IntegrationTestCase
 {
     /** @test */
     public function workspace_declaration_is_optional()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('hi'): |
   #!bash
   echo -n "Hello World"
 EOD
         );
 
-        $this->assertEquals("Hello World", run('hi'));
+        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
     public function workspace_name_is_made_available_as_attribute()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'): ~
 
 command('get workspace name'): |
@@ -32,13 +32,13 @@ command('get workspace name'): |
 EOD
         );
 
-        $this->assertEquals("acme", run('get workspace name'));
+        $this->assertEquals("acme", $this->workspaceCommand('get workspace name')->getOutput());
     }
 
     /** @test */
     public function workspace_description_is_made_available_as_attribute()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'):
   description: Example description
 
@@ -48,13 +48,13 @@ command('get workspace description'): |
 EOD
         );
 
-        $this->assertEquals("Example description", run('get workspace description'));
+        $this->assertEquals("Example description", $this->workspaceCommand('get workspace description')->getOutput());
     }
 
     /** @test */
     public function namespace_attribute_is_made_available_and_defaults_to_workspace_name()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'): ~
 
 command('get namespace'): |
@@ -63,26 +63,26 @@ command('get namespace'): |
 EOD
         );
 
-        $this->assertEquals("acme", run('get namespace'));
+        $this->assertEquals("acme", $this->workspaceCommand('get namespace')->getOutput());
     }
 
     /** @test */
     public function when_not_declared_workspace_name_is_basename_of_containing_directory()
     {
-        $path = Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('get workspace name'): |
   #!bash|@
   echo -n "@('workspace.name')"
 EOD
         );
 
-        $this->assertEquals(basename($path), run('get workspace name'));
+        $this->assertEquals(basename($this->workspace()->path()), $this->workspaceCommand('get workspace name')->getOutput());
     }
 
     /** @test */
     public function workspace_exec_method_is_made_available_to_expressions()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): = exec("echo 'Hello World'")
         
 command('speak'): |
@@ -91,19 +91,19 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World\n", run('speak'));
+        $this->assertEquals("Hello World\n", $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
     public function php_passthru_is_available_to_the_workspace_helper()
     {
-        Fixture::workspace(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!php
   $ws->passthru('echo "Hello World"');
 EOD
         );
 
-        $this->assertEquals("Hello World\n", run('speak'));
+        $this->assertEquals("Hello World\n", $this->workspaceCommand('speak')->getOutput());
     }
 }

@@ -75,7 +75,13 @@ class Repository
                 continue;
             }
 
-            $this->packages = array_merge($this->packages, json_decode(file_get_contents($source['url']), true));
+            $packages = json_decode(file_get_contents($source['url']), true, JSON_THROW_ON_ERROR);
+
+            if ($packages === null) {
+                throw new Exception(sprintf('Response of %s can\'t be decoded as json.', $source['url']));
+            }
+
+            $this->packages = array_merge($this->packages, $packages);
             $this->sources[$k]['imported'] = true;
         }
     }

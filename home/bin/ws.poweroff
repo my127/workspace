@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+DIR=""
+
+main()
+{
+  echo "Turning off all containers..."
+
+  # Get all containers in the my127ws network
+  for containerId in $(docker ps --quiet --filter network=my127ws); do
+    # Get the docker-compose project name from the container
+    projectName="$(docker inspect --format '{{ index .Config.Labels "com.docker.compose.project"}}' "$containerId")"
+    # Get the docker-compose working directory path from the container
+    projectDirectory="$(docker inspect --format '{{ index .Config.Labels "com.docker.compose.project.working_dir"}}' "$containerId")"
+
+    if [ -z "$projectName" ] || [ -z "$projectDirectory" ]; then
+      echo "Could not look up projectName or projectDirectory for container ID '$containerId'" >&2
+      continue
+    fi
+
+    echo "Turning off $projectName's containers"
+    if [ -f "$projectDirectory/workspace.yml" ]; then
+      run "(cd '$projectDirectory' && (ws disable || docker-compose -p '$projectName' stop))"
+    elif [ -f "$projectDirectory/docker-compose.yml" ]; then
+      run "(cd '$projectDirectory' && docker-compose -p '$projectName' stop)"
+    else
+      run docker stop "$containerId"
+    fi
+  done
+}
+
+bootstrap()
+{
+    DIR="$(cd "$(dirname "$0")" && cd ../ && pwd)"
+    # shellcheck source=./lib/sidekick.sh
+    source "$DIR/lib/sidekick.sh"
+}
+
+bootstrap
+main "$@"

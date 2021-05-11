@@ -8,6 +8,8 @@ main()
 {
   echo "Turning off all containers..."
 
+  local projects=()
+
   # Get all containers in the my127ws network
   for containerId in $(docker ps --quiet --filter network=my127ws); do
     # Get the docker-compose project name from the container
@@ -20,6 +22,11 @@ main()
       continue
     fi
 
+    if [[ "${projects[*]}" =~ (^|[[:space:]])"$projectName"($|[[:space:]]) ]]; then
+      echo "Already dealt with project $projectName, skipping" >&2
+      continue
+    fi
+
     echo "Turning off $projectName's containers"
     if [ -f "$projectDirectory/workspace.yml" ]; then
       run "(cd '$projectDirectory' && (ws disable || docker-compose -p '$projectName' stop))"
@@ -28,6 +35,8 @@ main()
     else
       run docker stop "$containerId"
     fi
+
+    projects+=("$projectName")
   done
 }
 

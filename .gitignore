@@ -1,6 +1,7 @@
 /.phpunit*
 /home/build
 /config/_compiled/*
+/github-changelog-http-cache
 /vendor
 /vendor-bin/**/vendor
 /vendor-bin/**/composer.lock

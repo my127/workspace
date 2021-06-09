@@ -48,8 +48,8 @@ class Installer
         AttributeCollection $attributes,
         Path $path,
         ConfdFactory $confd,
-        Crypt $crypt)
-    {
+        Crypt $crypt
+    ) {
         $this->workspace  = $workspace;
         $this->packages   = $packages;
         $this->harness    = $harness;
@@ -60,8 +60,8 @@ class Installer
         $this->crypt      = $crypt;
     }
 
-    public function getStep(?string $step) {
-
+    public function getStep(?string $step)
+    {
         if (!isset($this->stepMap[$step])) {
             throw new Exception("Step '{$step}' is not recognised.");
         }

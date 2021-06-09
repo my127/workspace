@@ -293,7 +293,7 @@ attribute('default_value'): 'default value'
 
 command('hello [--name=<name>]'):
   env:
-    NAME: "= input.option('name') ?: @('default_value')"
+    NAME: "= input.option('name').value() ? : @('default_value')"
   exec: |
     #!bash
     echo -n "hello ${NAME}"

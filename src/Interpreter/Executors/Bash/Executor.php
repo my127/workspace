@@ -2,6 +2,7 @@
 
 namespace my127\Workspace\Interpreter\Executors\Bash;
 
+use my127\Console\Usage\Model\StringOptionValue;
 use my127\Workspace\Interpreter\Executor as InterpreterExecutor;
 
 class Executor implements InterpreterExecutor
@@ -58,10 +59,12 @@ class Executor implements InterpreterExecutor
                  .". {$home}/.my127/workspace/lib/sidekick.sh\n";
 
         foreach ($args as $key => $value) {
+            $value = $value instanceof StringOptionValue ? $value->value() : $value;
             $header .= $key.'="'.addslashes($value).'"'."\n";
         }
 
         foreach ($env as $key => $value) {
+            $value = $value instanceof StringOptionValue ? $value->value() : $value;
             $header .= 'export '.$key.'="'.addslashes($value).'"'."\n";
         }
 

@@ -6,3 +6,7 @@ command('global service <name> <action>', 'global service'): |
 command('global config get <key>'): |
   #!bash|=
   echo "={@(input.argument('key'))}"
+
+command('poweroff', 'poweroff'): |
+  #!bash(cwd:/)
+  ws.poweroff

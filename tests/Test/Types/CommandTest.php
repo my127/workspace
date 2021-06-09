@@ -266,4 +266,40 @@ EOD
 
         $this->assertEquals("hello world", $this->workspaceCommand('hello world')->getOutput());
     }
+
+    /** @test */
+    public function optional_options_can_be_specified()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+attribute('default_value'): 'default value'
+
+command('hello [--name=<name>]'):
+  env:
+    NAME: "= input.option('name') ?: @('default_value')"
+  exec: |
+    #!bash
+    echo -n "hello ${NAME}"
+EOD
+        );
+
+        $this->assertEquals('hello world', $this->workspaceCommand('hello --name=world')->getOutput());
+    }
+
+    /** @test */
+    public function optional_options_can_be_left_empty()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+attribute('default_value'): 'default value'
+
+command('hello [--name=<name>]'):
+  env:
+    NAME: "= input.option('name') ?: @('default_value')"
+  exec: |
+    #!bash
+    echo -n "hello ${NAME}"
+EOD
+        );
+
+        $this->assertEquals('hello default value', $this->workspaceCommand('hello')->getOutput());
+    }
 }

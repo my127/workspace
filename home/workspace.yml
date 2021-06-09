@@ -14,10 +14,6 @@ command('create <name> [<harness> [--no-install] ]', 'create'): |
       $ws->passthru("cd $name; ws install");
   }
 
-command('poweroff', 'poweroff'): |
-  #!bash(cwd:/)
-  ws.poweroff
-
 attributes.default:
   global:
     service:

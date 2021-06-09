@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f1a043caca2acbbbe6956a920c19b7d",
+    "content-hash": "3f747bf9c6c0ce9b00ef036465ea3382",
     "packages": [
         {
             "name": "my127/my127",
-            "version": "dev-master",
+            "version": "dev-fix-optional-input-breaking-change",
             "source": {
                 "type": "git",
                 "url": "https://github.com/my127/php-library.git",
-                "reference": "ac6cc7c9445cff3733ceeedcbf773c75abd5be7a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/my127/php-library/zipball/ac6cc7c9445cff3733ceeedcbf773c75abd5be7a",
-                "reference": "ac6cc7c9445cff3733ceeedcbf773c75abd5be7a",
-                "shasum": ""
+                "reference": "b2595f95ec842336692c074bb0f4bb5a737d9f47"
             },
             "require": {
                 "php": ">=7.3",
@@ -33,7 +27,6 @@
                 "phpunit/phpunit": "^9.5",
                 "squizlabs/php_codesniffer": "^3.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -41,7 +34,17 @@
                     "my127\\FSM\\": "src/FSM/src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit --testdox && vendor/bin/phpspec run -fpretty -v --ansi"
+                ],
+                "cs": [
+                    "vendor/bin/phpcs  --standard=PSR2 --ignore=\"*/spec/*,*/tests/*\" ./src"
+                ],
+                "cs-fix": [
+                    "vendor/bin/phpcbf --standard=PSR2 --ignore=\"*/spec/*,*/tests/*\" ./src"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -52,11 +55,7 @@
                 }
             ],
             "description": "my127 PHP Library",
-            "support": {
-                "issues": "https://github.com/my127/php-library/issues",
-                "source": "https://github.com/my127/php-library/tree/master"
-            },
-            "time": "2021-03-04T14:46:02+00:00"
+            "time": "2021-06-09T18:47:58+00:00"
         },
         {
             "name": "psr/cache",
@@ -3738,5 +3737,5 @@
         "php": "^7.3 || ^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

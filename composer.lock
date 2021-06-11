@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/my127/php-library.git",
-                "reference": "b2595f95ec842336692c074bb0f4bb5a737d9f47"
+                "reference": "3bd270b2d1538922065c944b45a2db64a582b74d"
             },
             "require": {
                 "php": ">=7.3",
@@ -55,7 +55,7 @@
                 }
             ],
             "description": "my127 PHP Library",
-            "time": "2021-06-09T18:47:58+00:00"
+            "time": "2021-06-11T06:29:50+00:00"
         },
         {
             "name": "psr/cache",

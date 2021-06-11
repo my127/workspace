@@ -6,6 +6,7 @@ use Exception;
 use my127\Console\Application\Event\BeforeActionEvent;
 use my127\Console\Application\Executor;
 use my127\Console\Usage\Input;
+use my127\Console\Usage\Model\OptionValue;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
@@ -113,6 +114,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 ->usage('config dump --key=<key>')
                 ->action(function(Input $input) use ($environment) {
                     $key = $input->getOption('key');
+                    $key = $key instanceof OptionValue ? $key->value() : $key;
                     $attribute = $environment->getAttribute($key);
                     if ($attribute === null) {
                         echo sprintf("Attribute with key %s not found\n", $key);

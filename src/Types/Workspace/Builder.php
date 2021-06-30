@@ -113,9 +113,9 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 ->usage('config dump --key=<key>')
                 ->action(function(Input $input) use ($environment) {
                     $key = $input->getOption('key');
-                    $attribute = $environment->getAttribute($key);
+                    $attribute = $environment->getAttribute($key->value());
                     if ($attribute === null) {
-                        echo sprintf("Attribute with key %s not found\n", $key);
+                        echo sprintf("Attribute with key %s not found\n", $key->value());
                         return;
                     }
                     var_dump($attribute);

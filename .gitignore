@@ -1,9 +1,9 @@
 /.phpunit*
-/home/version
+/home/build
 /config/_compiled/*
 /github-changelog-http-cache
 /vendor
 /vendor-bin/**/vendor
 /vendor-bin/**/composer.lock
-/my127ws.phar
+/ws.phar
 /tests/Workspace

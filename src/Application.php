@@ -9,14 +9,14 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Application extends ConsoleApplication
 {
-    const VERSION = 'latest';
+    private const DEFAULT_VERSION = '0.2.x-dev';
 
     /** @var Environment */
     private $environment;
 
     public function __construct(Environment $environment, Executor $executor, EventDispatcher $dispatcher)
     {
-        parent::__construct($executor, $dispatcher, 'ws', '', self::VERSION);
+        parent::__construct($executor, $dispatcher, 'ws', '', self::getVersion());
         $this->environment = $environment;
     }
 
@@ -24,5 +24,19 @@ class Application extends ConsoleApplication
     {
         $this->environment->build();
         parent::run($argv);
+    }
+
+    public static function getVersion(): string
+    {
+        $version = trim(@file_get_contents(__DIR__ . '/../home/build'));
+        if (empty($version)) {
+            return self::DEFAULT_VERSION;
+        }
+        return $version;
+    }
+
+    public static function getMetadata(): array
+    {
+        return ['application_version' => self::getVersion()];
     }
 }

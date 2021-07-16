@@ -2,9 +2,9 @@
 
 compile()
 {
-    local version="${1:-$(date -u)}"
+    local version="$1"
     
-    echo "$version" > home/version
+    echo "$version" > home/build
     bin/build && box compile
 }
 

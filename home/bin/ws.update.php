@@ -7,13 +7,12 @@ use my127\Workspace\Application;
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
 use my127\Workspace\Updater\Updater;
 
-$currentVersion = Application::VERSION;
 $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
 
 $updater = new Updater('https://api.github.com/repos/my127/workspace/releases');
 
 try {
-    $updater->update($currentVersion, $localFilename);
+    $updater->update(Application::getVersion(), $localFilename);
 } catch (NoUpdateAvailableException $e) {
     echo sprintf("You are already running the latest version of workspace: %s", $e->getCurrentVersion()) . PHP_EOL;
     exit(1);

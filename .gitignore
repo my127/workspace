@@ -1,5 +1,5 @@
 /.phpunit*
-/home/build
+/home/version
 /config/_compiled/*
 /github-changelog-http-cache
 /vendor

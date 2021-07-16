@@ -13,6 +13,7 @@
     "home/service/proxy/.env"
   ],
   "blacklist": [
+    "tools/scripts/compile.sh",
  
     "vendor/symfony/cache/Adapter/TraceableAdapter.php",
     "vendor/symfony/cache/Adapter/SimpleCacheAdapter.php",

@@ -10,3 +10,7 @@ command('global config get <key>'): |
 command('poweroff', 'poweroff'): |
   #!bash(cwd:/)
   ws.poweroff
+
+command('self-update', 'self-update'): |
+  #!bash(cwd:/)
+  php home/bin/ws.update.php

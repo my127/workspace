@@ -105,4 +105,10 @@ When ready to tag a release, make a new branch from the `0.2.x` branch for the c
 6. Commit the resulting changes, push and raise a pull request.
 7. Once merged, continue with the release process below.
 
+#### Building a PHAR for release
+
+1. Run `composer compile <version-number>`, e.g. `composer compile 0.2.0`
+1. `mv my127ws.phar ws`
+1. Create a new release in GitHub using the working tree
+
 [humbug/box]: https://github.com/humbug/box

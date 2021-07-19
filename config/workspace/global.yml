@@ -12,5 +12,5 @@ command('poweroff', 'poweroff'): |
   ws.poweroff
 
 command('self-update', 'self-update'): |
-  #!bash(cwd:/)
-  php home/bin/ws.update.php
+  #!php
+  require_once  'phar://ws.phar/home/bin/ws.update.php';

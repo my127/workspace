@@ -1,5 +1,6 @@
 {
   "main": "bin/workspace",
+  "alias": "ws.phar",
   "output": "ws.phar",
   "directories-bin": [
     "config",

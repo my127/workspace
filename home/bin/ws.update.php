@@ -1,18 +1,19 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
-require_once __DIR__.'/../../config/_compiled/container.php';
-
 use my127\Workspace\Application;
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
 use my127\Workspace\Updater\Updater;
 
-$localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
+$pharPath = Phar::running(false);
+if (empty($pharPath)) {
+    echo "This command can only be executed from within the ws utility." . PHP_EOL;
+    exit(1);
+}
 
 $updater = new Updater('https://api.github.com/repos/my127/workspace/releases');
 
 try {
-    $updater->update(Application::getVersion(), $localFilename);
+    $updater->update(Application::getVersion(), $pharPath);
 } catch (NoUpdateAvailableException $e) {
     echo sprintf("You are already running the latest version of workspace: %s", $e->getCurrentVersion()) . PHP_EOL;
     exit(1);

@@ -4,6 +4,7 @@ namespace my127\Workspace\Updater;
 
 use Error;
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
+use my127\Workspace\Updater\Exception\NoVersionDeterminedException;
 use Phar;
 use RuntimeException;
 use Throwable;
@@ -28,6 +29,10 @@ class Updater
 
     public function update(string $currentVersion, string $targetPath)
     {
+        if (empty($currentVersion)) {
+            throw new NoVersionDeterminedException();
+        }
+
         $latest = $this->getLatestRelease();
         if (!$latest->isMoreRecentThan($currentVersion)) {
             throw new NoUpdateAvailableException($currentVersion);

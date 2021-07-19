@@ -3,6 +3,7 @@
 namespace my127\Workspace\Tests\Test\Updater;
 
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
+use my127\Workspace\Updater\Exception\NoVersionDeterminedException;
 use my127\Workspace\Updater\Updater;
 use Phar;
 use PHPUnit\Framework\TestCase;
@@ -50,6 +51,16 @@ class UpdaterTest extends TestCase
 
         $updater = new Updater(__DIR__ . '/fixtures/generated/latest.json', new NullOutput());
         $updater->update('1.0.0', '');
+    }
+
+    /** @test */
+    public function exception_thrown_when_current_version_is_empty()
+    {
+        $this->prepareReleasesFixture('latest.json', '', '1.0.0');
+        $this->expectException(NoVersionDeterminedException::class);
+
+        $updater = new Updater(__DIR__ . '/fixtures/generated/latest.json', new NullOutput());
+        $updater->update('', '');
     }
 
     /** @test */

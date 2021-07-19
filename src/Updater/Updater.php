@@ -6,19 +6,24 @@ use Error;
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
 use Phar;
 use RuntimeException;
+use Throwable;
 
 class Updater
 {
+    public const CODE_ERR_FETCHING_RELEASES = 100;
+    public const CODE_NO_RELEASES = 101;
+    public const CODE_ERR_FETCHING_NEXT_RELEASE = 102;
+
     /** @var string */
     private $apiUrl;
 
-    /** @var Output */
+    /** @var StdOutput */
     private $output;
 
-    public function __construct(string $apiUrl)
+    public function __construct(string $apiUrl, ?Output $output = null)
     {
         $this->apiUrl = $apiUrl;
-        $this->output = new Output();
+        $this->output = $output ?: new StdOutput();
     }
 
     public function update(string $currentVersion, string $targetPath)
@@ -32,7 +37,7 @@ class Updater
             $this->output->infof('Downloading new version (%s) from %s', $latest->getVersion(), $latest->getUrl());
             $releaseData = @file_get_contents($latest->getUrl());
             if ($releaseData === false) {
-                throw new RuntimeException(sprintf('Unable to download latest release at %s', $latest->getUrl()));
+                throw new RuntimeException(sprintf('Unable to download latest release at %s', $latest->getUrl()), self::CODE_ERR_FETCHING_NEXT_RELEASE);
             }
 
             $temp = tempnam(sys_get_temp_dir(), 'workspace-update-') . '.phar';
@@ -58,15 +63,16 @@ class Updater
 
     private function getLatestRelease(): Release
     {
-        $releases = file_get_contents($this->apiUrl, false, $this->createStreamContext());
-        if ($releases === false) {
-            throw new RuntimeException('Error fetching releases from GitHub.');
+        try {
+            $releases = file_get_contents($this->apiUrl, false, $this->createStreamContext());
+        } catch (Throwable $e) {
+            throw new RuntimeException('Error fetching releases from GitHub.', self::CODE_ERR_FETCHING_RELEASES);
         }
 
         $releases = json_decode($releases);
 
         if (count($releases) === 0) {
-            throw new RuntimeException('No releases present in the GitHub API response.');
+            throw new RuntimeException('No releases present in the GitHub API response.', self::CODE_NO_RELEASES);
         }
 
         $latest = $releases[0];

@@ -2,15 +2,8 @@
 
 namespace my127\Workspace\Updater;
 
-class Output
+interface Output
 {
-    public function infof(string $info, ...$args): void
-    {
-        echo sprintf($info, ...$args) . PHP_EOL;
-    }
-
-    public function info(string $string)
-    {
-        echo $string . PHP_EOL;
-    }
+    public function infof(string $info, ...$args): void;
+    public function info(string $string): void;
 }

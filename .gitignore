@@ -7,3 +7,4 @@
 /vendor-bin/**/composer.lock
 /ws.phar
 /tests/Workspace
+/tests/Test/Updater/fixtures/generated

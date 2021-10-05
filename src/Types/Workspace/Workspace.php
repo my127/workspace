@@ -14,6 +14,7 @@ use my127\Workspace\Types\Confd\Factory as ConfdFactory;
 use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\DynamicFunction\Collection as DynamicFunctionCollection;
 use my127\Workspace\Types\Harness\Harness;
+use my127\Workspace\Types\Harness\Repository\PackageRepository;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

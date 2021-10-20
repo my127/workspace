@@ -310,8 +310,8 @@ command('speak'):
   exec: |
     #!bash
     true
-command('speak better'):
-  description: Better command speaking
+command('speak subcommand'):
+  description: Subcommand speaking
   exec: |
     #!bash
     true
@@ -319,7 +319,7 @@ EOD
         );
 
         $this->assertMatchesRegularExpression(
-            '/Sub Commands:.*better\s+Better command speaking.*Global Options:/s',
+            '/Sub Commands:.*subcommand\s+Subcommand speaking.*Global Options:/s',
             $this->removeAnsiColorEscapes($this->workspaceCommand('speak --help')->getOutput())
         );
     }

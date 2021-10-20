@@ -266,4 +266,61 @@ EOD
 
         $this->assertEquals("hello world", $this->workspaceCommand('hello world')->getOutput());
     }
+
+    /** @test */
+    public function command_description_is_output_with_help()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+command('speak'):
+  description: This command speaks
+  exec: |
+    #!bash
+    true
+EOD
+        );
+
+        $this->assertMatchesRegularExpression(
+            '/^\s*This command speaks\s+Usage:/s',
+            $this->removeAnsiColorEscapes($this->workspaceCommand('speak --help')->getOutput())
+        );
+    }
+
+    /** @test */
+    public function command_description_default_is_output_with_help_when_description_is_missing()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+command('speak'):
+  exec: |
+    #!bash
+    true
+EOD
+        );
+
+        $this->assertMatchesRegularExpression(
+            '/^\s*ws speak\s+Usage:/s',
+            $this->removeAnsiColorEscapes($this->workspaceCommand('speak --help')->getOutput())
+        );
+    }
+
+    /** @test */
+    public function subcommand_description_is_output_with_help()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+command('speak'):
+  exec: |
+    #!bash
+    true
+command('speak better'):
+  description: Better command speaking
+  exec: |
+    #!bash
+    true
+EOD
+        );
+
+        $this->assertMatchesRegularExpression(
+            '/Sub Commands:.*better\s+Better command speaking.*Global Options:/s',
+            $this->removeAnsiColorEscapes($this->workspaceCommand('speak --help')->getOutput())
+        );
+    }
 }

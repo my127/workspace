@@ -1,4 +1,20 @@
 
+command('global service logger (enable|disable)', 'global service logger'): |
+  #!bash|=
+  ws.service logger ={input.argument('action')}
+
+command('global service mail (enable|disable)', 'global service mail'): |
+  #!bash|=
+  ws.service mail ={input.argument('action')}
+
+command('global service proxy (enable|disable|restart)', 'global service proxy'): |
+  #!bash|=
+  ws.service proxy ={input.argument('action')}
+
+command('global service tracing (start|stop|restart)', 'global service tracing'): |
+  #!bash|=
+  ws.service tracing ={input.argument('action')}
+
 command('global service <name> <action>', 'global service'): |
   #!bash|=
   ws.service ={input.argument('name')} ={input.argument('action')}

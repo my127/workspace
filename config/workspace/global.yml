@@ -15,10 +15,6 @@ command('global service tracing (start|stop|restart)', 'global service tracing')
   #!bash|=
   ws.service tracing ={input.argument('action')}
 
-command('global service <name> <action>', 'global service'): |
-  #!bash|=
-  ws.service ={input.argument('name')} ={input.argument('action')}
-
 command('global config get <key>'): |
   #!bash|=
   echo "={@(input.argument('key'))}"

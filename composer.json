@@ -10,7 +10,7 @@
     },
     "require": {
         "php": "^7.3 || ^8.0",
-        "my127/my127": "dev-fix-optional-input-breaking-change",
+        "my127/my127": "dev-master",
         "symfony/config": "^4.4",
         "symfony/console": "^4.4",
         "symfony/dependency-injection": "^4.4",

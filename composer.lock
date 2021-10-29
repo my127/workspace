@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f747bf9c6c0ce9b00ef036465ea3382",
+    "content-hash": "ac1882c8de22457fe3174c72fdf90b48",
     "packages": [
         {
             "name": "my127/my127",
-            "version": "dev-fix-optional-input-breaking-change",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/my127/php-library.git",
-                "reference": "3bd270b2d1538922065c944b45a2db64a582b74d"
+                "reference": "60e14a537fd2898e6f5a364394c6aee3dd9b9fd1"
             },
             "require": {
                 "php": ">=7.3",
@@ -27,6 +27,7 @@
                 "phpunit/phpunit": "^9.5",
                 "squizlabs/php_codesniffer": "^3.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -55,7 +56,7 @@
                 }
             ],
             "description": "my127 PHP Library",
-            "time": "2021-06-11T06:29:50+00:00"
+            "time": "2021-10-29T14:20:00+00:00"
         },
         {
             "name": "psr/cache",

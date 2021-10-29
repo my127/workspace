@@ -21,6 +21,7 @@ jobs:
               env:
                   SHELLCHECK_OPTS: --exclude=SC1008,SC1091
               with:
+                  additional_files: './home/bin/ws.*'
                   ignore: "vendor vendor-bin"
     phpunit:
         name: "PHPUnit (${{ matrix.php-version }})"

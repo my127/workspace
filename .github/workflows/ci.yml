@@ -41,8 +41,6 @@ jobs:
             -
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
-                with:
-                    composer-options: "--no-scripts"
 
             -
                 name: "Run PHPUnit"

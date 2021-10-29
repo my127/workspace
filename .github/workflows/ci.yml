@@ -10,7 +10,7 @@ on:
 
 env:
     fail-fast: true
-    TZ: "Europe/Paris"
+    TZ: "UTC"
 
 jobs:
     shellcheck:

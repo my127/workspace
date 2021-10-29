@@ -1,9 +1,7 @@
 name: "CI"
 
 on:
-    pull_request:
-        branches: 
-            - '0.2.x'
+    pull_request: ~
     push:
         branches:
             - '0.2.x'

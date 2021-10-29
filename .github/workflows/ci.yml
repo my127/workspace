@@ -13,6 +13,13 @@ env:
     TZ: "Europe/Paris"
 
 jobs:
+    shellcheck:
+        name: Shellcheck
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run ShellCheck
+              uses: ludeeus/action-shellcheck@master
     phpunit:
         name: "PHPUnit (${{ matrix.php-version }})"
 
@@ -41,6 +48,8 @@ jobs:
             -
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
+                with:
+                    composer-options: "--no-scripts"
 
             -
                 name: "Run PHPUnit"

@@ -5,13 +5,13 @@ namespace my127\Workspace\Types\Harness\Repository\Source;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
 use my127\Workspace\Environment\Environment;
-use my127\Workspace\Types\Harness\Repository\Repository;
+use my127\Workspace\Types\Harness\Repository\PackageRepository;
 
 class Builder implements EnvironmentBuilder
 {
     private $harnessPackageRepository;
 
-    public function __construct(Repository $harnessPackageRepository)
+    public function __construct(PackageRepository $harnessPackageRepository)
     {
         $this->harnessPackageRepository = $harnessPackageRepository;
     }

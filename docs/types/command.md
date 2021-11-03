@@ -6,6 +6,8 @@ Create simple commands to help manage your workspace.
 
 ```
 command('usage pattern', 'help page'):
+  description:
+    Optional short description, if given, will replace the default "ws <command>" on the help pages
   env:
     - NAME: Value
   exec: |

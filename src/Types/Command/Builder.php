@@ -32,6 +32,7 @@ class Builder implements EnvironmentBuilder
         /** @var Definition $definition */
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
             $this->application->section($definition->getSection())
+                ->description($definition->getDescription())
                 ->usage($definition->getUsage())
                 ->action(new Command($definition, $this->expression, $this->interpreter));
         }

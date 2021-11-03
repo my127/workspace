@@ -1,0 +1,57 @@
+name: "CI"
+
+on:
+    pull_request: ~
+    push:
+        branches:
+            - '0.2.x'
+
+env:
+    fail-fast: true
+    TZ: "UTC"
+
+jobs:
+    shellcheck:
+        name: Shellcheck
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run ShellCheck
+              uses: ludeeus/action-shellcheck@master
+              env:
+                  SHELLCHECK_OPTS: --exclude=SC1008,SC1091
+              with:
+                  additional_files: 'ws.*'
+                  ignore: "vendor vendor-bin"
+    phpunit:
+        name: "PHPUnit (${{ matrix.php-version }})"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
+
+        steps:
+            -
+                name: "Checkout code"
+                uses: "actions/checkout@v2"
+            -
+                name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    coverage: "none"
+                    extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                    php-version: "${{ matrix.php-version }}"
+                    tools: composer:v2
+
+            -
+                name: "Composer install"
+                uses: "ramsey/composer-install@v1"
+
+            -
+                name: "Run PHPUnit"
+                run: "composer test"

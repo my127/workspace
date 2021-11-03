@@ -21,6 +21,9 @@ class Definition implements WorkspaceDefinition
     private $exec;
 
     /** @var string */
+    private $description;
+
+    /** @var string */
     private $path;
 
     /** @var int */
@@ -44,6 +47,11 @@ class Definition implements WorkspaceDefinition
     public function getExec(): string
     {
         return $this->exec;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     public function getPath(): string

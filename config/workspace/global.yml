@@ -1,12 +1,18 @@
 
-command('global service <name> <action>', 'global service'): |
-  #!bash|=
-  ws.service ={input.argument('name')} ={input.argument('action')}
+command('global service <name> <action>', 'global service'):
+  description: Perform an action (start/stop etc.) on a global service
+  exec: |
+    #!bash|=
+    ws.service ={input.argument('name')} ={input.argument('action')}
 
-command('global config get <key>'): |
-  #!bash|=
-  echo "={@(input.argument('key'))}"
+command('global config get <key>', 'global config get'):
+  description: Retrieve a given workspace configuration by key
+  exec: |
+    #!bash|=
+    echo "={@(input.argument('key'))}"
 
-command('poweroff', 'poweroff'): |
-  #!bash(cwd:/)
-  ws.poweroff
+command('poweroff', 'poweroff'):
+  description: Completely disable workspace by shutting down all containers
+  exec: |
+    #!bash(cwd:/)
+    ws.poweroff

@@ -2,6 +2,12 @@
     "name": "my127/workspace",
     "description": "Quickly create and manage project workspaces.",
     "type": "application",
+    "repositories": {
+        "my127/my127": {
+            "type": "git",
+            "url": "https://github.com/my127/php-library.git"
+        }
+    },
     "require": {
         "php": "^7.3 || ^8.0",
         "my127/my127": "dev-master",

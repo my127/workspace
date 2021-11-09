@@ -34,4 +34,9 @@ class IntegrationTestCase extends TestCase
     {
         $this->workspace()->put('workspace.yml', $contents);
     }
+
+    public function removeAnsiColorEscapes(string $content)
+    {
+        return preg_replace('/\x1b\[[0-9;]*m/', '', $content);
+    }
 }

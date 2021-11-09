@@ -42,7 +42,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $this->prototype = new Definition();
 
-        foreach (['usage', 'section', 'env', 'exec', 'path', 'scope'] as $name) {
+        foreach (['usage', 'section', 'env', 'exec', 'description', 'path', 'scope'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -91,6 +91,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         }
 
         $values['env']  = $body['env']??[];
+        $values['description']  = $body['description']??'';
         $values['exec'] = $body['exec'];
     }
 

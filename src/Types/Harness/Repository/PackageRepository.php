@@ -3,23 +3,30 @@
 namespace my127\Workspace\Types\Harness\Repository;
 
 use Exception;
+use RuntimeException;
+use my127\Workspace\File\FileLoader;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use ReflectionProperty;
 
 class PackageRepository implements Repository
 {
-    public const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
-    public const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
+    const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
+    const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
 
     private $packages = [];
-    private $sources = [];
+    private $sources  = [];
 
     private $prototype;
 
     /** @var ReflectionProperty[] */
     private $properties = [];
 
-    public function __construct()
+    /**
+     * @var FileLoader
+     */
+    private $fileLoader;
+
+    public function __construct(FileLoader $fileLoader)
     {
         $this->prototype = new Package();
 
@@ -27,9 +34,10 @@ class PackageRepository implements Repository
             $this->properties[$name] = new ReflectionProperty(Package::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
+        $this->fileLoader = $fileLoader;
     }
 
-    public function addPackage($name, $version, $dist)
+    public function addPackage(string $name, string $version, array $dist)
     {
         $this->packages[$name][$version] = $dist;
     }
@@ -45,14 +53,21 @@ class PackageRepository implements Repository
 
         preg_match(self::HARNESS_PACKAGE_PATTERN, $package, $match);
 
+        if (!isset($match['harness'])) {
+            throw new RuntimeException(sprintf(
+                'Package name "%s" is invalid',
+                $package
+            ));
+        }
+
         $harness = $match['harness'];
-        $vendor = empty($match['vendor']) ? 'my127' : $match['vendor'];
-        $version = $this->resolvePackageVersion($vendor . '/' . $harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
+        $vendor  = empty($match['vendor'])  ? 'my127'  : $match['vendor'];
+        $version = $this->resolvePackageVersion($vendor.'/'.$harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
 
         return $this->hydrate([
-            'name' => $harness,
+            'name'    => $harness,
             'version' => $version,
-            'dist' => $this->packages[$vendor . '/' . $harness][$version],
+            'dist'    => $this->packages[$vendor.'/'.$harness][$version]
         ]);
     }
 
@@ -70,11 +85,12 @@ class PackageRepository implements Repository
     private function importPackagesFromSources()
     {
         foreach ($this->sources as $k => $source) {
+
             if ($source['imported']) {
                 continue;
             }
 
-            $this->packages = array_merge($this->packages, json_decode(file_get_contents($source['url']), true));
+            $this->packages = array_merge($this->packages, $this->fileLoader->loadJson($source['url']));
             $this->sources[$k]['imported'] = true;
         }
     }
@@ -85,40 +101,50 @@ class PackageRepository implements Repository
             return $version;
         }
 
-        if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
-            $collection = array_keys($this->packages[$name]);
+        if (!isset($this->packages[$name])) {
+            throw new RuntimeException(sprintf(
+                'Package "%s" is not registered, registered packages "%s"',
+                $name, implode('", "', array_keys($this->packages))
+            ));
+        }
 
-            $major = $match['major'] ?? 'x';
-            $minor = $match['minor'] ?? 'x';
-            $patch = $match['patch'] ?? 'x';
+        if (!preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
+            throw new RuntimeException(sprintf('Invalid version string "%s"', $version));
+        }
 
-            $candidate = null;
+        $collection = array_keys($this->packages[$name]);
 
-            foreach ($collection as $availVersion) {
-                $semver = explode('.', substr($availVersion, 1));
+        $major = $match['major']??'x';
+        $minor = $match['minor']??'x';
+        $patch = $match['patch']??'x';
 
-                if (is_numeric($major) && $semver[0] != $major) {
-                    continue;
-                }
+        $candidate = null;
 
-                if (is_numeric($minor) && $semver[1] != $minor) {
-                    continue;
-                }
+        foreach ($collection as $availVersion) {
 
-                if (is_numeric($patch) && $semver[2] != $patch) {
-                    continue;
-                }
+            $semver = explode('.', substr($availVersion, 1));
 
-                if ($candidate == null || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
-                    $candidate = $availVersion;
-                }
+            if (is_numeric($major) && $semver[0] != $major) {
+                continue;
             }
 
-            if ($candidate !== null) {
-                return $availVersion;
+            if (is_numeric($minor) && $semver[1] != $minor) {
+                continue;
+            }
+
+            if (is_numeric($patch) && $semver[2] != $patch) {
+                continue;
+            }
+
+            if ($candidate == null || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
+                $candidate = $availVersion;
             }
         }
 
-        throw new Exception("Could not resolve '{$name}:{$version}' to a harness package'");
+        if ($candidate === null) {
+            throw new Exception("Could not resolve '{$name}:{$version}' to a harness package'");
+        }
+
+        return $availVersion;
     }
 }

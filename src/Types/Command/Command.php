@@ -33,7 +33,7 @@ class Command
         try {
             $this->interpreter->script($script)->exec(null, $env);
         } catch (Throwable $e) {
-            throw new Exception(sprintf('Command "%s" failed due to "%s" on line %d', $this->definition->getSection(), $e->getMessage(), $e->getLine()));
+            throw new Exception(sprintf('Command "%s" failed due to "%s" on line %d', $this->definition->getSection(), $e->getMessage(), $e->getLine()), 0, $e);
         }
     }
 

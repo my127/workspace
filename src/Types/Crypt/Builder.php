@@ -4,6 +4,7 @@ namespace my127\Workspace\Types\Crypt;
 
 use Exception;
 use my127\Console\Usage\Input;
+use my127\Console\Usage\Model\OptionValue;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
@@ -65,7 +66,10 @@ class Builder implements EnvironmentBuilder
             $this->application->section('secret encrypt')
                 ->usage('secret encrypt <message> [<key>]')
                 ->action(function (Input $input) {
-                    echo $this->crypt->encrypt($input->getArgument('message'), $input->getArgument('key') ?? 'default') . "\n";
+                    $key = $input->getArgument('key');
+                    $key = $key instanceof OptionValue ? $key->value() : $key;
+                    $key = $key ?? 'default';
+                    echo $this->crypt->encrypt($input->getArgument('message'), $key) . "\n";
                 });
 
             $this->application->section('secret decrypt')

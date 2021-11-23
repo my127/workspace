@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac1882c8de22457fe3174c72fdf90b48",
+    "content-hash": "655f6419fe43a6975482dbcae610a06b",
     "packages": [
         {
             "name": "my127/my127",
@@ -3450,6 +3450,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {

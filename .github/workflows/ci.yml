@@ -153,6 +153,9 @@ jobs:
                 uses: "ramsey/composer-install@v1"
                 with:
                     composer-options: "--no-scripts"
+            -
+                name: "Build container"
+                run: "composer build"
 
             -
                 name: "Run phpstan/phpstan"

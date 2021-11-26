@@ -6,7 +6,7 @@ use my127\Workspace\Interpreter\Executor as InterpreterExecutor;
 
 class Executor implements InterpreterExecutor
 {
-    const NAME = 'php';
+    public const NAME = 'php';
 
     /** @var array */
     private $environment;
@@ -42,11 +42,11 @@ class Executor implements InterpreterExecutor
 
         foreach ($env as $key => $value) {
             $this->environment['env'][$key] = getenv($key);
-            putenv($key.'='.$value);
+            putenv($key . '=' . $value);
         }
 
-        if (null !== $cwd) {
-            chdir($cwd??getcwd());
+        if ($cwd !== null) {
+            chdir($cwd ?? getcwd());
         }
 
         extract($this->globals);
@@ -57,7 +57,7 @@ class Executor implements InterpreterExecutor
         chdir($this->environment['cwd']);
 
         foreach ($this->environment['env'] as $key => $value) {
-            putenv($key.($value !== false)?:'='.$value);
+            putenv($key . ($value !== false) ?: '=' . $value);
         }
 
         return $ret;

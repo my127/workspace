@@ -6,7 +6,7 @@ use my127\Workspace\Path\Path;
 
 class Interpreter
 {
-    const RUNTIME_DETAILS_PATTERN = '/^#!(?P<interpreter>[a-z]+)(\((?P<path>.*)\))?(\|(?P<filters>.*))?$/';
+    public const RUNTIME_DETAILS_PATTERN = '/^#!(?P<interpreter>[a-z]+)(\((?P<path>.*)\))?(\|(?P<filters>.*))?$/';
 
     /** @var Executor[] */
     private $executors = [];
@@ -37,7 +37,7 @@ class Interpreter
         $runtime = $this->getRuntimeDetails($script);
 
         $executor = $this->executors[$runtime['interpreter']];
-        $path     = $this->path->getRealPath($runtime['path']);
+        $path = $this->path->getRealPath($runtime['path']);
 
         foreach ($runtime['filters'] as $filter) {
             $script = $this->filters[$filter]->apply($script);
@@ -51,8 +51,8 @@ class Interpreter
         preg_match(self::RUNTIME_DETAILS_PATTERN, trim(strtok($script, "\n")), $match);
 
         $runtime['interpreter'] = $match['interpreter'];
-        $runtime['path']        = !empty($match['path']) ? $match['path'] : 'cwd:/';
-        $runtime['filters']     = !empty($match['filters']) ? explode('|', $match['filters']) : [];
+        $runtime['path'] = !empty($match['path']) ? $match['path'] : 'cwd:/';
+        $runtime['filters'] = !empty($match['filters']) ? explode('|', $match['filters']) : [];
 
         return $runtime;
     }

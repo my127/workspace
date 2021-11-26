@@ -4,9 +4,9 @@ namespace my127\Workspace\Path;
 
 class Composite implements Path
 {
-    const NAME = 'composite';
+    public const NAME = 'composite';
 
-    /** @var Path[]  */
+    /** @var Path[] */
     private $paths = [];
 
     public function add(Path $path): void

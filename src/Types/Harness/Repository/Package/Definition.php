@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    const TYPE = 'harness.repository.package';
+    public const TYPE = 'harness.repository.package';
 
     private $path;
     private $scope;

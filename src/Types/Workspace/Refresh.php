@@ -14,8 +14,8 @@ class Refresh
     public function __construct(Workspace $workspace, Harness $harness, ConfdFactory $confd)
     {
         $this->workspace = $workspace;
-        $this->confd     = $confd;
-        $this->harness   = $harness;
+        $this->confd = $confd;
+        $this->harness = $harness;
     }
 
     public function refresh(): void

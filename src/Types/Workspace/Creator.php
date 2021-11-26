@@ -9,30 +9,30 @@ class Creator
 {
     public function create(string $name, ?string $harness = null)
     {
-        $dir = './'.$name;
+        $dir = './' . $name;
 
-        if (is_dir('./'.$name)) {
+        if (is_dir('./' . $name)) {
             throw new Exception("directory '{$dir}' already exists.");
         }
 
         mkdir($dir);
 
         $workspace = [];
-        $workspace[] = "";
+        $workspace[] = '';
         $workspace[] = "workspace('{$name}'):";
         $workspace[] = "  description: generated local workspace for {$name}.";
 
-        if (null !== $harness) {
+        if ($harness !== null) {
             $workspace[] = "  harness: $harness";
         }
 
-        $workspace[] = "";
+        $workspace[] = '';
 
         $override = [];
-        $override[] = "key('default'): ".(new Key('default'))->getKeyAsHex();
-        $override[] = "";
+        $override[] = "key('default'): " . (new Key('default'))->getKeyAsHex();
+        $override[] = '';
 
-        file_put_contents($dir.'/workspace.yml', implode("\n", $workspace));
-        file_put_contents($dir.'/workspace.override.yml', implode("\n", $override));
+        file_put_contents($dir . '/workspace.yml', implode("\n", $workspace));
+        file_put_contents($dir . '/workspace.override.yml', implode("\n", $override));
     }
 }

@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['before', 'on', 'after'];
+    public const TYPES = ['before', 'on', 'after'];
 
     /*
      * example
@@ -35,7 +35,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     /** @var Definition */
     private $prototype;
 
-    /** @var ReflectionProperty[]  */
+    /** @var ReflectionProperty[] */
     private $properties = [];
 
     public function __construct()
@@ -67,7 +67,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseMetaData(array &$values, array $metadata)
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
@@ -75,11 +75,11 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         switch ($values['type']) {
             case 'before':
-                $event = 'before.'.substr($declaration, 8, -2);
+                $event = 'before.' . substr($declaration, 8, -2);
                 break;
 
             case 'after':
-                $event = 'after.'.substr($declaration, 7, -2);
+                $event = 'after.' . substr($declaration, 7, -2);
                 break;
 
             default:
@@ -94,11 +94,11 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         if (is_string($body)) {
             $body = [
-                'exec' => $body
+                'exec' => $body,
             ];
         }
 
-        $values['env']  = $body['env']??[];
+        $values['env'] = $body['env'] ?? [];
         $values['exec'] = $body['exec'];
     }
 

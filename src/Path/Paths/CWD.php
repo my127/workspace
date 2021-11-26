@@ -6,7 +6,7 @@ use my127\Workspace\Path\Path;
 
 class CWD implements Path
 {
-    const NAME = 'cwd';
+    public const NAME = 'cwd';
 
     public function getRealPath(string $path): string
     {

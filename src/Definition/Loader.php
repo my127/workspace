@@ -20,7 +20,7 @@ class Loader
     /** @var string */
     private $harnessPath;
 
-    const PATTERN_REPLACE_ENV_VARS = "/\=\{env\(['\"]{1}(?P<name>.*)',[\s]*'(?P<default>.*)['\"]{1}\)\}/";
+    public const PATTERN_REPLACE_ENV_VARS = "/\=\{env\(['\"]{1}(?P<name>.*)',[\s]*'(?P<default>.*)['\"]{1}\)\}/";
 
     public function __construct(Collection $definitions)
     {
@@ -42,7 +42,6 @@ class Loader
 
         foreach ($files as $file) {
             foreach ($this->getDeclarationsFromFile($file) as $data) {
-
                 if ($data['type'] === 'import') {
                     $this->loadFromImportDeclaration($data);
                     continue;
@@ -56,11 +55,10 @@ class Loader
     private function getDeclarationsFromFile($file): Generator
     {
         $directory = dirname($file);
-        $scope     = $this->resolvePathScope($directory);
+        $scope = $this->resolvePathScope($directory);
         $documents = preg_split('/\R---\R/', file_get_contents($file));
 
         foreach ($documents as $document) {
-
             $declarations = Yaml::parse($document);
 
             if (!is_array($declarations)) {
@@ -68,15 +66,14 @@ class Loader
             }
 
             foreach ($declarations as $declaration => $body) {
-
                 $data = [
                     'type' => $this->getTypeFromDeclaration($declaration),
                     'metadata' => [
-                        'path'  => $directory,
-                        'scope' => $scope
+                        'path' => $directory,
+                        'scope' => $scope,
                     ],
                     'declaration' => $declaration,
-                    'body'        => $body
+                    'body' => $body,
                 ];
 
                 yield $data;
@@ -91,11 +88,11 @@ class Loader
 
     private function loadFromImportDeclaration(array $data)
     {
-        $cwd   = $data['metadata']['path'];
-        $files = is_array($data['body'])?$data['body']:[$data['body']];
+        $cwd = $data['metadata']['path'];
+        $files = is_array($data['body']) ? $data['body'] : [$data['body']];
 
         foreach ($files as $relativeFile) {
-            $this->load($cwd.DIRECTORY_SEPARATOR.$relativeFile);
+            $this->load($cwd . DIRECTORY_SEPARATOR . $relativeFile);
         }
     }
 
@@ -138,6 +135,6 @@ class Loader
 
     private function replaceEnvVar(array $match)
     {
-        return getenv($match['name'])?:$match['default'];
+        return getenv($match['name']) ?: $match['default'];
     }
 }

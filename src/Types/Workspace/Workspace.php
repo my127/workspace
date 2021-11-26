@@ -14,7 +14,6 @@ use my127\Workspace\Types\Confd\Factory as ConfdFactory;
 use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\DynamicFunction\Collection as DynamicFunctionCollection;
 use my127\Workspace\Types\Harness\Harness;
-use my127\Workspace\Types\Harness\Repository\PackageRepository;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -43,16 +42,16 @@ class Workspace extends Definition implements ArrayAccess
         Path $pathResolver,
         Crypt $crypt)
     {
-        $this->packages     = $packages;
-        $this->confd        = $confd;
-        $this->dispatcher   = $dispatcher;
-        $this->creator      = $creator;
-        $this->functions    = $functions;
-        $this->attributes   = $attributes;
-        $this->harness      = $harness;
-        $this->terminal     = $terminal;
+        $this->packages = $packages;
+        $this->confd = $confd;
+        $this->dispatcher = $dispatcher;
+        $this->creator = $creator;
+        $this->functions = $functions;
+        $this->attributes = $attributes;
+        $this->harness = $harness;
+        $this->terminal = $terminal;
         $this->pathResolver = $pathResolver;
-        $this->crypt        = $crypt;
+        $this->crypt = $crypt;
     }
 
     public function hasHarness(): bool
@@ -86,7 +85,7 @@ class Workspace extends Definition implements ArrayAccess
 
         if (!is_numeric($step)) {
             $cascade = false;
-            $step    = $installer->getStep($step);
+            $step = $installer->getStep($step);
         }
 
         $installer->install($step, $cascade, $events);
@@ -100,7 +99,7 @@ class Workspace extends Definition implements ArrayAccess
 
     public function run(string $command): void
     {
-        preg_match_all ('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $command, $matches); // https://stackoverflow.com/a/34871367
+        preg_match_all('/(?<=^|\s)([\'"]?)(.+?)(?<!\\\\)\1(?=$|\s)/', $command, $matches); // https://stackoverflow.com/a/34871367
         $argv = $matches[2];
         array_unshift($argv, 'ws');
         application()->run($argv);
@@ -109,6 +108,7 @@ class Workspace extends Definition implements ArrayAccess
     public function exec(string $cmd): string
     {
         exec($cmd, $output);
+
         return implode("\n", $output);
     }
 

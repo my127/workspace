@@ -20,14 +20,14 @@ class Command
 
     public function __construct(Definition $definition, Expression $expression, Interpreter $interpreter)
     {
-        $this->definition  = $definition;
+        $this->definition = $definition;
         $this->interpreter = $interpreter;
-        $this->expression  = $expression;
+        $this->expression = $expression;
     }
 
     public function __invoke()
     {
-        $env    = $this->evaluateEnvironmentVariables($this->definition->getEnvironmentVariables());
+        $env = $this->evaluateEnvironmentVariables($this->definition->getEnvironmentVariables());
         $script = $this->definition->getExec();
 
         try {

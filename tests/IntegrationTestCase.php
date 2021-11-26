@@ -2,9 +2,9 @@
 
 namespace my127\Workspace\Tests;
 
+use my127\Workspace\Tests\Util\Workspace;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
-use my127\Workspace\Tests\Util\Workspace;
 
 class IntegrationTestCase extends TestCase
 {

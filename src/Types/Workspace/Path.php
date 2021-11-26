@@ -6,7 +6,7 @@ use my127\Workspace\Path\Path as WorkspacePath;
 
 class Path implements WorkspacePath
 {
-    const NAME = 'workspace';
+    public const NAME = 'workspace';
 
     /** @var Workspace */
     private $workspace;

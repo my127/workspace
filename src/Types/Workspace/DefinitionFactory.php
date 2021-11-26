@@ -9,7 +9,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['workspace'];
+    public const TYPES = ['workspace'];
 
     /*
      * example
@@ -29,13 +29,13 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
      *   harness: optional, harness to use for standardising the workspace
      */
 
-    /** @var bool  */
+    /** @var bool */
     private $isDefined = false;
 
     /** @var Definition */
     private $prototype;
 
-    /** @var ReflectionProperty[]  */
+    /** @var ReflectionProperty[] */
     private $properties = [];
 
     public function __construct()
@@ -51,7 +51,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     public function create(array $data): WorkspaceDefinition
     {
         if ($this->isDefined) {
-            throw new Exception("A workspace has already been declared.");
+            throw new Exception('A workspace has already been declared.');
         }
 
         $values = [];
@@ -73,7 +73,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseMetaData(array &$values, $metadata)
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
@@ -84,9 +84,9 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseBody(array &$values, $body)
     {
-        $values['description'] = $body['description']??null;
-        $values['harnessName'] = $body['harness']??null;
-        $values['overlay']     = $body['overlay']??null;
+        $values['description'] = $body['description'] ?? null;
+        $values['harnessName'] = $body['harness'] ?? null;
+        $values['overlay'] = $body['overlay'] ?? null;
     }
 
     public static function getTypes(): array

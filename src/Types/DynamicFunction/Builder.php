@@ -26,21 +26,21 @@ class Builder implements EnvironmentBuilder
 
     public function __construct(Collection $collection, Interpreter $interpreter, TwigEnvironmentBuilder $twig, Expression $expression)
     {
-        $this->collection  = $collection;
+        $this->collection = $collection;
         $this->interpreter = $interpreter;
-        $this->twig        = $twig;
-        $this->expression  = $expression;
+        $this->twig = $twig;
+        $this->expression = $expression;
     }
 
     public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
-            /** @var Definition $definition */
+            /* @var Definition $definition */
             $this->collection->add(new DynamicFunction($this->interpreter, $definition));
         }
 
         foreach ($this->collection as $function) {
-            /** @var DynamicFunction $function */
+            /* @var DynamicFunction $function */
 
             $this->twig->addFunction($function->getName(), $function);
 

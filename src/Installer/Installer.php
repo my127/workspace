@@ -8,7 +8,7 @@ class Installer
 {
     public static function install(string $home)
     {
-        $path = $home.'/.my127/workspace';
+        $path = $home . '/.my127/workspace';
 
         if (is_dir($path)) {
             Filesystem::rrmdir($path);
@@ -16,12 +16,12 @@ class Installer
 
         mkdir($path, 0755, true);
 
-        Filesystem::rcopy(__DIR__.'/../../home', $path);
+        Filesystem::rcopy(__DIR__ . '/../../home', $path);
 
-        passthru('chmod +x '.$path.'/bin/*');
-        passthru('chmod +x '.$path.'/lib/*.sh');
-        passthru('chmod +x '.$path.'/service/*/init.sh');
+        passthru('chmod +x ' . $path . '/bin/*');
+        passthru('chmod +x ' . $path . '/lib/*.sh');
+        passthru('chmod +x ' . $path . '/service/*/init.sh');
 
-        touch($path.'/.installed');
+        touch($path . '/.installed');
     }
 }

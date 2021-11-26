@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class KeyDefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['key'];
+    public const TYPES = ['key'];
 
     /*
      * example
@@ -60,7 +60,7 @@ class KeyDefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseMetaData(array &$values, $metadata)
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 

@@ -2,12 +2,7 @@
     "name": "my127/workspace",
     "description": "Quickly create and manage project workspaces.",
     "type": "application",
-    "repositories": {
-        "my127/my127": {
-            "type": "git",
-            "url": "https://github.com/my127/php-library.git"
-        }
-    },
+    "license": "MIT",
     "require": {
         "php": "^7.3 || ^8.0",
         "my127/my127": "dev-master",
@@ -20,10 +15,10 @@
         "twig/twig": "^2.13"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.2",
         "phpunit/phpunit": "^9.5",
         "bamarni/composer-bin-plugin": "^1.4",
-        "symfony/process": "^5.2",
-        "symfony/var-dumper": "^5.3"
+        "symfony/process": "^5.2"
     },
     "autoload": {
         "psr-4": {"my127\\Workspace\\": "src/"}

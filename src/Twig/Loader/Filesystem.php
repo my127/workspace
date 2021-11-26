@@ -9,7 +9,7 @@ class Filesystem extends Twig_Loader_Filesystem
 {
     private $path;
 
-    public function __construct($paths = array(), ?string $rootPath = null)
+    public function __construct($paths = [], ?string $rootPath = null)
     {
         parent::__construct($paths, $rootPath);
 
@@ -18,7 +18,7 @@ class Filesystem extends Twig_Loader_Filesystem
 
     public function getSourceContext($name)
     {
-        $path    = $this->findTemplate($name);
+        $path = $this->findTemplate($name);
         $content = file_get_contents($path);
 
         $content = str_replace("@('", "attr('", $content);

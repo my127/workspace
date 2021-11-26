@@ -24,7 +24,7 @@ class Builder implements EnvironmentBuilder
     {
         $this->application = $application;
         $this->interpreter = $interpreter;
-        $this->expression  = $expression;
+        $this->expression = $expression;
     }
 
     public function build(Environment $environment, DefinitionCollection $definitions)

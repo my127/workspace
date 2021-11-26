@@ -9,7 +9,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['harness'];
+    public const TYPES = ['harness'];
 
     /** @var bool */
     private $isDefined = false;
@@ -33,7 +33,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     public function create(array $data): WorkspaceDefinition
     {
         if ($this->isDefined) {
-            throw new Exception("A harness has already been declared.");
+            throw new Exception('A harness has already been declared.');
         }
 
         $values = [];
@@ -55,7 +55,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseMetaData(array &$values, $metadata)
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
@@ -66,8 +66,8 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseBody(array &$values, $body)
     {
-        $values['description'] = $body['description']??null;
-        $values['require']     = $body['require']??null;
+        $values['description'] = $body['description'] ?? null;
+        $values['require'] = $body['require'] ?? null;
     }
 
     public static function getTypes(): array

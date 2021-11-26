@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class KeyDefinition implements WorkspaceDefinition
 {
-    const TYPE = 'key';
+    public const TYPE = 'key';
 
     /** @var string */
     private $name;

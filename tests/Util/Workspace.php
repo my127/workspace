@@ -3,11 +3,11 @@
 namespace my127\Workspace\Tests\Util;
 
 use InvalidArgumentException;
+use my127\Workspace\Utility\Filesystem;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SplFileInfo;
-use my127\Workspace\Utility\Filesystem;
 
 class Workspace
 {
@@ -24,9 +24,7 @@ class Workspace
     public static function create(string $path): self
     {
         if (empty($path)) {
-            throw new RuntimeException(
-                'Workspace path cannot be empty'
-            );
+            throw new RuntimeException('Workspace path cannot be empty');
         }
 
         return new self($path);
@@ -39,7 +37,7 @@ class Workspace
 
     public function path(?string $path = null): string
     {
-        if (null === $path) {
+        if ($path === null) {
             return $this->path;
         }
 
@@ -48,31 +46,24 @@ class Workspace
 
     public function loadSample(string $name): void
     {
-        $path = sprintf('%s/../samples/%s',  __DIR__, $name);
+        $path = sprintf('%s/../samples/%s', __DIR__, $name);
 
         if (!is_dir($path)) {
-            throw new RuntimeException(sprintf(
-                'Sample folder "%s" not found.',
-                $name
-            ));
+            throw new RuntimeException(sprintf('Sample folder "%s" not found.', $name));
         }
 
         Filesystem::rcopy($path, $this->path());
     }
 
-
     public function getContents(string $path): string
     {
-        if (false === $this->exists($path)) {
-            throw new InvalidArgumentException(sprintf(
-                'File "%s" does not exist',
-                $path
-            ));
+        if ($this->exists($path) === false) {
+            throw new InvalidArgumentException(sprintf('File "%s" does not exist', $path));
         }
 
         $contents = file_get_contents($this->path($path));
 
-        if (false === $contents) {
+        if ($contents === false) {
             throw new RuntimeException('file_get_contents returned false');
         }
 
@@ -104,10 +95,7 @@ class Workspace
         $path = $this->path($path);
 
         if (file_exists($path)) {
-            throw new InvalidArgumentException(sprintf(
-                'Node "%s" already exists, cannot create directory',
-                $path
-            ));
+            throw new InvalidArgumentException(sprintf('Node "%s" already exists, cannot create directory', $path));
         }
 
         mkdir($path, 0777, true);
@@ -122,6 +110,7 @@ class Workspace
 
             if (in_array($splFileInfo->getType(), ['socket', 'file', 'link'])) {
                 unlink($path);
+
                 return;
             }
         }

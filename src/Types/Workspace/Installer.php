@@ -3,6 +3,7 @@
 namespace my127\Workspace\Types\Workspace;
 
 use Exception;
+use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Factory as ConfdFactory;
@@ -11,7 +12,6 @@ use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\Yaml\Yaml;
-use my127\Workspace\Path\Path;
 
 class Installer
 {
@@ -24,20 +24,20 @@ class Installer
     private $confd;
     private $crypt;
 
-    public const STEP_DOWNLOAD            = 1;
-    public const STEP_OVERLAY             = 2;
+    public const STEP_DOWNLOAD = 1;
+    public const STEP_OVERLAY = 2;
     public const STEP_VALIDATE_ATTRIBUTES = 3;
-    public const STEP_PREPARE             = 4;
+    public const STEP_PREPARE = 4;
     public const STEP_ENABLE_DEPENDENCIES = 5;
-    public const STEP_TRIGGER_INSTALLED   = 6;
+    public const STEP_TRIGGER_INSTALLED = 6;
 
     private $stepMap = [
-        'download'     => self::STEP_DOWNLOAD,
-        'overlay'      => self::STEP_OVERLAY,
-        'validate'     => self::STEP_VALIDATE_ATTRIBUTES,
-        'prepare'      => self::STEP_PREPARE,
+        'download' => self::STEP_DOWNLOAD,
+        'overlay' => self::STEP_OVERLAY,
+        'validate' => self::STEP_VALIDATE_ATTRIBUTES,
+        'prepare' => self::STEP_PREPARE,
         'dependencies' => self::STEP_ENABLE_DEPENDENCIES,
-        'installed'    => self::STEP_TRIGGER_INSTALLED
+        'installed' => self::STEP_TRIGGER_INSTALLED,
     ];
 
     public function __construct(
@@ -50,14 +50,14 @@ class Installer
         ConfdFactory $confd,
         Crypt $crypt
     ) {
-        $this->workspace  = $workspace;
-        $this->packages   = $packages;
-        $this->harness    = $harness;
-        $this->terminal   = $terminal;
+        $this->workspace = $workspace;
+        $this->packages = $packages;
+        $this->harness = $harness;
+        $this->terminal = $terminal;
         $this->attributes = $attributes;
-        $this->path       = $path;
-        $this->confd      = $confd;
-        $this->crypt      = $crypt;
+        $this->path = $path;
+        $this->confd = $confd;
+        $this->crypt = $crypt;
     }
 
     public function getStep(?string $step)
@@ -117,13 +117,13 @@ class Installer
         }
 
         if ($cascade && $step < self::STEP_TRIGGER_INSTALLED) {
-            $this->workspace->run('install --step='.($step + 1));
+            $this->workspace->run('install --step=' . ($step + 1));
         }
     }
 
     private function downloadAndExtractHarnessPackage(Package $package)
     {
-        $harnessInstallPath = $this->workspace->getPath().'/.my127ws';
+        $harnessInstallPath = $this->workspace->getPath() . '/.my127ws';
 
         if (!is_dir($harnessInstallPath)) {
             mkdir($harnessInstallPath, 0755, true);
@@ -136,7 +136,7 @@ class Installer
     {
         $attributes = [
             'standard' => [],
-            'secret'   => []
+            'secret' => [],
         ];
 
         foreach (['standard', 'secret'] as $type) {
@@ -144,7 +144,7 @@ class Installer
                 if (!isset($this->attributes[$attribute])) {
                     $response = $this->terminal->ask($attribute);
                     $attributes[$type][$attribute] = ($type == 'standard') ?
-                        $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
+                        $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
                 }
             }
         }
@@ -163,10 +163,10 @@ class Installer
         $content = "\n";
 
         foreach ($attributes as $attribute => $value) {
-            $content .= "attribute('{$attribute}'): ".Yaml::dump($value)."\n";
+            $content .= "attribute('{$attribute}'): " . Yaml::dump($value) . "\n";
         }
 
-        file_put_contents($this->path->getRealPath('workspace:/'.$file), $content, FILE_APPEND);
+        file_put_contents($this->path->getRealPath('workspace:/' . $file), $content, FILE_APPEND);
     }
 
     private function applyConfiguration(array $paths)
@@ -178,18 +178,18 @@ class Installer
 
     private function applyOverlayDirectory(string $getOverlayPath)
     {
-        $src = $this->path->getRealPath('workspace:/'.$getOverlayPath).'/';
+        $src = $this->path->getRealPath('workspace:/' . $getOverlayPath) . '/';
         $dst = $this->path->getRealPath('harness:/');
 
         if (is_dir($src)) {
-            passthru('rsync -a "'.$src.'" "'.$dst.'"');
+            passthru('rsync -a "' . $src . '" "' . $dst . '"');
         }
     }
 
     private function startRequiredServices(array $requiredServices)
     {
         foreach ($requiredServices as $service) {
-            $this->workspace->exec('ws.service '.$service.' enable');
+            $this->workspace->exec('ws.service ' . $service . ' enable');
         }
     }
 }

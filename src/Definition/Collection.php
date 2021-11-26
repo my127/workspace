@@ -4,7 +4,7 @@ namespace my127\Workspace\Definition;
 
 class Collection
 {
-    /** @var Definition[][]  */
+    /** @var Definition[][] */
     private $definitions = [];
 
     public function add(Definition $definition)
@@ -14,7 +14,7 @@ class Collection
 
     public function findByType(string $type): array
     {
-        return $this->definitions[$type]??[];
+        return $this->definitions[$type] ?? [];
     }
 
     public function hasType(string $type): bool
@@ -24,6 +24,6 @@ class Collection
 
     public function findOneByType(string $type): ?Definition
     {
-        return $this->definitions[$type][0]??null;
+        return $this->definitions[$type][0] ?? null;
     }
 }

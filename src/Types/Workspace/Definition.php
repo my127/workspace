@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    const TYPE = 'workspace';
+    public const TYPE = 'workspace';
 
     /** @var string */
     protected $name;

@@ -57,7 +57,7 @@ class Builder implements EnvironmentBuilder
         foreach (DefinitionFactory::TYPES as $type) {
             foreach ($definitions->findByType($type) as $definition) {
                 /** @var Definition $definition */
-                if ('~' == $definition->getKey()) {
+                if ($definition->getKey() == '~') {
                     $this->attributes->add($definition->getValue(), $this->resolveAttributePrecedence($definition));
                 } else {
                     $this->attributes->set($definition->getKey(), $definition->getValue(), $this->resolveAttributePrecedence($definition));
@@ -66,7 +66,7 @@ class Builder implements EnvironmentBuilder
         }
 
         foreach (getenv() as $key => $value) {
-            if (0 !== strpos($key, 'MY127WS_ATTR_')) {
+            if (strpos($key, 'MY127WS_ATTR_') !== 0) {
                 continue;
             }
 

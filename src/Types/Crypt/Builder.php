@@ -40,7 +40,7 @@ class Builder implements EnvironmentBuilder
         }
 
         foreach (getenv() as $key => $value) {
-            if (0 !== strpos($key, 'MY127WS_KEY_')) {
+            if (strpos($key, 'MY127WS_KEY_') !== 0) {
                 continue;
             }
 

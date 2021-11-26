@@ -143,7 +143,7 @@ class Installer
             foreach ($required[$type] ?? [] as $attribute) {
                 if (!isset($this->attributes[$attribute])) {
                     $response = $this->terminal->ask($attribute);
-                    $attributes[$type][$attribute] = ('standard' == $type) ?
+                    $attributes[$type][$attribute] = ($type == 'standard') ?
                         $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
                 }
             }

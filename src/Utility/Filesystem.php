@@ -29,7 +29,7 @@ class Filesystem
         $dir = opendir($src);
 
         while (false !== ($file = readdir($dir))) {
-            if (('.' != $file) && ('..' != $file)) {
+            if (($file != '.') && ($file != '..')) {
                 $full = $src . '/' . $file;
                 if (is_dir($full)) {
                     self::rrmdir($full);
@@ -52,7 +52,7 @@ class Filesystem
         }
 
         while (false !== ($file = readdir($dir))) {
-            if (('.' != $file) && ('..' != $file)) {
+            if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
                     self::rcopy($src . '/' . $file, $dst . '/' . $file);
                 } else {

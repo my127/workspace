@@ -23,7 +23,7 @@ class Executor implements InterpreterExecutor
     {
         $pos = strrpos($script, "\n") + 1;
 
-        if (false !== $pos && '=' == $script[$pos]) {
+        if ($pos !== false && $script[$pos] == '=') {
             $script = substr_replace($script, 'return ', $pos, 1);
         }
 
@@ -45,7 +45,7 @@ class Executor implements InterpreterExecutor
             putenv($key . '=' . $value);
         }
 
-        if (null !== $cwd) {
+        if ($cwd !== null) {
             chdir($cwd ?? getcwd());
         }
 
@@ -57,7 +57,7 @@ class Executor implements InterpreterExecutor
         chdir($this->environment['cwd']);
 
         foreach ($this->environment['env'] as $key => $value) {
-            putenv($key . (false !== $value) ?: '=' . $value);
+            putenv($key . ($value !== false) ?: '=' . $value);
         }
 
         return $ret;

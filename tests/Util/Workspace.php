@@ -37,7 +37,7 @@ class Workspace
 
     public function path(?string $path = null): string
     {
-        if (null === $path) {
+        if ($path === null) {
             return $this->path;
         }
 
@@ -57,13 +57,13 @@ class Workspace
 
     public function getContents(string $path): string
     {
-        if (false === $this->exists($path)) {
+        if ($this->exists($path) === false) {
             throw new InvalidArgumentException(sprintf('File "%s" does not exist', $path));
         }
 
         $contents = file_get_contents($this->path($path));
 
-        if (false === $contents) {
+        if ($contents === false) {
             throw new RuntimeException('file_get_contents returned false');
         }
 

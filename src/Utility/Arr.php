@@ -27,7 +27,7 @@ class Arr
             return $array[$key];
         }
 
-        if (false === strpos($key, '.')) {
+        if (strpos($key, '.') === false) {
             return $array[$key] ?? $default;
         }
 
@@ -57,7 +57,7 @@ class Arr
     {
         $original = &$array;
         $keys = (array) $keys;
-        if (0 === count($keys)) {
+        if (count($keys) === 0) {
             return;
         }
         foreach ($keys as $key) {

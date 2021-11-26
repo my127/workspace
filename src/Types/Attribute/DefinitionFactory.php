@@ -90,7 +90,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseDeclaration(array &$values, $declaration)
     {
-        $values['key'] = (0 === strpos($values['type'], 'attributes')) ? '~' : substr($declaration, strlen($values['type']) + 2, -2);
+        $values['key'] = (strpos($values['type'], 'attributes') === 0) ? '~' : substr($declaration, strlen($values['type']) + 2, -2);
     }
 
     private function parseBody(array &$values, $body)

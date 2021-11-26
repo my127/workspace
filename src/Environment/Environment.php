@@ -99,7 +99,7 @@ class Environment
     {
         $candidate = Filesystem::upsearch('workspace.yml', $this->getCurrentWorkingDirectory());
 
-        if (null !== $candidate) {
+        if ($candidate !== null) {
             return $candidate;
         }
 

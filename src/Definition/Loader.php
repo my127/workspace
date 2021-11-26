@@ -42,7 +42,7 @@ class Loader
 
         foreach ($files as $file) {
             foreach ($this->getDeclarationsFromFile($file) as $data) {
-                if ('import' === $data['type']) {
+                if ($data['type'] === 'import') {
                     $this->loadFromImportDeclaration($data);
                     continue;
                 }
@@ -108,11 +108,11 @@ class Loader
 
     private function resolvePathScope(string $directory): int
     {
-        if (0 === strpos($directory, $this->harnessPath)) {
+        if (strpos($directory, $this->harnessPath) === 0) {
             return Definition::SCOPE_HARNESS;
         }
 
-        if (0 === strpos($directory, $this->workspacePath)) {
+        if (strpos($directory, $this->workspacePath) === 0) {
             return Definition::SCOPE_WORKSPACE;
         }
 

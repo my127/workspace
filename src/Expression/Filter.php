@@ -38,7 +38,7 @@ class Filter implements InterpreterFilter
         $expressions = [];
 
         while (($end = $start = strpos($script, '={', $end ?? 0)) !== false) {
-            while ('\\' == $script[($end = strpos($script, '}', $end)) - 1]) {
+            while ($script[($end = strpos($script, '}', $end)) - 1] == '\\') {
                 ++$end;
             }
 

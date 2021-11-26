@@ -44,6 +44,6 @@ class Subscriber
 
     private function isExpression(string $value): bool
     {
-        return (is_string($value)) && ('=' == $value[0]);
+        return (is_string($value)) && ($value[0] == '=');
     }
 }

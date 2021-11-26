@@ -32,7 +32,7 @@ class Confd
     public function apply(): void
     {
         foreach ($this->definition->getTemplates() as $path) {
-            if (isset($path['when']) && false === $this->expression->evaluate($path['when'])) {
+            if (isset($path['when']) && $this->expression->evaluate($path['when']) === false) {
                 continue;
             }
 

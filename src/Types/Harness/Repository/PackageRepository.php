@@ -109,12 +109,12 @@ class PackageRepository implements Repository
                     continue;
                 }
 
-                if (null == $candidate || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
+                if ($candidate == null || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
                     $candidate = $availVersion;
                 }
             }
 
-            if (null !== $candidate) {
+            if ($candidate !== null) {
                 return $availVersion;
             }
         }

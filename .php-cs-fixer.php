@@ -10,6 +10,13 @@ $finder = PhpCsFixer\Finder::create()
 $config = new PhpCsFixer\Config();
 return $config->setRules([
         '@Symfony' => true,
-        'concat_space' => ['spacing' => 'one'],
+        'concat_space' => [
+            'spacing' => 'one'
+        ],
+        'yoda_style' => [
+            'equal' => false,
+            'identical' => false,
+            'less_and_greater' => false
+        ],
     ])
     ->setFinder($finder);

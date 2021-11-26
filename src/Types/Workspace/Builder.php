@@ -114,7 +114,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                     $key = $input->getOption('key');
                     $key = $key instanceof OptionValue ? $key->value() : $key;
                     $attribute = $environment->getAttribute($key);
-                    if (null === $attribute) {
+                    if ($attribute === null) {
                         echo sprintf("Attribute with key %s not found\n", $key);
 
                         return;

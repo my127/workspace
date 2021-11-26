@@ -24,7 +24,7 @@ class Executor implements InterpreterExecutor
             $status = proc_close($process);
         }
 
-        if (0 !== $status) {
+        if ($status !== 0) {
             exit($status);
         }
     }
@@ -33,13 +33,13 @@ class Executor implements InterpreterExecutor
     {
         $pos = strrpos($script, "\n") + 1;
 
-        if ('=' == $script[$pos]) {
+        if ($script[$pos] == '=') {
             $script = substr_replace($script, 'echo -n ', $pos, 1);
         }
 
         exec($this->buildCommand($script, $args, $cwd, $env), $output, $status);
 
-        if (0 !== $status) {
+        if ($status !== 0) {
             exit($status);
         }
 

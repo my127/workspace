@@ -36,7 +36,7 @@ class Script
 
     private function buildArgList(?array $args): array
     {
-        if (null === $args) {
+        if ($args === null) {
             return [];
         }
 

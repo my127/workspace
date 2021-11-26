@@ -12,15 +12,27 @@ use ReflectionProperty;
 
 class PackageRepository implements Repository
 {
-    const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
-    const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
+    private const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
+    private const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
 
+    /**
+     * @var array<string, array<string, array<mixed>>>
+     */
     private $packages = [];
+
+    /**
+     * @var array<int, array{imported: bool, url: string}>
+     */
     private $sources  = [];
 
+    /**
+     * @var Package
+     */
     private $prototype;
 
-    /** @var ReflectionProperty[] */
+    /**
+     * @var array<string, ReflectionProperty>
+     */
     private $properties = [];
 
     /**
@@ -67,7 +79,7 @@ class PackageRepository implements Repository
         $this->packages[$name][$version] = $dist;
     }
 
-    public function addSource($url): void
+    public function addSource(string $url): void
     {
         $this->sources[] = ['url' => $url, 'imported' => false];
     }

@@ -61,17 +61,17 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
         // this class extends Definition because of that we can access the protected
         // properties of the definitions...
         if (($definition = $definitions->findOneByType(Definition::TYPE)) !== null) {
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             $this->workspace->name = $definition->name;
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             $this->workspace->description = $definition->description;
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             $this->workspace->path = $definition->path;
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             $this->workspace->harnessName = $definition->harnessName;
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             $this->workspace->overlay = $definition->overlay;
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             $this->workspace->scope = $definition->scope;
         } else {
             $this->workspace->name = basename($environment->getWorkspacePath());

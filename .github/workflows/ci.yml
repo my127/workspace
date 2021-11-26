@@ -155,7 +155,7 @@ jobs:
                     composer-options: "--no-scripts"
             -
                 name: "Build container"
-                run: "composer build"
+                run: "composer compile"
 
             -
                 name: "Run phpstan/phpstan"

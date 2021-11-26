@@ -39,17 +39,6 @@ class PackageRepository implements Repository
         $this->fileLoader = $fileLoader;
     }
 
-    public function addPackage(string $name, string $version, array $dist)
-    {
-        $this->parseVersionString($version);
-        $this->packages[$name][$version] = $dist;
-    }
-
-    public function addSource($url)/** void **/
-    {
-        $this->sources[] = ['url' => $url, 'imported' => false];
-    }
-
     public function get(string $package): Package
     {
         $this->importPackagesFromSources();
@@ -74,6 +63,18 @@ class PackageRepository implements Repository
         ]);
     }
 
+    public function addPackage(string $name, string $version, array $dist): void
+    {
+        $this->parseVersionString($version);
+        $this->packages[$name][$version] = $dist;
+    }
+
+    public function addSource($url): void
+    {
+        $this->sources[] = ['url' => $url, 'imported' => false];
+    }
+
+
     private function hydrate(array $values): Package
     {
         $package = clone $this->prototype;
@@ -85,7 +86,7 @@ class PackageRepository implements Repository
         return $package;
     }
 
-    private function importPackagesFromSources()
+    private function importPackagesFromSources(): void
     {
         foreach ($this->sources as $k => $source) {
 
@@ -166,6 +167,5 @@ class PackageRepository implements Repository
         }
 
         throw new RuntimeException(sprintf('Invalid version string "%s"', $version));
-
     }
 }

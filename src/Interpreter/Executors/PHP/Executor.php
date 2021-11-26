@@ -46,7 +46,7 @@ class Executor implements InterpreterExecutor
         }
 
         if ($cwd !== null) {
-            chdir($cwd ?? getcwd());
+            chdir($cwd);
         }
 
         extract($this->globals);

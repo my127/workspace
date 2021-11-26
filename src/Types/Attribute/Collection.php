@@ -14,7 +14,7 @@ class Collection implements ArrayAccess
     /** @var Expression */
     private $expression;
 
-    /** @var mixed[][] */
+    /** @var mixed[][]|null */
     private $cache = null;
 
     public function __construct(Expression $expression)

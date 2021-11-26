@@ -8,7 +8,7 @@ use Traversable;
 
 class BuilderCollection implements IteratorAggregate
 {
-    /** @var Builder */
+    /** @var Builder[] */
     private $builders = [];
 
     public function add(Builder $builder): void

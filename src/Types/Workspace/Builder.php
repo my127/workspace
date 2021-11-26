@@ -21,10 +21,29 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberInterface
 {
+    /**
+     * @var Application
+     */
     private $application;
+
+    /**
+     * @var Workspace
+     */
     private $workspace;
+
+    /**
+     * @var PHPExecutor
+     */
     private $phpExecutor;
+
+    /**
+     * @var AttributeCollection
+     */
     private $attributes;
+
+    /**
+     * @var Expression
+     */
     private $expression;
 
     public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor, AttributeCollection $attributes, Expression $expression)
@@ -38,13 +57,21 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
     public function build(Environment $environment, DefinitionCollection $definitions)
     {
+        // ignore PHPStan errors below. It does not currently understand that
+        // this class extends Definition because of that we can access the protected
+        // properties of the definitions...
         if (($definition = $definitions->findOneByType(Definition::TYPE)) !== null) {
-            /* @var Definition $definition */
+            /** @phpstan-ignore-next-line */
             $this->workspace->name = $definition->name;
+            /** @phpstan-ignore-next-line */
             $this->workspace->description = $definition->description;
+            /** @phpstan-ignore-next-line */
             $this->workspace->path = $definition->path;
+            /** @phpstan-ignore-next-line */
             $this->workspace->harnessName = $definition->harnessName;
+            /** @phpstan-ignore-next-line */
             $this->workspace->overlay = $definition->overlay;
+            /** @phpstan-ignore-next-line */
             $this->workspace->scope = $definition->scope;
         } else {
             $this->workspace->name = basename($environment->getWorkspacePath());

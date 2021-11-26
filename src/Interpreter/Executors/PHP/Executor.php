@@ -6,7 +6,7 @@ use my127\Workspace\Interpreter\Executor as InterpreterExecutor;
 
 class Executor implements InterpreterExecutor
 {
-    const NAME = 'php';
+    public const NAME = 'php';
 
     /** @var array */
     private $environment;
@@ -23,14 +23,14 @@ class Executor implements InterpreterExecutor
     {
         $pos = strrpos($script, "\n") + 1;
 
-        if ($pos !== false && $script[$pos] == '=') {
+        if (false !== $pos && '=' == $script[$pos]) {
             $script = substr_replace($script, 'return ', $pos, 1);
         }
 
         return $this->run($script, $args, $cwd, $env);
     }
 
-    public function setGlobal(string $name, $value)
+    public function setGlobal(string $name, $value): void
     {
         $this->globals[$name] = $value;
     }
@@ -46,7 +46,7 @@ class Executor implements InterpreterExecutor
         }
 
         if (null !== $cwd) {
-            chdir($cwd??getcwd());
+            chdir($cwd ?? getcwd());
         }
 
         extract($this->globals);
@@ -57,7 +57,7 @@ class Executor implements InterpreterExecutor
         chdir($this->environment['cwd']);
 
         foreach ($this->environment['env'] as $key => $value) {
-            putenv($key.($value !== false)?:'='.$value);
+            putenv($key.(false !== $value) ?: '='.$value);
         }
 
         return $ret;

@@ -22,22 +22,22 @@ class Builder extends Harness implements EnvironmentBuilder
     public function __construct(Application $application, Harness $harness, PHPExecutor $phpExecutor)
     {
         $this->application = $application;
-        $this->harness     = $harness;
+        $this->harness = $harness;
         $this->phpExecutor = $phpExecutor;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions): void
     {
         /** @var Definition $definition */
         if (($definition = $definitions->findOneByType(Definition::TYPE)) === null) {
             return;
         }
 
-        $this->harness->name        = $definition->name;
+        $this->harness->name = $definition->name;
         $this->harness->description = $definition->description;
-        $this->harness->path        = $definition->path;
-        $this->harness->require     = $definition->require;
-        $this->harness->scope       = $definition->scope;
+        $this->harness->path = $definition->path;
+        $this->harness->require = $definition->require;
+        $this->harness->scope = $definition->scope;
 
         $this->phpExecutor->setGlobal('harness', $this->harness);
     }

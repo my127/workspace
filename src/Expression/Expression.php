@@ -16,7 +16,7 @@ class Expression extends SymfonyExpressionLanguage
      */
     private $path;
 
-    public function __construct(Path $path, CacheItemPoolInterface $cache = null, $providers = array())
+    public function __construct(Path $path, CacheItemPoolInterface $cache = null, $providers = [])
     {
         parent::__construct($cache, $providers);
 
@@ -24,12 +24,12 @@ class Expression extends SymfonyExpressionLanguage
         $this->addDefaultFunctions();
     }
 
-    public function evaluate($expression, $values = array())
+    public function evaluate($expression, $values = [])
     {
         return parent::evaluate($this->preProcessExpression($expression), array_merge($this->globals, $values));
     }
 
-    public function setGlobal($name, $value)
+    public function setGlobal($name, $value): void
     {
         $this->globals[$name] = $value;
     }
@@ -39,26 +39,23 @@ class Expression extends SymfonyExpressionLanguage
         return str_replace('@(', 'attr(', $expression); // hack so we can use '@' as a shorthand function call for attributes
     }
 
-    private function addDefaultFunctions()
+    private function addDefaultFunctions(): void
     {
-        $this->addFunction(ExpressionFunction::fromPhp('getenv',            'env'));
-        $this->addFunction(ExpressionFunction::fromPhp('var_dump',          'debug'));
+        $this->addFunction(ExpressionFunction::fromPhp('getenv', 'env'));
+        $this->addFunction(ExpressionFunction::fromPhp('var_dump', 'debug'));
         $this->addFunction(ExpressionFunction::fromPhp('file_get_contents', 'file'));
-        $this->addFunction(ExpressionFunction::fromPhp('join',              'join'));
-        $this->addFunction(ExpressionFunction::fromPhp('max',               'max'));
-        $this->addFunction(ExpressionFunction::fromPhp('min',               'min'));
-        $this->addFunction(ExpressionFunction::fromPhp('range',             'range'));
-        $this->addFunction(ExpressionFunction::fromPhp('explode',           'split'));
-        
+        $this->addFunction(ExpressionFunction::fromPhp('join', 'join'));
+        $this->addFunction(ExpressionFunction::fromPhp('max', 'max'));
+        $this->addFunction(ExpressionFunction::fromPhp('min', 'min'));
+        $this->addFunction(ExpressionFunction::fromPhp('range', 'range'));
+        $this->addFunction(ExpressionFunction::fromPhp('explode', 'split'));
 
         $this->register(
             'file',
-            function()
-            {
+            function (): void {
                 throw new Exception('cannot be compiled');
             },
-            function ($args, $file)
-            {
+            function ($args, $file) {
                 return file_get_contents($this->path->getRealPath($file));
             }
         );

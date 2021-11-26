@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['harness.repository.package'];
+    public const TYPES = ['harness.repository.package'];
 
     /*
      * example
@@ -60,21 +60,21 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata)
+    private function parseMetaData(array &$values, $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration)
+    private function parseDeclaration(array &$values, $declaration): void
     {
-        list ($name, $version) = explode(':', substr($declaration, 28, -2));
+        list($name, $version) = explode(':', substr($declaration, 28, -2));
 
-        $values['name']    = $name;
+        $values['name'] = $name;
         $values['version'] = $version;
     }
 
-    private function parseBody(array &$values, $body)
+    private function parseBody(array &$values, $body): void
     {
         $values['dist'] = $body;
     }

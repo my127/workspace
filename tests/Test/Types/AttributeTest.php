@@ -2,17 +2,16 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
 use Generator;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class AttributeTest extends IntegrationTestCase
 {
     /** @test */
-    public function normal_attribute_key_can_be_set_and_retrieved()
+    public function normalAttributeKeyCanBeSetAndRetrieved(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -21,13 +20,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function normal_attribute_root_object_can_be_set_and_retrieved()
+    public function normalAttributeRootObjectCanBeSetAndRetrieved(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attributes:
   my:
     message: Hello World
@@ -38,14 +38,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
-
     /** @test */
-    public function attribute_value_can_be_an_expression()
+    public function attributeValueCanBeAnExpression(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('db'):
   driver: mysql
   host: localhost
@@ -59,13 +59,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("mysql:host=localhost;dbname=application", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('mysql:host=localhost;dbname=application', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function isset_returns_false_when_attribute_is_not_defined()
+    public function issetReturnsFalseWhenAttributeIsNotDefined(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('isset'): |
   #!php
   echo (isset($ws['message'])) ? 'yes' : 'no';
@@ -76,9 +77,10 @@ EOD
     }
 
     /** @test */
-    public function isset_returns_true_when_attribute_is_defined_and_has_a_value()
+    public function issetReturnsTrueWhenAttributeIsDefinedAndHasAValue(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello World
 command('isset'): |
   #!php
@@ -90,9 +92,10 @@ EOD
     }
 
     /** @test */
-    public function isset_returns_true_even_when_attribute_value_is_null()
+    public function issetReturnsTrueEvenWhenAttributeValueIsNull(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): null
 command('isset'): |
   #!php
@@ -104,9 +107,10 @@ EOD
     }
 
     /** @test */
-    public function null_values_are_also_represented_internally_as_null()
+    public function nullValuesAreAlsoRepresentedInternallyAsNull(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): null
 command('isnull'): |
   #!php
@@ -117,11 +121,11 @@ EOD
         $this->assertEquals('yes', $this->workspaceCommand('isnull')->getOutput());
     }
 
-    /** 
-     * @test 
+    /**
+     * @test
      * @dataProvider provide_attribute_precedence_is_respected
      */
-    public function attribute_precedence_is_respected(string $attribute, string $expected)
+    public function attributePrecedenceIsRespected(string $attribute, string $expected): void
     {
         $this->workspace()->loadSample('attribute/precedence');
         $this->assertEquals($expected, $this->workspaceCommand(sprintf(
@@ -133,13 +137,21 @@ EOD
     public function provide_attribute_precedence_is_respected(): Generator
     {
         yield ['key.1', 'Hello From harness.default'];
+
         yield ['key.2', 'Hello From harness.normal'];
+
         yield ['key.3', 'Hello From harness.override'];
+
         yield ['key.4', 'Hello From harness.override'];
+
         yield ['key.5', 'Hello From harness.override'];
+
         yield ['key.6', 'Hello From workspace.override'];
+
         yield ['key.7', 'Hello From workspace.override'];
+
         yield ['key.8', 'Hello From workspace.override'];
+
         yield ['key.9', 'Hello From global.override'];
     }
 }

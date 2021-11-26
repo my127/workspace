@@ -24,10 +24,10 @@ class Builder implements EnvironmentBuilder
     {
         $this->application = $application;
         $this->interpreter = $interpreter;
-        $this->expression  = $expression;
+        $this->expression = $expression;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions): void
     {
         /** @var Definition $definition */
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {

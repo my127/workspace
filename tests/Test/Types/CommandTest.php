@@ -2,42 +2,43 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class CommandTest extends IntegrationTestCase
 {
     /** @test */
-    public function bash_can_be_used_as_an_interpreter()
+    public function bashCanBeUsedAsAnInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'): |
   #!bash
   echo -n "Hello World"
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function php_can_be_used_as_an_interpreter()
+    public function phpCanBeUsedAsAnInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'): |
   #!php
   echo "Hello World";
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function environment_variables_are_passed_through_to_the_bash_interpreter()
+    public function environmentVariablesArePassedThroughToTheBashInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'):
   env:
     MESSAGE: Sample Value
@@ -47,13 +48,14 @@ command('speak'):
 EOD
         );
 
-        $this->assertEquals("Sample Value", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Sample Value', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function environment_variables_are_passed_through_to_the_php_intepreter()
+    public function environmentVariablesArePassedThroughToThePhpIntepreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'):
   env:
     MESSAGE: Sample Value
@@ -63,13 +65,14 @@ command('speak'):
 EOD
         );
 
-        $this->assertEquals("Sample Value", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Sample Value', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function working_directory_of_workspace_can_be_used_with_the_bash_interpreter()
+    public function workingDirectoryOfWorkspaceCanBeUsedWithTheBashInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('working-directory'): |
   #!bash(workspace:/test1)
   pwd
@@ -80,15 +83,16 @@ EOD
 
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
-            $this->workspace()->path('test1') . "\n",
+            $this->workspace()->path('test1')."\n",
             $this->workspaceCommand('working-directory', 'test1')->getOutput()
         );
     }
 
     /** @test */
-    public function working_directory_of_cwd_can_be_used_with_the_bash_interpreter()
+    public function workingDirectoryOfCwdCanBeUsedWithTheBashInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('working-directory'): |
   #!bash(cwd:/)
   pwd
@@ -100,15 +104,16 @@ EOD
 
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
-            $this->workspace()->path('test2') . "\n",
+            $this->workspace()->path('test2')."\n",
             $this->workspaceCommand('working-directory', 'test2')->getOutput()
         );
     }
 
     /** @test */
-    public function working_directory_of_workspace_can_be_used_with_the_php_interpreter()
+    public function workingDirectoryOfWorkspaceCanBeUsedWithThePhpInterpreter(): void
     {
-        $path = $this->createWorkspaceYml(<<<'EOD'
+        $path = $this->createWorkspaceYml(
+            <<<'EOD'
 command('working-directory'): |
   #!php(workspace:/test1)
   echo getcwd();
@@ -126,9 +131,10 @@ EOD
     }
 
     /** @test */
-    public function working_directory_of_cwd_can_be_used_with_the_php_interpreter()
+    public function workingDirectoryOfCwdCanBeUsedWithThePhpInterpreter(): void
     {
-        $path = $this->createWorkspaceYml(<<<'EOD'
+        $path = $this->createWorkspaceYml(
+            <<<'EOD'
 command('working-directory'): |
   #!php(cwd:/)
   echo getcwd();
@@ -147,9 +153,10 @@ EOD
     }
 
     /** @test */
-    public function attribute_filter_can_be_used_with_the_bash_interpreter()
+    public function attributeFilterCanBeUsedWithTheBashInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -158,13 +165,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function attribute_filter_can_be_used_with_the_php_interpreter()
+    public function attributeFilterCanBeUsedWithThePhpInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -173,13 +181,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function expression_filter_can_be_used_with_the_bash_interpreter()
+    public function expressionFilterCanBeUsedWithTheBashInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello
 
 command('speak'): |
@@ -188,13 +197,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function expression_filter_can_be_used_with_the_php_interpreter()
+    public function expressionFilterCanBeUsedWithThePhpInterpreter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello
 
 command('speak'): |
@@ -203,13 +213,14 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function environment_variable_values_can_be_expressions()
+    public function environmentVariableValuesCanBeExpressions(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('message'): Hello
 
 command('speak'):
@@ -221,40 +232,43 @@ command('speak'):
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function console_input_is_made_available_to_the_expression_filter()
+    public function consoleInputIsMadeAvailableToTheExpressionFilter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('hello <name>'): |
   #!bash|=
   echo -n "hello ={ input.argument('name') }"
 EOD
         );
 
-        $this->assertEquals("hello world", $this->workspaceCommand('hello world')->getOutput());
+        $this->assertEquals('hello world', $this->workspaceCommand('hello world')->getOutput());
     }
 
     /** @test */
-    public function positional_commands_from_input_can_be_accessed()
+    public function positionalCommandsFromInputCanBeAccessed(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('state (enable|disable)'): |
   #!bash|=
   echo -n "={ input.command(-1) }"
 EOD
         );
 
-        $this->assertEquals("disable", $this->workspaceCommand('state disable')->getOutput());
-        $this->assertEquals("enable",  $this->workspaceCommand('state enable')->getOutput());
+        $this->assertEquals('disable', $this->workspaceCommand('state disable')->getOutput());
+        $this->assertEquals('enable', $this->workspaceCommand('state enable')->getOutput());
     }
 
     /** @test */
-    public function console_input_can_be_used_as_expression_for_env_variable()
+    public function consoleInputCanBeUsedAsExpressionForEnvVariable(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('hello <name>'):
   env:
     NAME: = input.argument('name')
@@ -264,13 +278,14 @@ command('hello <name>'):
 EOD
         );
 
-        $this->assertEquals("hello world", $this->workspaceCommand('hello world')->getOutput());
+        $this->assertEquals('hello world', $this->workspaceCommand('hello world')->getOutput());
     }
 
     /** @test */
-    public function command_description_is_output_with_help()
+    public function commandDescriptionIsOutputWithHelp(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'):
   description: This command speaks
   exec: |
@@ -286,9 +301,10 @@ EOD
     }
 
     /** @test */
-    public function command_description_default_is_output_with_help_when_description_is_missing()
+    public function commandDescriptionDefaultIsOutputWithHelpWhenDescriptionIsMissing(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'):
   exec: |
     #!bash
@@ -303,9 +319,10 @@ EOD
     }
 
     /** @test */
-    public function subcommand_description_is_output_with_help()
+    public function subcommandDescriptionIsOutputWithHelp(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 command('speak'):
   exec: |
     #!bash
@@ -325,9 +342,10 @@ EOD
     }
 
     /** @test */
-    public function optional_arguments_can_be_specified()
+    public function optionalArgumentsCanBeSpecified(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('default_value'): 'default value'
 
 command('hello [<name>]'):
@@ -341,9 +359,10 @@ EOD
     }
 
     /** @test */
-    public function optional_options_can_be_specified()
+    public function optionalOptionsCanBeSpecified(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('default_value'): 'default value'
 
 command('hello [--name=<name>]'):
@@ -359,9 +378,10 @@ EOD
     }
 
     /** @test */
-    public function optional_arguments_can_be_left_empty()
+    public function optionalArgumentsCanBeLeftEmpty(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('default_value'): 'default value'
 
 command('hello [<name>]'):
@@ -375,9 +395,10 @@ EOD
     }
 
     /** @test */
-    public function optional_options_can_be_left_empty()
+    public function optionalOptionsCanBeLeftEmpty(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 attribute('default_value'): 'default value'
 
 command('hello [--name=<name>]'):

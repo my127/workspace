@@ -2,14 +2,12 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class ConfdTest extends IntegrationTestCase
 {
     /** @test */
-    public function attributes_are_available_to_templates()
+    public function attributesAreAvailableToTemplates(): void
     {
         $path = $this->workspace()->loadSample('confd/attributes');
         $this->workspaceCommand('apply config');
@@ -18,7 +16,7 @@ class ConfdTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function functions_are_available_to_templates()
+    public function functionsAreAvailableToTemplates(): void
     {
         $path = $this->workspace()->loadSample('confd/functions');
         $this->workspaceCommand('apply config');
@@ -27,7 +25,7 @@ class ConfdTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function template_src_is_suffixed_with_the_twig_extension()
+    public function templateSrcIsSuffixedWithTheTwigExtension(): void
     {
         $path = $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -45,7 +43,7 @@ EOD
     }
 
     /** @test */
-    public function template_dst_when_not_specified_is_placed_in_the_same_location_as_src_without_the_twig_file_extension()
+    public function templateDstWhenNotSpecifiedIsPlacedInTheSameLocationAsSrcWithoutTheTwigFileExtension(): void
     {
         $path = $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -63,7 +61,7 @@ EOD
     }
 
     /** @test */
-    public function whether_a_template_is_applied_or_not_can_be_controlled_with_a_conditional_expression()
+    public function whetherATemplateIsAppliedOrNotCanBeControlledWithAConditionalExpression(): void
     {
         $path = $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -83,7 +81,7 @@ EOD
     }
 
     /** @test */
-    public function when_only_a_string_is_specified_it_is_treated_as_the_src_with_defaults_applied_to_the_other_attributes()
+    public function whenOnlyAStringIsSpecifiedItIsTreatedAsTheSrcWithDefaultsAppliedToTheOtherAttributes(): void
     {
         $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -103,7 +101,7 @@ EOD
         );
     }
 
-    private function workspaceWithSampleData(string $workspace, string $sampleName)
+    private function workspaceWithSampleData(string $workspace, string $sampleName): void
     {
         $this->workspace()->loadSample($sampleName);
         $this->createWorkspaceYml($workspace);

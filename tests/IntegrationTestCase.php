@@ -2,9 +2,9 @@
 
 namespace my127\Workspace\Tests;
 
+use my127\Workspace\Tests\Util\Workspace;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
-use my127\Workspace\Tests\Util\Workspace;
 
 class IntegrationTestCase extends TestCase
 {
@@ -15,13 +15,13 @@ class IntegrationTestCase extends TestCase
 
     public function workspace(): Workspace
     {
-        return Workspace::create(__DIR__ . '/Workspace');
+        return Workspace::create(__DIR__.'/Workspace');
     }
 
     public function workspaceCommand(string $command, string $subPath = null, array $env = []): Process
     {
         $process = Process::fromShellCommandline(
-            sprintf(__DIR__ . '/../my127ws.phar %s', $command),
+            sprintf(__DIR__.'/../my127ws.phar %s', $command),
             $this->workspace()->path($subPath),
             $env
         );

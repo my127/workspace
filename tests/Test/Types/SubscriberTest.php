@@ -2,16 +2,15 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class SubscriberTest extends IntegrationTestCase
 {
     /** @test */
-    public function subscriber_script_is_run_when_appropriate_event_is_triggered()
+    public function subscriberScriptIsRunWhenAppropriateEventIsTriggered(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 on('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -22,13 +21,14 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
-    public function subscriber_script_is_run_with_env_when_triggered()
+    public function subscriberScriptIsRunWithEnvWhenTriggered(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 on('custom.event'):
   env:
     EXAMPLE: test
@@ -42,13 +42,14 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World, test", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('Hello World, test', $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
-    public function after_can_be_used_as_a_shorthand_for_event_names_prefixed_with_after()
+    public function afterCanBeUsedAsAShorthandForEventNamesPrefixedWithAfter(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 after('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -59,13 +60,14 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
-    public function before_can_be_used_as_a_shorthand_for_event_names_prefixed_with_before()
+    public function beforeCanBeUsedAsAShorthandForEventNamesPrefixedWithBefore(): void
     {
-        $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(
+            <<<'EOD'
 before('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -76,6 +78,6 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('hi')->getOutput());
     }
 }

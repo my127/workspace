@@ -8,11 +8,11 @@ use ReflectionProperty;
 
 class PackageRepository implements Repository
 {
-    const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
-    const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
+    public const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
+    public const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
 
     private $packages = [];
-    private $sources  = [];
+    private $sources = [];
 
     private $prototype;
 
@@ -29,12 +29,12 @@ class PackageRepository implements Repository
         }
     }
 
-    public function addPackage($name, $version, $dist)
+    public function addPackage($name, $version, $dist): void
     {
         $this->packages[$name][$version] = $dist;
     }
 
-    public function addSource($url)
+    public function addSource($url): void
     {
         $this->sources[] = ['url' => $url, 'imported' => false];
     }
@@ -46,13 +46,13 @@ class PackageRepository implements Repository
         preg_match(self::HARNESS_PACKAGE_PATTERN, $package, $match);
 
         $harness = $match['harness'];
-        $vendor  = empty($match['vendor'])  ? 'my127'  : $match['vendor'];
+        $vendor = empty($match['vendor']) ? 'my127' : $match['vendor'];
         $version = $this->resolvePackageVersion($vendor.'/'.$harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
 
         return $this->hydrate([
-            'name'    => $harness,
+            'name' => $harness,
             'version' => $version,
-            'dist'    => $this->packages[$vendor.'/'.$harness][$version]
+            'dist' => $this->packages[$vendor.'/'.$harness][$version],
         ]);
     }
 
@@ -67,10 +67,9 @@ class PackageRepository implements Repository
         return $package;
     }
 
-    private function importPackagesFromSources()
+    private function importPackagesFromSources(): void
     {
         foreach ($this->sources as $k => $source) {
-
             if ($source['imported']) {
                 continue;
             }
@@ -87,17 +86,15 @@ class PackageRepository implements Repository
         }
 
         if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
-
             $collection = array_keys($this->packages[$name]);
 
-            $major = $match['major']??'x';
-            $minor = $match['minor']??'x';
-            $patch = $match['patch']??'x';
+            $major = $match['major'] ?? 'x';
+            $minor = $match['minor'] ?? 'x';
+            $patch = $match['patch'] ?? 'x';
 
             $candidate = null;
 
             foreach ($collection as $availVersion) {
-
                 $semver = explode('.', substr($availVersion, 1));
 
                 if (is_numeric($major) && $semver[0] != $major) {
@@ -112,12 +109,12 @@ class PackageRepository implements Repository
                     continue;
                 }
 
-                if ($candidate == null || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
+                if (null == $candidate || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
                     $candidate = $availVersion;
                 }
             }
 
-            if ($candidate !== null) {
+            if (null !== $candidate) {
                 return $availVersion;
             }
         }

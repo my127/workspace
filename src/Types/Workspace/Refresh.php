@@ -14,8 +14,8 @@ class Refresh
     public function __construct(Workspace $workspace, Harness $harness, ConfdFactory $confd)
     {
         $this->workspace = $workspace;
-        $this->confd     = $confd;
-        $this->harness   = $harness;
+        $this->confd = $confd;
+        $this->harness = $harness;
     }
 
     public function refresh(): void
@@ -30,7 +30,7 @@ class Refresh
         $this->workspace->trigger('after.harness.refresh');
     }
 
-    private function applyConfiguration(array $paths)
+    private function applyConfiguration(array $paths): void
     {
         foreach ($paths as $path) {
             $this->confd->create($path)->apply();

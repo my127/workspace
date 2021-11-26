@@ -10,7 +10,7 @@ class Key
     public function __construct(string $name, $key = null)
     {
         $this->name = $name;
-        $this->key  = ($key) ? sodium_hex2bin($key) : random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
+        $this->key = ($key) ? sodium_hex2bin($key) : random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
     }
 
     public function getName(): string

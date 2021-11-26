@@ -7,7 +7,7 @@ use my127\Workspace\Interpreter\Executor as InterpreterExecutor;
 
 class Executor implements InterpreterExecutor
 {
-    const NAME = 'expr';
+    public const NAME = 'expr';
 
     /** @var Expression */
     private $expression;

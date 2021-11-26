@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class KeyDefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['key'];
+    public const TYPES = ['key'];
 
     /*
      * example
@@ -58,18 +58,18 @@ class KeyDefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata)
+    private function parseMetaData(array &$values, $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration)
+    private function parseDeclaration(array &$values, $declaration): void
     {
         $values['name'] = substr($declaration, 5, -2);
     }
 
-    private function parseBody(array &$values, $body)
+    private function parseBody(array &$values, $body): void
     {
         $values['key'] = $body;
     }

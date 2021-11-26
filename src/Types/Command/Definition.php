@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    const TYPE = 'command';
+    public const TYPE = 'command';
 
     /** @var string */
     private $usage;

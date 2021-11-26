@@ -16,7 +16,7 @@ class Builder implements EnvironmentBuilder
         $this->collection = $collection;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions): void
     {
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
             $this->collection->add($definition);

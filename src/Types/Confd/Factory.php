@@ -16,9 +16,9 @@ class Factory
     public function __construct(Path $path, Collection $definitions, TwigEnvironment $twig, Expression $expression)
     {
         $this->definitions = $definitions;
-        $this->twig        = $twig;
-        $this->path        = $path;
-        $this->expression  = $expression;
+        $this->twig = $twig;
+        $this->path = $path;
+        $this->expression = $expression;
     }
 
     public function create(string $directory): Confd

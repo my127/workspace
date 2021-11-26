@@ -7,7 +7,7 @@ class Collection
     /** @var Definition[] */
     private $definitions = [];
 
-    public function add(Definition $definition)
+    public function add(Definition $definition): void
     {
         $this->definitions[$definition->getDirectory()] = $definition;
     }

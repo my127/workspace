@@ -3,18 +3,18 @@
 namespace my127\Workspace\Types\Attribute;
 
 use ArrayAccess;
-use my127\Workspace\Utility\Arr;
 use my127\Workspace\Expression\Expression;
+use my127\Workspace\Utility\Arr;
 
 class Collection implements ArrayAccess
 {
-    /** @var mixed[][]  */
+    /** @var mixed[][] */
     private $attributes = [];
 
     /** @var Expression */
     private $expression;
 
-    /** @var mixed[][]  */
+    /** @var mixed[][] */
     private $cache = null;
 
     public function __construct(Expression $expression)
@@ -42,11 +42,12 @@ class Collection implements ArrayAccess
 
         if ($this->isExpression($value)) {
             $this->evaluate($value);
+
             return $value;
         }
 
         if (is_array($value)) {
-            array_walk_recursive($value, function (&$value) {
+            array_walk_recursive($value, function (&$value): void {
                 if ($this->isExpression($value)) {
                     $this->evaluate($value);
                 }
@@ -72,7 +73,7 @@ class Collection implements ArrayAccess
 
     private function isExpression($value): bool
     {
-        return is_string($value) && $value != "" && $value[0] == '=';
+        return is_string($value) && '' != $value && '=' == $value[0];
     }
 
     public function offsetExists($offset)
@@ -83,7 +84,7 @@ class Collection implements ArrayAccess
 
         $array = &$this->cache;
 
-        if (strpos($offset, '.') === false) {
+        if (false === strpos($offset, '.')) {
             return array_key_exists($offset, $array);
         }
 
@@ -91,7 +92,6 @@ class Collection implements ArrayAccess
         krsort($segments);
 
         while (($segment = array_pop($segments)) !== null) {
-
             if (!array_key_exists($segment, $array)) {
                 return false;
             }
@@ -107,19 +107,19 @@ class Collection implements ArrayAccess
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         foreach ($this->attributes as &$attributes) {
             Arr::forget($attributes, $offset);
         }
     }
 
-    private function buildAttributeCache()
+    private function buildAttributeCache(): void
     {
         ksort($this->attributes);
         $this->cache = [];

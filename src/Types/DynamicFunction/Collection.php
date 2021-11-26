@@ -10,7 +10,7 @@ class Collection implements IteratorAggregate
     /** @var DynamicFunction */
     private $functions = [];
 
-    public function add(DynamicFunction $function)
+    public function add(DynamicFunction $function): void
     {
         $this->functions[$function->getName()] = $function;
     }
@@ -20,7 +20,7 @@ class Collection implements IteratorAggregate
         return $this->functions[$function];
     }
 
-    public function call($name, ...$arguments)
+    public function call($name, ...$arguments): void
     {
         call_user_func_array($this->functions[$name], $arguments);
     }

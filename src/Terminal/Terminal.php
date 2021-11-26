@@ -15,18 +15,19 @@ class Terminal
 
     public function __construct(ConsoleOutput $output, ArgvInput $argv, QuestionHelper $question)
     {
-        $this->output   = $output;
-        $this->argv     = $argv;
+        $this->output = $output;
+        $this->argv = $argv;
         $this->question = $question;
     }
 
     public function ask(string $message, $default = null)
     {
         $response = $this->question->ask($this->argv, $this->output, new Question($message.': '));
-        return (!empty($response))?$response:$default;
+
+        return (!empty($response)) ? $response : $default;
     }
 
-    public function write(string $line)
+    public function write(string $line): void
     {
         $this->output->writeln($line);
     }

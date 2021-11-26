@@ -17,7 +17,7 @@ class DynamicFunction
     public function __construct(Interpreter $interpreter, Definition $definition)
     {
         $this->interpreter = $interpreter;
-        $this->definition  = $definition;
+        $this->definition = $definition;
     }
 
     public function getName()
@@ -28,7 +28,7 @@ class DynamicFunction
     public function __invoke()
     {
         $exec = $this->definition->getExec();
-        $env  = $this->definition->getEnvironmentVariables();
+        $env = $this->definition->getEnvironmentVariables();
         $args = $this->definition->getArguments();
 
         try {

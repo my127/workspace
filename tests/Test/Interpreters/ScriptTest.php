@@ -2,15 +2,14 @@
 
 namespace Test\my127\Workspace\Interpreters;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
-use my127\Workspace\Interpreter\Script;
 use my127\Workspace\Interpreter\Executor;
+use my127\Workspace\Interpreter\Script;
+use PHPUnit\Framework\TestCase;
 
 class ScriptTest extends TestCase
 {
     /** @test */
-    public function exec_will_pass_equal_number_of_args()
+    public function execWillPassEqualNumberOfArgs(): void
     {
         $executor = $this->getMockBuilder(Executor::class)->getMock();
 
@@ -23,7 +22,7 @@ class ScriptTest extends TestCase
         $executor->expects($this->atLeastOnce())
             ->method('exec')
             ->willReturnCallback(
-                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs) {
+                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs): void {
                     $assert->assertEquals($expectedArgs, $args);
                 }
             );
@@ -33,7 +32,7 @@ class ScriptTest extends TestCase
     }
 
     /** @test */
-    public function exec_will_pass_null_values_when_less_args_provided()
+    public function execWillPassNullValuesWhenLessArgsProvided(): void
     {
         $executor = $this->getMockBuilder(Executor::class)->getMock();
 
@@ -46,7 +45,7 @@ class ScriptTest extends TestCase
         $executor->expects($this->atLeastOnce())
             ->method('exec')
             ->willReturnCallback(
-                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs) {
+                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs): void {
                     $assert->assertEquals($expectedArgs, $args);
                 }
             );

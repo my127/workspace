@@ -22,16 +22,16 @@ class Builder implements EnvironmentBuilder
 
     public function __construct(EventDispatcher $dispatcher, Expression $expression, Interpreter $interpreter)
     {
-        $this->dispatcher  = $dispatcher;
-        $this->expression  = $expression;
+        $this->dispatcher = $dispatcher;
+        $this->expression = $expression;
         $this->interpreter = $interpreter;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions): void
     {
         foreach (DefinitionFactory::getTypes() as $type) {
             foreach ($definitions->findByType($type) as $definition) {
-                /** @var Definition $definition */
+                /* @var Definition $definition */
                 $this->dispatcher->addListener($definition->getEvent(), new Subscriber($definition, $this->expression, $this->interpreter));
             }
         }

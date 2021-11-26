@@ -16,10 +16,10 @@ class Builder implements EnvironmentBuilder
         $this->harnessPackageRepository = $harnessPackageRepository;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions)
+    public function build(Environment $environment, DefinitionCollection $definitions): void
     {
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
-            /** @var Definition $definition */
+            /* @var Definition $definition */
             $this->harnessPackageRepository->addSource($definition->getUrl());
         }
     }

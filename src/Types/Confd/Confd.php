@@ -20,8 +20,8 @@ class Confd
     public function __construct(Path $path, Definition $definition, Twig_Environment $twig, Expression $expression)
     {
         $this->definition = $definition;
-        $this->twig       = $twig;
-        $this->path       = $path;
+        $this->twig = $twig;
+        $this->path = $path;
         $this->expression = $expression;
 
         /** @var $loader Filesystem */
@@ -32,8 +32,7 @@ class Confd
     public function apply(): void
     {
         foreach ($this->definition->getTemplates() as $path) {
-
-            if (isset($path['when']) && $this->expression->evaluate($path['when']) === false) {
+            if (isset($path['when']) && false === $this->expression->evaluate($path['when'])) {
                 continue;
             }
 

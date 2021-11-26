@@ -18,14 +18,14 @@ class Subscriber
 
     public function __construct(Definition $definition, Expression $expression, Interpreter $interpreter)
     {
-        $this->definition  = $definition;
+        $this->definition = $definition;
         $this->interpreter = $interpreter;
-        $this->expression  = $expression;
+        $this->expression = $expression;
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
-        $env    = $this->evaluateEnvironmentVariables($this->definition->getEnvironmentVariables());
+        $env = $this->evaluateEnvironmentVariables($this->definition->getEnvironmentVariables());
         $script = $this->definition->getExec();
 
         $this->interpreter->script($script)->exec([], $env);
@@ -44,6 +44,6 @@ class Subscriber
 
     private function isExpression(string $value): bool
     {
-        return (is_string($value)) && ($value[0] == '=');
+        return (is_string($value)) && ('=' == $value[0]);
     }
 }

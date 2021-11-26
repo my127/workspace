@@ -11,6 +11,4 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
         '@Symfony' => true,
     ])
-    ->setFinder($finder)
-    ->setRiskyAllowed(true)
-;
+    ->setFinder($finder);

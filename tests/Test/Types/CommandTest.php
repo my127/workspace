@@ -106,7 +106,7 @@ EOD
     /** @test */
     public function workingDirectoryOfWorkspaceCanBeUsedWithThePhpInterpreter()
     {
-        $path = $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('working-directory'): |
   #!php(workspace:/test1)
   echo getcwd();
@@ -126,7 +126,7 @@ EOD
     /** @test */
     public function workingDirectoryOfCwdCanBeUsedWithThePhpInterpreter()
     {
-        $path = $this->createWorkspaceYml(<<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('working-directory'): |
   #!php(cwd:/)
   echo getcwd();

@@ -23,6 +23,7 @@ jobs:
               with:
                   additional_files: 'ws.*'
                   ignore: "vendor vendor-bin"
+
     phpunit:
         name: "PHPUnit (${{ matrix.php-version }})"
 
@@ -47,6 +48,10 @@ jobs:
                     extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
                     php-version: "${{ matrix.php-version }}"
                     tools: composer:v2
+
+            -
+                name: "Composer validate"
+                run: "composer validate"
 
             -
                 name: "Composer install"

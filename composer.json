@@ -32,7 +32,15 @@
     "scripts": {
         "post-install-cmd": ["@composer bin all install --ignore-platform-reqs --ansi"],
         "post-update-cmd": ["@composer bin all update --ignore-platform-reqs --ansi"],
-        "test": "@composer compile && vendor/bin/phpunit --testdox",
-        "compile": "date -u > home/build && bin/build && box compile"
+        "test": "vendor/bin/phpunit --testdox",
+        "compile": "date -u > home/build && bin/build && box compile",
+        "phpstan": "./vendor/bin/phpstan analyse",
+        "cs": "./vendor/bin/php-cs-fixer fix",
+        "integrate": [
+            "@compile",
+            "@phpstan",
+            "@cs",
+            "@test"
+        ]
     }
 }

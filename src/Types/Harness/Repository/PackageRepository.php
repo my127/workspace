@@ -75,7 +75,7 @@ class PackageRepository implements Repository
 
     public function addPackage(string $name, string $version, array $dist): void
     {
-        $this->parseVersionString($version);
+        $this->mustParseVersionString($version);
         $this->packages[$name][$version] = $dist;
     }
 
@@ -118,7 +118,7 @@ class PackageRepository implements Repository
 
     private function resolvePackageVersion(string $name, string $version): string
     {
-        [$major, $minor, $patch] = $this->parseVersionString($version);
+        [$major, $minor, $patch] = $this->mustParseVersionString($version);
 
         if (isset($this->packages[$name][$version])) {
             return $version;
@@ -164,9 +164,9 @@ class PackageRepository implements Repository
     }
 
     /**
-     * @return array{int,int,int}
+     * @return array{int|'x',int|'x',int|'x'}
      */
-    private function parseVersionString(string $version): array
+    private function mustParseVersionString(string $version): array
     {
         if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
             return [

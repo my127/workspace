@@ -26,7 +26,6 @@ jobs:
 
     composer-validate:
         name: "Composer validate (${{ matrix.php-version }})"
-
         runs-on: "ubuntu-latest"
 
         strategy:
@@ -52,11 +51,9 @@ jobs:
                 run: "composer validate --strict --no-check-lock"
 
     php-cs-fixer:
+        name: "PHP-CS-Fixer (${{ matrix.php-version }})"
         needs:
             - "composer-validate"
-
-        name: "PHP-CS-Fixer (${{ matrix.php-version }})"
-
         runs-on: "ubuntu-latest"
 
         strategy:

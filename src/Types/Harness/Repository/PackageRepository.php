@@ -4,7 +4,9 @@ namespace my127\Workspace\Types\Harness\Repository;
 
 use Exception;
 use RuntimeException;
-use my127\Workspace\File\FileLoader;
+use my127\Workspace\File\JsonLoader;
+use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
+use my127\Workspace\Types\Harness\Repository\Exception\UnknownPackage;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use ReflectionProperty;
 
@@ -22,11 +24,11 @@ class PackageRepository implements Repository
     private $properties = [];
 
     /**
-     * @var FileLoader
+     * @var JsonLoader
      */
     private $fileLoader;
 
-    public function __construct(FileLoader $fileLoader)
+    public function __construct(JsonLoader $fileLoader)
     {
         $this->prototype = new Package();
 
@@ -39,10 +41,11 @@ class PackageRepository implements Repository
 
     public function addPackage(string $name, string $version, array $dist)
     {
+        $this->parseVersionString($version);
         $this->packages[$name][$version] = $dist;
     }
 
-    public function addSource($url)
+    public function addSource($url)/** void **/
     {
         $this->sources[] = ['url' => $url, 'imported' => false];
     }
@@ -90,39 +93,40 @@ class PackageRepository implements Repository
                 continue;
             }
 
-            $this->packages = array_merge($this->packages, $this->fileLoader->loadJson($source['url']));
+            try {
+                $this->packages = array_merge($this->packages, $this->fileLoader->loadArray($source['url']));
+            } catch (Exception $error) {
+                throw new CouldNotLoadSource(sprintf(
+                    'Could not load from source "%s"',
+                    $source['url']
+                ), 0, $error);
+            }
             $this->sources[$k]['imported'] = true;
         }
     }
 
     private function resolvePackageVersion(string $name, string $version): string
     {
+        [$major, $minor, $patch] = $this->parseVersionString($version);
+
         if (isset($this->packages[$name][$version])) {
             return $version;
         }
 
         if (!isset($this->packages[$name])) {
-            throw new RuntimeException(sprintf(
+            throw new UnknownPackage(sprintf(
                 'Package "%s" is not registered, registered packages "%s"',
                 $name, implode('", "', array_keys($this->packages))
             ));
         }
 
-        if (!preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
-            throw new RuntimeException(sprintf('Invalid version string "%s"', $version));
-        }
-
-        $collection = array_keys($this->packages[$name]);
-
-        $major = $match['major']??'x';
-        $minor = $match['minor']??'x';
-        $patch = $match['patch']??'x';
+        $availableVersions = array_keys($this->packages[$name]);
 
         $candidate = null;
 
-        foreach ($collection as $availVersion) {
+        foreach ($availableVersions as $availableVersion) {
 
-            $semver = explode('.', substr($availVersion, 1));
+            $semver = explode('.', substr($availableVersion, 1));
 
             if (is_numeric($major) && $semver[0] != $major) {
                 continue;
@@ -136,15 +140,32 @@ class PackageRepository implements Repository
                 continue;
             }
 
-            if ($candidate == null || version_compare(substr($availVersion, 1), substr($candidate, 1), '>')) {
-                $candidate = $availVersion;
+            if ($candidate == null || version_compare(substr($availableVersion, 1), substr($candidate, 1), '>')) {
+                $candidate = $availableVersion;
             }
         }
 
         if ($candidate === null) {
-            throw new Exception("Could not resolve '{$name}:{$version}' to a harness package'");
+            throw new Exception(sprintf('Could not resolve "%s:%s" to a harness package', $name, $version));
         }
 
-        return $availVersion;
+        return $candidate;
+    }
+
+    /**
+     * @return array{int,int,int}
+     */
+    private function parseVersionString(string $version): array
+    {
+        if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
+            return [
+                $match['major']??'x',
+                $match['minor']??'x',
+                $match['patch']??'x',
+            ];
+        }
+
+        throw new RuntimeException(sprintf('Invalid version string "%s"', $version));
+
     }
 }

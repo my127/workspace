@@ -7,3 +7,4 @@
 /vendor-bin/**/composer.lock
 /my127ws.phar
 /tests/Workspace
+/.php-cs-fixer.cache

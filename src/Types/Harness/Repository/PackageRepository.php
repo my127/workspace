@@ -47,12 +47,12 @@ class PackageRepository implements Repository
 
         $harness = $match['harness'];
         $vendor = empty($match['vendor']) ? 'my127' : $match['vendor'];
-        $version = $this->resolvePackageVersion($vendor.'/'.$harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
+        $version = $this->resolvePackageVersion($vendor . '/' . $harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
 
         return $this->hydrate([
             'name' => $harness,
             'version' => $version,
-            'dist' => $this->packages[$vendor.'/'.$harness][$version],
+            'dist' => $this->packages[$vendor . '/' . $harness][$version],
         ]);
     }
 

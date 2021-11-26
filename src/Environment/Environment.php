@@ -66,16 +66,16 @@ class Environment
     private function loadWorkspaceDefinitions()
     {
         $this->loader->setWorkspacePath($this->workspacePath = $this->findWorkspaceDirectory());
-        $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath.'/.my127ws');
+        $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath . '/.my127ws');
 
-        $this->loader->load(__DIR__.'/../../config/harness/packages.yml');
-        $this->loader->load(__DIR__.'/../../config/workspace/global.yml');
-        $this->loader->load($this->workspacePath.'/workspace.yml');
-        $this->loader->load(home().'/.config/my127/workspace/*.yml');
+        $this->loader->load(__DIR__ . '/../../config/harness/packages.yml');
+        $this->loader->load(__DIR__ . '/../../config/workspace/global.yml');
+        $this->loader->load($this->workspacePath . '/workspace.yml');
+        $this->loader->load(home() . '/.config/my127/workspace/*.yml');
 
         $extra = [
-            $this->workspacePath.'/workspace.override.yml',
-            $this->harnessPath.'/harness.yml',
+            $this->workspacePath . '/workspace.override.yml',
+            $this->harnessPath . '/harness.yml',
         ];
 
         foreach ($extra as $file) {
@@ -103,6 +103,6 @@ class Environment
             return $candidate;
         }
 
-        return $this->getUserHomeDirectory().'/.my127/workspace';
+        return $this->getUserHomeDirectory() . '/.my127/workspace';
     }
 }

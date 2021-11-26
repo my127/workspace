@@ -75,11 +75,11 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         switch ($values['type']) {
             case 'before':
-                $event = 'before.'.substr($declaration, 8, -2);
+                $event = 'before.' . substr($declaration, 8, -2);
                 break;
 
             case 'after':
-                $event = 'after.'.substr($declaration, 7, -2);
+                $event = 'after.' . substr($declaration, 7, -2);
                 break;
 
             default:

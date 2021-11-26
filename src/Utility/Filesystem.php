@@ -14,7 +14,7 @@ class Filesystem
         $search = explode(DIRECTORY_SEPARATOR, $startFrom);
 
         while (!empty($search)) {
-            if (file_exists($candidate = implode(DIRECTORY_SEPARATOR, $search).DIRECTORY_SEPARATOR.$name)) {
+            if (file_exists($candidate = implode(DIRECTORY_SEPARATOR, $search) . DIRECTORY_SEPARATOR . $name)) {
                 $path = dirname($candidate);
                 break;
             }
@@ -30,7 +30,7 @@ class Filesystem
 
         while (false !== ($file = readdir($dir))) {
             if (('.' != $file) && ('..' != $file)) {
-                $full = $src.'/'.$file;
+                $full = $src . '/' . $file;
                 if (is_dir($full)) {
                     self::rrmdir($full);
                 } else {
@@ -53,11 +53,11 @@ class Filesystem
 
         while (false !== ($file = readdir($dir))) {
             if (('.' != $file) && ('..' != $file)) {
-                if (is_dir($src.'/'.$file)) {
-                    self::rcopy($src.'/'.$file, $dst.'/'.$file);
+                if (is_dir($src . '/' . $file)) {
+                    self::rcopy($src . '/' . $file, $dst . '/' . $file);
                 } else {
-                    $srcFile = $src.'/'.$file;
-                    $dstFile = $dst.'/'.$file;
+                    $srcFile = $src . '/' . $file;
+                    $dstFile = $dst . '/' . $file;
                     copy($srcFile, $dstFile);
                 }
             }

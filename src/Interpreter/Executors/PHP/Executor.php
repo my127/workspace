@@ -42,7 +42,7 @@ class Executor implements InterpreterExecutor
 
         foreach ($env as $key => $value) {
             $this->environment['env'][$key] = getenv($key);
-            putenv($key.'='.$value);
+            putenv($key . '=' . $value);
         }
 
         if (null !== $cwd) {
@@ -57,7 +57,7 @@ class Executor implements InterpreterExecutor
         chdir($this->environment['cwd']);
 
         foreach ($this->environment['env'] as $key => $value) {
-            putenv($key.(false !== $value) ?: '='.$value);
+            putenv($key . (false !== $value) ?: '=' . $value);
         }
 
         return $ret;

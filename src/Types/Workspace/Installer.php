@@ -117,13 +117,13 @@ class Installer
         }
 
         if ($cascade && $step < self::STEP_TRIGGER_INSTALLED) {
-            $this->workspace->run('install --step='.($step + 1));
+            $this->workspace->run('install --step=' . ($step + 1));
         }
     }
 
     private function downloadAndExtractHarnessPackage(Package $package)
     {
-        $harnessInstallPath = $this->workspace->getPath().'/.my127ws';
+        $harnessInstallPath = $this->workspace->getPath() . '/.my127ws';
 
         if (!is_dir($harnessInstallPath)) {
             mkdir($harnessInstallPath, 0755, true);
@@ -144,7 +144,7 @@ class Installer
                 if (!isset($this->attributes[$attribute])) {
                     $response = $this->terminal->ask($attribute);
                     $attributes[$type][$attribute] = ('standard' == $type) ?
-                        $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
+                        $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
                 }
             }
         }
@@ -163,10 +163,10 @@ class Installer
         $content = "\n";
 
         foreach ($attributes as $attribute => $value) {
-            $content .= "attribute('{$attribute}'): ".Yaml::dump($value)."\n";
+            $content .= "attribute('{$attribute}'): " . Yaml::dump($value) . "\n";
         }
 
-        file_put_contents($this->path->getRealPath('workspace:/'.$file), $content, FILE_APPEND);
+        file_put_contents($this->path->getRealPath('workspace:/' . $file), $content, FILE_APPEND);
     }
 
     private function applyConfiguration(array $paths)
@@ -178,18 +178,18 @@ class Installer
 
     private function applyOverlayDirectory(string $getOverlayPath)
     {
-        $src = $this->path->getRealPath('workspace:/'.$getOverlayPath).'/';
+        $src = $this->path->getRealPath('workspace:/' . $getOverlayPath) . '/';
         $dst = $this->path->getRealPath('harness:/');
 
         if (is_dir($src)) {
-            passthru('rsync -a "'.$src.'" "'.$dst.'"');
+            passthru('rsync -a "' . $src . '" "' . $dst . '"');
         }
     }
 
     private function startRequiredServices(array $requiredServices)
     {
         foreach ($requiredServices as $service) {
-            $this->workspace->exec('ws.service '.$service.' enable');
+            $this->workspace->exec('ws.service ' . $service . ' enable');
         }
     }
 }

@@ -32,17 +32,17 @@ class Builder implements EnvironmentBuilder
 
     private $precedenceMap =
     [
-        WorkspaceDefinition::SCOPE_GLOBAL.Definition::PRIORITY_DEFAULT => self::PRECEDENCE_GLOBAL_DEFAULT,
-        WorkspaceDefinition::SCOPE_GLOBAL.Definition::PRIORITY_NORMAL => self::PRECEDENCE_GLOBAL_NORMAL,
-        WorkspaceDefinition::SCOPE_GLOBAL.Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_GLOBAL_OVERRIDE,
+        WorkspaceDefinition::SCOPE_GLOBAL . Definition::PRIORITY_DEFAULT => self::PRECEDENCE_GLOBAL_DEFAULT,
+        WorkspaceDefinition::SCOPE_GLOBAL . Definition::PRIORITY_NORMAL => self::PRECEDENCE_GLOBAL_NORMAL,
+        WorkspaceDefinition::SCOPE_GLOBAL . Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_GLOBAL_OVERRIDE,
 
-        WorkspaceDefinition::SCOPE_WORKSPACE.Definition::PRIORITY_DEFAULT => self::PRECEDENCE_WORKSPACE_DEFAULT,
-        WorkspaceDefinition::SCOPE_WORKSPACE.Definition::PRIORITY_NORMAL => self::PRECEDENCE_WORKSPACE_NORMAL,
-        WorkspaceDefinition::SCOPE_WORKSPACE.Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_WORKSPACE_OVERRIDE,
+        WorkspaceDefinition::SCOPE_WORKSPACE . Definition::PRIORITY_DEFAULT => self::PRECEDENCE_WORKSPACE_DEFAULT,
+        WorkspaceDefinition::SCOPE_WORKSPACE . Definition::PRIORITY_NORMAL => self::PRECEDENCE_WORKSPACE_NORMAL,
+        WorkspaceDefinition::SCOPE_WORKSPACE . Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_WORKSPACE_OVERRIDE,
 
-        WorkspaceDefinition::SCOPE_HARNESS.Definition::PRIORITY_DEFAULT => self::PRECEDENCE_HARNESS_DEFAULT,
-        WorkspaceDefinition::SCOPE_HARNESS.Definition::PRIORITY_NORMAL => self::PRECEDENCE_HARNESS_NORMAL,
-        WorkspaceDefinition::SCOPE_HARNESS.Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_HARNESS_OVERRIDE,
+        WorkspaceDefinition::SCOPE_HARNESS . Definition::PRIORITY_DEFAULT => self::PRECEDENCE_HARNESS_DEFAULT,
+        WorkspaceDefinition::SCOPE_HARNESS . Definition::PRIORITY_NORMAL => self::PRECEDENCE_HARNESS_NORMAL,
+        WorkspaceDefinition::SCOPE_HARNESS . Definition::PRIORITY_OVERRIDE => self::PRECEDENCE_HARNESS_OVERRIDE,
     ];
 
     public function __construct(Collection $attributes, Expression $expressionLanguage, TwigEnvironmentBuilder $twigBuilder)
@@ -101,6 +101,6 @@ class Builder implements EnvironmentBuilder
 
     private function resolveAttributePrecedence(Definition $definition): int
     {
-        return $this->precedenceMap[$definition->getScope().$definition->getPriority()];
+        return $this->precedenceMap[$definition->getScope() . $definition->getPriority()];
     }
 }

@@ -78,7 +78,7 @@ EOD
 
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
-            $this->workspace()->path('test1')."\n",
+            $this->workspace()->path('test1') . "\n",
             $this->workspaceCommand('working-directory', 'test1')->getOutput()
         );
     }
@@ -98,7 +98,7 @@ EOD
 
         // even though we're running the command from test2 the script should still be executed within test1
         $this->assertEquals(
-            $this->workspace()->path('test2')."\n",
+            $this->workspace()->path('test2') . "\n",
             $this->workspaceCommand('working-directory', 'test2')->getOutput()
         );
     }

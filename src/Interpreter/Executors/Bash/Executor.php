@@ -55,18 +55,18 @@ class Executor implements InterpreterExecutor
     {
         $home = home();
         $header = "#!/bin/bash\n"
-                 .". {$home}/.my127/workspace/lib/sidekick.sh\n";
+                 . ". {$home}/.my127/workspace/lib/sidekick.sh\n";
 
         foreach ($args as $key => $value) {
-            $header .= $key.'="'.addslashes($value).'"'."\n";
+            $header .= $key . '="' . addslashes($value) . '"' . "\n";
         }
 
         foreach ($env as $key => $value) {
-            $header .= 'export '.$key.'="'.addslashes($value).'"'."\n";
+            $header .= 'export ' . $key . '="' . addslashes($value) . '"' . "\n";
         }
 
-        $header .= 'cd '.$cwd ?? getcwd();
+        $header .= 'cd ' . $cwd ?? getcwd();
 
-        return 'bash -e -c '.escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
+        return 'bash -e -c ' . escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
     }
 }

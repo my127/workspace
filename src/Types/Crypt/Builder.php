@@ -67,19 +67,19 @@ class Builder implements EnvironmentBuilder
                     $key = $input->getArgument('key');
                     $key = $key instanceof OptionValue ? $key->value() : $key;
                     $key = $key ?? 'default';
-                    echo $this->crypt->encrypt($input->getArgument('message'), $key)."\n";
+                    echo $this->crypt->encrypt($input->getArgument('message'), $key) . "\n";
                 });
 
             $this->application->section('secret decrypt')
                 ->usage('secret decrypt <encrypted>')
                 ->action(function (Input $input) {
-                    echo $this->crypt->decrypt($input->getArgument('encrypted'))."\n";
+                    echo $this->crypt->decrypt($input->getArgument('encrypted')) . "\n";
                 });
         }
 
         $this->application->section('secret generate-random-key')
             ->action(function (Input $input) {
-                echo (new Key('random'))->getKeyAsHex()."\n";
+                echo (new Key('random'))->getKeyAsHex() . "\n";
             });
     }
 }

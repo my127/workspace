@@ -15,7 +15,7 @@ EOD
         );
 
         $encrypted = trim($this->workspaceCommand('secret encrypt "Hello World"')->getOutput());
-        $decrypted = trim($this->workspaceCommand('secret decrypt "'.$encrypted.'"')->getOutput());
+        $decrypted = trim($this->workspaceCommand('secret decrypt "' . $encrypted . '"')->getOutput());
 
         $this->assertTrue('Hello World' != $encrypted);
         $this->assertTrue('Hello World' == $decrypted);

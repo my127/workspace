@@ -92,7 +92,7 @@ class Loader
         $files = is_array($data['body']) ? $data['body'] : [$data['body']];
 
         foreach ($files as $relativeFile) {
-            $this->load($cwd.DIRECTORY_SEPARATOR.$relativeFile);
+            $this->load($cwd . DIRECTORY_SEPARATOR . $relativeFile);
         }
     }
 

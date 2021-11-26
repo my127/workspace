@@ -37,10 +37,10 @@ class Confd
             }
 
             if (is_string($path)) {
-                $src = $path.'.twig';
+                $src = $path . '.twig';
                 $dst = $this->resolveDstFromSrc($src);
             } else {
-                $src = $path['src'].'.twig';
+                $src = $path['src'] . '.twig';
                 $dst = isset($path['dst']) ? $this->path->getRealPath($path['dst']) : $this->resolveDstFromSrc($src);
             }
 
@@ -56,6 +56,6 @@ class Confd
 
     private function resolveDstFromSrc(string $path): string
     {
-        return $this->rootPath.'/'.substr($path, 0, -5);
+        return $this->rootPath . '/' . substr($path, 0, -5);
     }
 }

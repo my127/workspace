@@ -43,9 +43,7 @@ class PackageRepository implements Repository
     {
         $this->importPackagesFromSources();
 
-        preg_match(self::HARNESS_PACKAGE_PATTERN, $package, $match);
-
-        if (!isset($match['harness'])) {
+        if (!preg_match(self::HARNESS_PACKAGE_PATTERN, $package, $match)) {
             throw new RuntimeException(sprintf(
                 'Package name "%s" is invalid',
                 $package

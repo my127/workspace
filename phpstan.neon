@@ -8,3 +8,4 @@ parameters:
 
     ignoreErrors:
     - '{Property .*Definition::\$.* is never written, only read}'
+    - '{Property .*Container::\$parameters is never written, only read}'

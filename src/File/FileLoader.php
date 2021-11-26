@@ -2,9 +2,8 @@
 
 namespace my127\Workspace\File;
 
-use RuntimeException;
-use my127\Workspace\File\Exception\CouldNotLoadFile;
 use function file_get_contents;
+use my127\Workspace\File\Exception\CouldNotLoadFile;
 
 final class FileLoader
 {
@@ -12,11 +11,8 @@ final class FileLoader
     {
         $contents = @file_get_contents($url);
 
-        if (false === $contents) {
-            throw new CouldNotLoadFile(sprintf(
-                'Could not load file at "%s"',
-                $url
-            ));
+        if ($contents === false) {
+            throw new CouldNotLoadFile(sprintf('Could not load file at "%s"', $url));
         }
 
         return $contents;

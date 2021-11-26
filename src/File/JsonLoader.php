@@ -23,11 +23,9 @@ final class JsonLoader
         try {
             $decoded = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $error) {
-            throw new CouldNotDecodeJson(sprintf(
-                'Could not decode JSON from "%s": %s',
-                $url, $error->getMessage()
-            ), 0, $error);
+            throw new CouldNotDecodeJson(sprintf('Could not decode JSON from "%s": %s', $url, $error->getMessage()), 0, $error);
         }
+
         return $decoded;
     }
 }

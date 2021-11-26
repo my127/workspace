@@ -3,12 +3,12 @@
 namespace my127\Workspace\Types\Harness\Repository;
 
 use Exception;
-use RuntimeException;
 use my127\Workspace\File\JsonLoader;
 use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
 use my127\Workspace\Types\Harness\Repository\Exception\UnknownPackage;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use ReflectionProperty;
+use RuntimeException;
 
 class PackageRepository implements Repository
 {
@@ -23,7 +23,7 @@ class PackageRepository implements Repository
     /**
      * @var array<int, array{imported: bool, url: string}>
      */
-    private $sources  = [];
+    private $sources = [];
 
     /**
      * @var Package
@@ -56,20 +56,17 @@ class PackageRepository implements Repository
         $this->importPackagesFromSources();
 
         if (!preg_match(self::HARNESS_PACKAGE_PATTERN, $package, $match)) {
-            throw new RuntimeException(sprintf(
-                'Package name "%s" is invalid',
-                $package
-            ));
+            throw new RuntimeException(sprintf('Package name "%s" is invalid', $package));
         }
 
         $harness = $match['harness'];
-        $vendor  = empty($match['vendor'])  ? 'my127'  : $match['vendor'];
-        $version = $this->resolvePackageVersion($vendor.'/'.$harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
+        $vendor = empty($match['vendor']) ? 'my127' : $match['vendor'];
+        $version = $this->resolvePackageVersion($vendor . '/' . $harness, empty($match['version']) ? 'vx.x.x' : $match['version']);
 
         return $this->hydrate([
-            'name'    => $harness,
+            'name' => $harness,
             'version' => $version,
-            'dist'    => $this->packages[$vendor.'/'.$harness][$version]
+            'dist' => $this->packages[$vendor . '/' . $harness][$version],
         ]);
     }
 
@@ -83,7 +80,6 @@ class PackageRepository implements Repository
     {
         $this->sources[] = ['url' => $url, 'imported' => false];
     }
-
 
     private function hydrate(array $values): Package
     {
@@ -99,7 +95,6 @@ class PackageRepository implements Repository
     private function importPackagesFromSources(): void
     {
         foreach ($this->sources as $k => $source) {
-
             if ($source['imported']) {
                 continue;
             }
@@ -107,10 +102,7 @@ class PackageRepository implements Repository
             try {
                 $this->packages = array_merge($this->packages, $this->fileLoader->loadArray($source['url']));
             } catch (Exception $error) {
-                throw new CouldNotLoadSource(sprintf(
-                    'Could not load from source "%s"',
-                    $source['url']
-                ), 0, $error);
+                throw new CouldNotLoadSource(sprintf('Could not load from source "%s"', $source['url']), 0, $error);
             }
             $this->sources[$k]['imported'] = true;
         }
@@ -125,10 +117,7 @@ class PackageRepository implements Repository
         }
 
         if (!isset($this->packages[$name])) {
-            throw new UnknownPackage(sprintf(
-                'Package "%s" is not registered, registered packages "%s"',
-                $name, implode('", "', array_keys($this->packages))
-            ));
+            throw new UnknownPackage(sprintf('Package "%s" is not registered, registered packages "%s"', $name, implode('", "', array_keys($this->packages))));
         }
 
         $availableVersions = array_keys($this->packages[$name]);
@@ -136,7 +125,6 @@ class PackageRepository implements Repository
         $candidate = null;
 
         foreach ($availableVersions as $availableVersion) {
-
             $semver = explode('.', substr($availableVersion, 1));
 
             if (is_numeric($major) && $semver[0] != $major) {
@@ -170,9 +158,9 @@ class PackageRepository implements Repository
     {
         if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
             return [
-                $match['major']??'x',
-                $match['minor']??'x',
-                $match['patch']??'x',
+                $match['major'] ?? 'x',
+                $match['minor'] ?? 'x',
+                $match['patch'] ?? 'x',
             ];
         }
 

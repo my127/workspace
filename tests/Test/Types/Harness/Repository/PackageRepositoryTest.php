@@ -4,21 +4,18 @@ namespace my127\Workspace\Tests\Test\Types\Harness\Repository;
 
 use Exception;
 use Generator;
-use RuntimeException;
 use my127\Workspace\File\FileLoader;
 use my127\Workspace\File\JsonLoader;
 use my127\Workspace\Tests\IntegrationTestCase;
-use my127\Workspace\Types\Harness\Repository\ArchiveRepository;
 use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
 use my127\Workspace\Types\Harness\Repository\Exception\UnknownPackage;
 use my127\Workspace\Types\Harness\Repository\PackageRepository;
-use my127\Workspace\Types\Harness\Repository\Package\Package;
-use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class PackageRepositoryTest extends IntegrationTestCase
 {
     /** @test */
-    public function it_throws_exception_when_requesting_an_invalid_package_name(): void
+    public function itThrowsExceptionWhenRequestingAnInvalidPackageName(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('invalid');
@@ -27,7 +24,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_trying_to_get_an_unknown_package(): void
+    public function itThrowsAnExceptionWhenTryingToGetAnUnknownPackage(): void
     {
         $this->expectException(UnknownPackage::class);
         $this->expectExceptionMessage('is not registered');
@@ -36,7 +33,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function it_gets_a_package(): void
+    public function itGetsAPackage(): void
     {
         $repository = $this->createRepository();
         $repository->addPackage('foo/bar', 'v1.0.0', []);
@@ -48,7 +45,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function it_imports_package_from_source(): void
+    public function itImportsPackageFromSource(): void
     {
         $this->workspace()->put('example.json', json_encode([
             'test/package' => [
@@ -65,7 +62,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_if_source_cannot_be_loaded(): void
+    public function itThrowsAnExceptionIfSourceCannotBeLoaded(): void
     {
         $this->expectException(CouldNotLoadSource::class);
 
@@ -76,7 +73,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function it_throws_exception_on_vainlid_version_String(): void
+    public function itThrowsExceptionOnVainlidVersionString(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('version string');
@@ -91,7 +88,7 @@ class PackageRepositoryTest extends IntegrationTestCase
      * @test
      * @dataProvider provideResolvesVersion
      */
-    public function it_resolves_version(string $version, array $availableVersions, string $expectedVersion): void
+    public function itResolvesVersion(string $version, array $availableVersions, string $expectedVersion): void
     {
         $repository = $this->createRepository();
         foreach ($availableVersions as $version) {
@@ -140,7 +137,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_exception_if_version_cannot_be_resolved(): void
+    public function itThrowsExceptionIfVersionCannotBeResolved(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Could not resolve');
@@ -152,6 +149,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     private function createRepository(): PackageRepository
     {
         $repository = new PackageRepository(new JsonLoader(new FileLoader()));
+
         return $repository;
     }
 }

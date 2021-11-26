@@ -1,5 +1,5 @@
 parameters:
-    level: 5
+    level: 8
     paths:
         - src
         - tests
@@ -16,3 +16,5 @@ parameters:
             message: "#^Parameter \\#2 \\$listener of method Symfony\\\\Component\\\\EventDispatcher\\\\EventDispatcher\\:\\:addListener\\(\\) expects callable\\(\\)\\: mixed, array\\{Closure\\(\\)\\: mixed, 'setInputGlobal'\\} given\\.$#"
             path: config/_compiled/container.php
 
+includes:
+    - phpstan-baseline.neon

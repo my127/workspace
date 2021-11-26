@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class PHPTest extends IntegrationTestCase
 {
     /** @test */
-    public function helperCanAccessAttributesUsingArrayAccessInterface(): void
+    public function helperCanAccessAttributesUsingArrayAccessInterface()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -23,10 +22,9 @@ EOD
     }
 
     /** @test */
-    public function helperCanCallDynamicallyDeclaredFunctions(): void
+    public function helperCanCallDynamicallyDeclaredFunctions()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 
 function('add', [v1, v2]): |
   #!php
@@ -38,17 +36,14 @@ command('calculate'): |
 EOD
         );
 
-        $this->assertEquals(
-            '4',
-            $this->workspaceCommand('calculate')->getOutput()
+        $this->assertEquals('4', $this->workspaceCommand('calculate')->getOutput()
         );
     }
 
     /** @test */
-    public function helperCanRunDeclaredCommands(): void
+    public function helperCanRunDeclaredCommands()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('cmdA'): |
   #!php
   echo $ws('cmdB');
@@ -59,9 +54,7 @@ command('cmdB'): |
 EOD
         );
 
-        $this->assertEquals(
-            'Hello World',
-            $this->workspaceCommand('cmdA')->getOutput()
+        $this->assertEquals('Hello World', $this->workspaceCommand('cmdA')->getOutput()
         );
     }
 }

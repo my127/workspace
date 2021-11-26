@@ -36,7 +36,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
         $this->expression = $expression;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         if (($definition = $definitions->findOneByType(Definition::TYPE)) !== null) {
             /* @var Definition $definition */
@@ -69,20 +69,18 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             AttributeBuilder::PRECEDENCE_WORKSPACE_DEFAULT
         );
 
-        $this->expression->register('exec', function (): void {
-        }, function ($args, $cmd) {
+        $this->expression->register('exec', function () {}, function ($args, $cmd) {
             return $this->workspace->exec($cmd);
         });
 
-        $this->expression->register('passthru', function (): void {
-        }, function ($args, $cmd): void {
+        $this->expression->register('passthru', function () {}, function ($args, $cmd) {
             $this->workspace->passthru($cmd);
         });
 
         if ($definitions->hasType(ConfdDefinition::TYPE) || $definitions->hasType(HarnessDefinition::TYPE)) {
             $this->application->section('refresh')
                 ->usage('refresh')
-                ->action(function (): void {
+                ->action(function () {
                     $this->workspace->refresh();
                 });
         }
@@ -92,19 +90,19 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 ->usage('install')
                 ->option('--step=<step>   Step from which to start installer. [default: 1]')
                 ->option('--skip-events   If set events will not be triggered.')
-                ->action(function (Input $input): void {
+                ->action(function (Input $input) {
                     $this->workspace->install($input);
                 });
 
             $this->application->section('harness download')
                 ->usage('harness download')
-                ->action(function (Input $input): void {
+                ->action(function (Input $input) {
                     $this->workspace->run('install --step=download');
                 });
 
             $this->application->section('harness prepare')
                 ->usage('harness prepare')
-                ->action(function (Input $input): void {
+                ->action(function (Input $input) {
                     $this->workspace->run('install --step=overlay');
                     $this->workspace->run('install --step=prepare');
                 });
@@ -112,11 +110,10 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             $this->application->section('config dump')
                 ->option('--key=<key>   Attribute key to dump.')
                 ->usage('config dump --key=<key>')
-                ->action(function (Input $input) use ($environment): void {
+                ->action(function (Input $input) use ($environment) {
                     $key = $input->getOption('key');
                     $key = $key instanceof OptionValue ? $key->value() : $key;
                     $attribute = $environment->getAttribute($key);
-
                     if (null === $attribute) {
                         echo sprintf("Attribute with key %s not found\n", $key);
 
@@ -127,7 +124,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
         }
     }
 
-    public function setInputGlobal(BeforeActionEvent $event): void
+    public function setInputGlobal(BeforeActionEvent $event)
     {
         $this->expression->setGlobal('input', $event->getInput());
         $this->phpExecutor->setGlobal('input', $event->getInput());

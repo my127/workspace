@@ -29,12 +29,12 @@ class PackageRepository implements Repository
         }
     }
 
-    public function addPackage($name, $version, $dist): void
+    public function addPackage($name, $version, $dist)
     {
         $this->packages[$name][$version] = $dist;
     }
 
-    public function addSource($url): void
+    public function addSource($url)
     {
         $this->sources[] = ['url' => $url, 'imported' => false];
     }
@@ -67,7 +67,7 @@ class PackageRepository implements Repository
         return $package;
     }
 
-    private function importPackagesFromSources(): void
+    private function importPackagesFromSources()
     {
         foreach ($this->sources as $k => $source) {
             if ($source['imported']) {

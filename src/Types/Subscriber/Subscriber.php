@@ -23,7 +23,7 @@ class Subscriber
         $this->expression = $expression;
     }
 
-    public function __invoke(): void
+    public function __invoke()
     {
         $env = $this->evaluateEnvironmentVariables($this->definition->getEnvironmentVariables());
         $script = $this->definition->getExec();

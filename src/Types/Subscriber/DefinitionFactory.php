@@ -65,35 +65,32 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, array $metadata): void
+    private function parseMetaData(array &$values, array $metadata)
     {
         $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, string $declaration): void
+    private function parseDeclaration(array &$values, string $declaration)
     {
         switch ($values['type']) {
             case 'before':
                 $event = 'before.'.substr($declaration, 8, -2);
-
                 break;
 
             case 'after':
                 $event = 'after.'.substr($declaration, 7, -2);
-
                 break;
 
             default:
                 $event = substr($declaration, 4, -2);
-
                 break;
         }
 
         $values['event'] = $event;
     }
 
-    private function parseBody(array &$values, $body): void
+    private function parseBody(array &$values, $body)
     {
         if (is_string($body)) {
             $body = [

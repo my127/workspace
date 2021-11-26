@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ScriptTest extends TestCase
 {
     /** @test */
-    public function execWillPassEqualNumberOfArgs(): void
+    public function execWillPassEqualNumberOfArgs()
     {
         $executor = $this->getMockBuilder(Executor::class)->getMock();
 
@@ -22,7 +22,7 @@ class ScriptTest extends TestCase
         $executor->expects($this->atLeastOnce())
             ->method('exec')
             ->willReturnCallback(
-                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs): void {
+                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs) {
                     $assert->assertEquals($expectedArgs, $args);
                 }
             );
@@ -32,7 +32,7 @@ class ScriptTest extends TestCase
     }
 
     /** @test */
-    public function execWillPassNullValuesWhenLessArgsProvided(): void
+    public function execWillPassNullValuesWhenLessArgsProvided()
     {
         $executor = $this->getMockBuilder(Executor::class)->getMock();
 
@@ -45,7 +45,7 @@ class ScriptTest extends TestCase
         $executor->expects($this->atLeastOnce())
             ->method('exec')
             ->willReturnCallback(
-                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs): void {
+                function ($script, $args, $cwd, $env) use ($assert, $expectedArgs) {
                     $assert->assertEquals($expectedArgs, $args);
                 }
             );

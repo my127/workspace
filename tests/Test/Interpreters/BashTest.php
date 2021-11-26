@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class BashTest extends IntegrationTestCase
 {
     /** @test */
-    public function bashCanBeUsedAsAnInterpreter(): void
+    public function bashCanBeUsedAsAnInterpreter()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!bash
   echo -n "Hello World"

@@ -20,7 +20,6 @@ class Executor implements InterpreterExecutor
         $process = proc_open($this->buildCommand($script, $args, $cwd, $env), $descriptorSpec, $pipes);
 
         $status = 255;
-
         if (is_resource($process)) {
             $status = proc_close($process);
         }

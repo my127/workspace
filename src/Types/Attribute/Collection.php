@@ -47,7 +47,7 @@ class Collection implements ArrayAccess
         }
 
         if (is_array($value)) {
-            array_walk_recursive($value, function (&$value): void {
+            array_walk_recursive($value, function (&$value) {
                 if ($this->isExpression($value)) {
                     $this->evaluate($value);
                 }
@@ -107,19 +107,19 @@ class Collection implements ArrayAccess
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, $value)
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset($offset)
     {
         foreach ($this->attributes as &$attributes) {
             Arr::forget($attributes, $offset);
         }
     }
 
-    private function buildAttributeCache(): void
+    private function buildAttributeCache()
     {
         ksort($this->attributes);
         $this->cache = [];

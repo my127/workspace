@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class SubscriberTest extends IntegrationTestCase
 {
     /** @test */
-    public function subscriberScriptIsRunWhenAppropriateEventIsTriggered(): void
+    public function subscriberScriptIsRunWhenAppropriateEventIsTriggered()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 on('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -25,10 +24,9 @@ EOD
     }
 
     /** @test */
-    public function subscriberScriptIsRunWithEnvWhenTriggered(): void
+    public function subscriberScriptIsRunWithEnvWhenTriggered()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 on('custom.event'):
   env:
     EXAMPLE: test
@@ -46,10 +44,9 @@ EOD
     }
 
     /** @test */
-    public function afterCanBeUsedAsAShorthandForEventNamesPrefixedWithAfter(): void
+    public function afterCanBeUsedAsAShorthandForEventNamesPrefixedWithAfter()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 after('custom.event'): |
   #!bash
   echo -n "Hello World"
@@ -64,10 +61,9 @@ EOD
     }
 
     /** @test */
-    public function beforeCanBeUsedAsAShorthandForEventNamesPrefixedWithBefore(): void
+    public function beforeCanBeUsedAsAShorthandForEventNamesPrefixedWithBefore()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 before('custom.event'): |
   #!bash
   echo -n "Hello World"

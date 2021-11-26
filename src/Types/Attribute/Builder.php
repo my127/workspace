@@ -52,7 +52,7 @@ class Builder implements EnvironmentBuilder
         $this->twigBuilder = $twigBuilder;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach (DefinitionFactory::TYPES as $type) {
             foreach ($definitions->findByType($type) as $definition) {
@@ -85,16 +85,13 @@ class Builder implements EnvironmentBuilder
             $this->attributes->add($attributes, 10);
         }
 
-        $this->expressionLanguage->addFunction(
-            new ExpressionFunction(
-            'attr',
-            function (): void {
+        $this->expressionLanguage->addFunction(new ExpressionFunction('attr',
+            function () {
                 throw new Exception("Compilation of the 'get' function within Types\Attribute\Builder is not supported.");
             },
             function ($arguments, $key, $default = null) {
                 return $this->attributes->get($key, $default);
-            }
-        )
+            })
         );
 
         $this->twigBuilder->addFunction('attr', function ($key, $default = null) {

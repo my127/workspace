@@ -60,13 +60,13 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata): void
+    private function parseMetaData(array &$values, $metadata)
     {
         $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration): void
+    private function parseDeclaration(array &$values, $declaration)
     {
         list($name, $version) = explode(':', substr($declaration, 28, -2));
 
@@ -74,7 +74,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $values['version'] = $version;
     }
 
-    private function parseBody(array &$values, $body): void
+    private function parseBody(array &$values, $body)
     {
         $values['dist'] = $body;
     }

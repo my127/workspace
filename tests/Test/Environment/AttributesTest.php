@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class AttributesTest extends IntegrationTestCase
 {
     /** @test */
-    public function hostOsFamilyIsMadeAvailableAsAnAttribute(): void
+    public function hostOsFamilyIsMadeAvailableAsAnAttribute()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('get host os family'): |
   #!php
   echo $ws['host.os'];

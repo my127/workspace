@@ -27,14 +27,14 @@ class Loader
         $this->definitions = $definitions;
     }
 
-    public function addDefinitionFactory(Factory $factory): void
+    public function addDefinitionFactory(Factory $factory)
     {
         foreach ($factory::getTypes() as $type) {
             $this->factories[$type] = $factory;
         }
     }
 
-    public function load(string $file): void
+    public function load(string $file)
     {
         $file = $this->expandEnvVars($file);
 
@@ -44,7 +44,6 @@ class Loader
             foreach ($this->getDeclarationsFromFile($file) as $data) {
                 if ('import' === $data['type']) {
                     $this->loadFromImportDeclaration($data);
-
                     continue;
                 }
 
@@ -87,7 +86,7 @@ class Loader
         return strtok($declaration, '(');
     }
 
-    private function loadFromImportDeclaration(array $data): void
+    private function loadFromImportDeclaration(array $data)
     {
         $cwd = $data['metadata']['path'];
         $files = is_array($data['body']) ? $data['body'] : [$data['body']];
@@ -97,12 +96,12 @@ class Loader
         }
     }
 
-    public function setWorkspacePath(string $workspacePath): void
+    public function setWorkspacePath(string $workspacePath)
     {
         $this->workspacePath = $workspacePath;
     }
 
-    public function setHarnessPath(string $harnessPath): void
+    public function setHarnessPath(string $harnessPath)
     {
         $this->harnessPath = $harnessPath;
     }

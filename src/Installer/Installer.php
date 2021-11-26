@@ -6,7 +6,7 @@ use my127\Workspace\Utility\Filesystem;
 
 class Installer
 {
-    public static function install(string $home): void
+    public static function install(string $home)
     {
         $path = $home.'/.my127/workspace';
 

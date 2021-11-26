@@ -16,7 +16,6 @@ class Filesystem
         while (!empty($search)) {
             if (file_exists($candidate = implode(DIRECTORY_SEPARATOR, $search).DIRECTORY_SEPARATOR.$name)) {
                 $path = dirname($candidate);
-
                 break;
             }
             array_pop($search);
@@ -25,14 +24,13 @@ class Filesystem
         return $path;
     }
 
-    public static function rrmdir($src): void
+    public static function rrmdir($src)
     {
         $dir = opendir($src);
 
         while (false !== ($file = readdir($dir))) {
             if (('.' != $file) && ('..' != $file)) {
                 $full = $src.'/'.$file;
-
                 if (is_dir($full)) {
                     self::rrmdir($full);
                 } else {
@@ -45,7 +43,7 @@ class Filesystem
         rmdir($src);
     }
 
-    public static function rcopy($src, $dst): void
+    public static function rcopy($src, $dst)
     {
         $dir = opendir($src);
 

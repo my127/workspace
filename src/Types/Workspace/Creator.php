@@ -7,7 +7,7 @@ use my127\Workspace\Types\Crypt\Key;
 
 class Creator
 {
-    public function create(string $name, ?string $harness = null): void
+    public function create(string $name, ?string $harness = null)
     {
         $dir = './'.$name;
 

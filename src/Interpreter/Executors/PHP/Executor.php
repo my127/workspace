@@ -30,7 +30,7 @@ class Executor implements InterpreterExecutor
         return $this->run($script, $args, $cwd, $env);
     }
 
-    public function setGlobal(string $name, $value): void
+    public function setGlobal(string $name, $value)
     {
         $this->globals[$name] = $value;
     }

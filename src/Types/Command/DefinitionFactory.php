@@ -65,13 +65,13 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, array $metadata): void
+    private function parseMetaData(array &$values, array $metadata)
     {
         $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, string $declaration): void
+    private function parseDeclaration(array &$values, string $declaration)
     {
         $parts = explode(',', substr($declaration, 8, -1));
 
@@ -82,7 +82,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $values['section'] = $section;
     }
 
-    private function parseBody(array &$values, $body): void
+    private function parseBody(array &$values, $body)
     {
         if (is_string($body)) {
             $body = [

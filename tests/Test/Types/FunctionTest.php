@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class FunctionTest extends IntegrationTestCase
 {
     /** @test */
-    public function bashCanBeUsedAsAnInterpreterForAFunction(): void
+    public function bashCanBeUsedAsAnInterpreterForAFunction()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('add', [v1, v2]): |
   #!bash
   ="$((v1+v2))"
@@ -25,10 +24,9 @@ EOD
     }
 
     /** @test */
-    public function phpCanBeUsedAsAnInterpreterForAFunction(): void
+    public function phpCanBeUsedAsAnInterpreterForAFunction()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('add', [v1, v2]): |
   #!php
   =$v1+$v2;
@@ -43,10 +41,9 @@ EOD
     }
 
     /** @test */
-    public function bashFunctionCanMakeUseOfEnvironmentVariables(): void
+    public function bashFunctionCanMakeUseOfEnvironmentVariables()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -64,10 +61,9 @@ EOD
     }
 
     /** @test */
-    public function phpFunctionCanMakeUseOfEnvironmentVariables(): void
+    public function phpFunctionCanMakeUseOfEnvironmentVariables()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('hello', [v1]):
   env:
     MESSAGE: Hello
@@ -85,10 +81,9 @@ EOD
     }
 
     /** @test */
-    public function functionsAreAvailableWithinAttributeExpressions(): void
+    public function functionsAreAvailableWithinAttributeExpressions()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('answer'): = add(2, 2)
 
 function('add', [v1, v2]): |
@@ -106,10 +101,9 @@ EOD
     }
 
     /** @test */
-    public function functionsAreAbleToReturnNonScalarTypes(): void
+    public function functionsAreAbleToReturnNonScalarTypes()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 function('array', [v1, v2]): |
   #!php
   = [$v1, $v2];

@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class WorkspaceTest extends IntegrationTestCase
 {
     /** @test */
-    public function workspaceDeclarationIsOptional(): void
+    public function workspaceDeclarationIsOptional()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('hi'): |
   #!bash
   echo -n "Hello World"
@@ -21,10 +20,9 @@ EOD
     }
 
     /** @test */
-    public function workspaceNameIsMadeAvailableAsAttribute(): void
+    public function workspaceNameIsMadeAvailableAsAttribute()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'): ~
 
 command('get workspace name'): |
@@ -37,10 +35,9 @@ EOD
     }
 
     /** @test */
-    public function workspaceDescriptionIsMadeAvailableAsAttribute(): void
+    public function workspaceDescriptionIsMadeAvailableAsAttribute()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'):
   description: Example description
 
@@ -54,10 +51,9 @@ EOD
     }
 
     /** @test */
-    public function namespaceAttributeIsMadeAvailableAndDefaultsToWorkspaceName(): void
+    public function namespaceAttributeIsMadeAvailableAndDefaultsToWorkspaceName()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 workspace('acme'): ~
 
 command('get namespace'): |
@@ -70,10 +66,9 @@ EOD
     }
 
     /** @test */
-    public function whenNotDeclaredWorkspaceNameIsBasenameOfContainingDirectory(): void
+    public function whenNotDeclaredWorkspaceNameIsBasenameOfContainingDirectory()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('get workspace name'): |
   #!bash|@
   echo -n "@('workspace.name')"
@@ -84,10 +79,9 @@ EOD
     }
 
     /** @test */
-    public function workspaceExecMethodIsMadeAvailableToExpressions(): void
+    public function workspaceExecMethodIsMadeAvailableToExpressions()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): = exec("echo 'Hello World'")
         
 command('speak'): |
@@ -100,10 +94,9 @@ EOD
     }
 
     /** @test */
-    public function phpPassthruIsAvailableToTheWorkspaceHelper(): void
+    public function phpPassthruIsAvailableToTheWorkspaceHelper()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('speak'): |
   #!php
   $ws->passthru('echo "Hello World"');

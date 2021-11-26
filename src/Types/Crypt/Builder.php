@@ -28,7 +28,7 @@ class Builder implements EnvironmentBuilder
         $this->application = $application;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach ($definitions->findByType(KeyDefinition::TYPE) as $definition) {
             /* @var KeyDefinition $definition */
@@ -47,16 +47,13 @@ class Builder implements EnvironmentBuilder
             $this->crypt->addKey(new Key(strtolower(substr($key, strrpos($key, '_'))), $value));
         }
 
-        $this->expressionLanguage->addFunction(
-            new ExpressionFunction(
-            'decrypt',
-            function (): void {
+        $this->expressionLanguage->addFunction(new ExpressionFunction('decrypt',
+            function () {
                 throw new Exception("Compilation of the 'decrypt' function within Types\Crypt\Builder is not supported.");
             },
             function ($arguments, $encrypted) {
                 return $this->crypt->decrypt($encrypted);
-            }
-        )
+            })
         );
 
         $this->twigBuilder->addFunction('decrypt', function ($encrypted) {
@@ -66,7 +63,7 @@ class Builder implements EnvironmentBuilder
         if ($definitions->hasType(KeyDefinition::TYPE)) {
             $this->application->section('secret encrypt')
                 ->usage('secret encrypt <message> [<key>]')
-                ->action(function (Input $input): void {
+                ->action(function (Input $input) {
                     $key = $input->getArgument('key');
                     $key = $key instanceof OptionValue ? $key->value() : $key;
                     $key = $key ?? 'default';
@@ -75,13 +72,13 @@ class Builder implements EnvironmentBuilder
 
             $this->application->section('secret decrypt')
                 ->usage('secret decrypt <encrypted>')
-                ->action(function (Input $input): void {
+                ->action(function (Input $input) {
                     echo $this->crypt->decrypt($input->getArgument('encrypted'))."\n";
                 });
         }
 
         $this->application->section('secret generate-random-key')
-            ->action(function (Input $input): void {
+            ->action(function (Input $input) {
                 echo (new Key('random'))->getKeyAsHex()."\n";
             });
     }

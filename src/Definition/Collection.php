@@ -7,7 +7,7 @@ class Collection
     /** @var Definition[][] */
     private $definitions = [];
 
-    public function add(Definition $definition): void
+    public function add(Definition $definition)
     {
         $this->definitions[$definition->getType()][] = $definition;
     }

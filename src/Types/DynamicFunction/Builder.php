@@ -32,7 +32,7 @@ class Builder implements EnvironmentBuilder
         $this->expression = $expression;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
             /* @var Definition $definition */
@@ -46,7 +46,7 @@ class Builder implements EnvironmentBuilder
 
             $this->expression->register(
                 $function->getName(),
-                function () use ($function): void {
+                function () use ($function) {
                     throw new Exception("Compilation of the '{$function->getName()}' function within Types\DynamicFunction\Builder is not supported.");
                 },
                 function ($arguments, ...$args) use ($function) {

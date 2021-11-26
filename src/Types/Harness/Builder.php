@@ -26,7 +26,7 @@ class Builder extends Harness implements EnvironmentBuilder
         $this->phpExecutor = $phpExecutor;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         /** @var Definition $definition */
         if (($definition = $definitions->findOneByType(Definition::TYPE)) === null) {

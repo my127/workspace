@@ -7,10 +7,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class CryptTest extends IntegrationTestCase
 {
     /** @test */
-    public function secretsCanBeEncryptedAndDecryptedGivenAKey(): void
+    public function secretsCanBeEncryptedAndDecryptedGivenAKey()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 EOD
         );
@@ -23,10 +22,9 @@ EOD
     }
 
     /** @test */
-    public function secretsAsPartOfAnExpressionCanBeDecrypted(): void
+    public function secretsAsPartOfAnExpressionCanBeDecrypted()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 
 key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100
 
@@ -43,10 +41,9 @@ EOD
     }
 
     /** @test */
-    public function defaultKeyCanBeSpecifiedAsAnEnvironmentVariable(): void
+    public function defaultKeyCanBeSpecifiedAsAnEnvironmentVariable()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 
 attribute('message'): = decrypt('YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoi98rFejkefPnZG1CjzGeFyvSAMgafKv2TIjtpOjI7czoyNzoiSwcG2YiM3vV8CdZXgxDM2q+ZmRmPRNyz7OgcIjt9')
 

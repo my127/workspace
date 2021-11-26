@@ -16,7 +16,7 @@ class Builder implements EnvironmentBuilder
         $this->harnessPackageRepository = $harnessPackageRepository;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {
             /* @var Definition $definition */

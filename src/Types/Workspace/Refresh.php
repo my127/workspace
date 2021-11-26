@@ -30,7 +30,7 @@ class Refresh
         $this->workspace->trigger('after.harness.refresh');
     }
 
-    private function applyConfiguration(array $paths): void
+    private function applyConfiguration(array $paths)
     {
         foreach ($paths as $path) {
             $this->confd->create($path)->apply();

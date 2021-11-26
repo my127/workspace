@@ -40,8 +40,8 @@ class Workspace extends Definition implements ArrayAccess
         Harness $harness,
         Terminal $terminal,
         Path $pathResolver,
-        Crypt $crypt
-    ) {
+        Crypt $crypt)
+    {
         $this->packages = $packages;
         $this->confd = $confd;
         $this->dispatcher = $dispatcher;
@@ -127,7 +127,7 @@ class Workspace extends Definition implements ArrayAccess
         $this->dispatcher->dispatch($event);
     }
 
-    public function __invoke(string $command): void
+    public function __invoke(string $command)
     {
         $this->run($command);
     }
@@ -147,12 +147,12 @@ class Workspace extends Definition implements ArrayAccess
         return $this->attributes->get($offset);
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, $value)
     {
         $this->attributes->set($offset, $value);
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset($offset)
     {
         unset($this->attributes[$offset]);
     }

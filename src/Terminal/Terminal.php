@@ -27,7 +27,7 @@ class Terminal
         return (!empty($response)) ? $response : $default;
     }
 
-    public function write(string $line): void
+    public function write(string $line)
     {
         $this->output->writeln($line);
     }

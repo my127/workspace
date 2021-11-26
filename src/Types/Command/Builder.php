@@ -27,7 +27,7 @@ class Builder implements EnvironmentBuilder
         $this->expression = $expression;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         /** @var Definition $definition */
         foreach ($definitions->findByType(Definition::TYPE) as $definition) {

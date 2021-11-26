@@ -7,7 +7,7 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class ConfdTest extends IntegrationTestCase
 {
     /** @test */
-    public function attributesAreAvailableToTemplates(): void
+    public function attributesAreAvailableToTemplates()
     {
         $path = $this->workspace()->loadSample('confd/attributes');
         $this->workspaceCommand('apply config');
@@ -16,7 +16,7 @@ class ConfdTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function functionsAreAvailableToTemplates(): void
+    public function functionsAreAvailableToTemplates()
     {
         $path = $this->workspace()->loadSample('confd/functions');
         $this->workspaceCommand('apply config');
@@ -25,7 +25,7 @@ class ConfdTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function templateSrcIsSuffixedWithTheTwigExtension(): void
+    public function templateSrcIsSuffixedWithTheTwigExtension()
     {
         $path = $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -43,7 +43,7 @@ EOD
     }
 
     /** @test */
-    public function templateDstWhenNotSpecifiedIsPlacedInTheSameLocationAsSrcWithoutTheTwigFileExtension(): void
+    public function templateDstWhenNotSpecifiedIsPlacedInTheSameLocationAsSrcWithoutTheTwigFileExtension()
     {
         $path = $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -61,7 +61,7 @@ EOD
     }
 
     /** @test */
-    public function whetherATemplateIsAppliedOrNotCanBeControlledWithAConditionalExpression(): void
+    public function whetherATemplateIsAppliedOrNotCanBeControlledWithAConditionalExpression()
     {
         $path = $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -81,7 +81,7 @@ EOD
     }
 
     /** @test */
-    public function whenOnlyAStringIsSpecifiedItIsTreatedAsTheSrcWithDefaultsAppliedToTheOtherAttributes(): void
+    public function whenOnlyAStringIsSpecifiedItIsTreatedAsTheSrcWithDefaultsAppliedToTheOtherAttributes()
     {
         $this->workspaceWithSampleData(<<<'EOD'
 confd('workspace:/'):
@@ -101,7 +101,7 @@ EOD
         );
     }
 
-    private function workspaceWithSampleData(string $workspace, string $sampleName): void
+    private function workspaceWithSampleData(string $workspace, string $sampleName)
     {
         $this->workspace()->loadSample($sampleName);
         $this->createWorkspaceYml($workspace);

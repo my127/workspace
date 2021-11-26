@@ -8,10 +8,9 @@ use my127\Workspace\Tests\IntegrationTestCase;
 class AttributeTest extends IntegrationTestCase
 {
     /** @test */
-    public function normalAttributeKeyCanBeSetAndRetrieved(): void
+    public function normalAttributeKeyCanBeSetAndRetrieved()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 
 command('speak'): |
@@ -24,10 +23,9 @@ EOD
     }
 
     /** @test */
-    public function normalAttributeRootObjectCanBeSetAndRetrieved(): void
+    public function normalAttributeRootObjectCanBeSetAndRetrieved()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attributes:
   my:
     message: Hello World
@@ -42,10 +40,9 @@ EOD
     }
 
     /** @test */
-    public function attributeValueCanBeAnExpression(): void
+    public function attributeValueCanBeAnExpression()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('db'):
   driver: mysql
   host: localhost
@@ -63,10 +60,9 @@ EOD
     }
 
     /** @test */
-    public function issetReturnsFalseWhenAttributeIsNotDefined(): void
+    public function issetReturnsFalseWhenAttributeIsNotDefined()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 command('isset'): |
   #!php
   echo (isset($ws['message'])) ? 'yes' : 'no';
@@ -77,10 +73,9 @@ EOD
     }
 
     /** @test */
-    public function issetReturnsTrueWhenAttributeIsDefinedAndHasAValue(): void
+    public function issetReturnsTrueWhenAttributeIsDefinedAndHasAValue()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
 command('isset'): |
   #!php
@@ -92,10 +87,9 @@ EOD
     }
 
     /** @test */
-    public function issetReturnsTrueEvenWhenAttributeValueIsNull(): void
+    public function issetReturnsTrueEvenWhenAttributeValueIsNull()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): null
 command('isset'): |
   #!php
@@ -107,10 +101,9 @@ EOD
     }
 
     /** @test */
-    public function nullValuesAreAlsoRepresentedInternallyAsNull(): void
+    public function nullValuesAreAlsoRepresentedInternallyAsNull()
     {
-        $this->createWorkspaceYml(
-            <<<'EOD'
+        $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): null
 command('isnull'): |
   #!php
@@ -125,7 +118,7 @@ EOD
      * @test
      * @dataProvider provide_attribute_precedence_is_respected
      */
-    public function attributePrecedenceIsRespected(string $attribute, string $expected): void
+    public function attributePrecedenceIsRespected(string $attribute, string $expected)
     {
         $this->workspace()->loadSample('attribute/precedence');
         $this->assertEquals($expected, $this->workspaceCommand(sprintf(
@@ -137,21 +130,13 @@ EOD
     public function provide_attribute_precedence_is_respected(): Generator
     {
         yield ['key.1', 'Hello From harness.default'];
-
         yield ['key.2', 'Hello From harness.normal'];
-
         yield ['key.3', 'Hello From harness.override'];
-
         yield ['key.4', 'Hello From harness.override'];
-
         yield ['key.5', 'Hello From harness.override'];
-
         yield ['key.6', 'Hello From workspace.override'];
-
         yield ['key.7', 'Hello From workspace.override'];
-
         yield ['key.8', 'Hello From workspace.override'];
-
         yield ['key.9', 'Hello From global.override'];
     }
 }

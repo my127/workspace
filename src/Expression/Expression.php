@@ -29,7 +29,7 @@ class Expression extends SymfonyExpressionLanguage
         return parent::evaluate($this->preProcessExpression($expression), array_merge($this->globals, $values));
     }
 
-    public function setGlobal($name, $value): void
+    public function setGlobal($name, $value)
     {
         $this->globals[$name] = $value;
     }
@@ -39,7 +39,7 @@ class Expression extends SymfonyExpressionLanguage
         return str_replace('@(', 'attr(', $expression); // hack so we can use '@' as a shorthand function call for attributes
     }
 
-    private function addDefaultFunctions(): void
+    private function addDefaultFunctions()
     {
         $this->addFunction(ExpressionFunction::fromPhp('getenv', 'env'));
         $this->addFunction(ExpressionFunction::fromPhp('var_dump', 'debug'));
@@ -52,7 +52,7 @@ class Expression extends SymfonyExpressionLanguage
 
         $this->register(
             'file',
-            function (): void {
+            function () {
                 throw new Exception('cannot be compiled');
             },
             function ($args, $file) {

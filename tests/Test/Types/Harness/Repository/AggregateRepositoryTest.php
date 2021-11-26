@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class AggregateRepositoryTest extends TestCase
 {
     /** @test */
-    public function itUsesPackageRepositoryForPackageNames(): void
+    public function itUsesPackageRepositoryForPackageNames()
     {
         $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);
@@ -25,7 +25,7 @@ class AggregateRepositoryTest extends TestCase
     }
 
     /** @test */
-    public function itUsesArchiveRepositoryForUrlBasedPackageNames(): void
+    public function itUsesArchiveRepositoryForUrlBasedPackageNames()
     {
         $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);

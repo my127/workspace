@@ -58,18 +58,18 @@ class KeyDefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata): void
+    private function parseMetaData(array &$values, $metadata)
     {
         $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration): void
+    private function parseDeclaration(array &$values, $declaration)
     {
         $values['name'] = substr($declaration, 5, -2);
     }
 
-    private function parseBody(array &$values, $body): void
+    private function parseBody(array &$values, $body)
     {
         $values['key'] = $body;
     }

@@ -27,7 +27,7 @@ class Builder implements EnvironmentBuilder
         $this->interpreter = $interpreter;
     }
 
-    public function build(Environment $environment, DefinitionCollection $definitions): void
+    public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach (DefinitionFactory::getTypes() as $type) {
             foreach ($definitions->findByType($type) as $definition) {

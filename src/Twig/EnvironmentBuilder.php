@@ -28,7 +28,7 @@ class EnvironmentBuilder
         $this->functions[$name] = new Twig_Function($name, $function);
     }
 
-    public function addGlobal(string $name, $value): void
+    public function addGlobal(string $name, $value)
     {
         $this->globals[$name] = $value;
     }

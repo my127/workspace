@@ -53,29 +53,24 @@ class Arr
     }
 
     // https://github.com/illuminate/support/blob/master/Arr.php
-    public static function forget(&$array, $keys): void
+    public static function forget(&$array, $keys)
     {
         $original = &$array;
         $keys = (array) $keys;
-
         if (0 === count($keys)) {
             return;
         }
-
         foreach ($keys as $key) {
             // if the exact key exists in the top-level, remove it
             if (static::exists($array, $key)) {
                 unset($array[$key]);
-
                 continue;
             }
             $parts = explode('.', $key);
             // clean up before each pass
             $array = &$original;
-
             while (count($parts) > 1) {
                 $part = array_shift($parts);
-
                 if (isset($array[$part]) && is_array($array[$part])) {
                     $array = &$array[$part];
                 } else {
@@ -93,7 +88,6 @@ class Arr
             return $array = $value;
         }
         $keys = explode('.', $key);
-
         while (count($keys) > 1) {
             $key = array_shift($keys);
             // If the key doesn't exist at this depth, we will just create an empty array

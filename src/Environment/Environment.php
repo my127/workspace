@@ -46,7 +46,7 @@ class Environment
         return $this->attributes->get($key);
     }
 
-    public function build(): void
+    public function build()
     {
         $this->prepareEnvironmentForBuild();
 
@@ -58,12 +58,12 @@ class Environment
         $this->attributes->set('host.os', strtolower(PHP_OS_FAMILY));
     }
 
-    private function prepareEnvironmentForBuild(): void
+    private function prepareEnvironmentForBuild()
     {
         $this->loadWorkspaceDefinitions();
     }
 
-    private function loadWorkspaceDefinitions(): void
+    private function loadWorkspaceDefinitions()
     {
         $this->loader->setWorkspacePath($this->workspacePath = $this->findWorkspaceDirectory());
         $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath.'/.my127ws');

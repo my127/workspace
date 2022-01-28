@@ -65,7 +65,7 @@ class Executor implements InterpreterExecutor
             $header .= 'export ' . $key . '="' . addslashes($value) . '"' . "\n";
         }
 
-        $header .= 'cd ' . $cwd ?? getcwd();
+        $header .= 'cd ' . ($cwd ?? getcwd());
 
         return 'bash -e -c ' . escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
     }

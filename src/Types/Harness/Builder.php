@@ -28,11 +28,11 @@ class Builder extends Harness implements EnvironmentBuilder
 
     public function build(Environment $environment, DefinitionCollection $definitions)
     {
-        /** @var Definition $definition */
         if (($definition = $definitions->findOneByType(Definition::TYPE)) === null) {
             return;
         }
 
+        assert($definition instanceof Definition);
         $this->harness->name = $definition->name;
         $this->harness->description = $definition->description;
         $this->harness->path = $definition->path;

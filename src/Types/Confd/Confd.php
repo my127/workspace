@@ -9,12 +9,29 @@ use Twig_Environment;
 
 class Confd
 {
+    /**
+     * @var Definition
+     */
     private $definition;
+
+    /**
+     * @var Twig_Environment
+     */
     private $twig;
+
+    /**
+     * @var Path
+     */
     private $path;
+
+    /**
+     * @var Expression
+     */
     private $expression;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $rootPath;
 
     public function __construct(Path $path, Definition $definition, Twig_Environment $twig, Expression $expression)
@@ -24,7 +41,7 @@ class Confd
         $this->path = $path;
         $this->expression = $expression;
 
-        /** @var $loader Filesystem */
+        /** @var Filesystem $loader */
         $loader = $twig->getLoader();
         $this->rootPath = $loader->getRootPath();
     }

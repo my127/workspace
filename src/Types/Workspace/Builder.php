@@ -5,7 +5,6 @@ namespace my127\Workspace\Types\Workspace;
 use my127\Console\Application\Event\BeforeActionEvent;
 use my127\Console\Application\Executor;
 use my127\Console\Usage\Input;
-use my127\Console\Usage\Model\OptionValue;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
@@ -21,10 +20,29 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberInterface
 {
+    /**
+     * @var Application
+     */
     private $application;
+
+    /**
+     * @var Workspace
+     */
     private $workspace;
+
+    /**
+     * @var PHPExecutor
+     */
     private $phpExecutor;
+
+    /**
+     * @var AttributeCollection
+     */
     private $attributes;
+
+    /**
+     * @var Expression
+     */
     private $expression;
 
     public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor, AttributeCollection $attributes, Expression $expression)
@@ -38,13 +56,21 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
     public function build(Environment $environment, DefinitionCollection $definitions)
     {
+        // ignore PHPStan errors below. It does not currently understand that
+        // this class extends Definition because of that we can access the protected
+        // properties of the definitions...
         if (($definition = $definitions->findOneByType(Definition::TYPE)) !== null) {
-            /* @var Definition $definition */
+            /* @phpstan-ignore-next-line */
             $this->workspace->name = $definition->name;
+            /* @phpstan-ignore-next-line */
             $this->workspace->description = $definition->description;
+            /* @phpstan-ignore-next-line */
             $this->workspace->path = $definition->path;
+            /* @phpstan-ignore-next-line */
             $this->workspace->harnessName = $definition->harnessName;
+            /* @phpstan-ignore-next-line */
             $this->workspace->overlay = $definition->overlay;
+            /* @phpstan-ignore-next-line */
             $this->workspace->scope = $definition->scope;
         } else {
             $this->workspace->name = basename($environment->getWorkspacePath());
@@ -112,7 +138,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 ->usage('config dump --key=<key>')
                 ->action(function (Input $input) use ($environment) {
                     $key = $input->getOption('key');
-                    $key = $key instanceof OptionValue ? $key->value() : $key;
+                    $key = $key->value();
                     $attribute = $environment->getAttribute($key);
                     if ($attribute === null) {
                         echo sprintf("Attribute with key %s not found\n", $key);

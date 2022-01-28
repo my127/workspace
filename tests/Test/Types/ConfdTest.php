@@ -9,7 +9,7 @@ class ConfdTest extends IntegrationTestCase
     /** @test */
     public function attributesAreAvailableToTemplates()
     {
-        $path = $this->workspace()->loadSample('confd/attributes');
+        $this->workspace()->loadSample('confd/attributes');
         $this->workspaceCommand('apply config');
 
         $this->assertEquals('Hello World', $this->workspace()->getContents('test.txt'));
@@ -18,7 +18,7 @@ class ConfdTest extends IntegrationTestCase
     /** @test */
     public function functionsAreAvailableToTemplates()
     {
-        $path = $this->workspace()->loadSample('confd/functions');
+        $this->workspace()->loadSample('confd/functions');
         $this->workspaceCommand('apply config');
 
         $this->assertEquals('6', $this->workspace()->getContents('test.txt'));

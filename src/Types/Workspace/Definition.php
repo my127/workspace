@@ -20,7 +20,7 @@ class Definition implements WorkspaceDefinition
     /** @var string */
     protected $path;
 
-    /** @var string */
+    /** @var ?string */
     protected $overlay = null;
 
     /** @var int */

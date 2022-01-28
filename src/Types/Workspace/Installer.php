@@ -71,14 +71,19 @@ class Installer
 
     public function install($step = null, $cascade = true, $events = true)
     {
-        $package = $this->packages->get($this->workspace->getHarnessName());
+        $packages = array_map(
+            function ($harnessName) {
+                return $this->packages->get($harnessName);
+            },
+            $this->workspace->getHarnessLayers()
+        );
 
         switch ($step) {
             case self::STEP_DOWNLOAD:
                 if ($events) {
                     $this->workspace->trigger('before.harness.install');
                 }
-                $this->downloadAndExtractHarnessPackage($package);
+                $this->downloadAndExtractHarnessPackages($packages);
                 break;
             case self::STEP_OVERLAY:
                 if (($overlayPath = $this->workspace->getOverlayPath()) !== null) {
@@ -121,15 +126,27 @@ class Installer
         }
     }
 
-    private function downloadAndExtractHarnessPackage(Package $package)
+    /**
+     * @param Package[] $packages
+     */
+    private function downloadAndExtractHarnessPackages(array $packages)
     {
         $harnessInstallPath = $this->workspace->getPath() . '/.my127ws';
 
         if (!is_dir($harnessInstallPath)) {
             mkdir($harnessInstallPath, 0755, true);
-            file_put_contents('.my127ws/harness.tar.gz', file_get_contents($package->getDist()['url']));
-            passthru('tar -zxf .my127ws/harness.tar.gz --strip=1 -C .my127ws && rm -f .my127ws/harness.tar.gz');
+            foreach ($packages as $package) {
+                $this->downloadAndExtractHarnessPackage($package);
+            }
         }
+    }
+
+    private function downloadAndExtractHarnessPackage(Package $package)
+    {
+        $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
+        file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));
+        passthru('tar -zxf ' . $packageTarball . ' --strip=1 -C .my127ws');
+        unlink($packageTarball);
     }
 
     private function ensureRequiredAttributesArePresent(array $required)

@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.0 (2022-01-26)
+
+- Support asking for filepaths during `ws create` (#63) (9a23db9) by Kieren Evans
+- Hardcode global service commands (#94) (e384783) by Patrick
+- Add support for multiple harness layers in a workspace (#93) (25667ec) by andytson-inviqa
+- Phpstan Level 5 (#107) (dbe7ac0) by dantleech
+- Refactor Package Repository (#105) (7c9e4d9) by dantleech
+- Introduce PHP-CS-Fixer (#98) (b7eab3e) by dantleech
+- Validate composer.lock is up to date with the composer.json file (#99) (bea4ff7) by Kieren Evans
+- Fix null clone on wrong options (#89) (973a4e0) by Kieren Evans
+- Wrap exception and add `var-dumper` as a dev dependency (#104) (b439ae7) by dantleech
+- Fix optional command options (#87) (ec406c2) by Kieren Evans
+- Add optional description to command type (#95) (d6eed11) by Patrick
+- Switch changelog generator docker image (#92) (926ec61) by Kieren Evans
+- Introduce Github Actions (#97) (2c6acc9) by dantleech
+- Allow direct use of archive URLs in harness attribute (#74) (86fa13d) by James Halsall
+- Fix poweroff command not being available in a harness directory (#86) (77c8cfe) by Kieren Evans
+- Support for PHP 8.0
+
 ## [0.2.0-rc.1](https://github.com/my127/workspace/tree/0.2.0-rc.1) (2021-05-19)
 
 [Full Changelog](https://github.com/my127/workspace/compare/0.1.3...0.2.0-rc.1)

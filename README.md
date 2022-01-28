@@ -1,4 +1,4 @@
-# Workspace [![Build Status](https://travis-ci.org/my127/workspace.svg?branch=0.1.x)](https://travis-ci.org/my127/workspace)
+# Workspace [![CI](https://github.com/my127/workspace/actions/workflows/ci.yml/badge.svg)](https://github.com/my127/workspace/actions/workflows/ci.yml)
 
 Workspace is a tool to orchestrate and bring consistency to your project environments.
 

@@ -86,13 +86,13 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseBody(array &$values, $body)
     {
-        $values['description'] = $body['description']??null;
+        $values['description'] = $body['description'] ?? null;
         if (array_key_exists('harnessLayers', $body)) {
             $values['harnessLayers'] = $body['harnessLayers'];
-        } else if (array_key_exists('harness', $body)) {
+        } elseif (array_key_exists('harness', $body)) {
             $values['harnessLayers'] = [$body['harness']];
         }
-        $values['overlay']     = $body['overlay']??null;
+        $values['overlay'] = $body['overlay'] ?? null;
     }
 
     public static function getTypes(): array

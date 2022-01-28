@@ -88,7 +88,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 'workspace' => [
                     'name' => $this->workspace->name,
                     'description' => $this->workspace->description,
-                    'harnessLayers' => $this->workspace->harnessLayers
+                    'harnessLayers' => $this->workspace->harnessLayers,
                 ],
                 'namespace' => $this->workspace->name,
             ],

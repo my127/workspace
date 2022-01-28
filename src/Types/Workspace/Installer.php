@@ -141,9 +141,6 @@ class Installer
         }
     }
 
-    /**
-     * @param Package $package
-     */
     private function downloadAndExtractHarnessPackage(Package $package)
     {
         $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');

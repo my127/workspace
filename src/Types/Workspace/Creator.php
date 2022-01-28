@@ -22,8 +22,8 @@ class Creator
         $workspace[] = "workspace('{$name}'):";
         $workspace[] = "  description: generated local workspace for {$name}.";
 
-        if (null !== $harness) {
-            $workspace[] = "  harnessLayers:";
+        if ($harness !== null) {
+            $workspace[] = '  harnessLayers:';
             $workspace[] = "    - $harness";
         }
 

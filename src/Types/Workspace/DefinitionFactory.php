@@ -42,7 +42,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $this->prototype = new Definition();
 
-        foreach (['name', 'description', 'harnessName', 'path', 'overlay', 'scope'] as $name) {
+        foreach (['name', 'description', 'harnessLayers', 'path', 'overlay', 'scope'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -63,7 +63,9 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $definition = clone $this->prototype;
 
         foreach ($this->properties as $name => $property) {
-            $property->setValue($definition, $values[$name]);
+            if (array_key_exists($name, $values)) {
+                $property->setValue($definition, $values[$name]);
+            }
         }
 
         $this->isDefined = true;
@@ -84,9 +86,13 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseBody(array &$values, $body)
     {
-        $values['description'] = $body['description'] ?? null;
-        $values['harnessName'] = $body['harness'] ?? null;
-        $values['overlay'] = $body['overlay'] ?? null;
+        $values['description'] = $body['description']??null;
+        if (array_key_exists('harnessLayers', $body)) {
+            $values['harnessLayers'] = $body['harnessLayers'];
+        } else if (array_key_exists('harness', $body)) {
+            $values['harnessLayers'] = [$body['harness']];
+        }
+        $values['overlay']     = $body['overlay']??null;
     }
 
     public static function getTypes(): array

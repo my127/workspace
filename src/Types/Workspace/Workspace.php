@@ -56,7 +56,7 @@ class Workspace extends Definition implements ArrayAccess
 
     public function hasHarness(): bool
     {
-        return $this->harnessName !== null;
+        return count($this->harnessLayers) > 0;
     }
 
     public function create(string $name, ?string $harness = null): void

@@ -183,10 +183,10 @@ class Installer
     private function ensureRequiredAttributesArePresent(array $required): void
     {
         $attributes = [
-            'standard'      => [],
+            'standard' => [],
             'standard_file' => [],
-            'secret'        => [],
-            'secret_file'   => []
+            'secret' => [],
+            'secret_file' => [],
         ];
 
         foreach (['standard', 'secret'] as $type) {
@@ -200,7 +200,7 @@ class Installer
                     $response = '';
                 }
                 $attributes[$type][$attribute] = ($type == 'standard') ?
-                    $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
+                    $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
             }
         }
 
@@ -222,7 +222,7 @@ class Installer
                     throw new Exception('Could not read file "' . $response . '"');
                 }
                 $attributes[$type][$attribute] = ($type == 'standard_file') ?
-                    $response : '= decrypt("'.$this->crypt->encrypt($response).'")';
+                    $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
             }
         }
 

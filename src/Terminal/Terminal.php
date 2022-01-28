@@ -22,8 +22,9 @@ class Terminal
 
     public function ask(string $message, $default = null)
     {
-        $response = $this->question->ask($this->argv, $this->output, new Question($message.': ', $default));
-        return (!empty($response))?$response:$default;
+        $response = $this->question->ask($this->argv, $this->output, new Question($message . ': ', $default));
+
+        return (!empty($response)) ? $response : $default;
     }
 
     public function write(string $line)

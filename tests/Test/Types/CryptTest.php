@@ -60,7 +60,7 @@ EOD
     }
 
     /** @test */
-    public function secret_files_can_encrypted_and_decrypted_given_a_key()
+    public function secretFilesCanEncryptedAndDecryptedGivenAKey()
     {
         $this->createWorkspaceYml(<<<'EOD'
 key('default'): 81a7fa14a8ceb8e1c8860031e2bac03f4b939de44fa1a78987a3fcff1bf57100

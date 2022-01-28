@@ -4,7 +4,6 @@ namespace my127\Workspace\Types\Crypt;
 
 use Exception;
 use my127\Console\Usage\Input;
-use my127\Console\Usage\Model\OptionValue;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
@@ -61,7 +60,6 @@ class Builder implements EnvironmentBuilder
         });
 
         if ($definitions->hasType(KeyDefinition::TYPE)) {
-
             $this->application->section('secret encrypt-file')
                 ->usage('secret encrypt-file <path_to_file> [<key>]')
                 ->action(function (Input $input) {

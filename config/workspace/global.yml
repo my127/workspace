@@ -10,8 +10,7 @@ command('global service mail (enable|disable)', 'global service mail'):
     ws.service mail ={input.command(4)}
 
 command('global service proxy (enable|disable|restart)', 'global service proxy'):
-  description:
-    Actions for Traefik proxy (my127.site)
+  description: Actions for Traefik proxy (my127.site)
   exec: |
     #!bash|=
     ws.service proxy ={input.command(4)}

@@ -67,7 +67,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             /* @phpstan-ignore-next-line */
             $this->workspace->path = $definition->path;
             /* @phpstan-ignore-next-line */
-            $this->workspace->harnessName = $definition->harnessName;
+            $this->workspace->harnessLayers = $definition->harnessLayers;
             /* @phpstan-ignore-next-line */
             $this->workspace->overlay = $definition->overlay;
             /* @phpstan-ignore-next-line */

@@ -101,9 +101,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
         if (array_key_exists('harnessLayers', $body)) {
             $values['harnessLayers'] = $body['harnessLayers'];
-        }
-
-        if (array_key_exists('harness', $body)) {
+        } elseif (array_key_exists('harness', $body)) {
             $values['harnessLayers'] = [$body['harness']];
         }
 

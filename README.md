@@ -93,6 +93,11 @@ docker-compose exec -u build builder80 /app/build.sh
     * Enter the tag name to be created
     * Give it a title containing tag name
     * Click "Auto-generate release notes"
+    * Examine the generated release notes. For every entry in the `Other Changes` section,
+      examine the Pull Requests and assign each pull request either a `enhancement` label
+      for a new feature, `bug` for a bugfix or `deprecated` for 
+      a deprecation.
+    * Cancel the release if any pull request labels needed changing, and repeat from 1
     * Click `Publish Release`
 
 [releases page]: https://github.com/my127/workspace/releases

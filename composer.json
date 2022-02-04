@@ -46,5 +46,10 @@
             "@cs",
             "@phpunit"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true
+        }
     }
 }

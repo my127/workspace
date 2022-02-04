@@ -229,7 +229,9 @@ class Installer
         array_filter($attributes);
 
         foreach ($attributes as $attributesOfType) {
-            $this->writeOutAttributes('workspace.yml', $attributesOfType);
+            if (!empty($attributesOfType)) {
+                $this->writeOutAttributes('workspace.yml', $attributesOfType);
+            }
         }
     }
 

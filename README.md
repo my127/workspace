@@ -87,22 +87,12 @@ docker-compose exec -u build builder80 /app/build.sh
 
 ### Release
 
-#### Changelog Generation
+### Performing a Release
 
-We are keeping a changelog, powered by [GitHub Changelog Generator].
+1. Head to the [releases page] and create a new release:
+    * Enter the tag name to be created
+    * Give it a title containing tag name
+    * Click "Auto-generate release notes"
+    * Click `Publish Release`
 
-When ready to tag a release, make a new branch from the `0.2.x` branch for the changelog entries:
-1. Generate a `repo` scope token for use with the changelog generator: https://github.com/settings/tokens/new?description=GitHub%20Changelog%20Generator%20token
-2. Export it in your environment: `export CHANGELOG_GITHUB_TOKEN=...`
-3. Run the following docker command to generate the changelog, replacing `1.2.0` with the version number as needed:
-  ```bash
-  docker run -e CHANGELOG_GITHUB_TOKEN="$CHANGELOG_GITHUB_TOKEN" -it --rm -v "$(pwd)":/usr/local/src/your-app -v "$(pwd)/github-changelog-http-cache":/tmp/github-changelog-http-cache githubchangeloggenerator/github-changelog-generator --user my127 --project workspace --exclude-labels "duplicate,question,invalid,wontfix,skip-changelog" --since-tag 0.1.0 --release-branch 0.2.x --future-release 0.2.0-rc.1
-  ```
-4. Examine the generated CHANGELOG.md. For every entry in the `Merged pull requests` section, examine the Pull Requests
-   and assign each pull request either a `enhancement` label for a new feature, `bug` for a bugfix or `deprecated` for
-   a deprecation.
-5. Re-generate the changelog using step 3 as needed.
-6. Commit the resulting changes, push and raise a pull request.
-7. Once merged, continue with the release process below.
-
-[humbug/box]: https://github.com/humbug/box
+[releases page]: https://github.com/my127/workspace/releases

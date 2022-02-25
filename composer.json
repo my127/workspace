@@ -30,8 +30,8 @@
         }
     },
     "scripts": {
-        "post-install-cmd": ["@composer bin all install --ignore-platform-reqs --ansi"],
-        "post-update-cmd": ["@composer bin all update --ignore-platform-reqs --ansi"],
+        "post-install-cmd": ["@composer bin all install --ansi"],
+        "post-update-cmd": ["@composer bin all update --ansi"],
         "test": [
             "@compile",
             "vendor/bin/phpunit --testdox"

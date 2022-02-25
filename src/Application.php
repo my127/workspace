@@ -22,6 +22,7 @@ class Application extends ConsoleApplication
 
     public function run(?array $argv = null): void
     {
+        $this->option('-v, --verbose    Increase verbosity');
         $this->environment->build();
         parent::run($argv);
     }

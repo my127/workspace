@@ -36,7 +36,7 @@ class ErrorHandler
             $format->text(sprintf('%s:%s', $throwable->getFile(), $throwable->getLine()));
             $format->error($throwable->getMessage());
 
-            if ($input->hasParameterOption(['-v', '-vv', '-vvv'])) {
+            if ($input->hasParameterOption(['-v'])) {
                 $format->block($throwable->getTraceAsString());
             }
 

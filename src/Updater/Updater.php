@@ -18,7 +18,7 @@ class Updater
     /** @var string */
     private $apiUrl;
 
-    /** @var StdOutput */
+    /** @var Output */
     private $output;
 
     public function __construct(string $apiUrl, ?Output $output = null)
@@ -38,6 +38,8 @@ class Updater
             throw new NoUpdateAvailableException($currentVersion);
         }
 
+        $temp = tempnam(sys_get_temp_dir(), 'workspace-update-') . '.phar';
+
         try {
             $this->output->infof('Downloading new version (%s) from %s', $latest->getVersion(), $latest->getUrl());
             $releaseData = @file_get_contents($latest->getUrl());
@@ -45,7 +47,6 @@ class Updater
                 throw new RuntimeException(sprintf('Unable to download latest release at %s', $latest->getUrl()), self::CODE_ERR_FETCHING_NEXT_RELEASE);
             }
 
-            $temp = tempnam(sys_get_temp_dir(), 'workspace-update-') . '.phar';
             $this->output->infof('Writing to %s', $temp);
             if (file_put_contents($temp, $releaseData) === false) {
                 throw new RuntimeException(sprintf('Unable to write to %s', $temp));

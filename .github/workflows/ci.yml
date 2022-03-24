@@ -22,7 +22,7 @@ jobs:
                   SHELLCHECK_OPTS: --exclude=SC1008,SC1091
               with:
                   additional_files: 'ws.*'
-                  ignore: "vendor vendor-bin"
+                  ignore: "vendor vendor-bin home/bin/ws.update.php"
 
     composer-validate:
         name: "Composer validate (${{ matrix.php-version }})"

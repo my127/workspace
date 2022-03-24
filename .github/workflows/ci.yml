@@ -113,6 +113,7 @@ jobs:
                     extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
                     php-version: "${{ matrix.php-version }}"
                     tools: composer:v2
+                    ini-values: phar.readonly=off
 
             -
                 name: "Composer install"

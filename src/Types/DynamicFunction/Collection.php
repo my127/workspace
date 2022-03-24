@@ -7,7 +7,7 @@ use IteratorAggregate;
 
 class Collection implements IteratorAggregate
 {
-    /** @var DynamicFunction */
+    /** @var array<string,DynamicFunction> */
     private $functions = [];
 
     public function add(DynamicFunction $function)

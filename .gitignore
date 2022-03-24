@@ -8,3 +8,4 @@
 /ws.phar
 /tests/Workspace
 /tests/Test/Updater/fixtures/generated
+/.php-cs-fixer.cache

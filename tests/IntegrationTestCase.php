@@ -2,9 +2,9 @@
 
 namespace my127\Workspace\Tests;
 
+use my127\Workspace\Tests\Util\Workspace;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
-use my127\Workspace\Tests\Util\Workspace;
 
 class IntegrationTestCase extends TestCase
 {
@@ -33,5 +33,10 @@ class IntegrationTestCase extends TestCase
     public function createWorkspaceYml(string $contents): void
     {
         $this->workspace()->put('workspace.yml', $contents);
+    }
+
+    public function removeAnsiColorEscapes(string $content)
+    {
+        return preg_replace('/\x1b\[[0-9;]*m/', '', $content);
     }
 }

@@ -13,7 +13,7 @@ class Executor implements InterpreterExecutor
         $descriptorSpec = [
             0 => STDIN,
             1 => STDOUT,
-            2 => STDERR
+            2 => STDERR,
         ];
 
         $pipes = [];
@@ -53,20 +53,20 @@ class Executor implements InterpreterExecutor
 
     private function buildCommand(string $script, array $args, ?string $cwd, array $env): string
     {
-        $home   = home();
+        $home = home();
         $header = "#!/bin/bash\n"
-                 .". {$home}/.my127/workspace/lib/sidekick.sh\n";
+                 . ". {$home}/.my127/workspace/lib/sidekick.sh\n";
 
         foreach ($args as $key => $value) {
-            $header .= $key.'="'.addslashes($value).'"'."\n";
+            $header .= $key . '="' . addslashes($value) . '"' . "\n";
         }
 
         foreach ($env as $key => $value) {
-            $header .= 'export '.$key.'="'.addslashes($value).'"'."\n";
+            $header .= 'export ' . $key . '="' . addslashes($value) . '"' . "\n";
         }
 
-        $header .= 'cd '.$cwd??getcwd();
+        $header .= 'cd ' . ($cwd ?? getcwd());
 
-        return 'bash -e -c '.escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
+        return 'bash -e -c ' . escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
     }
 }

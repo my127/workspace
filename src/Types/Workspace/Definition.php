@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    const TYPE = 'workspace';
+    public const TYPE = 'workspace';
 
     /** @var string */
     protected $name;
@@ -14,13 +14,13 @@ class Definition implements WorkspaceDefinition
     /** @var ?string */
     protected $description = null;
 
-    /** @var ?string */
-    protected $harnessName = null;
+    /** @var ?string[] */
+    protected $harnessLayers = [];
 
     /** @var string */
     protected $path;
 
-    /** @var string */
+    /** @var ?string */
     protected $overlay = null;
 
     /** @var int */
@@ -36,9 +36,12 @@ class Definition implements WorkspaceDefinition
         return $this->description;
     }
 
-    public function getHarnessName(): ?string
+    /**
+     * @return string[]
+     */
+    public function getHarnessLayers(): ?array
     {
-        return $this->harnessName;
+        return $this->harnessLayers;
     }
 
     public function getOverlayPath(): ?string

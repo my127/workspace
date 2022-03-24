@@ -28,13 +28,13 @@ class Crypt
         return base64_encode(serialize([
             $key,
             $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES),
-            sodium_crypto_secretbox($message, $nonce, $this->getKey($key))
+            sodium_crypto_secretbox($message, $nonce, $this->getKey($key)),
         ]));
     }
 
     public function decrypt($encrypted)
     {
-        list ($key, $nonce, $ciphertext) = unserialize(base64_decode($encrypted));
+        list($key, $nonce, $ciphertext) = unserialize(base64_decode($encrypted));
 
         if (($message = sodium_crypto_secretbox_open($ciphertext, $nonce, $this->getKey($key))) !== false) {
             return $message;

@@ -2,15 +2,13 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
 use Generator;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class AttributeTest extends IntegrationTestCase
 {
     /** @test */
-    public function normal_attribute_key_can_be_set_and_retrieved()
+    public function normalAttributeKeyCanBeSetAndRetrieved()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
@@ -21,11 +19,11 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function normal_attribute_root_object_can_be_set_and_retrieved()
+    public function normalAttributeRootObjectCanBeSetAndRetrieved()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attributes:
@@ -38,12 +36,11 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
-
     /** @test */
-    public function attribute_value_can_be_an_expression()
+    public function attributeValueCanBeAnExpression()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('db'):
@@ -59,11 +56,11 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("mysql:host=localhost;dbname=application", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('mysql:host=localhost;dbname=application', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function isset_returns_false_when_attribute_is_not_defined()
+    public function issetReturnsFalseWhenAttributeIsNotDefined()
     {
         $this->createWorkspaceYml(<<<'EOD'
 command('isset'): |
@@ -76,7 +73,7 @@ EOD
     }
 
     /** @test */
-    public function isset_returns_true_when_attribute_is_defined_and_has_a_value()
+    public function issetReturnsTrueWhenAttributeIsDefinedAndHasAValue()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
@@ -90,7 +87,7 @@ EOD
     }
 
     /** @test */
-    public function isset_returns_true_even_when_attribute_value_is_null()
+    public function issetReturnsTrueEvenWhenAttributeValueIsNull()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): null
@@ -104,7 +101,7 @@ EOD
     }
 
     /** @test */
-    public function null_values_are_also_represented_internally_as_null()
+    public function nullValuesAreAlsoRepresentedInternallyAsNull()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): null
@@ -117,11 +114,11 @@ EOD
         $this->assertEquals('yes', $this->workspaceCommand('isnull')->getOutput());
     }
 
-    /** 
-     * @test 
+    /**
+     * @test
      * @dataProvider provide_attribute_precedence_is_respected
      */
-    public function attribute_precedence_is_respected(string $attribute, string $expected)
+    public function attributePrecedenceIsRespected(string $attribute, string $expected)
     {
         $this->workspace()->loadSample('attribute/precedence');
         $this->assertEquals($expected, $this->workspaceCommand(sprintf(

@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    const TYPE = 'command';
+    public const TYPE = 'command';
 
     /** @var string */
     private $usage;
@@ -19,6 +19,9 @@ class Definition implements WorkspaceDefinition
 
     /** @var string */
     private $exec;
+
+    /** @var string */
+    private $description;
 
     /** @var string */
     private $path;
@@ -44,6 +47,11 @@ class Definition implements WorkspaceDefinition
     public function getExec(): string
     {
         return $this->exec;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     public function getPath(): string

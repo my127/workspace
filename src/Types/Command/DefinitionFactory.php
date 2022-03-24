@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['command'];
+    public const TYPES = ['command'];
 
     /*
      * example
@@ -35,14 +35,14 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     /** @var Definition */
     private $prototype;
 
-    /** @var ReflectionProperty[]  */
+    /** @var ReflectionProperty[] */
     private $properties = [];
 
     public function __construct()
     {
         $this->prototype = new Definition();
 
-        foreach (['usage', 'section', 'env', 'exec', 'path', 'scope'] as $name) {
+        foreach (['usage', 'section', 'env', 'exec', 'description', 'path', 'scope'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -67,7 +67,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseMetaData(array &$values, array $metadata)
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
@@ -75,10 +75,10 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $parts = explode(',', substr($declaration, 8, -1));
 
-        $usage   = substr(trim($parts[0]), 1, -1);
-        $section = substr(trim($parts[1]??$parts[0]), 1, -1);
+        $usage = substr(trim($parts[0]), 1, -1);
+        $section = substr(trim($parts[1] ?? $parts[0]), 1, -1);
 
-        $values['usage']   = $usage;
+        $values['usage'] = $usage;
         $values['section'] = $section;
     }
 
@@ -86,11 +86,12 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         if (is_string($body)) {
             $body = [
-                'exec' => $body
+                'exec' => $body,
             ];
         }
 
-        $values['env']  = $body['env']??[];
+        $values['env'] = $body['env'] ?? [];
+        $values['description'] = $body['description'] ?? '';
         $values['exec'] = $body['exec'];
     }
 

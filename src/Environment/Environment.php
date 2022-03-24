@@ -22,10 +22,10 @@ class Environment
 
     public function __construct(DefinitionLoader $loader, DefinitionCollection $definitions, BuilderCollection $builders, AttributeCollection $attributes)
     {
-        $this->loader      = $loader;
+        $this->loader = $loader;
         $this->definitions = $definitions;
-        $this->builders    = $builders;
-        $this->attributes  = $attributes;
+        $this->builders = $builders;
+        $this->attributes = $attributes;
     }
 
     public function getWorkspacePath(): string
@@ -39,8 +39,6 @@ class Environment
     }
 
     /**
-     * @param string $key
-     *
      * @return array|mixed|null
      */
     public function getAttribute(string $key)
@@ -68,16 +66,16 @@ class Environment
     private function loadWorkspaceDefinitions()
     {
         $this->loader->setWorkspacePath($this->workspacePath = $this->findWorkspaceDirectory());
-        $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath.'/.my127ws');
+        $this->loader->setHarnessPath($this->harnessPath = $this->workspacePath . '/.my127ws');
 
-        $this->loader->load(__DIR__.'/../../config/harness/packages.yml');
-        $this->loader->load(__DIR__.'/../../config/workspace/global.yml');
-        $this->loader->load($this->workspacePath.'/workspace.yml');
-        $this->loader->load(home().'/.config/my127/workspace/*.yml');
+        $this->loader->load(__DIR__ . '/../../config/harness/packages.yml');
+        $this->loader->load(__DIR__ . '/../../config/workspace/global.yml');
+        $this->loader->load($this->workspacePath . '/workspace.yml');
+        $this->loader->load(home() . '/.config/my127/workspace/*.yml');
 
         $extra = [
-            $this->workspacePath.'/workspace.override.yml',
-            $this->harnessPath.'/harness.yml'
+            $this->workspacePath . '/workspace.override.yml',
+            $this->harnessPath . '/harness.yml',
         ];
 
         foreach ($extra as $file) {
@@ -101,10 +99,10 @@ class Environment
     {
         $candidate = Filesystem::upsearch('workspace.yml', $this->getCurrentWorkingDirectory());
 
-        if (null !== $candidate) {
+        if ($candidate !== null) {
             return $candidate;
         }
 
-        return $this->getUserHomeDirectory().'/.my127/workspace';
+        return $this->getUserHomeDirectory() . '/.my127/workspace';
     }
 }

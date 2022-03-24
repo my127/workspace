@@ -21,16 +21,16 @@ class Builder implements EnvironmentBuilder
 
     public function __construct(Application $application, Crypt $crypt, Expression $expressionLanguage, TwigEnvironmentBuilder $twigBuilder)
     {
-        $this->crypt              = $crypt;
+        $this->crypt = $crypt;
         $this->expressionLanguage = $expressionLanguage;
-        $this->twigBuilder        = $twigBuilder;
-        $this->application        = $application;
+        $this->twigBuilder = $twigBuilder;
+        $this->application = $application;
     }
 
     public function build(Environment $environment, DefinitionCollection $definitions)
     {
         foreach ($definitions->findByType(KeyDefinition::TYPE) as $definition) {
-            /** @var KeyDefinition $definition */
+            /* @var KeyDefinition $definition */
             $this->crypt->addKey(new Key($definition->getName(), $definition->getKey()));
         }
 
@@ -39,7 +39,6 @@ class Builder implements EnvironmentBuilder
         }
 
         foreach (getenv() as $key => $value) {
-
             if (strpos($key, 'MY127WS_KEY_') !== 0) {
                 continue;
             }
@@ -56,11 +55,16 @@ class Builder implements EnvironmentBuilder
             })
         );
 
-        $this->twigBuilder->addFunction('decrypt', function($encrypted) {
+        $this->twigBuilder->addFunction('decrypt', function ($encrypted) {
             return $this->crypt->decrypt($encrypted);
         });
 
         if ($definitions->hasType(KeyDefinition::TYPE)) {
+            $this->application->section('secret encrypt-file')
+                ->usage('secret encrypt-file <path_to_file> [<key>]')
+                ->action(function (Input $input) {
+                    echo $this->crypt->encrypt(file_get_contents($input->getArgument('path_to_file')), $input->getArgument('key') ?? 'default') . "\n";
+                });
 
             $this->application->section('secret encrypt')
                 ->usage('secret encrypt <message> [<key>]')
@@ -71,13 +75,13 @@ class Builder implements EnvironmentBuilder
             $this->application->section('secret decrypt')
                 ->usage('secret decrypt <encrypted>')
                 ->action(function (Input $input) {
-                    echo $this->crypt->decrypt($input->getArgument('encrypted'))."\n";
+                    echo $this->crypt->decrypt($input->getArgument('encrypted')) . "\n";
                 });
         }
 
         $this->application->section('secret generate-random-key')
             ->action(function (Input $input) {
-                echo (new Key('random'))->getKeyAsHex()."\n";
+                echo (new Key('random'))->getKeyAsHex() . "\n";
             });
     }
 }

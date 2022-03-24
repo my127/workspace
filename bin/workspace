@@ -4,9 +4,12 @@
 use my127\Workspace\Application;
 use my127\Workspace\Installer\Installer;
 use Symfony\Component\DependencyInjection\Container;
+use my127\Workspace\Utility\ErrorHandler;
 
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../config/_compiled/container.php';
+
+ErrorHandler::registerErrorHandler();
 
 function main(): void
 {
@@ -22,6 +25,7 @@ function application(): Application
 {
     /** @var Application $application */
     $application = (new ApplicationServiceContainer())->get(Application::class);
+
 
     return $application;
 }

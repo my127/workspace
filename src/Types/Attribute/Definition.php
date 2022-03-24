@@ -6,8 +6,8 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    public const PRIORITY_DEFAULT  = 1;
-    public const PRIORITY_NORMAL   = 2;
+    public const PRIORITY_DEFAULT = 1;
+    public const PRIORITY_NORMAL = 2;
     public const PRIORITY_OVERRIDE = 3;
 
     /** @var string */

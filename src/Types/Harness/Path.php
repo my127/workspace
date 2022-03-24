@@ -6,7 +6,7 @@ use my127\Workspace\Path\Path as WorkspacePath;
 
 class Path implements WorkspacePath
 {
-    const NAME = 'harness';
+    public const NAME = 'harness';
 
     private $harness;
 

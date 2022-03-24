@@ -3,18 +3,18 @@
 namespace my127\Workspace\Types\Attribute;
 
 use ArrayAccess;
-use my127\Workspace\Utility\Arr;
 use my127\Workspace\Expression\Expression;
+use my127\Workspace\Utility\Arr;
 
 class Collection implements ArrayAccess
 {
-    /** @var mixed[][]  */
+    /** @var mixed[][] */
     private $attributes = [];
 
     /** @var Expression */
     private $expression;
 
-    /** @var mixed[][]  */
+    /** @var mixed[][]|null */
     private $cache = null;
 
     public function __construct(Expression $expression)
@@ -34,7 +34,7 @@ class Collection implements ArrayAccess
 
     public function get(string $key, $default = null)
     {
-        if (null === $this->cache) {
+        if ($this->cache === null) {
             $this->buildAttributeCache();
         }
 
@@ -42,6 +42,7 @@ class Collection implements ArrayAccess
 
         if ($this->isExpression($value)) {
             $this->evaluate($value);
+
             return $value;
         }
 
@@ -72,12 +73,12 @@ class Collection implements ArrayAccess
 
     private function isExpression($value): bool
     {
-        return is_string($value) && $value != "" && $value[0] == '=';
+        return is_string($value) && $value != '' && $value[0] == '=';
     }
 
     public function offsetExists($offset)
     {
-        if (null === $this->cache) {
+        if ($this->cache === null) {
             $this->buildAttributeCache();
         }
 
@@ -91,7 +92,6 @@ class Collection implements ArrayAccess
         krsort($segments);
 
         while (($segment = array_pop($segments)) !== null) {
-
             if (!array_key_exists($segment, $array)) {
                 return false;
             }

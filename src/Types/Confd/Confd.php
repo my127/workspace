@@ -9,22 +9,39 @@ use Twig_Environment;
 
 class Confd
 {
+    /**
+     * @var Definition
+     */
     private $definition;
+
+    /**
+     * @var Twig_Environment
+     */
     private $twig;
+
+    /**
+     * @var Path
+     */
     private $path;
+
+    /**
+     * @var Expression
+     */
     private $expression;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $rootPath;
 
     public function __construct(Path $path, Definition $definition, Twig_Environment $twig, Expression $expression)
     {
         $this->definition = $definition;
-        $this->twig       = $twig;
-        $this->path       = $path;
+        $this->twig = $twig;
+        $this->path = $path;
         $this->expression = $expression;
 
-        /** @var $loader Filesystem */
+        /** @var Filesystem $loader */
         $loader = $twig->getLoader();
         $this->rootPath = $loader->getRootPath();
     }
@@ -32,16 +49,15 @@ class Confd
     public function apply(): void
     {
         foreach ($this->definition->getTemplates() as $path) {
-
             if (isset($path['when']) && $this->expression->evaluate($path['when']) === false) {
                 continue;
             }
 
             if (is_string($path)) {
-                $src = $path.'.twig';
+                $src = $path . '.twig';
                 $dst = $this->resolveDstFromSrc($src);
             } else {
-                $src = $path['src'].'.twig';
+                $src = $path['src'] . '.twig';
                 $dst = isset($path['dst']) ? $this->path->getRealPath($path['dst']) : $this->resolveDstFromSrc($src);
             }
 
@@ -57,6 +73,6 @@ class Confd
 
     private function resolveDstFromSrc(string $path): string
     {
-        return $this->rootPath.'/'.substr($path, 0, -5);
+        return $this->rootPath . '/' . substr($path, 0, -5);
     }
 }

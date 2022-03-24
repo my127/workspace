@@ -8,8 +8,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = [
-
+    public const TYPES = [
         'attribute.default',
         'attributes.default',
 
@@ -17,7 +16,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         'attributes',
 
         'attribute.override',
-        'attributes.override'
+        'attributes.override',
     ];
 
     /*
@@ -38,19 +37,19 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
      * body: mixed
      */
 
-    /** @var Definition  */
+    /** @var Definition */
     private $prototype;
 
     /** @var ReflectionProperty[] */
     private $properties = [];
 
     private $priorityMap = [
-        'attribute.default'   => Definition::PRIORITY_DEFAULT,
-        'attributes.default'  => Definition::PRIORITY_DEFAULT,
-        'attribute'           => Definition::PRIORITY_NORMAL,
-        'attributes'          => Definition::PRIORITY_NORMAL,
-        'attribute.override'  => Definition::PRIORITY_OVERRIDE,
-        'attributes.override' => Definition::PRIORITY_OVERRIDE
+        'attribute.default' => Definition::PRIORITY_DEFAULT,
+        'attributes.default' => Definition::PRIORITY_DEFAULT,
+        'attribute' => Definition::PRIORITY_NORMAL,
+        'attributes' => Definition::PRIORITY_NORMAL,
+        'attribute.override' => Definition::PRIORITY_OVERRIDE,
+        'attributes.override' => Definition::PRIORITY_OVERRIDE,
     ];
 
     public function __construct()
@@ -66,8 +65,8 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     public function create(array $data): WorkspaceDefinition
     {
         $values = [
-            'type'     => $data['type'],
-            'priority' => $this->priorityMap[$data['type']]
+            'type' => $data['type'],
+            'priority' => $this->priorityMap[$data['type']],
         ];
 
         $this->parseMetaData($values, $data['metadata']);
@@ -85,7 +84,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
     private function parseMetaData(array &$values, $metadata)
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 

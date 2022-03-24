@@ -18,9 +18,9 @@ class Script
 
     public function __construct(Executor $executor, string $cwd, string $script, array $arguments = [])
     {
-        $this->executor  = $executor;
-        $this->script    = $script;
-        $this->cwd       = $cwd;
+        $this->executor = $executor;
+        $this->script = $script;
+        $this->cwd = $cwd;
         $this->arguments = $arguments;
     }
 
@@ -34,9 +34,9 @@ class Script
         return $this->executor->capture($this->script, $this->buildArgList($args), $this->cwd, $env);
     }
 
-    private function buildArgList(?array $args) : array
+    private function buildArgList(?array $args): array
     {
-        if (null === $args) {
+        if ($args === null) {
             return [];
         }
 

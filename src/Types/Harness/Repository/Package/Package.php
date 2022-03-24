@@ -8,11 +8,22 @@ class Package
     private $version;
     private $dist;
 
+    public function __construct(array $dist = [])
+    {
+        $this->dist = $dist;
+    }
+
+    /**
+     * @deprecated This is not used and can probably be removed
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @deprecated This is not used and can probably be removed
+     */
     public function getVersion(): string
     {
         return $this->version;

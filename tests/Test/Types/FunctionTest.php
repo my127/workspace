@@ -2,14 +2,12 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class FunctionTest extends IntegrationTestCase
 {
     /** @test */
-    public function bash_can_be_used_as_an_interpreter_for_a_function()
+    public function bashCanBeUsedAsAnInterpreterForAFunction()
     {
         $this->createWorkspaceYml(<<<'EOD'
 function('add', [v1, v2]): |
@@ -22,11 +20,11 @@ command('add <v1> <v2>'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->workspaceCommand('add 2 2')->getOutput());
+        $this->assertEquals('4', $this->workspaceCommand('add 2 2')->getOutput());
     }
 
     /** @test */
-    public function php_can_be_used_as_an_interpreter_for_a_function()
+    public function phpCanBeUsedAsAnInterpreterForAFunction()
     {
         $this->createWorkspaceYml(<<<'EOD'
 function('add', [v1, v2]): |
@@ -39,11 +37,11 @@ command('add <v1> <v2>'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->workspaceCommand('add 2 2')->getOutput());
+        $this->assertEquals('4', $this->workspaceCommand('add 2 2')->getOutput());
     }
 
     /** @test */
-    public function bash_function_can_make_use_of_environment_variables()
+    public function bashFunctionCanMakeUseOfEnvironmentVariables()
     {
         $this->createWorkspaceYml(<<<'EOD'
 function('hello', [v1]):
@@ -59,11 +57,11 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
-    public function php_function_can_make_use_of_environment_variables()
+    public function phpFunctionCanMakeUseOfEnvironmentVariables()
     {
         $this->createWorkspaceYml(<<<'EOD'
 function('hello', [v1]):
@@ -79,11 +77,11 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
-    public function functions_are_available_within_attribute_expressions()
+    public function functionsAreAvailableWithinAttributeExpressions()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('answer'): = add(2, 2)
@@ -99,11 +97,11 @@ command('hi'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->workspaceCommand('hi')->getOutput());
+        $this->assertEquals('4', $this->workspaceCommand('hi')->getOutput());
     }
 
     /** @test */
-    public function functions_are_able_to_return_non_scalar_types()
+    public function functionsAreAbleToReturnNonScalarTypes()
     {
         $this->createWorkspaceYml(<<<'EOD'
 function('array', [v1, v2]): |

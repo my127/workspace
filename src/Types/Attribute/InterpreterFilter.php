@@ -6,8 +6,8 @@ use my127\Workspace\Interpreter\Filter as WorkspaceInterpreterFilter;
 
 class InterpreterFilter implements WorkspaceInterpreterFilter
 {
-    const NAME    = '@';
-    const PATTERN = '/@\([\'"]?(?P<attribute>[a-zA-Z0-9\._-]+)[\'"]?\)/';
+    public const NAME = '@';
+    public const PATTERN = '/@\([\'"]?(?P<attribute>[a-zA-Z0-9\._-]+)[\'"]?\)/';
 
     /** @var Collection */
     private $attributes;

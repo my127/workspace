@@ -2,14 +2,12 @@
 
 namespace Test\my127\Workspace\Interpreters;
 
-use Fixture;
-use PHPUnit\Framework\TestCase;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class PHPTest extends IntegrationTestCase
 {
     /** @test */
-    public function helper_can_access_attributes_using_array_access_interface()
+    public function helperCanAccessAttributesUsingArrayAccessInterface()
     {
         $this->createWorkspaceYml(<<<'EOD'
 attribute('message'): Hello World
@@ -20,11 +18,11 @@ command('speak'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('speak')->getOutput());
+        $this->assertEquals('Hello World', $this->workspaceCommand('speak')->getOutput());
     }
 
     /** @test */
-    public function helper_can_call_dynamically_declared_functions()
+    public function helperCanCallDynamicallyDeclaredFunctions()
     {
         $this->createWorkspaceYml(<<<'EOD'
 
@@ -38,12 +36,12 @@ command('calculate'): |
 EOD
         );
 
-        $this->assertEquals("4", $this->workspaceCommand('calculate')->getOutput()
+        $this->assertEquals('4', $this->workspaceCommand('calculate')->getOutput()
         );
     }
 
     /** @test */
-    public function helper_can_run_declared_commands()
+    public function helperCanRunDeclaredCommands()
     {
         $this->createWorkspaceYml(<<<'EOD'
 command('cmdA'): |
@@ -56,7 +54,7 @@ command('cmdB'): |
 EOD
         );
 
-        $this->assertEquals("Hello World", $this->workspaceCommand('cmdA')->getOutput()
+        $this->assertEquals('Hello World', $this->workspaceCommand('cmdA')->getOutput()
         );
     }
 }

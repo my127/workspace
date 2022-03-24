@@ -6,7 +6,7 @@ use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 
 class Definition implements WorkspaceDefinition
 {
-    const TYPE = 'harness';
+    public const TYPE = 'harness';
 
     /** @var string */
     protected $name;
@@ -40,19 +40,18 @@ class Definition implements WorkspaceDefinition
 
     public function getRequiredAttributes(): array
     {
-        return $this->require['attributes']??[];
+        return $this->require['attributes'] ?? [];
     }
 
     public function getRequiredConfdPaths()
     {
-        return $this->require['confd']??[];
+        return $this->require['confd'] ?? [];
     }
 
     public function getRequiredServices(): array
     {
-        return $this->require['services']??[];
+        return $this->require['services'] ?? [];
     }
-
 
     public function getScope(): int
     {

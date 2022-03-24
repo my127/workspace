@@ -9,7 +9,7 @@ use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
-    const TYPES = ['workspace'];
+    public const TYPES = ['workspace'];
 
     /*
      * example
@@ -29,20 +29,20 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
      *   harness: optional, harness to use for standardising the workspace
      */
 
-    /** @var bool  */
+    /** @var bool */
     private $isDefined = false;
 
     /** @var Definition */
     private $prototype;
 
-    /** @var ReflectionProperty[]  */
+    /** @var ReflectionProperty[] */
     private $properties = [];
 
     public function __construct()
     {
         $this->prototype = new Definition();
 
-        foreach (['name', 'description', 'harnessName', 'path', 'overlay', 'scope'] as $name) {
+        foreach (['name', 'description', 'harnessLayers', 'path', 'overlay', 'scope'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -51,7 +51,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     public function create(array $data): WorkspaceDefinition
     {
         if ($this->isDefined) {
-            throw new Exception("A workspace has already been declared.");
+            throw new Exception('A workspace has already been declared.');
         }
 
         $values = [];
@@ -63,7 +63,9 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $definition = clone $this->prototype;
 
         foreach ($this->properties as $name => $property) {
-            $property->setValue($definition, $values[$name]);
+            if (array_key_exists($name, $values)) {
+                $property->setValue($definition, $values[$name]);
+            }
         }
 
         $this->isDefined = true;
@@ -71,22 +73,39 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         return $definition;
     }
 
-    private function parseMetaData(array &$values, $metadata)
+    private function parseMetaData(array &$values, $metadata): void
     {
-        $values['path']  = $metadata['path'];
+        $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
     }
 
-    private function parseDeclaration(array &$values, $declaration)
+    private function parseDeclaration(array &$values, $declaration): void
     {
         $values['name'] = substr($declaration, 11, -2);
     }
 
-    private function parseBody(array &$values, $body)
+    /**
+     * @param array<string,mixed> $body
+     */
+    private function parseBody(array &$values, ?array $body): void
     {
-        $values['description'] = $body['description']??null;
-        $values['harnessName'] = $body['harness']??null;
-        $values['overlay']     = $body['overlay']??null;
+        $values['description'] = null;
+        $values['harnessLayers'] = [];
+        $values['overlay'] = null;
+
+        if ($body === null) {
+            return;
+        }
+
+        $values['description'] = $body['description'] ?? null;
+
+        if (array_key_exists('harnessLayers', $body)) {
+            $values['harnessLayers'] = $body['harnessLayers'];
+        } elseif (array_key_exists('harness', $body)) {
+            $values['harnessLayers'] = [$body['harness']];
+        }
+
+        $values['overlay'] = $body['overlay'] ?? null;
     }
 
     public static function getTypes(): array

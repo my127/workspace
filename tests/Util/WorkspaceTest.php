@@ -2,22 +2,16 @@
 
 namespace my127\Workspace\Tests\Util;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RuntimeException;
-use SplFileInfo;
-use my127\Workspace\Utility\Filesystem;
 
 class WorkspaceTest extends TestCase
 {
-    const EXAMPLE_CONTENT = 'barfoo';
+    public const EXAMPLE_CONTENT = 'barfoo';
 
     /**
      * @test
      */
-    public function test_reset_workspace(): void
+    public function testResetWorkspace(): void
     {
         $workspace = Workspace::create(__DIR__ . '/../Workspace');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
@@ -32,7 +26,7 @@ class WorkspaceTest extends TestCase
     /**
      * @test
      */
-    public function test_get_contents(): void
+    public function testGetContents(): void
     {
         $workspace = Workspace::create(__DIR__ . '/../Workspace');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
@@ -42,7 +36,7 @@ class WorkspaceTest extends TestCase
     /**
      * @test
      */
-    public function test_file_exists(): void
+    public function testFileExists(): void
     {
         $workspace = Workspace::create(__DIR__ . '/../Workspace');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
@@ -53,7 +47,7 @@ class WorkspaceTest extends TestCase
     /**
      * @test
      */
-    public function test_provides_full_path_to_file(): void
+    public function testProvidesFullPathToFile(): void
     {
         $workspace = Workspace::create(__DIR__ . '/../Workspace');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);

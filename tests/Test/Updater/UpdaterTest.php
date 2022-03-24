@@ -24,17 +24,17 @@ class UpdaterTest extends TestCase
     }
 
     /** @test */
-    public function exception_thrown_when_error_fetching_releases()
+    public function exceptionThrownWhenErrorFetchingReleases()
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionCode(Updater::CODE_ERR_FETCHING_RELEASES);
 
-        $updater = new Updater(__DIR__ . "/fixtures/foo.json", new NullOutput());
+        $updater = new Updater(__DIR__ . '/fixtures/foo.json', new NullOutput());
         $updater->update('1.0.0', '');
     }
 
     /** @test */
-    public function exception_thrown_when_there_are_no_releases()
+    public function exceptionThrownWhenThereAreNoReleases()
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionCode(Updater::CODE_NO_RELEASES);
@@ -44,7 +44,7 @@ class UpdaterTest extends TestCase
     }
 
     /** @test */
-    public function exception_thrown_when_already_on_latest()
+    public function exceptionThrownWhenAlreadyOnLatest()
     {
         $this->prepareReleasesFixture('latest.json', '', '1.0.0');
         $this->expectException(NoUpdateAvailableException::class);
@@ -54,7 +54,7 @@ class UpdaterTest extends TestCase
     }
 
     /** @test */
-    public function exception_thrown_when_current_version_is_empty()
+    public function exceptionThrownWhenCurrentVersionIsEmpty()
     {
         $this->prepareReleasesFixture('latest.json', '', '1.0.0');
         $this->expectException(NoVersionDeterminedException::class);
@@ -64,7 +64,7 @@ class UpdaterTest extends TestCase
     }
 
     /** @test */
-    public function exception_thrown_when_on_more_recent_version()
+    public function exceptionThrownWhenOnMoreRecentVersion()
     {
         $this->prepareReleasesFixture('older.json', '', '1.0.0');
         $this->expectException(NoUpdateAvailableException::class);
@@ -74,7 +74,7 @@ class UpdaterTest extends TestCase
     }
 
     /** @test */
-    public function exception_thrown_when_next_release_cannot_be_downloaded()
+    public function exceptionThrownWhenNextReleaseCannotBeDownloaded()
     {
         $this->prepareReleasesFixture('invalid-release.json', __DIR__ . '/foo.baz.bar', '1.0.0');
         $this->expectException(RuntimeException::class);
@@ -85,7 +85,7 @@ class UpdaterTest extends TestCase
     }
 
     /** @test */
-    public function downloads_latest_release_to_desired_target_path()
+    public function downloadsLatestReleaseToDesiredTargetPath()
     {
         $this->prepareFakePhar();
         $this->prepareReleasesFixture('valid.json', __DIR__ . '/fixtures/generated/fake.phar', '1.0.0');

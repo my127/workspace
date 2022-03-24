@@ -33,6 +33,7 @@ class Application extends ConsoleApplication
         if (empty($version)) {
             return self::DEFAULT_VERSION;
         }
+
         return $version;
     }
 

@@ -30,7 +30,6 @@ class Release
      * Will return true if this release is more recent than the version provided.
      *
      * @param string $version Semver version number, e.g. 1.0.1, 0.2.0-alpha1 etc.
-     * @return bool
      */
     public function isMoreRecentThan(string $version): bool
     {

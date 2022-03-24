@@ -11,7 +11,7 @@ class ReleaseTest extends TestCase
      * @dataProvider versions
      * @test
      */
-    public function determines_more_recent_versions(string $current, string $target, bool $expected)
+    public function determinesMoreRecentVersions(string $current, string $target, bool $expected)
     {
         $release = new Release('', $current);
         $this->assertEquals($expected, $release->isMoreRecentThan($target));
@@ -25,7 +25,7 @@ class ReleaseTest extends TestCase
             ['1.0.0-alpha1', '1.0.0-alpha2', false],
             ['1.0.0-alpha2', '1.0.0-alpha1', true],
             ['1.0.0-beta', '1.0.0-beta', false],
-            ['foo', 'bar', false]
+            ['foo', 'bar', false],
         ];
     }
 }

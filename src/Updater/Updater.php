@@ -90,8 +90,8 @@ class Updater
         return stream_context_create([
             'http' => [
                 'method' => 'GET',
-                'header' => ['User-Agent: my127/workspace PHP self-updater']
-            ]
+                'header' => ['User-Agent: my127/workspace PHP self-updater'],
+            ],
         ]);
     }
 }

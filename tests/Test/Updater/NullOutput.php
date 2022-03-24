@@ -10,7 +10,11 @@ class NullOutput implements Output
     {
     }
 
-    public function info(string $string): void
+    public function info(string $info): void
+    {
+    }
+
+    public function success(string $success): void
     {
     }
 }

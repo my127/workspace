@@ -61,6 +61,7 @@ class Updater
             unset($phar);
             $this->output->infof('Download OK. Copying into place at %s', $targetPath);
             rename($temp, $targetPath);
+            $this->output->success('Done.');
         } catch (Error $e) {
             @unlink($temp);
             throw new RuntimeException('Error occurred processing the update: ' . $e->getMessage(), 0, $e);

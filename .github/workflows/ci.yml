@@ -118,7 +118,9 @@ jobs:
             -
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
-
+            -
+                name: "Build ws.phar"
+                run: "composer compile"
             -
                 name: "Run PHPUnit"
                 run: "composer test"

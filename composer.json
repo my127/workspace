@@ -22,11 +22,15 @@
         "phpstan/phpstan": "^1.2"
     },
     "autoload": {
-        "psr-4": {"my127\\Workspace\\": "src/"}
+        "psr-4": {
+            "my127\\Workspace\\": "src/",
+            "my127\\Console\\": "console/src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "my127\\Workspace\\Tests\\": "tests/"
+            "my127\\Workspace\\Tests\\": "tests/",
+            "my127\\Console\\Tests\\": "console/tests/"
         }
     },
     "scripts": {

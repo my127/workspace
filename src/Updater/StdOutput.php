@@ -4,12 +4,12 @@ namespace my127\Workspace\Updater;
 
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\OutputStyle;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class StdOutput implements Output
 {
-    /** @var OutputInterface */
+    /** @var OutputStyle */
     private $output;
 
     public function __construct()

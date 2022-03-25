@@ -87,6 +87,9 @@ class Updater
         return new Release($latest->assets[0]->browser_download_url, $latest->tag_name);
     }
 
+    /**
+     * @return resource
+     */
     private function createStreamContext()
     {
         return stream_context_create([

@@ -18,7 +18,7 @@ function main(): void
     }
 
     putenv('PATH='.home().'/.my127/workspace/bin:'.getenv('PATH'));
-    application()->run();
+    exit(application()->run());
 }
 
 function application(): Application

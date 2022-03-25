@@ -2,11 +2,11 @@
 
 namespace my127\Workspace\Console\Usage\Parser\Transition;
 
-use my127\FSM\Runner\Runner;
-use my127\FSM\State\State;
-use my127\FSM\Stateful;
-use my127\FSM\State\StateVisitor;
-use my127\FSM\Transition\Transition;
+use my127\Workspace\FSM\Runner\Runner;
+use my127\Workspace\FSM\State\State;
+use my127\Workspace\FSM\Stateful;
+use my127\Workspace\FSM\State\StateVisitor;
+use my127\Workspace\FSM\Transition\Transition;
 
 class ShortcutTransition implements Transition
 {

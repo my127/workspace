@@ -2,9 +2,9 @@
 
 namespace my127\Workspace\Console\Usage\Parser;
 
-use my127\FSM\State\State;
-use my127\FSM\Stateful;
-use my127\FSM\Transition\Transition;
+use my127\Workspace\FSM\State\State;
+use my127\Workspace\FSM\Stateful;
+use my127\Workspace\FSM\Transition\Transition;
 use SplObjectStorage;
 
 class UsageParserContext implements Stateful

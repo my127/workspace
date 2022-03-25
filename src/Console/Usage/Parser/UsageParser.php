@@ -4,8 +4,8 @@ namespace my127\Workspace\Console\Usage\Parser;
 
 use my127\Workspace\Console\Usage\Input;
 use my127\Workspace\Console\Usage\Model\OptionDefinitionCollection;
-use my127\FSM\Runner\BacktrackingRunner;
-use my127\FSM\Definition;
+use my127\Workspace\FSM\Runner\BacktrackingRunner;
+use my127\Workspace\FSM\Definition;
 use my127\Workspace\Console\Usage\Parser\InputSequence;
 use my127\Workspace\Console\Usage\Parser\InputSequenceFactory;
 

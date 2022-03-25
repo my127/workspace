@@ -12,8 +12,8 @@ use my127\Workspace\Console\Usage\Parser\Transition\OptionTransition;
 use my127\Workspace\Console\Usage\Parser\Transition\ShortcutTransition;
 use my127\Workspace\Console\Usage\Scanner\Scanner;
 use my127\Workspace\Console\Usage\Scanner\Token;
-use my127\FSM\Definition;
-use my127\FSM\State\State;
+use my127\Workspace\FSM\Definition;
+use my127\Workspace\FSM\State\State;
 use my127\Workspace\Console\Usage\Parser\UsageParser;
 
 class UsageParserBuilder

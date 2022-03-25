@@ -1,4 +1,0 @@
-suites:
-    my127_console:
-        namespace: my127\Console
-        psr4_prefix: my127\Console

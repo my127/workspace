@@ -22,7 +22,7 @@ jobs:
                   SHELLCHECK_OPTS: --exclude=SC1008,SC1091
               with:
                   additional_files: 'ws.*'
-                  ignore: "vendor vendor-bin"
+                  ignore_paths: "vendor vendor-bin"
 
     composer-validate:
         name: "Composer validate (${{ matrix.php-version }})"
@@ -112,11 +112,14 @@ jobs:
                     extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
                     php-version: "${{ matrix.php-version }}"
                     tools: composer:v2
+                    ini-values: phar.readonly=off
 
             -
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
-
+            -
+                name: "Build ws.phar"
+                run: "composer compile"
             -
                 name: "Run PHPUnit"
                 run: "composer test"

@@ -32,12 +32,9 @@
     "scripts": {
         "post-install-cmd": ["@composer bin all install --ansi"],
         "post-update-cmd": ["@composer bin all update --ansi"],
-        "test": [
-            "@compile",
-            "vendor/bin/phpunit --testdox"
-        ],
+        "test": "vendor/bin/phpunit --testdox",
         "phpunit": "vendor/bin/phpunit --testdox",
-        "compile": "date -u > home/build && bin/build && box compile",
+        "compile": "tools/scripts/compile.sh",
         "phpstan": "./vendor/bin/phpstan analyse",
         "cs": "./vendor/bin/php-cs-fixer fix",
         "integrate": [

@@ -5,6 +5,7 @@
 /vendor
 /vendor-bin/**/vendor
 /vendor-bin/**/composer.lock
-/my127ws.phar
+/ws.phar
 /tests/Workspace
+/tests/Test/Updater/fixtures/generated
 /.php-cs-fixer.cache

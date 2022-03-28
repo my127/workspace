@@ -1,6 +1,7 @@
 {
   "main": "bin/workspace",
-  "output": "my127ws.phar",
+  "alias": "ws.phar",
+  "output": "ws.phar",
   "directories-bin": [
     "config",
     "home",
@@ -12,7 +13,9 @@
     "home/service/mail/.env",
     "home/service/proxy/.env"
   ],
+  "metadata": "my127\\Workspace\\Application::getMetadata",
   "blacklist": [
+    "tools/scripts/compile.sh",
  
     "vendor/symfony/cache/Adapter/TraceableAdapter.php",
     "vendor/symfony/cache/Adapter/SimpleCacheAdapter.php",

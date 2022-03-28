@@ -3,7 +3,7 @@
 namespace my127\Workspace\Types\Crypt;
 
 use Exception;
-use my127\Console\Usage\Input;
+use my127\Workspace\Console\Usage\Input;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;

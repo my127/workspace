@@ -2,8 +2,8 @@
 
 namespace my127\Workspace;
 
-use my127\Console\Application\Application as ConsoleApplication;
-use my127\Console\Application\Executor;
+use my127\Workspace\Console\Application\Application as ConsoleApplication;
+use my127\Workspace\Console\Application\Executor;
 use my127\Workspace\Environment\Environment;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

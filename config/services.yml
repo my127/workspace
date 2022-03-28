@@ -55,6 +55,10 @@ services:
   my127\Workspace\Types\Harness\Repository\Repository $archiveRepository: '@my127\Workspace\Types\Harness\Repository\ArchiveRepository'
   my127\Workspace\Types\Harness\Repository\Repository $packageRepository: '@my127\Workspace\Types\Harness\Repository\PackageRepository'
 
+  my127\Workspace\Updater\Updater:
+    arguments:
+      $apiUrl: 'https://api.github.com/repos/my127/workspace/releases'
+
   # -- require
 
   Symfony\Component\EventDispatcher\EventDispatcher:

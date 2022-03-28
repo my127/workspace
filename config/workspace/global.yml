@@ -36,7 +36,3 @@ command('poweroff', 'poweroff'):
   exec: |
     #!bash(cwd:/)
     ws.poweroff
-
-command('self-update', 'self-update'): |
-  #!php
-  require_once  'phar://ws.phar/home/bin/ws.update.php';

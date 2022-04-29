@@ -1,0 +1,217 @@
+{
+  "docker": {
+    "backends": {
+      "backend-kafka-ui-projectx-notify": {
+        "servers": {
+          "server-kafka-ui-d6b7039a8ab23e85a074cf3f08f5d3bb": {
+            "url": "http://172.29.0.2:8080",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-kafka-projectx-ecomm": {
+        "servers": {
+          "server-projectx-ecomm-kafka-1-c9b17e08616ec091ec5bdebc7168e08e": {
+            "url": "http://192.168.64.5:9092",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-mailhog-my127ws-mail": {
+        "servers": {
+          "server-my127ws-mail-mailhog-1-85e8085db4483a02ca3a7be5961b0900": {
+            "url": "http://172.20.0.2:8025",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-traefik-my127ws-proxy": {
+        "servers": {
+          "server-my127ws-proxy-f8ee5f56b6b8dbf5dd2dba51f3747e3f": {
+            "url": "http://172.20.0.3:8080",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-projectx-ecomm": {
+        "servers": {
+          "server-projectx-ecomm-nginx-1-6d61c6d09d67bbf35d2b9dcecdc930ff": {
+            "url": "http://172.20.0.8:80",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-projectx-example": {
+        "servers": {
+          "server-projectx-example-nginx-1-6414db0d5c6bd836bee98c375d262962": {
+            "url": "http://172.20.0.5:80",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-projectx-search": {
+        "servers": {
+          "server-projectx-ecomm-search-1-d332fdf89ad5d142a05df865a95fb3cd": {
+            "url": "http://172.20.0.6:8108",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      },
+      "backend-zookeeper-projectx-ecomm": {
+        "servers": {
+          "server-projectx-ecomm-zookeeper-1-c08f0e8c4cd02eac6b5d4de2d1bcf9f5": {
+            "url": "http://192.168.64.9:22",
+            "weight": 1
+          }
+        },
+        "loadBalancer": {
+          "method": "wrr"
+        }
+      }
+    },
+    "frontends": {
+      "frontend-Host-kafka-ui-projectx-notify-6": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-kafka-ui-projectx-notify",
+        "routes": {
+          "route-frontend-Host-kafka-ui-projectx-notify-6": {
+            "rule": "Host:kafka-ui.projectx-notify"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-kafka-projectx-ecomm-4": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-kafka-projectx-ecomm",
+        "routes": {
+          "route-frontend-Host-kafka-projectx-ecomm-4": {
+            "rule": "Host:kafka.projectx-ecomm"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-mail-my127-site-7": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-mailhog-my127ws-mail",
+        "routes": {
+          "route-frontend-Host-mail-my127-site-7": {
+            "rule": "Host:mail.my127.site"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-my127-site-5": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-traefik-my127ws-proxy",
+        "routes": {
+          "route-frontend-Host-my127-site-5": {
+            "rule": "Host:my127.site"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-search-projectx-my127-site-2": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-projectx-search",
+        "routes": {
+          "route-frontend-Host-search-projectx-my127-site-2": {
+            "rule": "Host:search-project.my127.site"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-projectx-ecomm-my127-site-hub-project-my127-site-a1-project-my127-site-a2-project-my127-site-0": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-projectx-ecomm",
+        "routes": {
+          "route-frontend-Host-projectx-ecomm-my127-site-hub-project-my127-site-a1-project-my127-site-a2-project-my127-site-0": {
+            "rule": "Host:projectx-ecomm.my127.site,hub-project.my127.site,a1-project.my127.site,a2-project.my127.site"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-projectx-example-my127-site-1": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-projectx-example",
+        "routes": {
+          "route-frontend-Host-projectx-example-my127-site-1": {
+            "rule": "Host:projectx-example.my127.site"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      },
+      "frontend-Host-zookeeper-projectx-ecomm-3": {
+        "entryPoints": [
+          "http",
+          "https"
+        ],
+        "backend": "backend-zookeeper-projectx-ecomm",
+        "routes": {
+          "route-frontend-Host-zookeeper-projectx-ecomm-3": {
+            "rule": "Host:zookeeper.projectx-ecomm"
+          }
+        },
+        "passHostHeader": true,
+        "priority": 0,
+        "basicAuth": null
+      }
+    }
+  },
+  "file": {}
+}

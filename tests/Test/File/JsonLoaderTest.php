@@ -3,7 +3,7 @@
 namespace my127\Workspace\Tests\Test\File;
 
 use my127\Workspace\File\Exception\CouldNotDecodeJson;
-use my127\Workspace\File\FileLoader;
+use my127\Workspace\File\FileLoader\FileGetContentsLoader;
 use my127\Workspace\File\JsonLoader;
 use my127\Workspace\Tests\IntegrationTestCase;
 
@@ -26,6 +26,6 @@ class JsonLoaderTest extends IntegrationTestCase
 
     private function load(string $url): array
     {
-        return (new JsonLoader(new FileLoader()))->loadArray($url);
+        return (new JsonLoader(new FileGetContentsLoader()))->loadArray($url);
     }
 }

@@ -15,6 +15,12 @@ command('global service proxy (enable|disable|restart)', 'global service proxy')
     #!bash|=
     ws-service proxy ={input.command(4)}
 
+command('global service proxy2 (enable|disable|restart)', 'global service proxy2'):
+  description: Actions for Traefik proxy2 (my127.site)
+  exec: |
+    #!bash|=
+    ws.service proxy2 ={input.command(4)}
+
 command('global service tracing (start|stop|restart)', 'global service tracing'): |
   #!bash|=
   ws-service tracing ={input.command(4)}

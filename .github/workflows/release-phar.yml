@@ -32,13 +32,13 @@ jobs:
 
       - name: Rename PHAR
         run: mv my127ws.phar ws
+      
+      - name: Generate sha256sum
+        run: sha256sum ws > "ws.sha256sum"
 
       - name: "Upload PHAR to Release"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ws
-          asset_name: ws
-          asset_content_type: application/octet-stream
+          files: |
+            ws
+            ws.sha256sum

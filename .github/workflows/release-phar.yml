@@ -34,11 +34,12 @@ jobs:
         run: mv my127ws.phar ws
       
       - name: Generate sha256sum
-        run: sha256sum ws > "ws.sha256sum"
+        run: sha256sum ws > ws.sha256sum
 
       - name: "Upload PHAR to Release"
         uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             ws
             ws.sha256sum

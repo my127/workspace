@@ -31,4 +31,9 @@ class Terminal
     {
         $this->output->writeln($line);
     }
+
+    public function writeError(string $line)
+    {
+        $this->output->getErrorOutput()->writeln($line);
+    }
 }

@@ -72,6 +72,8 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             $this->workspace->overlay = $definition->overlay;
             /* @phpstan-ignore-next-line */
             $this->workspace->scope = $definition->scope;
+            /* @phpstan-ignore-next-line */
+            $this->workspace->require = $definition->require;
         } else {
             $this->workspace->name = basename($environment->getWorkspacePath());
             $this->workspace->description = '';
@@ -146,6 +148,13 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                         return;
                     }
                     var_dump($attribute);
+                });
+
+            $application = $this->application;
+            $this->application->section('version')
+                ->usage('version')
+                ->action(function () use ($application) {
+                    echo $application::getVersion() . "\n";
                 });
         }
     }

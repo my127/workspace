@@ -149,13 +149,6 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                     }
                     var_dump($attribute);
                 });
-
-            $application = $this->application;
-            $this->application->section('version')
-                ->usage('version')
-                ->action(function () use ($application) {
-                    echo $application::getVersion() . "\n";
-                });
         }
     }
 

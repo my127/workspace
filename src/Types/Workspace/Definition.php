@@ -23,6 +23,9 @@ class Definition implements WorkspaceDefinition
     /** @var ?string */
     protected $overlay = null;
 
+    /** @var array|null */
+    protected $require;
+
     /** @var int */
     protected $scope;
 
@@ -62,5 +65,10 @@ class Definition implements WorkspaceDefinition
     public function getType(): string
     {
         return self::TYPE;
+    }
+
+    public function getRequiredWorkspaceVersion(): ?string
+    {
+        return $this->require['workspace'] ?? null;
     }
 }

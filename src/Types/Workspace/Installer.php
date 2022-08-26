@@ -2,7 +2,9 @@
 
 namespace my127\Workspace\Types\Workspace;
 
+use Composer\Semver\Semver;
 use Exception;
+use my127\Workspace\Application;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
@@ -108,6 +110,11 @@ class Installer
             },
             $this->workspace->getHarnessLayers()
         );
+
+        // perform version check for all steps other than harness download
+        if ($step !== self::STEP_DOWNLOAD) {
+            $this->ensureWorkspaceVersion();
+        }
 
         switch ($step) {
             case self::STEP_DOWNLOAD:
@@ -232,6 +239,21 @@ class Installer
             if (!empty($attributesOfType)) {
                 $this->writeOutAttributes('workspace.yml', $attributesOfType);
             }
+        }
+    }
+
+    private function ensureWorkspaceVersion(): void
+    {
+        $constraint = $this->workspace->getRequiredWorkspaceVersion();
+        if (!$constraint) {
+            $constraint = $this->harness->getRequiredWorkspaceVersion();
+        }
+
+        $version = Application::getVersion();
+        if ($constraint && !Semver::satisfies($version, $constraint)) {
+            $this->terminal->writeError("Workspace $version not supported by this project.");
+            $this->terminal->writeError('Please upgrade either the harness or Workspace to continue.');
+            throw new Exception("Workspace version $version not satisfiable by constraint '$constraint'");
         }
     }
 

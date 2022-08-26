@@ -42,7 +42,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $this->prototype = new Definition();
 
-        foreach (['name', 'description', 'harnessLayers', 'path', 'overlay', 'scope'] as $name) {
+        foreach (['name', 'description', 'harnessLayers', 'path', 'overlay', 'require', 'scope'] as $name) {
             $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -106,6 +106,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         }
 
         $values['overlay'] = $body['overlay'] ?? null;
+        $values['require'] = $body['require'] ?? null;
     }
 
     public static function getTypes(): array

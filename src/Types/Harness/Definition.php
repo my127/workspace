@@ -62,4 +62,9 @@ class Definition implements WorkspaceDefinition
     {
         return self::TYPE;
     }
+
+    public function getRequiredWorkspaceVersion(): ?string
+    {
+        return $this->require['workspace'] ?? null;
+    }
 }

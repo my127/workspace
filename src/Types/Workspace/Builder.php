@@ -72,6 +72,8 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
             $this->workspace->overlay = $definition->overlay;
             /* @phpstan-ignore-next-line */
             $this->workspace->scope = $definition->scope;
+            /* @phpstan-ignore-next-line */
+            $this->workspace->require = $definition->require;
         } else {
             $this->workspace->name = basename($environment->getWorkspacePath());
             $this->workspace->description = '';

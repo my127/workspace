@@ -25,7 +25,7 @@ class Collection implements IteratorAggregate
         call_user_func_array($this->functions[$name], $arguments);
     }
 
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->functions);
     }

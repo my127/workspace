@@ -76,7 +76,7 @@ class Collection implements ArrayAccess
         return is_string($value) && $value != '' && $value[0] == '=';
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if ($this->cache === null) {
             $this->buildAttributeCache();
@@ -102,17 +102,17 @@ class Collection implements ArrayAccess
         return true;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): array|bool|callable|int|float|null|object|string
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         foreach ($this->attributes as &$attributes) {
             Arr::forget($attributes, $offset);

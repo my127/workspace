@@ -137,22 +137,22 @@ class Workspace extends Definition implements ArrayAccess
         return call_user_func_array($this->functions->get($name), $arguments);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->attributes[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?string
     {
         return $this->attributes->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->attributes->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset]);
     }

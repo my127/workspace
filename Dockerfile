@@ -27,7 +27,7 @@ RUN apt-get update -qq \
  && useradd --create-home --system build \
  # Update PHP ini values
  && cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
- && sed -i 's/;phar.readonly = On/phar.readonly = Off/g' /usr/local/etc/php/php.ini
+ && sed -i 's/;phar.readonly = On/phar.readonly = Off/g' /usr/local/etc/php/php.ini \
  \
  # Install composer for PHP dependencies \
  && wget https://getcomposer.org/installer -O /tmp/composer-setup.php -q \

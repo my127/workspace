@@ -37,7 +37,7 @@ services:
       tags: [path]
 
     Symfony\Component\EventDispatcher\EventSubscriberInterface:
-      tags: [event.subscriber]
+      tags: [kernel.event_subscriber]
 
   # -- autoload
 
@@ -62,7 +62,11 @@ services:
   # -- require
 
   Symfony\Component\EventDispatcher\EventDispatcher:
+    alias: event_dispatcher
+
+  event_dispatcher:
     class: Symfony\Component\EventDispatcher\EventDispatcher
+    public: true
 
   Symfony\Component\Console\Output\ConsoleOutput:
     class: Symfony\Component\Console\Output\ConsoleOutput

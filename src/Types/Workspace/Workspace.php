@@ -122,9 +122,9 @@ class Workspace extends Definition implements ArrayAccess
         return $this->confd->create($directory);
     }
 
-    public function trigger(string $event): void
+    public function trigger(string $eventName): void
     {
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->dispatch(new \Symfony\Component\EventDispatcher\GenericEvent(), $eventName);
     }
 
     public function __invoke(string $command)

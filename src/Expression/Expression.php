@@ -24,7 +24,7 @@ class Expression extends SymfonyExpressionLanguage
         $this->addDefaultFunctions();
     }
 
-    public function evaluate($expression, $values = [])
+    public function evaluate(\Symfony\Component\ExpressionLanguage\Expression|string $expression, array $values = []): mixed
     {
         return parent::evaluate($this->preProcessExpression($expression), array_merge($this->globals, $values));
     }

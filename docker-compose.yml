@@ -1,36 +1,6 @@
 version: '3'
 services:
 
-  builder73:
-    build:
-      context: .
-      args:
-        PHP_VERSION: 7.3
-    environment:
-      HOST_OS_FAMILY:
-    volumes:
-      - .:/app
-
-  builder74:
-    build:
-      context: .
-      args:
-        PHP_VERSION: 7.4
-    environment:
-      HOST_OS_FAMILY:
-    volumes:
-      - .:/app
-
-  builder80:
-    build:
-      context: .
-      args:
-        PHP_VERSION: 8.0
-    environment:
-      HOST_OS_FAMILY:
-    volumes:
-      - .:/app
-
   builder81:
     build:
       context: .

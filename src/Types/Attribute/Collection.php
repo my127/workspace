@@ -102,7 +102,7 @@ class Collection implements ArrayAccess
         return true;
     }
 
-    public function offsetGet($offset): array|bool|callable|int|float|null|object|string
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }

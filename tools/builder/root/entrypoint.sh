@@ -27,6 +27,8 @@ resolve_volume_mount_strategy()
             STRATEGY="host-osx-normal"
         elif (mount | grep "/app type fuse.grpcfuse") > /dev/null 2>&1; then
             STRATEGY="host-osx-normal"
+        elif (mount | grep "/app type virtiofs") > /dev/null 2>&1; then
+            STRATEGY="host-osx-normal"
         else
             exit 1
         fi

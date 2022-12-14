@@ -8,10 +8,9 @@ parameters:
 
     ignoreErrors:
         - '{Property .*Definition::\$.* is never written, only read}'
-        - '{Property .*Container::\$parameters is never read, only written}'
         - "{Property my127\\\\Workspace\\\\Types\\\\Harness\\\\Builder\\:\\:\\$application is never read, only written\\.$}"
         - "{Property my127\\\\Workspace\\\\Types\\\\Harness\\\\Repository\\\\Package\\\\Package\\:\\:\\$name is never written, only read}"
         - "{Property my127\\\\Workspace\\\\Types\\\\Harness\\\\Repository\\\\Package\\\\Package\\:\\:\\$version is never written, only read}"
         -
-            message: "#^Parameter \\#2 \\$listener of method Symfony\\\\Component\\\\EventDispatcher\\\\EventDispatcher\\:\\:addListener\\(\\) expects callable\\(\\)\\: mixed, array\\{Closure\\(\\)\\: mixed, 'setInputGlobal'\\} given\\.$#"
+            message: "#^Class Closure is not an Attribute class\\.#"
             path: config/_compiled/container.php

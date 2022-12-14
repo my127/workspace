@@ -158,9 +158,9 @@ class PackageRepository implements Repository
     {
         if (preg_match(self::HARNESS_VERSION_PATTERN, $version, $match)) {
             return [
-                $match['major'] ?? 'x',
-                $match['minor'] ?? 'x',
-                $match['patch'] ?? 'x',
+                isset($match['major']) ? (int) $match['major'] : 'x',
+                isset($match['minor']) ? (int) $match['minor'] : 'x',
+                isset($match['patch']) ? (int) $match['patch'] : 'x',
             ];
         }
 

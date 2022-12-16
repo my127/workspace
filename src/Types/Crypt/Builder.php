@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\Crypt;
 
-use Exception;
 use my127\Console\Usage\Input;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
@@ -48,7 +47,7 @@ class Builder implements EnvironmentBuilder
 
         $this->expressionLanguage->addFunction(new ExpressionFunction('decrypt',
             function () {
-                throw new Exception("Compilation of the 'decrypt' function within Types\Crypt\Builder is not supported.");
+                throw new \Exception("Compilation of the 'decrypt' function within Types\Crypt\Builder is not supported.");
             },
             function ($arguments, $encrypted) {
                 return $this->crypt->decrypt($encrypted);

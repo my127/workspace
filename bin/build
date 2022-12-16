@@ -79,7 +79,7 @@ function buildStaticContainer(): void
         }
     });
 
-    $container->addCompilerPass(new RegisterListenersPass(EventDispatcher::class, 'event.listener', 'event.subscriber'));
+    $container->addCompilerPass(new RegisterListenersPass());
 
     $container->compile(true);
 

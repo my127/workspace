@@ -2,10 +2,8 @@
 
 namespace my127\Workspace\Types\Harness;
 
-use Exception;
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Factory as WorkspaceDefinitionFactory;
-use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
@@ -17,7 +15,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     /** @var Definition */
     private $prototype;
 
-    /** @var ReflectionProperty[] */
+    /** @var \ReflectionProperty[] */
     private $properties;
 
     public function __construct()
@@ -25,7 +23,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $this->prototype = new Definition();
 
         foreach (['name', 'description', 'require', 'path', 'scope'] as $name) {
-            $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
+            $this->properties[$name] = new \ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
     }
@@ -33,7 +31,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     public function create(array $data): WorkspaceDefinition
     {
         if ($this->isDefined) {
-            throw new Exception('A harness has already been declared.');
+            throw new \Exception('A harness has already been declared.');
         }
 
         $values = [];

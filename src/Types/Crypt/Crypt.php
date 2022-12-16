@@ -2,8 +2,6 @@
 
 namespace my127\Workspace\Types\Crypt;
 
-use Exception;
-
 class Crypt
 {
     /** @var Key[] */
@@ -17,7 +15,7 @@ class Crypt
     public function getKey($name): string
     {
         if (!isset($this->keys[$name])) {
-            throw new Exception("Key '{$name}' does not exist.");
+            throw new \Exception("Key '{$name}' does not exist.");
         }
 
         return $this->keys[$name]->getKey();
@@ -40,6 +38,6 @@ class Crypt
             return $message;
         }
 
-        throw new Exception("Unable to decrypt '{$encrypted}' using key '{$key}'");
+        throw new \Exception("Unable to decrypt '{$encrypted}' using key '{$key}'");
     }
 }

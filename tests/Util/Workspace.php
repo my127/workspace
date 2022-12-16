@@ -2,12 +2,7 @@
 
 namespace my127\Workspace\Tests\Util;
 
-use InvalidArgumentException;
 use my127\Workspace\Utility\Filesystem;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RuntimeException;
-use SplFileInfo;
 
 class Workspace
 {
@@ -24,7 +19,7 @@ class Workspace
     public static function create(string $path): self
     {
         if (empty($path)) {
-            throw new RuntimeException('Workspace path cannot be empty');
+            throw new \RuntimeException('Workspace path cannot be empty');
         }
 
         return new self($path);
@@ -49,7 +44,7 @@ class Workspace
         $path = sprintf('%s/../samples/%s', __DIR__, $name);
 
         if (!is_dir($path)) {
-            throw new RuntimeException(sprintf('Sample folder "%s" not found.', $name));
+            throw new \RuntimeException(sprintf('Sample folder "%s" not found.', $name));
         }
 
         Filesystem::rcopy($path, $this->path());
@@ -58,13 +53,13 @@ class Workspace
     public function getContents(string $path): string
     {
         if ($this->exists($path) === false) {
-            throw new InvalidArgumentException(sprintf('File "%s" does not exist', $path));
+            throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $path));
         }
 
         $contents = file_get_contents($this->path($path));
 
         if ($contents === false) {
-            throw new RuntimeException('file_get_contents returned false');
+            throw new \RuntimeException('file_get_contents returned false');
         }
 
         return $contents;
@@ -95,7 +90,7 @@ class Workspace
         $path = $this->path($path);
 
         if (file_exists($path)) {
-            throw new InvalidArgumentException(sprintf('Node "%s" already exists, cannot create directory', $path));
+            throw new \InvalidArgumentException(sprintf('Node "%s" already exists, cannot create directory', $path));
         }
 
         mkdir($path, 0777, true);
@@ -106,7 +101,7 @@ class Workspace
     private function remove(string $path = ''): void
     {
         if ($path) {
-            $splFileInfo = new SplFileInfo($path);
+            $splFileInfo = new \SplFileInfo($path);
 
             if (in_array($splFileInfo->getType(), ['socket', 'file', 'link'])) {
                 unlink($path);
@@ -115,9 +110,9 @@ class Workspace
             }
         }
 
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
         );
 
         foreach ($files as $file) {

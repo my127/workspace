@@ -3,7 +3,6 @@
 namespace my127\Workspace\Types\Workspace;
 
 use Composer\Semver\Semver;
-use Exception;
 use my127\Workspace\Application;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
@@ -96,7 +95,7 @@ class Installer
     public function getStep(?string $step)
     {
         if (!isset($this->stepMap[$step])) {
-            throw new Exception("Step '{$step}' is not recognised.");
+            throw new \Exception("Step '{$step}' is not recognised.");
         }
 
         return $this->stepMap[$step];
@@ -226,7 +225,7 @@ class Installer
                 if (file_exists($response) && is_readable($response) && is_file($response)) {
                     $response = file_get_contents($response);
                 } else {
-                    throw new Exception('Could not read file "' . $response . '"');
+                    throw new \Exception('Could not read file "' . $response . '"');
                 }
                 $attributes[$type][$attribute] = ($type == 'standard_file') ?
                     $response : '= decrypt("' . $this->crypt->encrypt($response) . '")';
@@ -253,7 +252,7 @@ class Installer
         if ($constraint && !Semver::satisfies($version, $constraint)) {
             $this->terminal->writeError("Workspace $version not supported by this project.");
             $this->terminal->writeError('Please upgrade either the harness or Workspace to continue.');
-            throw new Exception("Workspace version $version not satisfiable by constraint '$constraint'");
+            throw new \Exception("Workspace version $version not satisfiable by constraint '$constraint'");
         }
     }
 

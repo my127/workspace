@@ -2,9 +2,7 @@
 
 namespace my127\Workspace\Updater\Exception;
 
-use RuntimeException;
-
-class NoUpdateAvailableException extends RuntimeException
+class NoUpdateAvailableException extends \RuntimeException
 {
     private $currentVersion;
 

@@ -91,7 +91,7 @@ command('apply config'): |
   #!php
   $ws->confd('workspace:/')->apply();
 EOD
-        , 'confd/simple');
+            , 'confd/simple');
 
         $this->workspaceCommand('apply config');
 

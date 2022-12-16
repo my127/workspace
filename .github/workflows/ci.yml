@@ -4,7 +4,7 @@ on:
     pull_request: ~
     push:
         branches:
-            - '0.2.x'
+            - '0.3.x'
 
 env:
     fail-fast: true
@@ -31,7 +31,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '8.1'
 
         steps:
             -
@@ -59,7 +59,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '8.1'
 
         steps:
             -
@@ -95,9 +95,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
-                    - '7.4'
-                    - '8.0'
                     - '8.1'
 
         steps:
@@ -135,7 +132,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '8.1'
 
         steps:
             -

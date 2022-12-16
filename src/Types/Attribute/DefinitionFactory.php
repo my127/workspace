@@ -4,7 +4,6 @@ namespace my127\Workspace\Types\Attribute;
 
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Factory as WorkspaceDefinitionFactory;
-use ReflectionProperty;
 
 class DefinitionFactory implements WorkspaceDefinitionFactory
 {
@@ -40,7 +39,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     /** @var Definition */
     private $prototype;
 
-    /** @var ReflectionProperty[] */
+    /** @var \ReflectionProperty[] */
     private $properties = [];
 
     private $priorityMap = [
@@ -57,7 +56,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
         $this->prototype = new Definition();
 
         foreach (['key', 'value', 'path', 'scope', 'type', 'priority'] as $name) {
-            $this->properties[$name] = new ReflectionProperty(Definition::class, $name);
+            $this->properties[$name] = new \ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
     }

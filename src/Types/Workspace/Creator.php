@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\Workspace;
 
-use Exception;
 use my127\Workspace\Types\Crypt\Key;
 
 class Creator
@@ -12,7 +11,7 @@ class Creator
         $dir = './' . $name;
 
         if (is_dir('./' . $name)) {
-            throw new Exception("directory '{$dir}' already exists.");
+            throw new \Exception("directory '{$dir}' already exists.");
         }
 
         mkdir($dir);

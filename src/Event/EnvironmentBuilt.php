@@ -2,9 +2,9 @@
 
 namespace my127\Workspace\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-class EnvironmentBuilt extends Event
+class EnvironmentBuilt extends GenericEvent
 {
     public const EVENT = 'environment.built';
 }

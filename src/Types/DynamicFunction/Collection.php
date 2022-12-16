@@ -2,10 +2,7 @@
 
 namespace my127\Workspace\Types\DynamicFunction;
 
-use ArrayIterator;
-use IteratorAggregate;
-
-class Collection implements IteratorAggregate
+class Collection implements \IteratorAggregate
 {
     /** @var array<string,DynamicFunction> */
     private $functions = [];
@@ -25,8 +22,8 @@ class Collection implements IteratorAggregate
         call_user_func_array($this->functions[$name], $arguments);
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator($this->functions);
+        return new \ArrayIterator($this->functions);
     }
 }

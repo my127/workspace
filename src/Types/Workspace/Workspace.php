@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\Workspace;
 
-use ArrayAccess;
 use my127\Console\Usage\Input;
 use my127\Console\Usage\Model\BooleanOptionValue;
 use my127\Console\Usage\Model\StringOptionValue;
@@ -17,7 +16,7 @@ use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class Workspace extends Definition implements ArrayAccess
+class Workspace extends Definition implements \ArrayAccess
 {
     private $packages;
     private $confd;
@@ -122,9 +121,9 @@ class Workspace extends Definition implements ArrayAccess
         return $this->confd->create($directory);
     }
 
-    public function trigger(string $event): void
+    public function trigger(string $eventName): void
     {
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->dispatch(new \Symfony\Component\EventDispatcher\GenericEvent(), $eventName);
     }
 
     public function __invoke(string $command)
@@ -137,22 +136,22 @@ class Workspace extends Definition implements ArrayAccess
         return call_user_func_array($this->functions->get($name), $arguments);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->attributes[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?string
     {
         return $this->attributes->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->attributes->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset]);
     }

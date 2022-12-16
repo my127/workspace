@@ -2,8 +2,6 @@
 
 namespace my127\Workspace\File\Exception;
 
-use RuntimeException;
-
-class CouldNotDecodeJson extends RuntimeException
+class CouldNotDecodeJson extends \RuntimeException
 {
 }

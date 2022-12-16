@@ -2,10 +2,6 @@
 
 namespace my127\Workspace\Utility;
 
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RegexIterator;
-
 class Filesystem
 {
     public static function upsearch(string $name, string $startFrom): ?string
@@ -68,9 +64,9 @@ class Filesystem
 
     public static function rsearch($folder, $pattern)
     {
-        $dir = new RecursiveDirectoryIterator($folder);
-        $ite = new RecursiveIteratorIterator($dir);
-        $files = new RegexIterator($ite, $pattern, RegexIterator::GET_MATCH);
+        $dir = new \RecursiveDirectoryIterator($folder);
+        $ite = new \RecursiveIteratorIterator($dir);
+        $files = new \RegexIterator($ite, $pattern, \RegexIterator::GET_MATCH);
         $fileList = [];
 
         foreach ($files as $file) {

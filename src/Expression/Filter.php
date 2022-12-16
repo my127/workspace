@@ -42,7 +42,7 @@ class Filter implements InterpreterFilter
                 ++$end;
             }
 
-            $expressions[] = substr($script, $start, (($end + 1) - $start));
+            $expressions[] = substr($script, $start, ($end + 1) - $start);
         }
 
         return $expressions;

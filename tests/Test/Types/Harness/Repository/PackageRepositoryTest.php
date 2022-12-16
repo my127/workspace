@@ -2,22 +2,19 @@
 
 namespace my127\Workspace\Tests\Test\Types\Harness\Repository;
 
-use Exception;
-use Generator;
 use my127\Workspace\File\FileLoader;
 use my127\Workspace\File\JsonLoader;
 use my127\Workspace\Tests\IntegrationTestCase;
 use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
 use my127\Workspace\Types\Harness\Repository\Exception\UnknownPackage;
 use my127\Workspace\Types\Harness\Repository\PackageRepository;
-use RuntimeException;
 
 class PackageRepositoryTest extends IntegrationTestCase
 {
     /** @test */
     public function itThrowsExceptionWhenRequestingAnInvalidPackageName(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('invalid');
         $repository = $this->createRepository();
         $repository->get('http://foobar');
@@ -75,7 +72,7 @@ class PackageRepositoryTest extends IntegrationTestCase
     /** @test */
     public function itThrowsExceptionOnVainlidVersionString(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('version string');
 
         $repository = $this->createRepository();
@@ -86,6 +83,7 @@ class PackageRepositoryTest extends IntegrationTestCase
 
     /**
      * @test
+     *
      * @dataProvider provideResolvesVersion
      */
     public function itResolvesVersion(string $version, array $availableVersions, string $expectedVersion): void
@@ -100,9 +98,9 @@ class PackageRepositoryTest extends IntegrationTestCase
     }
 
     /**
-     * @return Generator<mixed>
+     * @return \Generator<mixed>
      */
-    public function provideResolvesVersion(): Generator
+    public function provideResolvesVersion(): \Generator
     {
         yield 'single explicit version' => [
             'v1.0.0',
@@ -139,7 +137,7 @@ class PackageRepositoryTest extends IntegrationTestCase
      */
     public function itThrowsExceptionIfVersionCannotBeResolved(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not resolve');
         $repository = $this->createRepository();
         $repository->addPackage('test/package', 'v1.0.0', []);

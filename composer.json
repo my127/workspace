@@ -4,14 +4,14 @@
     "type": "application",
     "license": "MIT",
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^8.1",
         "my127/my127": "dev-master",
-        "symfony/config": "^4.4",
-        "symfony/console": "^4.4",
-        "symfony/dependency-injection": "^4.4",
-        "symfony/expression-language": "^4.4",
-        "symfony/finder": "^4.4",
-        "symfony/yaml": "^4.4",
+        "symfony/config": "^6.1",
+        "symfony/console": "^6.1",
+        "symfony/dependency-injection": "^6.1",
+        "symfony/expression-language": "^6.1",
+        "symfony/finder": "^6.1",
+        "symfony/yaml": "^6.1",
         "twig/twig": "^2.13"
     },
     "require-dev": {

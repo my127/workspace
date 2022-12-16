@@ -2,9 +2,7 @@
 
 namespace my127\Workspace\Types\DynamicFunction;
 
-use Exception;
 use my127\Workspace\Interpreter\Interpreter;
-use Throwable;
 
 class DynamicFunction
 {
@@ -33,8 +31,8 @@ class DynamicFunction
 
         try {
             return $this->interpreter->script($exec, $args)->capture(func_get_args(), $env);
-        } catch (Throwable $e) {
-            throw new Exception(sprintf('Function "%s" failed due to "%s" on line %d', $this->getName(), $e->getMessage(), $e->getLine()), 0);
+        } catch (\Throwable $e) {
+            throw new \Exception(sprintf('Function "%s" failed due to "%s" on line %d', $this->getName(), $e->getMessage(), $e->getLine()), 0);
         }
     }
 }

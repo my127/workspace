@@ -9,6 +9,7 @@ class ReleaseTest extends TestCase
 {
     /**
      * @dataProvider versions
+     *
      * @test
      */
     public function determinesMoreRecentVersions(string $current, string $target, bool $expected)

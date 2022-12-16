@@ -2,13 +2,10 @@
 
 namespace my127\Workspace\Types\Harness\Repository;
 
-use Exception;
 use my127\Workspace\File\JsonLoader;
 use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
 use my127\Workspace\Types\Harness\Repository\Exception\UnknownPackage;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
-use ReflectionProperty;
-use RuntimeException;
 
 class PackageRepository implements Repository
 {
@@ -31,7 +28,7 @@ class PackageRepository implements Repository
     private $prototype;
 
     /**
-     * @var array<string, ReflectionProperty>
+     * @var array<string, \ReflectionProperty>
      */
     private $properties = [];
 
@@ -45,7 +42,7 @@ class PackageRepository implements Repository
         $this->prototype = new Package();
 
         foreach (['name', 'version', 'dist'] as $name) {
-            $this->properties[$name] = new ReflectionProperty(Package::class, $name);
+            $this->properties[$name] = new \ReflectionProperty(Package::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
         $this->fileLoader = $fileLoader;
@@ -56,7 +53,7 @@ class PackageRepository implements Repository
         $this->importPackagesFromSources();
 
         if (!preg_match(self::HARNESS_PACKAGE_PATTERN, $package, $match)) {
-            throw new RuntimeException(sprintf('Package name "%s" is invalid', $package));
+            throw new \RuntimeException(sprintf('Package name "%s" is invalid', $package));
         }
 
         $harness = $match['harness'];
@@ -101,7 +98,7 @@ class PackageRepository implements Repository
 
             try {
                 $this->packages = array_merge($this->packages, $this->fileLoader->loadArray($source['url']));
-            } catch (Exception $error) {
+            } catch (\Exception $error) {
                 throw new CouldNotLoadSource(sprintf('Could not load from source "%s"', $source['url']), 0, $error);
             }
             $this->sources[$k]['imported'] = true;
@@ -145,7 +142,7 @@ class PackageRepository implements Repository
         }
 
         if ($candidate === null) {
-            throw new Exception(sprintf('Could not resolve "%s:%s" to a harness package', $name, $version));
+            throw new \Exception(sprintf('Could not resolve "%s:%s" to a harness package', $name, $version));
         }
 
         return $candidate;
@@ -164,6 +161,6 @@ class PackageRepository implements Repository
             ];
         }
 
-        throw new RuntimeException(sprintf('Invalid version string "%s"', $version));
+        throw new \RuntimeException(sprintf('Invalid version string "%s"', $version));
     }
 }

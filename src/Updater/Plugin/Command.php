@@ -8,8 +8,6 @@ use my127\Workspace\Application as BaseApplication;
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
 use my127\Workspace\Updater\Exception\NoVersionDeterminedException;
 use my127\Workspace\Updater\Updater;
-use Phar;
-use RuntimeException;
 
 class Command implements Plugin
 {
@@ -31,7 +29,7 @@ class Command implements Plugin
     private function action()
     {
         return function () {
-            $pharPath = Phar::running(false);
+            $pharPath = \Phar::running(false);
             if (empty($pharPath)) {
                 echo 'This command can only be executed from within the ws utility.' . PHP_EOL;
                 exit(1);
@@ -45,7 +43,7 @@ class Command implements Plugin
             } catch (NoVersionDeterminedException $e) {
                 echo 'Unable to determine your current workspace version. You are likely not using a tagged released.' . PHP_EOL;
                 exit(1);
-            } catch (RuntimeException $e) {
+            } catch (\RuntimeException $e) {
                 echo sprintf('%s. Aborting self-update', $e->getMessage()) . PHP_EOL;
                 exit(1);
             }

@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\Workspace;
 
-use ArrayAccess;
 use my127\Console\Usage\Input;
 use my127\Console\Usage\Model\BooleanOptionValue;
 use my127\Console\Usage\Model\StringOptionValue;
@@ -17,7 +16,7 @@ use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class Workspace extends Definition implements ArrayAccess
+class Workspace extends Definition implements \ArrayAccess
 {
     private $packages;
     private $confd;

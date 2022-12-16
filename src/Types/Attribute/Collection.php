@@ -2,11 +2,10 @@
 
 namespace my127\Workspace\Types\Attribute;
 
-use ArrayAccess;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Utility\Arr;
 
-class Collection implements ArrayAccess
+class Collection implements \ArrayAccess
 {
     /** @var mixed[][] */
     private $attributes = [];

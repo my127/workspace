@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\DynamicFunction;
 
-use Exception;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
 use my127\Workspace\Environment\Environment;
@@ -47,7 +46,7 @@ class Builder implements EnvironmentBuilder
             $this->expression->register(
                 $function->getName(),
                 function () use ($function) {
-                    throw new Exception("Compilation of the '{$function->getName()}' function within Types\DynamicFunction\Builder is not supported.");
+                    throw new \Exception("Compilation of the '{$function->getName()}' function within Types\DynamicFunction\Builder is not supported.");
                 },
                 function ($arguments, ...$args) use ($function) {
                     return call_user_func_array($function, $args);

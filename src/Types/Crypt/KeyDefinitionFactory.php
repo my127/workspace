@@ -4,7 +4,6 @@ namespace my127\Workspace\Types\Crypt;
 
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Definition\Factory as WorkspaceDefinitionFactory;
-use ReflectionProperty;
 
 class KeyDefinitionFactory implements WorkspaceDefinitionFactory
 {
@@ -28,7 +27,7 @@ class KeyDefinitionFactory implements WorkspaceDefinitionFactory
     /** @var KeyDefinition */
     private $prototype;
 
-    /** @var ReflectionProperty[] */
+    /** @var \ReflectionProperty[] */
     private $properties = [];
 
     public function __construct()
@@ -36,7 +35,7 @@ class KeyDefinitionFactory implements WorkspaceDefinitionFactory
         $this->prototype = new KeyDefinition();
 
         foreach (['name', 'key', 'path', 'scope'] as $name) {
-            $this->properties[$name] = new ReflectionProperty(KeyDefinition::class, $name);
+            $this->properties[$name] = new \ReflectionProperty(KeyDefinition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
     }

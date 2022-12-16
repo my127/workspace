@@ -2,7 +2,6 @@
 
 namespace Test\my127\Workspace\Types;
 
-use Generator;
 use my127\Workspace\Tests\IntegrationTestCase;
 
 class AttributeTest extends IntegrationTestCase
@@ -116,6 +115,7 @@ EOD
 
     /**
      * @test
+     *
      * @dataProvider provide_attribute_precedence_is_respected
      */
     public function attributePrecedenceIsRespected(string $attribute, string $expected)
@@ -127,7 +127,7 @@ EOD
         ), 'workspace')->getOutput());
     }
 
-    public function provide_attribute_precedence_is_respected(): Generator
+    public function provide_attribute_precedence_is_respected(): \Generator
     {
         yield ['key.1', 'Hello From harness.default'];
         yield ['key.2', 'Hello From harness.normal'];

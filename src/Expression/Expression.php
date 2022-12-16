@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Expression;
 
-use Exception;
 use my127\Workspace\Path\Path;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
@@ -53,7 +52,7 @@ class Expression extends SymfonyExpressionLanguage
         $this->register(
             'file',
             function () {
-                throw new Exception('cannot be compiled');
+                throw new \Exception('cannot be compiled');
             },
             function ($args, $file) {
                 return file_get_contents($this->path->getRealPath($file));

@@ -2,14 +2,12 @@
 
 namespace my127\Workspace\Utility;
 
-use ArrayAccess;
-
 class Arr
 {
     // https://github.com/illuminate/support/blob/master/Arr.php
     public static function accessible($value): bool
     {
-        return is_array($value) || $value instanceof ArrayAccess;
+        return is_array($value) || $value instanceof \ArrayAccess;
     }
 
     // https://github.com/illuminate/support/blob/master/Arr.php
@@ -45,7 +43,7 @@ class Arr
     // https://github.com/illuminate/support/blob/master/Arr.php
     public static function exists($array, $key)
     {
-        if ($array instanceof ArrayAccess) {
+        if ($array instanceof \ArrayAccess) {
             return $array->offsetExists($key);
         }
 

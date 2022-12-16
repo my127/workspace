@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Definition;
 
-use Generator;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Yaml\Yaml;
 
@@ -52,7 +51,7 @@ class Loader
         }
     }
 
-    private function getDeclarationsFromFile($file): Generator
+    private function getDeclarationsFromFile($file): \Generator
     {
         $directory = dirname($file);
         $scope = $this->resolvePathScope($directory);

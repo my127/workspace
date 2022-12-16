@@ -2,10 +2,7 @@
 
 namespace my127\Workspace\Twig\Loader;
 
-use Twig_Loader_Filesystem;
-use Twig_Source;
-
-class Filesystem extends Twig_Loader_Filesystem
+class Filesystem extends \Twig_Loader_Filesystem
 {
     private $path;
 
@@ -24,7 +21,7 @@ class Filesystem extends Twig_Loader_Filesystem
         $content = str_replace("@('", "attr('", $content);
         $content = str_replace('@("', 'attr("', $content);
 
-        return new Twig_Source($content, $name, $path);
+        return new \Twig_Source($content, $name, $path);
     }
 
     public function getRootPath(): string

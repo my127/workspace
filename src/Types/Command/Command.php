@@ -2,10 +2,8 @@
 
 namespace my127\Workspace\Types\Command;
 
-use Exception;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Interpreter\Interpreter;
-use Throwable;
 
 class Command
 {
@@ -32,8 +30,8 @@ class Command
 
         try {
             $this->interpreter->script($script)->exec(null, $env);
-        } catch (Throwable $e) {
-            throw new Exception(sprintf('Command "%s" failed due to "%s" on line %d', $this->definition->getSection(), $e->getMessage(), $e->getLine()), 0, $e);
+        } catch (\Throwable $e) {
+            throw new \Exception(sprintf('Command "%s" failed due to "%s" on line %d', $this->definition->getSection(), $e->getMessage(), $e->getLine()), 0, $e);
         }
     }
 
@@ -50,6 +48,6 @@ class Command
 
     private function isExpression(string $value): bool
     {
-        return (is_string($value)) && ($value[0] == '=');
+        return is_string($value) && ($value[0] == '=');
     }
 }

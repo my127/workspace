@@ -5,7 +5,6 @@ namespace my127\Workspace\Utility;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Throwable;
 
 class ErrorHandler
 {
@@ -32,7 +31,7 @@ class ErrorHandler
             exit(255);
         }, E_USER_ERROR);
 
-        set_exception_handler(function (Throwable $throwable) use ($format, $input): void {
+        set_exception_handler(function (\Throwable $throwable) use ($format, $input): void {
             $format->text(sprintf('%s:%s', $throwable->getFile(), $throwable->getLine()));
             $format->error($throwable->getMessage());
 

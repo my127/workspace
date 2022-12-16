@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\Attribute;
 
-use Exception;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
 use my127\Workspace\Environment\Builder as EnvironmentBuilder;
@@ -79,7 +78,7 @@ class Builder implements EnvironmentBuilder
             }
 
             if (!is_array($attributes)) {
-                throw new Exception('MY127WS_ATTRIBUTES must be a YAML object.');
+                throw new \Exception('MY127WS_ATTRIBUTES must be a YAML object.');
             }
 
             $this->attributes->add($attributes, 10);
@@ -87,7 +86,7 @@ class Builder implements EnvironmentBuilder
 
         $this->expressionLanguage->addFunction(new ExpressionFunction('attr',
             function () {
-                throw new Exception("Compilation of the 'get' function within Types\Attribute\Builder is not supported.");
+                throw new \Exception("Compilation of the 'get' function within Types\Attribute\Builder is not supported.");
             },
             function ($arguments, $key, $default = null) {
                 return $this->attributes->get($key, $default);

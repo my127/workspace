@@ -5,9 +5,7 @@ namespace my127\Workspace\Tests\Test\Updater;
 use my127\Workspace\Updater\Exception\NoUpdateAvailableException;
 use my127\Workspace\Updater\Exception\NoVersionDeterminedException;
 use my127\Workspace\Updater\Updater;
-use Phar;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 class UpdaterTest extends TestCase
 {
@@ -26,7 +24,7 @@ class UpdaterTest extends TestCase
     /** @test */
     public function exceptionThrownWhenErrorFetchingReleases()
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(Updater::CODE_ERR_FETCHING_RELEASES);
 
         $updater = new Updater(__DIR__ . '/fixtures/foo.json', new NullOutput());
@@ -36,7 +34,7 @@ class UpdaterTest extends TestCase
     /** @test */
     public function exceptionThrownWhenThereAreNoReleases()
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(Updater::CODE_NO_RELEASES);
 
         $updater = new Updater(__DIR__ . '/fixtures/empty-releases.json');
@@ -77,7 +75,7 @@ class UpdaterTest extends TestCase
     public function exceptionThrownWhenNextReleaseCannotBeDownloaded()
     {
         $this->prepareReleasesFixture('invalid-release.json', __DIR__ . '/foo.baz.bar', '1.0.0');
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(Updater::CODE_ERR_FETCHING_NEXT_RELEASE);
 
         $updater = new Updater(__DIR__ . '/fixtures/generated/invalid-release.json', new NullOutput());
@@ -107,10 +105,10 @@ class UpdaterTest extends TestCase
 
     private function prepareFakePhar(): void
     {
-        $phar = new Phar(__DIR__ . '/fixtures/generated/fake.phar');
+        $phar = new \Phar(__DIR__ . '/fixtures/generated/fake.phar');
         $phar->addFromString('foo', 'bar');
-        $phar->setStub(Phar::createDefaultStub('foo.php', 'web/foo.php'));
-        $phar->convertToExecutable(Phar::TAR, Phar::NONE);
+        $phar->setStub(\Phar::createDefaultStub('foo.php', 'web/foo.php'));
+        $phar->convertToExecutable(\Phar::TAR, \Phar::NONE);
         $phar->startBuffering();
         $phar->stopBuffering();
     }

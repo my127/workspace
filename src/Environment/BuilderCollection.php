@@ -2,11 +2,7 @@
 
 namespace my127\Workspace\Environment;
 
-use ArrayIterator;
-use IteratorAggregate;
-use Traversable;
-
-class BuilderCollection implements IteratorAggregate
+class BuilderCollection implements \IteratorAggregate
 {
     /** @var Builder[] */
     private $builders = [];
@@ -16,8 +12,8 @@ class BuilderCollection implements IteratorAggregate
         $this->builders[] = $builder;
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
-        return new ArrayIterator($this->builders);
+        return new \ArrayIterator($this->builders);
     }
 }

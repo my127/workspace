@@ -79,3 +79,8 @@ services:
     public: true
 
   my127\Workspace\Path\Path: '@my127\Workspace\Path\Composite'
+
+  my127\Workspace\File\FileLoader\FileGetContentsLoader: ~
+  my127\Workspace\File\FileLoader:
+    alias: 'my127\Workspace\File\FileLoader\FileGetContentsLoader'
+

@@ -1,12 +1,12 @@
 <?php
 
-namespace my127\Workspace\Tests\Unit\File;
+namespace my127\Workspace\Tests\Test\File\FileLoader;
 
 use my127\Workspace\File\Exception\CouldNotLoadFile;
-use my127\Workspace\File\FileLoader;
+use my127\Workspace\File\FileLoader\FileGetContentsLoader;
 use my127\Workspace\Tests\IntegrationTestCase;
 
-class FileLoaderTest extends IntegrationTestCase
+class FileGetContentsLoaderTest extends IntegrationTestCase
 {
     /** @test */
     public function testItLoadsFile(): void
@@ -24,6 +24,6 @@ class FileLoaderTest extends IntegrationTestCase
 
     private function load(string $url): string
     {
-        return (new FileLoader())->load($url);
+        return (new FileGetContentsLoader())->load($url);
     }
 }

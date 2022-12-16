@@ -4,7 +4,7 @@ namespace my127\Workspace\Tests\Test\Types\Harness\Repository;
 
 use Exception;
 use Generator;
-use my127\Workspace\File\FileLoader;
+use my127\Workspace\File\FileLoader\FileGetContentsLoader;
 use my127\Workspace\File\JsonLoader;
 use my127\Workspace\Tests\IntegrationTestCase;
 use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
@@ -148,7 +148,7 @@ class PackageRepositoryTest extends IntegrationTestCase
 
     private function createRepository(): PackageRepository
     {
-        $repository = new PackageRepository(new JsonLoader(new FileLoader()));
+        $repository = new PackageRepository(new JsonLoader(new FileGetContentsLoader()));
 
         return $repository;
     }

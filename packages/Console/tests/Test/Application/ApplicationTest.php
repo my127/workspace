@@ -17,7 +17,7 @@ class ApplicationTest extends TestCase
      *
      * @test
      */
-    public function options_are_added_to_usage_definitions_by_default()
+    public function optionsAreAddedToUsageDefinitionsByDefault()
     {
         $application = Console::application('foo')
             ->option('-d, --debug')
@@ -35,7 +35,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function when_no_usage_is_specified_action_is_still_triggered_by_usage_matching_context()
+    public function whenNoUsageIsSpecifiedActionIsStillTriggeredByUsageMatchingContext()
     {
         $triggered = false;
 
@@ -57,7 +57,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function invalid_usage_event_dispatched_when_no_usage_match_found()
+    public function invalidUsageEventDispatchedWhenNoUsageMatchFound()
     {
         $triggered = false;
 
@@ -84,7 +84,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function event_triggered_before_context_actions_invoked()
+    public function eventTriggeredBeforeContextActionsInvoked()
     {
         $triggered = false;
 
@@ -110,7 +110,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function context_actions_can_be_stopped_from_running()
+    public function contextActionsCanBeStoppedFromRunning()
     {
         $triggered = false;
 
@@ -118,13 +118,13 @@ class ApplicationTest extends TestCase
             ->usage('bar')
             ->action(
                 function () use (&$triggered) {
-                    $triggered = true; 
+                    $triggered = true;
                 }
             );
 
         $application->on(
             Executor::EVENT_BEFORE_ACTION, function (BeforeActionEvent $event) {
-                $event->preventAction(); 
+                $event->preventAction();
             }
         );
         $application->run(['foo', 'bar']);
@@ -135,7 +135,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function actions_can_take_argument()
+    public function actionsCanTakeArgument()
     {
         $actionResult = '';
         $application = Console::application('foo');

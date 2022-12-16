@@ -10,9 +10,9 @@ class Option
 
     public function __construct($name, OptionDefinition $definition, $value = null)
     {
-        $this->name       = $name;
+        $this->name = $name;
         $this->definition = $definition;
-        $this->value      = $value;
+        $this->value = $value;
     }
 
     public function getDefinition()
@@ -38,6 +38,6 @@ class Option
             $value = ($value) ? 'true' : 'false';
         }
 
-        return 'option(\''.$this->name.'\', \''.$value.'\')';
+        return 'option(\'' . $this->name . '\', \'' . $value . '\')';
     }
 }

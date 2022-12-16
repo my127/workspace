@@ -4,33 +4,33 @@ namespace my127\Console\Usage\Model;
 
 class OptionDefinition
 {
-    const TYPE_BOOL  = 'bool';
-    const TYPE_VALUE = 'value';
-    const TYPES = [self::TYPE_BOOL, self::TYPE_VALUE];
+    public const TYPE_BOOL = 'bool';
+    public const TYPE_VALUE = 'value';
+    public const TYPES = [self::TYPE_BOOL, self::TYPE_VALUE];
 
     /**
-     * Short Name
+     * Short Name.
      *
-     * @var null|string
+     * @var string|null
      */
     private $shortName;
 
     /**
-     * Long Name
+     * Long Name.
      *
-     * @var null|string
+     * @var string|null
      */
     private $longName;
 
     /**
-     * Description
+     * Description.
      *
-     * @var null|string
+     * @var string|null
      */
     private $description;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $type;
 
@@ -40,7 +40,7 @@ class OptionDefinition
     private $default;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $argument;
 
@@ -52,12 +52,12 @@ class OptionDefinition
         ?string $description = null,
         ?string $argument = null
     ) {
-        $this->shortName    = $shortName;
-        $this->longName     = $longName;
-        $this->description  = $description;
-        $this->type         = $type;
-        $this->default      = $default;
-        $this->argument     = $argument;
+        $this->shortName = $shortName;
+        $this->longName = $longName;
+        $this->description = $description;
+        $this->type = $type;
+        $this->default = $default;
+        $this->argument = $argument;
     }
 
     public function getLabel()
@@ -65,14 +65,14 @@ class OptionDefinition
         $names = [];
 
         if ($this->longName !== null) {
-            $names[] = '--'.$this->longName;
+            $names[] = '--' . $this->longName;
         }
 
         if ($this->shortName !== null) {
-            $names[] = '-'.$this->shortName;
+            $names[] = '-' . $this->shortName;
         }
 
-        return implode('|', $names).' (type:'.$this->type.')';
+        return implode('|', $names) . ' (type:' . $this->type . ')';
     }
 
     public function getDefault(): OptionValue
@@ -81,7 +81,7 @@ class OptionDefinition
     }
 
     /**
-     * Get Short Name
+     * Get Short Name.
      *
      * @return string
      */
@@ -91,7 +91,7 @@ class OptionDefinition
     }
 
     /**
-     * Set Short Name
+     * Set Short Name.
      *
      * @param string $shortName
      *
@@ -103,7 +103,7 @@ class OptionDefinition
     }
 
     /**
-     * Get Long Name
+     * Get Long Name.
      *
      * @return string
      */
@@ -113,7 +113,7 @@ class OptionDefinition
     }
 
     /**
-     * Set Long Name
+     * Set Long Name.
      *
      * @param string $longName
      *
@@ -125,7 +125,7 @@ class OptionDefinition
     }
 
     /**
-     * Get Description
+     * Get Description.
      *
      * @return string
      */
@@ -135,7 +135,7 @@ class OptionDefinition
     }
 
     /**
-     * Set Description
+     * Set Description.
      *
      * @param string $description
      *
@@ -147,7 +147,7 @@ class OptionDefinition
     }
 
     /**
-     * Get Type
+     * Get Type.
      *
      * @return string
      */
@@ -157,7 +157,7 @@ class OptionDefinition
     }
 
     /**
-     * Set Type
+     * Set Type.
      *
      * @param string $type
      *

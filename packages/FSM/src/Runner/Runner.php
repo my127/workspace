@@ -7,7 +7,7 @@ use my127\FSM\State\State;
 interface Runner
 {
     /**
-     * Input
+     * Input.
      *
      * @param $input
      *
@@ -21,7 +21,7 @@ interface Runner
     public function getLambda();
 
     /**
-     * Alias of input
+     * Alias of input.
      *
      * @param $input
      *
@@ -30,7 +30,7 @@ interface Runner
     public function __invoke($input);
 
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */

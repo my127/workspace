@@ -3,13 +3,13 @@
 namespace my127\Console\Usage\Parser\Transition;
 
 use my127\Console\Usage\Model\OptionDefinition;
-use my127\Console\Usage\Parser\UsageParserContext;
 use my127\Console\Usage\Parser\InputSequence;
+use my127\Console\Usage\Parser\UsageParserContext;
 use my127\FSM\Runner\BacktrackingRunner;
 use my127\FSM\Runner\Runner;
 use my127\FSM\State\State;
-use my127\FSM\Stateful;
 use my127\FSM\State\StateVisitor;
+use my127\FSM\Stateful;
 use my127\FSM\Transition\Transition;
 
 class OptionTransition implements Transition
@@ -25,10 +25,9 @@ class OptionTransition implements Transition
     private $optionDefinition;
 
     /**
-     * Option Transition
+     * Option Transition.
      *
-     * @param OptionDefinition $optionDefinition
-     * @param State            $to
+     * @param State $to
      */
     public function __construct(OptionDefinition $optionDefinition, $to)
     {
@@ -37,7 +36,7 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getTo()
     {
@@ -45,7 +44,7 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setTo(State $state)
     {
@@ -53,7 +52,7 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function accept(StateVisitor $visitor, &$visited = [])
     {
@@ -61,11 +60,11 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      *
-     * @var InputSequence $input
-     * @var UsageParserContext       $context
-     * @var BacktrackingRunner       $runner
+     * @var InputSequence
+     * @var UsageParserContext
+     * @var BacktrackingRunner
      */
     public function can($input, Stateful $context, Runner $runner)
     {
@@ -73,11 +72,11 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      *
-     * @var InputSequence $input
-     * @var UsageParserContext       $context
-     * @var BacktrackingRunner       $runner
+     * @var InputSequence
+     * @var UsageParserContext
+     * @var BacktrackingRunner
      */
     public function apply($input, Stateful $context, Runner $runner)
     {
@@ -87,7 +86,7 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function copy(&$visited = [])
     {
@@ -95,7 +94,7 @@ class OptionTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __toString()
     {
@@ -109,6 +108,6 @@ class OptionTransition implements Transition
             $names[] = $shortName;
         }
 
-        return 'option('.implode(' | ', $names).')::'.$this->optionDefinition->getType();
+        return 'option(' . implode(' | ', $names) . ')::' . $this->optionDefinition->getType();
     }
 }

@@ -7,7 +7,6 @@ use my127\FSM\Runner\Runner;
 use my127\FSM\State\State;
 use my127\FSM\State\StateVisitor;
 use my127\FSM\Stateful;
-use my127\FSM\Transition\Transition;
 
 class DefaultTransition implements Transition
 {
@@ -32,7 +31,7 @@ class DefaultTransition implements Transition
     private $action;
 
     /**
-     * Transition
+     * Transition.
      *
      * @param string   $label
      * @param State    $to
@@ -41,14 +40,14 @@ class DefaultTransition implements Transition
      */
     public function __construct($label, $to, $guard = null, $action = null)
     {
-        $this->label  = $label;
-        $this->to     = $to;
-        $this->guard  = $guard;
+        $this->label = $label;
+        $this->to = $to;
+        $this->guard = $guard;
         $this->action = $action;
     }
 
     /**
-     * Get To
+     * Get To.
      *
      * @return State
      */
@@ -58,9 +57,7 @@ class DefaultTransition implements Transition
     }
 
     /**
-     * Set To
-     *
-     * @param State $state
+     * Set To.
      *
      * @return void
      */
@@ -70,10 +67,9 @@ class DefaultTransition implements Transition
     }
 
     /**
-     * Accept Visitor
+     * Accept Visitor.
      *
-     * @param StateVisitor $visitor
-     * @param State[]      $visited
+     * @param State[] $visited
      *
      * @return void
      */
@@ -83,11 +79,9 @@ class DefaultTransition implements Transition
     }
 
     /**
-     * Can Accept Input
+     * Can Accept Input.
      *
-     * @param mixed    $input
-     * @param Stateful $context
-     * @param Runner   $runner
+     * @param mixed $input
      *
      * @return bool
      */
@@ -111,11 +105,9 @@ class DefaultTransition implements Transition
     }
 
     /**
-     * Apply Transition
+     * Apply Transition.
      *
-     * @param mixed    $input
-     * @param Stateful $context
-     * @param Runner   $runner
+     * @param mixed $input
      *
      * @return mixed
      */
@@ -131,11 +123,11 @@ class DefaultTransition implements Transition
             $input->pop();
         }
 
-        return $this->action?:(string)$this->to;
+        return $this->action ?: (string) $this->to;
     }
 
     /**
-     * Copy
+     * Copy.
      *
      * Perform deep clone
      *
@@ -149,7 +141,7 @@ class DefaultTransition implements Transition
     }
 
     /**
-     * Get Label
+     * Get Label.
      *
      * @return string
      */

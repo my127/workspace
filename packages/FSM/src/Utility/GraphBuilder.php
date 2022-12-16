@@ -23,16 +23,14 @@ class GraphBuilder implements StateVisitor
     }
 
     /**
-     * Visit State
-     *
-     * @param State $state
+     * Visit State.
      *
      * @return void
      */
     public function visit(State $state)
     {
         foreach ($state->getTransitions() as $transition) {
-            $this->transitions[$transition] = 'T'.(++$this->id);
+            $this->transitions[$transition] = 'T' . (++$this->id);
         }
     }
 }

@@ -8,7 +8,7 @@ class ActionCollection
 
     public function add(callable $action, string $name = ''): void
     {
-        $this->actions[($action instanceof Action)?$action::getName():$name] = $action;
+        $this->actions[($action instanceof Action) ? $action::getName() : $name] = $action;
     }
 
     public function get(string $name): callable

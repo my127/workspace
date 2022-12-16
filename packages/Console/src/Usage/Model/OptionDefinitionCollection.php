@@ -9,7 +9,7 @@ use IteratorAggregate;
 class OptionDefinitionCollection implements IteratorAggregate, Countable
 {
     private $options = [];
-    private $map     = [];
+    private $map = [];
 
     public function add(OptionDefinition $optionDefinition)
     {

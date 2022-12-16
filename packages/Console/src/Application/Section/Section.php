@@ -4,11 +4,11 @@ namespace my127\Console\Application\Section;
 
 class Section
 {
-    private $name              = null;
-    private $description       = null;
-    private $usageDefinitions  = [];
-    private $options           = [];
-    private $action            = null;
+    private $name = null;
+    private $description = null;
+    private $usageDefinitions = [];
+    private $options = [];
+    private $action = null;
 
     /**
      * @var Section[]
@@ -38,6 +38,7 @@ class Section
     public function description(string $description): Section
     {
         $this->setDescription($description);
+
         return $this;
     }
 
@@ -48,9 +49,9 @@ class Section
 
     public function addUsageDefinition(string $usage): void
     {
-        $this->usageDefinitions[] = strtok($this->name, ' ').
-            ' '.
-            ((strpos($usage, '[options]') === false && $usage[-1] != '%') ? $usage.' [options]' : $usage);
+        $this->usageDefinitions[] = strtok($this->name, ' ') .
+            ' ' .
+            ((strpos($usage, '[options]') === false && $usage[-1] != '%') ? $usage . ' [options]' : $usage);
     }
 
     public function usage(string $usage): Section
@@ -111,8 +112,8 @@ class Section
             }
         }
 
-        $childSectionName = substr($name, 0, strpos($name, ' ', strlen($this->name) + 1)?:strlen($name));
-        $childSection     = new self($childSectionName);
+        $childSectionName = substr($name, 0, strpos($name, ' ', strlen($this->name) + 1) ?: strlen($name));
+        $childSection = new self($childSectionName);
 
         $this->add($childSection);
 

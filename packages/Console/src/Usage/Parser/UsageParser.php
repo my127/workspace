@@ -5,8 +5,8 @@ namespace my127\Console\Usage\Parser;
 use my127\Console\Factory\OptionValueFactory;
 use my127\Console\Usage\Input;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
-use my127\FSM\Runner\BacktrackingRunner;
 use my127\FSM\Definition;
+use my127\FSM\Runner\BacktrackingRunner;
 
 class UsageParser
 {
@@ -30,7 +30,7 @@ class UsageParser
         OptionDefinitionCollection $optionRepository,
         OptionValueFactory $optionValueFactory
     ) {
-        $this->usageDefinition  = $usageDefinition;
+        $this->usageDefinition = $usageDefinition;
         $this->optionRepository = $optionRepository;
         $this->optionValueFactory = $optionValueFactory;
     }
@@ -52,7 +52,7 @@ class UsageParser
      */
     public function parse($args = null)
     {
-        $fsm     = new BacktrackingRunner($this->usageDefinition->getInitialState(), new UsageParserContext());
+        $fsm = new BacktrackingRunner($this->usageDefinition->getInitialState(), new UsageParserContext());
         $symbols = $this->getInputSequence($args);
 
         if (!$symbols) {

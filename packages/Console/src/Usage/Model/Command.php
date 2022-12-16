@@ -18,6 +18,6 @@ class Command
 
     public function __toString()
     {
-        return 'command(\''.$this->name.'\')';
+        return 'command(\'' . $this->name . '\')';
     }
 }

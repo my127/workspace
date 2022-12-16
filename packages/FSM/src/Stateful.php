@@ -7,16 +7,14 @@ use my127\FSM\State\State;
 interface Stateful
 {
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */
     public function getCurrentState();
 
     /**
-     * Set Current State
-     *
-     * @param State $state
+     * Set Current State.
      *
      * @return void
      */

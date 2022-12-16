@@ -4,13 +4,14 @@ use my127\Console\Console;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
 
 /**
- * Usage
+ * Usage.
  *
  * @param string                     $definition
  * @param string                     $cmd
  * @param OptionDefinitionCollection $optionRepository
  *
  * @return false|string[]
+ *
  * @throws Exception
  */
 function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepository = null)
@@ -25,5 +26,5 @@ function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepos
         return [];
     }
 
-    return explode("\n", (string)$result);
+    return explode("\n", (string) $result);
 }

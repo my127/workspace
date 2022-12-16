@@ -7,12 +7,12 @@ use my127\Console\Usage\Model\OptionDefinition;
 
 class InputSequence implements Countable
 {
-    private $options    = [];
+    private $options = [];
     private $positional = [];
 
     public function __construct($options, $positional)
     {
-        $this->options    = $options;
+        $this->options = $options;
         $this->positional = $positional;
     }
 

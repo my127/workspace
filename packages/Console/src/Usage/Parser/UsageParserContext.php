@@ -22,7 +22,7 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */
@@ -32,9 +32,7 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * Set Current State
-     *
-     * @param State $state
+     * Set Current State.
      *
      * @return void
      */
@@ -44,8 +42,6 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * @param Transition $transition
-     *
      * @return mixed
      */
     public function getData(Transition $transition)
@@ -54,8 +50,7 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * @param Transition $transition
-     * @param mixed      $data
+     * @param mixed $data
      */
     public function setData(Transition $transition, $data)
     {

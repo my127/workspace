@@ -4,7 +4,6 @@ namespace my127\FSM\Runner;
 
 use Exception;
 use my127\FSM\Context;
-use my127\FSM\Runner\Runner;
 use my127\FSM\State\State;
 use my127\FSM\State\StateException;
 use my127\FSM\Stateful;
@@ -13,29 +12,28 @@ use my127\FSM\Transition\Transition;
 class StepRunner implements Runner
 {
     /**
-     * Context
+     * Context.
      *
      * @var Stateful
      */
     private $context;
 
     /**
-     * Step Runner
+     * Step Runner.
      *
      * A basic machine runner where each call to input correlates to a single
      * transition in the machine.
      *
-     * @param State    $initialState
      * @param Stateful $context
      */
     public function __construct(State $initialState, Stateful $context = null)
     {
-        $this->context = $context ? : new Context();
+        $this->context = $context ?: new Context();
         $this->context->setCurrentState($initialState);
     }
 
     /**
-     * Get Context
+     * Get Context.
      *
      * @return Stateful
      */
@@ -45,9 +43,7 @@ class StepRunner implements Runner
     }
 
     /**
-     * Set Context
-     *
-     * @param Stateful $context
+     * Set Context.
      *
      * @return void
      */
@@ -57,7 +53,7 @@ class StepRunner implements Runner
     }
 
     /**
-     * Transitions available from current state
+     * Transitions available from current state.
      *
      * @return Transition[]
      */
@@ -67,7 +63,7 @@ class StepRunner implements Runner
     }
 
     /**
-     * Advance
+     * Advance.
      *
      * Attempt to advance the machine with the given input, optionally try
      * and follow the exact path as given by the transition.
@@ -76,6 +72,7 @@ class StepRunner implements Runner
      * @param Transition $transition Take this path, otherwise try all paths
      *
      * @return mixed
+     *
      * @throws Exception
      */
     public function apply($input = null, Transition $transition = null)
@@ -83,20 +80,14 @@ class StepRunner implements Runner
         $state = $this->context->getCurrentState();
 
         if ($transition === null && !($transition = $this->can($input))) {
-            throw new StateException(
-                sprintf(
-                    'No transition from %s accepted %s',
-                    (string)$state,
-                    $input
-                )
-            );
+            throw new StateException(sprintf('No transition from %s accepted %s', (string) $state, $input));
         }
 
         return $transition->apply($input, $this->context, $this);
     }
 
     /**
-     * Can Advance
+     * Can Advance.
      *
      * Determine if the machine can be advanced, if so return the
      * valid transition.
@@ -110,6 +101,7 @@ class StepRunner implements Runner
      * @param Transition $transition If specified only this transition will be tested
      *
      * @return Transition|false
+     *
      * @throws Exception
      */
     public function can($input, $transition = null)
@@ -132,7 +124,7 @@ class StepRunner implements Runner
     }
 
     /**
-     * Get Lambda
+     * Get Lambda.
      *
      * @return callable
      */
@@ -142,7 +134,7 @@ class StepRunner implements Runner
     }
 
     /**
-     * Input
+     * Input.
      *
      * @param $input
      *
@@ -154,7 +146,7 @@ class StepRunner implements Runner
     }
 
     /**
-     * Alias of Input
+     * Alias of Input.
      *
      * @param $input
      *
@@ -165,9 +157,8 @@ class StepRunner implements Runner
         return $this->apply($input);
     }
 
-
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */

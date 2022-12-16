@@ -5,9 +5,7 @@ namespace my127\FSM\State;
 interface StateVisitorClient
 {
     /**
-     * Accept Visitor
-     *
-     * @param StateVisitor $visitor
+     * Accept Visitor.
      *
      * @return void
      */

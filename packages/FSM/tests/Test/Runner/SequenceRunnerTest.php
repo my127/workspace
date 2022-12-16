@@ -3,8 +3,8 @@
 namespace Test\my127\FSM\Runner;
 
 use my127\FSM\Context;
-use my127\FSM\State\DefaultState;
 use my127\FSM\Runner\SequenceRunner;
+use my127\FSM\State\DefaultState;
 use my127\FSM\State\State;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +33,7 @@ class SequenceRunnerTest extends TestCase
     /**
      * @test
      */
-    public function it_iterates_the_fsm_with_each_of_the_given_inputs_returning_the_successful_vector_when_valid()
+    public function itIteratesTheFsmWithEachOfTheGivenInputsReturningTheSuccessfulVectorWhenValid()
     {
         $this->assertEquals(['S2', 'S4'], $this->fsm->input(['t1', 't3']));
     }
@@ -41,7 +41,7 @@ class SequenceRunnerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_given_invalid_input()
+    public function itReturnsFalseGivenInvalidInput()
     {
         $this->assertEquals(false, $this->fsm->input(['t1', 't2']));
     }
@@ -49,7 +49,7 @@ class SequenceRunnerTest extends TestCase
     /**
      * @test
      */
-    public function it_must_end_on_a_terminal_state_to_return_result()
+    public function itMustEndOnATerminalStateToReturnResult()
     {
         $this->assertEquals(['S2', 'S4'], $this->fsm->input(['t1', 't3']));
         $this->assertEquals(false, $this->fsm->input(['t1']));

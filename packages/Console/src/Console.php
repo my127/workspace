@@ -15,12 +15,12 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Console
 {
-    public static function application($name, $description = "", $version = '1.0'): Application
+    public static function application($name, $description = '', $version = '1.0'): Application
     {
         $dispatcher = new EventDispatcher();
         $optionValueFactory = new OptionValueFactory();
         $optionDefinitionParser = new OptionDefinitionParser($optionValueFactory);
-        $executor   = new Executor(
+        $executor = new Executor(
             $dispatcher,
             new UsageParserBuilder($optionValueFactory),
             $optionDefinitionParser,
@@ -37,7 +37,7 @@ class Console
 
     public static function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepository = null)
     {
-        $cmd         = empty($cmd) ? [] : preg_split('/\s+/', $cmd);
+        $cmd = empty($cmd) ? [] : preg_split('/\s+/', $cmd);
         $optionValueFactory = new OptionValueFactory();
         $usageParser = (new UsageParserBuilder($optionValueFactory))->createUsageParser($definition, $optionRepository);
 

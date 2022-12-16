@@ -5,62 +5,58 @@ namespace my127\FSM\Transition;
 use Exception;
 use my127\FSM\Definition;
 use my127\FSM\State\State;
-use my127\FSM\Transition\DefaultTransition;
 
 class DefinitionTransitionBuilder
 {
     /**
-     * Label
+     * Label.
      *
      * @var string
      */
     private $label = null;
 
     /**
-     * From
+     * From.
      *
      * @var State
      */
     private $from = null;
 
     /**
-     * To
+     * To.
      *
      * @var State
      */
     private $to = null;
 
     /**
-     * Guard
+     * Guard.
      *
      * @var callable
      */
     private $guard = null;
 
     /**
-     * Action
+     * Action.
      *
      * @var callable
      */
     private $action = null;
 
     /**
-     * Definition
+     * Definition.
      *
      * @var Definition
      */
     private $definition;
 
-    /**
-     * @param Definition $definition
-     */
     public function __construct(Definition $definition)
     {
         $this->definition = $definition;
     }
 
     /**
-     * From
+     * From.
      *
      * @param string|State $state
      * @param string       $type
@@ -79,7 +75,7 @@ class DefinitionTransitionBuilder
     }
 
     /**
-     * To
+     * To.
      *
      * @param string|State $state
      * @param string       $type
@@ -98,7 +94,7 @@ class DefinitionTransitionBuilder
     }
 
     /**
-     * When
+     * When.
      *
      * @param string   $label
      * @param callable $guard
@@ -114,7 +110,7 @@ class DefinitionTransitionBuilder
     }
 
     /**
-     * Then
+     * Then.
      *
      * @param string $action
      *
@@ -128,9 +124,10 @@ class DefinitionTransitionBuilder
     }
 
     /**
-     * Done
+     * Done.
      *
      * @return Definition
+     *
      * @throws Exception
      */
     public function done()

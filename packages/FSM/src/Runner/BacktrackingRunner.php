@@ -3,43 +3,39 @@
 namespace my127\FSM\Runner;
 
 use my127\FSM\Context;
-use my127\FSM\Runner\InputSequence;
-use my127\FSM\Runner\Runner;
 use my127\FSM\State\State;
 use my127\FSM\Stateful;
 use my127\FSM\Transition\Transition;
 use my127\FSM\Utility\GraphBuilder;
 
 /**
- * Class BacktrackingRunner
- *
- * @package my127\FSM
+ * Class BacktrackingRunner.
  */
 class BacktrackingRunner implements Runner
 {
     /**
-     * Current Input
+     * Current Input.
      *
      * @var mixed
      */
     private $input;
 
     /**
-     * Current Context
+     * Current Context.
      *
      * @var Stateful
      */
     private $context;
 
     /**
-     * Current Output
+     * Current Output.
      *
      * @var mixed[]
      */
     private $output = [];
 
     /**
-     * Stack
+     * Stack.
      *
      * @var mixed[][]
      */
@@ -53,7 +49,7 @@ class BacktrackingRunner implements Runner
     private $bt = [];
 
     /**
-     * Backtracking Runner
+     * Backtracking Runner.
      *
      * Similar to SequenceRunner but takes a backtracking approach to guarantee finding
      * a correct path if one exists with the given input sequence.
@@ -68,18 +64,17 @@ class BacktrackingRunner implements Runner
      *
      * This isn't efficient :) If your FSM is large or very recursive then you're going to run out of memory quickly...
      *
-     * @param State    $initialState
      * @param Stateful $context
      */
     public function __construct(State $initialState, Stateful $context = null)
     {
-        $this->context = $context ? : new Context();
+        $this->context = $context ?: new Context();
         $this->context->setCurrentState($initialState);
         $this->graph = new GraphBuilder($initialState);
     }
 
     /**
-     * Input
+     * Input.
      *
      * @param mixed $input An array of symbols to pass into the FSM
      *
@@ -88,13 +83,13 @@ class BacktrackingRunner implements Runner
     public function input($input)
     {
         $this->input = is_array($input) ? new InputSequence($input) : $input;
-        $solution    = $this->backtrack();
+        $solution = $this->backtrack();
 
         return $solution !== null ? $solution : false;
     }
 
     /**
-     * Get Lambda
+     * Get Lambda.
      *
      * @return callable
      */
@@ -104,7 +99,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Current Output
+     * Current Output.
      *
      * @return mixed[]
      */
@@ -114,7 +109,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Backtrack
+     * Backtrack.
      */
     private function backtrack()
     {
@@ -144,7 +139,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Push
+     * Push.
      *
      * @return void
      */
@@ -153,12 +148,12 @@ class BacktrackingRunner implements Runner
         $this->stack[] = [
             clone $this->input,
             $this->output,
-            clone $this->context
+            clone $this->context,
         ];
     }
 
     /**
-     * Pop
+     * Pop.
      *
      * @return void
      */
@@ -166,12 +161,12 @@ class BacktrackingRunner implements Runner
     {
         array_pop($this->bt);
         //echo implode(' ', $this->bt)."\n";
-        list ($this->input, $this->output, $this->context)
+        list($this->input, $this->output, $this->context)
             = array_pop($this->stack);
     }
 
     /**
-     * Apply Transition
+     * Apply Transition.
      *
      * @param Transition $candidate
      *
@@ -187,7 +182,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Candidates
+     * Candidates.
      *
      * @return Transition[]
      */
@@ -197,7 +192,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Accept
+     * Accept.
      *
      * Has the FSM reached a terminal state with all input consumed?
      *
@@ -213,7 +208,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Alias of input
+     * Alias of input.
      *
      * @param $input
      *
@@ -225,7 +220,7 @@ class BacktrackingRunner implements Runner
     }
 
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */

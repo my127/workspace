@@ -46,9 +46,9 @@ class Application
         string $description = '',
         string $version = ''
     ) {
-        $this->version           = $version;
-        $this->executor          = $executor;
-        $this->dispatcher        = $dispatcher;
+        $this->version = $version;
+        $this->executor = $executor;
+        $this->dispatcher = $dispatcher;
         $this->registeredActions = $executor->getActionCollection();
 
         $this->root = (new Section($name))
@@ -73,30 +73,35 @@ class Application
     public function register(callable $action, string $name = ''): Application
     {
         $this->registeredActions->add($action, $name);
+
         return $this;
     }
 
     public function description(string $description): Application
     {
         $this->root->setDescription($description);
+
         return $this;
     }
 
     public function usage(string $usage): Application
     {
         $this->root->addUsageDefinition($usage);
+
         return $this;
     }
 
     public function option(string $option): Application
     {
         $this->root->addOption($option);
+
         return $this;
     }
 
     public function action($action): Application
     {
         $this->root->setAction($action);
+
         return $this;
     }
 
@@ -104,18 +109,20 @@ class Application
     {
         $this->plugins[] = $plugin;
         $plugin->setup($this);
+
         return $this;
     }
 
     public function on(string $event, callable $listener): Application
     {
         $this->dispatcher->addListener($event, $listener);
+
         return $this;
     }
 
     public function section($name): Section
     {
-        return $this->root->get($this->root->getName().' '.$name);
+        return $this->root->get($this->root->getName() . ' ' . $name);
     }
 
     public function run(?array $argv = null): void

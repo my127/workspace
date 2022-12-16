@@ -33,8 +33,8 @@ class UsageParserBuilder
      */
     private $tokens;
 
-    const MODE_OPTIONAL = 'optional';
-    const MODE_REQUIRED = 'required';
+    public const MODE_OPTIONAL = 'optional';
+    public const MODE_REQUIRED = 'required';
 
     private $stack = [];
 
@@ -61,7 +61,7 @@ class UsageParserBuilder
     }
 
     /**
-     * Create Command Parser
+     * Create Command Parser.
      *
      * @param string                     $definition
      * @param OptionDefinitionCollection $definitionRepository
@@ -70,13 +70,13 @@ class UsageParserBuilder
      */
     public function createUsageParser($definition, OptionDefinitionCollection $definitionRepository = null)
     {
-        $this->stack                      = [];
-        $this->sequences                  = [];
-        $this->sequence                   = [];
-        $this->mode                       = self::MODE_REQUIRED;
+        $this->stack = [];
+        $this->sequences = [];
+        $this->sequence = [];
+        $this->mode = self::MODE_REQUIRED;
         $this->globalDefinitionRepository = $definitionRepository ?? new OptionDefinitionCollection();
-        $this->usageDefinitionRepository  = new OptionDefinitionCollection();
-        $this->tokens                     = new Scanner($definition);
+        $this->usageDefinitionRepository = new OptionDefinitionCollection();
+        $this->tokens = new Scanner($definition);
 
         return new UsageParser($this->parse(), $this->usageDefinitionRepository, $this->optionValueFactory);
     }
@@ -163,7 +163,7 @@ class UsageParserBuilder
     {
         $this->expect(Token::T_MUTEX);
         $this->sequences[] = $this->sequence;
-        $this->sequence    = [];
+        $this->sequence = [];
     }
 
     private function parseEllipsis()
@@ -213,9 +213,9 @@ class UsageParserBuilder
 
     private function parseOption()
     {
-        $token      = $this->tokens->pop();
+        $token = $this->tokens->pop();
         $definition = $this->globalDefinitionRepository->find($token->getValue());
-        $value      = $this->is(Token::T_EQUALS);
+        $value = $this->is(Token::T_EQUALS);
 
         if (!$definition) {
             $type = $value ? OptionDefinition::TYPE_VALUE : OptionDefinition::TYPE_BOOL;
@@ -270,17 +270,13 @@ class UsageParserBuilder
     private function expect($types)
     {
         $passed = [];
-        $types  = (is_array($types)) ? $types : [$types];
+        $types = (is_array($types)) ? $types : [$types];
 
         foreach ($types as $type) {
             $passed[] = $token = $this->tokens->pop();
 
             if ($token->getType() != $type) {
-                throw new Exception(sprintf(
-                    'Expected Token [%s] but found [%s].',
-                    new Token($type),
-                    new Token($token->getType())
-                ));
+                throw new Exception(sprintf('Expected Token [%s] but found [%s].', new Token($type), new Token($token->getType())));
             }
         }
 
@@ -330,15 +326,15 @@ class UsageParserBuilder
     {
         $this->stack[] = [$this->mode, $this->sequence, $this->sequences];
 
-        $this->mode      = $mode;
-        $this->sequence  = [];
+        $this->mode = $mode;
+        $this->sequence = [];
         $this->sequences = [];
     }
 
     private function pop()
     {
         $group = $this->groupSequences();
-        list ($this->mode, $this->sequence, $this->sequences) = array_pop($this->stack);
+        list($this->mode, $this->sequence, $this->sequences) = array_pop($this->stack);
 
         if ($group !== null) {
             $this->append($group);

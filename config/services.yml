@@ -45,7 +45,7 @@ services:
     resource: '../src/*'
 
   my127\Console\:
-    resource: '../vendor/my127/my127/src/Console/src/*'
+    resource: '../packages/Console/src/*'
 
   my127\Workspace\Types\Harness\Repository\AggregateRepository: ~
   my127\Workspace\Types\Harness\Repository\ArchiveRepository: ~

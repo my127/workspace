@@ -50,7 +50,6 @@ jobs:
                 name: "Validate composer.json"
                 run: "composer validate --strict --no-check-lock"
 
-    # Does not support 8.1 yet (but soon) see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/5891
     php-cs-fixer:
         name: "PHP-CS-Fixer (${{ matrix.php-version }})"
         needs:

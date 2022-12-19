@@ -8,6 +8,12 @@
         <testsuite name="my127/workspace">
             <directory>./tests/Test/</directory>
         </testsuite>
+        <testsuite name="my127/Console">
+            <directory>./packages/Console/tests/Test/</directory>
+        </testsuite>
+        <testsuite name="my127/FSM">
+            <directory>./packages/FSM/tests//Test/</directory>
+        </testsuite>
     </testsuites>
 
 </phpunit>

@@ -2,7 +2,6 @@
 
 namespace my127\FSM;
 
-use Exception;
 use my127\FSM\Runner\Runner;
 use my127\FSM\Runner\RunnerFactory;
 use my127\FSM\State\DefaultState;
@@ -16,52 +15,52 @@ use my127\FSM\Transition\Transition;
 class Definition implements StateVisitorClient
 {
     /**
-     * Label
+     * Label.
      *
      * @var string
      */
     private $label;
 
     /**
-     * States
+     * States.
      *
      * @var State[]
      */
     private $states = [];
 
     /**
-     * Initial State
+     * Initial State.
      *
      * @var State
      */
     private $initialState = null;
 
     /**
-     * StepRunner Factory
+     * StepRunner Factory.
      *
      * @var RunnerFactory
      */
     private $runnerFactory;
 
     /**
-     * Definition
+     * Definition.
      *
      * @param string        $label
      * @param RunnerFactory $runnerFactory
      */
     public function __construct($label, RunnerFactory $runnerFactory = null)
     {
-        $this->label         = $label;
+        $this->label = $label;
         $this->runnerFactory = $runnerFactory;
     }
 
     /**
-     * Add State
+     * Add State.
      *
      * @param State|string $state
      * @param string       $type
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function addState($state, $type = State::TYPE_NORMAL)
     {
@@ -72,7 +71,7 @@ class Definition implements StateVisitorClient
         $label = (string) $state;
 
         if (isset($this->states[$label])) {
-            throw new Exception(sprintf("State %s already exists.", $label));
+            throw new \Exception(sprintf('State %s already exists.', $label));
         }
 
         if (is_null($this->initialState)) {
@@ -83,7 +82,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Get State
+     * Get State.
      *
      * @param string $state
      * @param string $type
@@ -100,7 +99,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Add Transition
+     * Add Transition.
      *
      * Usage :-
      *
@@ -134,7 +133,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Create Transition
+     * Create Transition.
      *
      * Fluid counterpart to addTransition
      *
@@ -149,9 +148,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Accept Visitor
-     *
-     * @param StateVisitor $visitor
+     * Accept Visitor.
      *
      * @return void
      */
@@ -165,9 +162,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Set Initial State
-     *
-     * @param State $initial
+     * Set Initial State.
      *
      * @return void
      *
@@ -179,27 +174,29 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Get Initial State
+     * Get Initial State.
      *
      * @return State
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function getInitialState()
     {
         if (is_null($this->initialState)) {
-            throw new Exception();
+            throw new \Exception();
         }
 
         return $this->initialState;
     }
 
     /**
-     * Build as FSM
+     * Build as FSM.
      *
      * @param Stateful $context
      *
      * @return Runner
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function toFSM(Stateful $context = null)
     {
@@ -207,7 +204,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Build as Lambda
+     * Build as Lambda.
      *
      * @param Stateful $context
      *
@@ -219,7 +216,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Perform a deep clone
+     * Perform a deep clone.
      */
     public function __clone()
     {
@@ -235,7 +232,7 @@ class Definition implements StateVisitorClient
     }
 
     /**
-     * Get StepRunner Factory
+     * Get StepRunner Factory.
      *
      * @return RunnerFactory
      */

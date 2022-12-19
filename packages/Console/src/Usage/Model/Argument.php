@@ -9,7 +9,7 @@ class Argument
 
     public function __construct($name, $value)
     {
-        $this->name  = $name;
+        $this->name = $name;
         $this->value = $value;
     }
 
@@ -25,6 +25,6 @@ class Argument
 
     public function __toString()
     {
-        return 'argument(\''.$this->name.'\', \''.$this->value.'\')';
+        return 'argument(\'' . $this->name . '\', \'' . $this->value . '\')';
     }
 }

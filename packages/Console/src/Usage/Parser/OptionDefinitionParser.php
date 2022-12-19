@@ -19,18 +19,18 @@ class OptionDefinitionParser
 
     public function parse($option): OptionDefinition
     {
-        $shortName   = null;
-        $longName    = null;
+        $shortName = null;
+        $longName = null;
         $description = null;
-        $type        = OptionDefinition::TYPE_BOOL;
-        $default     = null;
-        $argument    = null;
+        $type = OptionDefinition::TYPE_BOOL;
+        $default = null;
+        $argument = null;
 
-        $i      = 0;
+        $i = 0;
         $length = strlen($option);
 
         modeSelect:
-        {
+
         while ($i < $length) {
             switch ($option[$i]) {
                 case ' ':
@@ -55,23 +55,21 @@ class OptionDefinitionParser
         }
 
             goto buildOptionDefinition;
-        }
 
         parseShortName:
-        {
+
             $shortName = $option[$i];
-            ++$i;
+        ++$i;
 
         if ($i == $length) {
             goto buildOptionDefinition;
         }
 
-            goto hasArgument;
-        }
+        goto hasArgument;
 
         parseLongName:
-        {
-        while ($i < $length && (($t = $option[$i]) != ' ' && $t != ',' && $t != '=' )) {
+
+        while ($i < $length && (($t = $option[$i]) != ' ' && $t != ',' && $t != '=')) {
             $longName .= $option[$i++];
         }
 
@@ -80,10 +78,9 @@ class OptionDefinitionParser
         }
 
             goto hasArgument;
-        }
 
         hasArgument:
-        {
+
         if ($option[$i] == '=') {
             if ($option[$i + 1] == '<') {
                 ++$i;
@@ -92,32 +89,30 @@ class OptionDefinitionParser
             goto parseArgument;
         }
 
-        if ((($k = $i + 1) < $length) && ( (($t = $option[$k]) >= 'A') && ($t <= 'Z') )) {
+        if ((($k = $i + 1) < $length) && ((($t = $option[$k]) >= 'A') && ($t <= 'Z'))) {
             goto parseArgument;
         }
 
             goto modeSelect;
-        }
 
         parseArgument:
-        {
+
             ++$i;
 
-            $argument = '';
+        $argument = '';
 
         while ($i < $length && ($option[$i] != '>' && $option[$i] != ',' && $option[$i] != ' ')) {
             $argument .= $option[$i++];
         }
 
-            ++$i;
+        ++$i;
 
-            $type = OptionDefinition::TYPE_VALUE;
+        $type = OptionDefinition::TYPE_VALUE;
 
-            goto modeSelect;
-        }
+        goto modeSelect;
 
         parseDescription:
-        {
+
         while ($i < $length) {
             $description .= $t = $option[$i++];
 
@@ -127,10 +122,9 @@ class OptionDefinitionParser
         }
 
             goto buildOptionDefinition;
-        }
 
         hasDefault:
-        {
+
             $hasDefault = '';
 
         while ($i < $length) {
@@ -147,14 +141,13 @@ class OptionDefinitionParser
             }
         }
 
-            goto buildOptionDefinition;
-        }
+        goto buildOptionDefinition;
 
         parseDefaultValue:
-        {
+
             $description .= ' ';
-            $i += 1;
-            $default = '';
+        ++$i;
+        $default = '';
 
         while ($i < $length) {
             $t = $option[$i++];
@@ -167,16 +160,14 @@ class OptionDefinitionParser
             }
         }
 
-            goto buildOptionDefinition;
-        }
+        goto buildOptionDefinition;
 
         buildOptionDefinition:
-        {
-            $defaultValue = null === $default
+
+            $defaultValue = $default === null
                 ? $this->optionValueFactory->createFromType($type)
                 : $this->optionValueFactory->createFromTypeAndValue($type, $default);
 
-            return new OptionDefinition($defaultValue, $type, $shortName, $longName, $description, $argument);
-        }
+        return new OptionDefinition($defaultValue, $type, $shortName, $longName, $description, $argument);
     }
 }

@@ -4,8 +4,8 @@ namespace my127\Console\Usage\Model;
 
 class BooleanOptionValue implements OptionValue
 {
-    const TRUE_VALUES = ['1', 'true'];
-    const VALUES = ['1', 'true', '0', 'false'];
+    public const TRUE_VALUES = ['1', 'true'];
+    public const VALUES = ['1', 'true', '0', 'false'];
 
     /**
      * @var bool

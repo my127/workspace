@@ -8,14 +8,14 @@ use my127\Console\Usage\Model\OptionDefinitionCollection;
 use my127\Console\Usage\Model\StringOptionValue;
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__.'/../../../resources/usage.php';
+require_once __DIR__ . '/../../../resources/usage.php';
 
 class UsageParserTest extends TestCase
 {
     /**
      * @test
      */
-    public function an_argument_is_defined_as_an_alpha_numeric_string_between_angle_brackets_and_specified_as_an_alpha_numeric_string()
+    public function anArgumentIsDefinedAsAnAlphaNumericStringBetweenAngleBracketsAndSpecifiedAsAnAlphaNumericString()
     {
         $result = usage('<environment>', 'development');
 
@@ -26,7 +26,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function an_argument_has_its_value_captured_and_provided()
+    public function anArgumentHasItsValueCapturedAndProvided()
     {
         $result = usage('<environment>', 'development');
 
@@ -38,7 +38,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function arguments_consume_the_first_available_token()
+    public function argumentsConsumeTheFirstAvailableToken()
     {
         $result = usage('<environment> <task>', 'development deploy');
 
@@ -51,7 +51,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function valid_when_argument_value_starts_with_alphanumeric_character()
+    public function validWhenArgumentValueStartsWithAlphanumericCharacter()
     {
         $result = usage('<environment>', 'development');
 
@@ -62,7 +62,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function invalid_when_argument_value_does_not_start_with_an_alphanumeric_character()
+    public function invalidWhenArgumentValueDoesNotStartWithAnAlphanumericCharacter()
     {
         $result = usage('<environment>', '-d');
 
@@ -73,7 +73,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function arguments_are_required_by_default()
+    public function argumentsAreRequiredByDefault()
     {
         $result = usage('<environment>', '');
         $this->assertFalse($result);
@@ -82,7 +82,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function arguments_can_be_made_optional()
+    public function argumentsCanBeMadeOptional()
     {
         $result = usage('[<environment>]', '');
 
@@ -93,7 +93,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function a_command_is_denoted_by_an_alphanumerical_string()
+    public function aCommandIsDenotedByAnAlphanumericalString()
     {
         $result = usage('command', 'command');
 
@@ -105,7 +105,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function a_command_by_default_is_required()
+    public function aCommandByDefaultIsRequired()
     {
         $result = usage('command', '');
 
@@ -116,7 +116,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function valid_when_commands_specified_in_the_order_defined()
+    public function validWhenCommandsSpecifiedInTheOrderDefined()
     {
         $result = usage('foo bar', 'foo bar');
 
@@ -129,7 +129,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function invalid_when_commands_specified_in_different_order_to_that_defined()
+    public function invalidWhenCommandsSpecifiedInDifferentOrderToThatDefined()
     {
         $result = usage('foo bar', 'bar foo');
 
@@ -140,7 +140,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function commands_are_required_by_default()
+    public function commandsAreRequiredByDefault()
     {
         $result = usage('foo', '');
         $this->assertFalse($result);
@@ -149,7 +149,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function commands_can_be_made_optional()
+    public function commandsCanBeMadeOptional()
     {
         $result = usage('[foo]', '');
         $this->assertIsArray($result);
@@ -159,7 +159,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function a_single_dash_when_not_part_of_an_option_is_treated_as_command()
+    public function aSingleDashWhenNotPartOfAnOptionIsTreatedAsCommand()
     {
         $result = usage('-', '-');
         $this->assertIsArray($result);
@@ -170,7 +170,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function short_option_is_treated_as_a_flag_with_a_true_value()
+    public function shortOptionIsTreatedAsAFlagWithATrueValue()
     {
         $result = usage('-h', '-h');
 
@@ -182,7 +182,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function options_are_orderless_and_provided_in_the_order_defined()
+    public function optionsAreOrderlessAndProvidedInTheOrderDefined()
     {
         $result = usage('program -a -b -c command', 'program -a command -b -c');
 
@@ -196,7 +196,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function short_options_can_be_described_as_a_short_sequence_and_specified_as_separate_options()
+    public function shortOptionsCanBeDescribedAsAShortSequenceAndSpecifiedAsSeparateOptions()
     {
         $result = usage('-abc', '-b -c -a');
 
@@ -211,7 +211,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function short_options_can_be_described_as_separate_options_and_specified_as_a_short_sequence()
+    public function shortOptionsCanBeDescribedAsSeparateOptionsAndSpecifiedAsAShortSequence()
     {
         $result = usage('-a -b -c', '-bca');
 
@@ -226,7 +226,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function short_options_can_be_described_and_specified_as_a_short_sequence()
+    public function shortOptionsCanBeDescribedAndSpecifiedAsAShortSequence()
     {
         $result = usage('-abc', '-bca');
 
@@ -241,7 +241,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function long_option_can_have_value_specified_after_space()
+    public function longOptionCanHaveValueSpecifiedAfterSpace()
     {
         $result = usage('--environment=<env>', '--environment development');
 
@@ -253,7 +253,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function long_option_can_have_value_specified_after_equals()
+    public function longOptionCanHaveValueSpecifiedAfterEquals()
     {
         $result = usage('--environment=<env>', '--environment=development');
 
@@ -265,7 +265,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function short_option_can_have_value_specified_without_space_or_equals()
+    public function shortOptionCanHaveValueSpecifiedWithoutSpaceOrEquals()
     {
         $result = usage('-e=<env>', '-eDevelopment');
 
@@ -277,7 +277,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function options_are_required_by_default()
+    public function optionsAreRequiredByDefault()
     {
         $result = usage('-e=<env>', '');
 
@@ -288,7 +288,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function options_can_be_made_optional()
+    public function optionsCanBeMadeOptional()
     {
         $result = usage('[-e=<env>]', '');
 
@@ -299,7 +299,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function option_definitions_can_all_be_added_at_once()
+    public function optionDefinitionsCanAllBeAddedAtOnce()
     {
         $optionRepository = new OptionDefinitionCollection();
         $optionRepository->add(new OptionDefinition(
@@ -326,7 +326,7 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function passed_options_must_be_part_of_usage_definition()
+    public function passedOptionsMustBePartOfUsageDefinition()
     {
         $result = usage('[-hv] foo bar', '--unknown foo bar');
         $this->assertFalse($result);

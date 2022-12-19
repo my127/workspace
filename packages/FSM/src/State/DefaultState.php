@@ -3,8 +3,6 @@
 namespace my127\FSM\State;
 
 use my127\FSM\Transition\DefaultTransition;
-use my127\FSM\State\StateTransitionBuilder;
-use my127\FSM\State\StateVisitor;
 use my127\FSM\Transition\Transition;
 
 class DefaultState implements State
@@ -20,14 +18,14 @@ class DefaultState implements State
     private $type;
 
     /**
-     * Transitions
+     * Transitions.
      *
      * @var Transition[]
      */
     private $transitions = [];
 
     /**
-     * State
+     * State.
      *
      * @param string $label
      * @param string $type
@@ -35,11 +33,11 @@ class DefaultState implements State
     public function __construct($label, $type = self::TYPE_NORMAL)
     {
         $this->label = $label;
-        $this->type  = $type;
+        $this->type = $type;
     }
 
     /**
-     * Add Transition
+     * Add Transition.
      *
      * Usage :-
      *
@@ -63,7 +61,7 @@ class DefaultState implements State
     }
 
     /**
-     * Set Type
+     * Set Type.
      *
      * @param string $type
      *
@@ -75,7 +73,7 @@ class DefaultState implements State
     }
 
     /**
-     * Is Initial
+     * Is Initial.
      *
      * @return bool
      */
@@ -85,7 +83,7 @@ class DefaultState implements State
     }
 
     /**
-     * Is Normal
+     * Is Normal.
      *
      * @return bool
      */
@@ -95,7 +93,7 @@ class DefaultState implements State
     }
 
     /**
-     * Is Terminal
+     * Is Terminal.
      *
      * @return bool
      */
@@ -105,7 +103,7 @@ class DefaultState implements State
     }
 
     /**
-     * Get Transitions
+     * Get Transitions.
      *
      * @return Transition[]
      */
@@ -115,7 +113,7 @@ class DefaultState implements State
     }
 
     /**
-     * Create Transition
+     * Create Transition.
      *
      * Fluid counterpart to addTransition
      *
@@ -130,7 +128,7 @@ class DefaultState implements State
     }
 
     /**
-     * Copy State
+     * Copy State.
      *
      * Perform a deep clone
      *
@@ -156,10 +154,9 @@ class DefaultState implements State
     }
 
     /**
-     * Accept Visitor
+     * Accept Visitor.
      *
-     * @param StateVisitor $visitor
-     * @param State[]      $visited
+     * @param State[] $visited
      *
      * @return void
      */
@@ -175,7 +172,7 @@ class DefaultState implements State
     }
 
     /**
-     * Get Label
+     * Get Label.
      *
      * @return string
      */

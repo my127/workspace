@@ -2,17 +2,16 @@
 
 namespace my127\Console\Usage\Parser;
 
-use Countable;
 use my127\Console\Usage\Model\OptionDefinition;
 
-class InputSequence implements Countable
+class InputSequence implements \Countable
 {
-    private $options    = [];
+    private $options = [];
     private $positional = [];
 
     public function __construct($options, $positional)
     {
-        $this->options    = $options;
+        $this->options = $options;
         $this->positional = $positional;
     }
 

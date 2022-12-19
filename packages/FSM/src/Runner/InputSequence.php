@@ -2,9 +2,7 @@
 
 namespace my127\FSM\Runner;
 
-use Countable;
-
-class InputSequence implements Countable
+class InputSequence implements \Countable
 {
     private $input;
 

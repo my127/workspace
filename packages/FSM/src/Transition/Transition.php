@@ -11,55 +11,48 @@ use my127\FSM\Stateful;
 interface Transition extends StateVisitorClient
 {
     /**
-     * Get To
+     * Get To.
      *
      * @return State
      */
     public function getTo();
 
     /**
-     * Set To
-     *
-     * @param State $state
+     * Set To.
      *
      * @return void
      */
     public function setTo(State $state);
 
     /**
-     * Accept Visitor
+     * Accept Visitor.
      *
-     * @param StateVisitor $visitor
-     * @param State[]      $visited
+     * @param State[] $visited
      *
      * @return void
      */
     public function accept(StateVisitor $visitor, &$visited = []);
 
     /**
-     * Can Accept Input
+     * Can Accept Input.
      *
-     * @param mixed    $input
-     * @param Stateful $context
-     * @param Runner   $runner
+     * @param mixed $input
      *
      * @return bool
      */
     public function can($input, Stateful $context, Runner $runner);
 
     /**
-     * Apply Transition
+     * Apply Transition.
      *
-     * @param mixed    $input
-     * @param Stateful $context
-     * @param Runner   $runner
+     * @param mixed $input
      *
      * @return mixed
      */
     public function apply($input, Stateful $context, Runner $runner);
 
     /**
-     * Copy
+     * Copy.
      *
      * Perform deep clone
      *
@@ -70,7 +63,7 @@ interface Transition extends StateVisitorClient
     public function copy(&$visited = []);
 
     /**
-     * Get Label
+     * Get Label.
      *
      * @return string
      */

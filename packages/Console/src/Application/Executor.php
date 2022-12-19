@@ -73,10 +73,10 @@ class Executor implements SectionVisitor
         ActionCollection $actions,
         OptionValueFactory $optionValueFactory
     ) {
-        $this->dispatcher         = $dispatcher;
-        $this->optionParser       = $optionParser;
+        $this->dispatcher = $dispatcher;
+        $this->optionParser = $optionParser;
         $this->usageParserBuilder = $usageParserBuilder;
-        $this->actions            = $actions;
+        $this->actions = $actions;
         $this->optionValueFactory = $optionValueFactory;
     }
 
@@ -94,6 +94,7 @@ class Executor implements SectionVisitor
 
         if ($this->matchedSection === null || $this->matchedInput === null) {
             $this->invalidUsage($argv);
+
             return;
         }
 
@@ -113,11 +114,10 @@ class Executor implements SectionVisitor
         $options = $this->buildOptionCollection($this->root->getOptions())
             ->merge($this->buildOptionCollection($section->getOptions()));
 
-
         $usageDefinitions = $section->getUsageDefinitions();
 
         if (empty($usageDefinitions) && $section->getAction() !== null) {
-            $usageDefinitions = [$section->getName().' '.'[options]'];
+            $usageDefinitions = [$section->getName() . ' [options]'];
         }
 
         foreach ($usageDefinitions as $usageDefinition) {
@@ -130,7 +130,7 @@ class Executor implements SectionVisitor
                 }
 
                 $options = new OptionDefinitionCollection();
-                $args    = [];
+                $args = [];
 
                 foreach ($compare as $command) {
                     $args[] = new Command($command);
@@ -138,7 +138,7 @@ class Executor implements SectionVisitor
 
                 $args[] = new Argument('%', implode(' ', array_slice($this->argv, count($compare))));
 
-                $this->matchedInput   = new Input($args, $options, $this->optionValueFactory);
+                $this->matchedInput = new Input($args, $options, $this->optionValueFactory);
                 $this->matchedSection = $section;
 
                 return false;
@@ -146,8 +146,9 @@ class Executor implements SectionVisitor
                 $parser = $this->usageParserBuilder->createUsageParser($usageDefinition, $options);
 
                 if (($input = $parser->parse($this->argv)) !== false) {
-                    $this->matchedInput   = $input;
+                    $this->matchedInput = $input;
                     $this->matchedSection = $section;
+
                     return false;
                 }
             }

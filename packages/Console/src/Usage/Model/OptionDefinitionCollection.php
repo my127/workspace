@@ -2,14 +2,10 @@
 
 namespace my127\Console\Usage\Model;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-
-class OptionDefinitionCollection implements IteratorAggregate, Countable
+class OptionDefinitionCollection implements \IteratorAggregate, \Countable
 {
     private $options = [];
-    private $map     = [];
+    private $map = [];
 
     public function add(OptionDefinition $optionDefinition)
     {
@@ -29,9 +25,9 @@ class OptionDefinitionCollection implements IteratorAggregate, Countable
         return (isset($this->map[$optionName])) ? $this->map[$optionName] : null;
     }
 
-    public function getIterator(): ArrayIterator
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator($this->options);
+        return new \ArrayIterator($this->options);
     }
 
     public function merge(OptionDefinitionCollection $toMerge)

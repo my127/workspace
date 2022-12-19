@@ -16,8 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class InputTest extends TestCase
 {
-
-    public function test_input_representation()
+    public function testInputRepresentation()
     {
         $input = new Input([
             new Command('foo-cmd'),
@@ -40,7 +39,7 @@ class InputTest extends TestCase
         Assert::assertEquals(StringOptionValue::create('actual-value'), $input->getOption('t'));
     }
 
-    public function test_input_representation_with_short_getters()
+    public function testInputRepresentationWithShortGetters()
     {
         $input = new Input([
             new Command('foo-cmd'),
@@ -63,7 +62,7 @@ class InputTest extends TestCase
         Assert::assertEquals('actual-value', $input->option('t'));
     }
 
-    public function test_default_options()
+    public function testDefaultOptions()
     {
         $optionRepository = new OptionDefinitionCollection();
         $optionRepository->add(
@@ -90,7 +89,7 @@ class InputTest extends TestCase
         Assert::assertEquals(StringOptionValue::create('other-default-value'), $input->getOption('t0'));
     }
 
-    public function test_default_options_with_short_getters()
+    public function testDefaultOptionsWithShortGetters()
     {
         $optionRepository = new OptionDefinitionCollection();
         $optionRepository->add(

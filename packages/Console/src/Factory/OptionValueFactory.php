@@ -2,7 +2,6 @@
 
 namespace my127\Console\Factory;
 
-use InvalidArgumentException;
 use my127\Console\Usage\Model\BooleanOptionValue;
 use my127\Console\Usage\Model\OptionDefinition;
 use my127\Console\Usage\Model\OptionValue;
@@ -34,18 +33,18 @@ class OptionValueFactory
         }
     }
 
-    private function createInvalidTypeException(string $type): InvalidArgumentException
+    private function createInvalidTypeException(string $type): \InvalidArgumentException
     {
-        return new InvalidArgumentException(sprintf(
+        return new \InvalidArgumentException(sprintf(
             'Option type "%s" is invalid. Valid arguments are "%s"',
             $type,
             implode('","', OptionDefinition::TYPES)
         ));
     }
 
-    private function createInvalidBooleanValueException(string $value): InvalidArgumentException
+    private function createInvalidBooleanValueException(string $value): \InvalidArgumentException
     {
-        return new InvalidArgumentException(sprintf(
+        return new \InvalidArgumentException(sprintf(
             'The provided value "%s" not a boolean representation. Valid arguments are "%s"',
             $value,
             implode('","', BooleanOptionValue::VALUES)

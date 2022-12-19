@@ -38,10 +38,11 @@ class InputSequenceFactoryTest extends TestCase
         );
         $this->optionDefinitionCollection->add($this->option);
     }
+
     /**
      * @test
      */
-    public function empty_input_sequence()
+    public function emptyInputSequence()
     {
         $result = $this->inputSequenceFactory->createFrom([''], $this->optionDefinitionCollection);
 
@@ -52,7 +53,7 @@ class InputSequenceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function long_option()
+    public function longOption()
     {
         $result = $this->inputSequenceFactory->createFrom(['--zexample=test'], $this->optionDefinitionCollection);
 
@@ -64,7 +65,7 @@ class InputSequenceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function short_option()
+    public function shortOption()
     {
         $result = $this->inputSequenceFactory->createFrom(['-z=test'], $this->optionDefinitionCollection);
 
@@ -76,7 +77,7 @@ class InputSequenceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function invalid_short_option()
+    public function invalidShortOption()
     {
         $result = $this->inputSequenceFactory->createFrom(['-i=test'], $this->optionDefinitionCollection);
         $this->assertNull($result);
@@ -85,7 +86,7 @@ class InputSequenceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function invalid_long_option()
+    public function invalidLongOption()
     {
         $result = $this->inputSequenceFactory->createFrom(['--invalid=test'], $this->optionDefinitionCollection);
         $this->assertNull($result);
@@ -94,7 +95,7 @@ class InputSequenceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function invalid_short_option_for_help()
+    public function invalidShortOptionForHelp()
     {
         $result = $this->inputSequenceFactory->createFrom(['-i=test'], $this->optionDefinitionCollection, true);
 
@@ -105,7 +106,7 @@ class InputSequenceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function invalid_long_option_for_help()
+    public function invalidLongOptionForHelp()
     {
         $result = $this->inputSequenceFactory->createFrom(['--invalid=test'], $this->optionDefinitionCollection, true);
 

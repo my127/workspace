@@ -9,7 +9,7 @@ class Context implements Stateful
     private $currentState = null;
 
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */
@@ -19,9 +19,7 @@ class Context implements Stateful
     }
 
     /**
-     * Set Current State
-     *
-     * @param State $state
+     * Set Current State.
      *
      * @return void
      */

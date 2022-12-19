@@ -52,15 +52,15 @@ class ContextualHelpPlugin implements Plugin
             ->on(
                 Executor::EVENT_INVALID_USAGE,
                 function (InvalidUsageEvent $e) {
-                    $argv  = $e->getInputSequence();
+                    $argv = $e->getInputSequence();
                     $parts = [];
 
                     while ($positional = $argv->pop()) {
                         $parts[] = $positional;
                     }
 
-                    $name    = implode(' ', $parts);
-                    $section = $this->root->contains($name)?$this->root->get($name):$this->root;
+                    $name = implode(' ', $parts);
+                    $section = $this->root->contains($name) ? $this->root->get($name) : $this->root;
 
                     $this->displayHelpPage($section);
                 }
@@ -70,7 +70,7 @@ class ContextualHelpPlugin implements Plugin
     private function displayHelpPage(Section $section): void
     {
         // Description
-        echo "\n\033[1m".($section->getDescription()?:$section->getName())."\033[0m\n\n";
+        echo "\n\033[1m" . ($section->getDescription() ?: $section->getName()) . "\033[0m\n\n";
 
         // Usage
         if (count($section->getUsageDefinitions()) > 0) {
@@ -105,7 +105,7 @@ class ContextualHelpPlugin implements Plugin
 
         echo "\033[33mSub Commands:\033[0m\n";
 
-        $lines   = [];
+        $lines = [];
         $padding = 0;
 
         /**
@@ -114,8 +114,8 @@ class ContextualHelpPlugin implements Plugin
         foreach ($children as $child) {
             $name = $child->getName();
             $line = [
-                'name'        => substr($name, strrpos($name, ' ')),
-                'description' => $child->getDescription()
+                'name' => substr($name, strrpos($name, ' ')),
+                'description' => $child->getDescription(),
             ];
 
             if (($length = strlen($name)) > $padding) {
@@ -128,7 +128,7 @@ class ContextualHelpPlugin implements Plugin
         $padding += 4;
 
         foreach ($lines as $line) {
-            echo '  '."\033[32m".str_pad($line['name'], $padding) . "\033[0m" . $line['description'] . "\n";
+            echo '  ' . "\033[32m" . str_pad($line['name'], $padding) . "\033[0m" . $line['description'] . "\n";
         }
 
         echo "\n";
@@ -137,7 +137,7 @@ class ContextualHelpPlugin implements Plugin
     private function displayOptionsHelp(string $heading, array $options): void
     {
         $padding = 0;
-        $lines   = [];
+        $lines = [];
 
         /**
          * @var OptionDefinition $option
@@ -145,10 +145,10 @@ class ContextualHelpPlugin implements Plugin
         foreach ($this->getOptionCollection($options) as $option) {
             $description = $option->getDescription();
 
-            $definition  = '  ';
-            $definition .= $option->getShortName()?'-'.$option->getShortName().', ':'    ';
-            $definition .= $option->getLongName()?'--'.$option->getLongName():'';
-            $definition .= $option->getType() == OptionDefinition::TYPE_VALUE ? '=<'.$option->getArgument().'>':'';
+            $definition = '  ';
+            $definition .= $option->getShortName() ? '-' . $option->getShortName() . ', ' : '    ';
+            $definition .= $option->getLongName() ? '--' . $option->getLongName() : '';
+            $definition .= $option->getType() == OptionDefinition::TYPE_VALUE ? '=<' . $option->getArgument() . '>' : '';
 
             if (($length = strlen($definition)) > $padding) {
                 $padding = $length;
@@ -160,10 +160,10 @@ class ContextualHelpPlugin implements Plugin
         $padding += 4;
 
         if (!empty($lines)) {
-            echo $heading."\n";
+            echo $heading . "\n";
 
             foreach ($lines as $line) {
-                echo "\033[32m".str_pad($line['definition'], $padding) ."\033[0m". $line['description'] . "\n";
+                echo "\033[32m" . str_pad($line['definition'], $padding) . "\033[0m" . $line['description'] . "\n";
             }
 
             echo "\n";

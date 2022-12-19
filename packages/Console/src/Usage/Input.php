@@ -2,26 +2,21 @@
 
 namespace my127\Console\Usage;
 
-use ArrayAccess;
-use ArrayIterator;
-use Countable;
-use InvalidArgumentException;
-use IteratorAggregate;
 use my127\Console\Factory\OptionValueFactory;
 use my127\Console\Usage\Exception\NoSuchOptionException;
 use my127\Console\Usage\Model\Argument;
 use my127\Console\Usage\Model\Command;
+use my127\Console\Usage\Model\Option;
 use my127\Console\Usage\Model\OptionDefinition;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
-use my127\Console\Usage\Model\Option;
 use my127\Console\Usage\Model\OptionValue;
 
-class Input implements ArrayAccess, Countable, IteratorAggregate
+class Input implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     private $arguments = [];
-    private $options   = [];
-    private $command   = [];
-    private $args      = [];
+    private $options = [];
+    private $command = [];
+    private $args = [];
 
     /**
      * @var OptionValueFactory
@@ -30,8 +25,6 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * @param mixed[] $args
-     * @param OptionDefinitionCollection $optionRepository
-     * @param OptionValueFactory $optionValueFactory
      */
     public function __construct(
         $args,
@@ -60,6 +53,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
         if ($argument instanceof OptionValue) {
             return $argument->value();
         }
+
         return $argument;
     }
 
@@ -70,6 +64,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
         }
 
         $values = $this->arguments[$argument];
+
         return (count($values) == 1) ? $values[0] : $values;
     }
 
@@ -79,6 +74,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
         if ($option instanceof OptionValue) {
             return $option->value();
         }
+
         return $option;
     }
 
@@ -89,11 +85,12 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
         }
 
         $values = $this->options[$option];
+
         return (count($values) == 1) ? $values[0] : $values;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function offsetExists($offset): bool
     {
@@ -101,7 +98,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function offsetGet($offset): mixed
     {
@@ -109,7 +106,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function offsetSet($offset, $value): void
     {
@@ -117,7 +114,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function offsetUnset($offset): void
     {
@@ -125,7 +122,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function count(): int
     {
@@ -133,15 +130,15 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function getIterator(): ArrayIterator
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator($this->args);
+        return new \ArrayIterator($this->args);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __toString()
     {
@@ -160,25 +157,25 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     {
         $data =
         [
-            'argv'      => array_map(
+            'argv' => array_map(
                 function ($arg) {
                     return (string) $arg;
                 },
                 $this->args
             ),
-            'command'   => $this->command,
+            'command' => $this->command,
             'arguments' => array_map(
                 function ($values) {
                     return count($values) == 1 ? $values[0] : $values;
                 },
                 $this->arguments
             ),
-            'options'   => array_map(
+            'options' => array_map(
                 function ($values) {
                     return count($values) == 1 ? $values[0] : $values;
                 },
                 $this->options
-            )
+            ),
         ];
 
         return json_encode($data, JSON_PRETTY_PRINT);
@@ -195,15 +192,15 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
 
         foreach ($this->args as $arg) {
             switch (true) {
-                case ($arg instanceof Command):
+                case $arg instanceof Command:
                     $this->command[] = $arg->getName();
                     break;
 
-                case ($arg instanceof Argument):
+                case $arg instanceof Argument:
                     $this->arguments[$arg->getName()][] = $arg->getValue();
                     break;
 
-                case ($arg instanceof Option):
+                case $arg instanceof Option:
                     $this->options[$this->getOptionName($arg)][] = $this->createOptionValue($arg);
                     break;
             }
@@ -220,7 +217,7 @@ class Input implements ArrayAccess, Countable, IteratorAggregate
     {
         $definition = $option->getDefinition();
 
-        return $definition->getLongName()?:$definition->getShortName();
+        return $definition->getLongName() ?: $definition->getShortName();
     }
 
     private function createOptionValue(Option $arg): OptionValue

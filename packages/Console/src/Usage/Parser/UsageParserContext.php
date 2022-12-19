@@ -5,24 +5,23 @@ namespace my127\Console\Usage\Parser;
 use my127\FSM\State\State;
 use my127\FSM\Stateful;
 use my127\FSM\Transition\Transition;
-use SplObjectStorage;
 
 class UsageParserContext implements Stateful
 {
     private $currentState = null;
 
     /**
-     * @var SplObjectStorage
+     * @var \SplObjectStorage
      */
     private $data;
 
     public function __construct()
     {
-        $this->data = new SplObjectStorage();
+        $this->data = new \SplObjectStorage();
     }
 
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */
@@ -32,9 +31,7 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * Set Current State
-     *
-     * @param State $state
+     * Set Current State.
      *
      * @return void
      */
@@ -44,8 +41,6 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * @param Transition $transition
-     *
      * @return mixed
      */
     public function getData(Transition $transition)
@@ -54,8 +49,7 @@ class UsageParserContext implements Stateful
     }
 
     /**
-     * @param Transition $transition
-     * @param mixed      $data
+     * @param mixed $data
      */
     public function setData(Transition $transition, $data)
     {
@@ -66,7 +60,7 @@ class UsageParserContext implements Stateful
     {
         $data = $this->data;
 
-        $this->data = new SplObjectStorage();
+        $this->data = new \SplObjectStorage();
         $this->data->addAll($data);
     }
 }

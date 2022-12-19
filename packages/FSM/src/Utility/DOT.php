@@ -30,16 +30,14 @@ class DOT implements StateVisitor
     private $output = '';
 
     /**
-     * State/Transition Graph to DOT
+     * State/Transition Graph to DOT.
      */
     public function __construct()
     {
     }
 
     /**
-     * Convert graph to DOT format
-     *
-     * @param StateVisitorClient $graph
+     * Convert graph to DOT format.
      *
      * @return string
      */
@@ -55,9 +53,7 @@ class DOT implements StateVisitor
     }
 
     /**
-     * Visit State
-     *
-     * @param State $state
+     * Visit State.
      *
      * @return void
      */
@@ -75,7 +71,7 @@ class DOT implements StateVisitor
 
         $this->write(
             sprintf(
-                '%s ['.$this->formatAttributes($attributes).'];',
+                '%s [' . $this->formatAttributes($attributes) . '];',
                 $stateId,
                 $stateId
             )
@@ -87,7 +83,7 @@ class DOT implements StateVisitor
                     '%s -> %s [label="%s"];',
                     $stateId,
                     $this->getStateId($transition->getTo()),
-                    $this->getTransitionId($transition).'('.(string)$transition.')'
+                    $this->getTransitionId($transition) . '(' . (string) $transition . ')'
                 )
             );
         }
@@ -98,37 +94,35 @@ class DOT implements StateVisitor
         $formatted = [];
 
         foreach ($attributes as $k => $v) {
-            $formatted[] = $k.'="'.$v.'"';
+            $formatted[] = $k . '="' . $v . '"';
         }
 
         return implode(' ', $formatted);
     }
 
     /**
-     * Append output
+     * Append output.
      *
      * @param string $output
      */
     private function write($output)
     {
-        $this->output .= $output."\n";
+        $this->output .= $output . "\n";
     }
 
     /**
-     * Prepare for outputting a new graph
+     * Prepare for outputting a new graph.
      */
     private function reset()
     {
-        $this->states           = [];
-        $this->lastStateId      = 0;
+        $this->states = [];
+        $this->lastStateId = 0;
         $this->lastTransitionId = 0;
-        $this->output           = '';
+        $this->output = '';
     }
 
     /**
-     * Get State ID
-     *
-     * @param State $state
+     * Get State ID.
      *
      * @return string
      */
@@ -137,21 +131,19 @@ class DOT implements StateVisitor
         $hash = spl_object_hash($state);
 
         if (!isset($this->states[$hash])) {
-            $this->states[$hash] = 'S'.(++$this->lastStateId);
+            $this->states[$hash] = 'S' . (++$this->lastStateId);
         }
 
         return $this->states[$hash];
     }
 
     /**
-     * Get Transition ID
-     *
-     * @param Transition $transition
+     * Get Transition ID.
      *
      * @return string
      */
     private function getTransitionId(Transition $transition)
     {
-        return 'T'.(++$this->lastTransitionId);
+        return 'T' . (++$this->lastTransitionId);
     }
 }

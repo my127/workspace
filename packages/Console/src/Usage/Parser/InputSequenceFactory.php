@@ -2,9 +2,9 @@
 
 namespace my127\Console\Usage\Parser;
 
+use my127\Console\Usage\Model\Option;
 use my127\Console\Usage\Model\OptionDefinition;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
-use my127\Console\Usage\Model\Option;
 
 class InputSequenceFactory
 {
@@ -12,8 +12,8 @@ class InputSequenceFactory
         $symbols,
         OptionDefinitionCollection $definitionRepository,
         ?bool $ignoreMissingOption = false
-    ) : ?InputSequence {
-        $options    = [];
+    ): ?InputSequence {
+        $options = [];
         $positional = [];
 
         for ($i = 0, $max = count($symbols); $i < $max; ++$i) {
@@ -50,7 +50,7 @@ class InputSequenceFactory
 
             if ($symbol[1] == '-') {
                 $parts = explode('=', substr($symbol, 2), 2);
-                $name  = $parts[0];
+                $name = $parts[0];
 
                 $definition = $definitionRepository->find($name);
 
@@ -58,6 +58,7 @@ class InputSequenceFactory
                     if ($ignoreMissingOption) {
                         continue;
                     }
+
                     return null;
                 }
 
@@ -80,14 +81,15 @@ class InputSequenceFactory
             $shortOptions = substr($symbol, 1);
 
             while (!empty($shortOptions)) {
-                $name         = $shortOptions[0];
+                $name = $shortOptions[0];
                 $shortOptions = substr($shortOptions, 1);
-                $definition   = $definitionRepository->find($name);
+                $definition = $definitionRepository->find($name);
 
                 if (!$definition) {
                     if ($ignoreMissingOption) {
                         continue;
                     }
+
                     return null;
                 }
 
@@ -100,7 +102,7 @@ class InputSequenceFactory
                         $value = null;
 
                         if (!empty($shortOptions)) {
-                            $value        = ($shortOptions[0] == '=') ? substr($shortOptions, 1) : $shortOptions;
+                            $value = ($shortOptions[0] == '=') ? substr($shortOptions, 1) : $shortOptions;
                             $shortOptions = '';
                         }
 

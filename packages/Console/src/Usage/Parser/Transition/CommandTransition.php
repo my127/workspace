@@ -8,8 +8,8 @@ use my127\FSM\Runner\BacktrackingRunner;
 use my127\FSM\Runner\InputSequence;
 use my127\FSM\Runner\Runner;
 use my127\FSM\State\State;
-use my127\FSM\Stateful;
 use my127\FSM\State\StateVisitor;
+use my127\FSM\Stateful;
 use my127\FSM\Transition\Transition;
 
 class CommandTransition implements Transition
@@ -24,10 +24,6 @@ class CommandTransition implements Transition
      */
     private $to;
 
-    /**
-     * @param $command
-     * @param $to
-     */
     public function __construct($command, $to)
     {
         $this->command = $command;
@@ -35,7 +31,7 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getTo()
     {
@@ -43,7 +39,7 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setTo(State $state)
     {
@@ -51,7 +47,7 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function accept(StateVisitor $visitor, &$visited = [])
     {
@@ -59,11 +55,11 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      *
-     * @var InputSequence      $input
-     * @var UsageParserContext $context
-     * @var BacktrackingRunner $runner
+     * @var InputSequence
+     * @var UsageParserContext
+     * @var BacktrackingRunner
      */
     public function can($input, Stateful $context, Runner $runner)
     {
@@ -71,11 +67,11 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      *
-     * @var InputSequence      $input
-     * @var UsageParserContext $context
-     * @var BacktrackingRunner $runner
+     * @var InputSequence
+     * @var UsageParserContext
+     * @var BacktrackingRunner
      */
     public function apply($input, Stateful $context, Runner $runner)
     {
@@ -85,7 +81,7 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function copy(&$visited = [])
     {
@@ -93,7 +89,7 @@ class CommandTransition implements Transition
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __toString()
     {

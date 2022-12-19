@@ -2,10 +2,8 @@
 
 namespace my127\Console\Usage\Scanner;
 
-use Exception;
-
 /**
- * Command & Usage Scanner
+ * Command & Usage Scanner.
  */
 class Scanner
 {
@@ -23,7 +21,7 @@ class Scanner
         '<' => true,
         '>' => true,
         '.' => true,
-        ' ' => true
+        ' ' => true,
     ];
 
     /**
@@ -32,36 +30,36 @@ class Scanner
     private $generator;
 
     /**
-     * Peeked tokens
+     * Peeked tokens.
      *
      * @var Token
      */
     private $peeked = null;
 
     /**
-     * Command & Usage Scanner
+     * Command & Usage Scanner.
      *
      * @param string $text
      */
     public function __construct($text)
     {
-        $this->text      = $text;
-        $this->length    = strlen($text);
+        $this->text = $text;
+        $this->length = strlen($text);
         $this->generator = $this->getGenerator();
     }
 
     /**
-     * Peek Next Token
+     * Peek Next Token.
      *
      * @return Token
      */
     public function peek()
     {
-        return $this->peeked?:$this->peeked = $this->pop();
+        return $this->peeked ?: $this->peeked = $this->pop();
     }
 
     /**
-     * Fetch Next Token
+     * Fetch Next Token.
      *
      * @return Token
      */
@@ -69,11 +67,13 @@ class Scanner
     {
         if ($token = $this->peeked) {
             $this->peeked = null;
+
             return $token;
         }
 
         $token = $this->generator->current();
         $this->generator->next();
+
         return $token;
     }
 
@@ -150,7 +150,7 @@ class Scanner
                             }
 
                             if (strlen($optionName) == 0 || $optionName[0] == '-') {
-                                throw new Exception('Expecting long option name');
+                                throw new \Exception('Expecting long option name');
                             }
 
                             $token = new Token(Token::T_LONG_OPTION, $optionName);
@@ -187,7 +187,7 @@ class Scanner
 
                 case '.':
                     if (strlen($this->only('.')) != 3) {
-                        throw new Exception("Unexpected Character");
+                        throw new \Exception('Unexpected Character');
                     }
 
                     $token = new Token(Token::T_ELLIPSIS, '...');
@@ -195,7 +195,7 @@ class Scanner
                     break;
 
                 default:
-                    $text  = $this->until($this->reserved);
+                    $text = $this->until($this->reserved);
                     $token = new Token(strtoupper($text) == 'OPTIONS' ? Token::T_OPTIONS : TOKEN::T_STRING, $text);
             }
 
@@ -210,12 +210,12 @@ class Scanner
     }
 
     /**
-     * isLetter
+     * isLetter.
      *
      * Test and consume if current position is a letter, otherwise
      * return false.
      *
-     * @return string|false  Current character if letter, otherwise false
+     * @return string|false Current character if letter, otherwise false
      */
     private function isLetter()
     {
@@ -243,14 +243,14 @@ class Scanner
     }
 
     /**
-     * is
+     * is.
      *
      * Test and consume if current position is a match, otherwise
      * return false.
      *
      * @param string $match Single character to match against
      *
-     * @return string|false  Current character if match, otherwise false
+     * @return string|false Current character if match, otherwise false
      */
     private function is($match)
     {
@@ -264,15 +264,13 @@ class Scanner
     }
 
     /**
-     * Consume characters only while they match
-     *
-     * @param $seek
+     * Consume characters only while they match.
      *
      * @return string
      */
     private function only($seek)
     {
-        $seek  = (is_array($seek))?$seek:[$seek => true];
+        $seek = (is_array($seek)) ? $seek : [$seek => true];
         $value = '';
 
         while (($this->i < $this->length) && (isset($seek[$char = $this->text[$this->i]]))) {
@@ -286,15 +284,13 @@ class Scanner
     }
 
     /**
-     * Consume characters until we find a match
-     *
-     * @param $seek
+     * Consume characters until we find a match.
      *
      * @return string
      */
     private function until($seek)
     {
-        $seek  = (is_array($seek))?$seek:[$seek => true];
+        $seek = (is_array($seek)) ? $seek : [$seek => true];
         $value = '';
 
         while (($this->i < $this->length) && (!isset($seek[$char = $this->text[$this->i]]))) {

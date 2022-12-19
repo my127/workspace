@@ -2,8 +2,8 @@
 
 namespace Test\my127\FSM\Runner;
 
-use my127\FSM\Runner\BacktrackingRunner;
 use my127\FSM\Context;
+use my127\FSM\Runner\BacktrackingRunner;
 use my127\FSM\State\DefaultState;
 use my127\FSM\State\State;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +34,7 @@ class BacktrackingRunnerTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_the_correct_path_to_reach_a_terminal_state_given_valid_input()
+    public function itFindsTheCorrectPathToReachATerminalStateGivenValidInput()
     {
         $this->assertEquals(['S3', 'S5'], $this->fsm->input(['t1', 't2']));
     }
@@ -42,7 +42,7 @@ class BacktrackingRunnerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_given_invalid_input()
+    public function itReturnsFalseGivenInvalidInput()
     {
         $this->assertEquals(false, $this->fsm->input(['t1', 't3']));
     }
@@ -50,7 +50,7 @@ class BacktrackingRunnerTest extends TestCase
     /**
      * @test
      */
-    public function it_must_end_on_a_terminal_state_to_return_result()
+    public function itMustEndOnATerminalStateToReturnResult()
     {
         $this->assertEquals(['S3', 'S5'], $this->fsm->input(['t1', 't2']));
         $this->assertEquals(false, $this->fsm->input(['t1']));

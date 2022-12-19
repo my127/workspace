@@ -14,7 +14,7 @@ class BeforeActionEvent extends Event
 
     public function __construct(Input $input, Section $section)
     {
-        $this->input   = $input;
+        $this->input = $input;
         $this->section = $section;
     }
 

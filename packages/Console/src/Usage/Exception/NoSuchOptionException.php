@@ -2,9 +2,7 @@
 
 namespace my127\Console\Usage\Exception;
 
-use Exception;
-
-class NoSuchOptionException extends Exception
+class NoSuchOptionException extends \Exception
 {
     public static function createFromOptionName(string $option): self
     {

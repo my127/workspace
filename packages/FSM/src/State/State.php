@@ -2,19 +2,16 @@
 
 namespace my127\FSM\State;
 
-use my127\FSM\State\StateTransitionBuilder;
-use my127\FSM\State\StateVisitor;
-use my127\FSM\State\StateVisitorClient;
 use my127\FSM\Transition\Transition;
 
 interface State extends StateVisitorClient
 {
-    const TYPE_INITIAL  = 'initial';
-    const TYPE_NORMAL   = 'normal';
-    const TYPE_TERMINAL = 'terminal';
+    public const TYPE_INITIAL = 'initial';
+    public const TYPE_NORMAL = 'normal';
+    public const TYPE_TERMINAL = 'terminal';
 
     /**
-     * Add Transition
+     * Add Transition.
      *
      * Usage :-
      *
@@ -31,7 +28,7 @@ interface State extends StateVisitorClient
     public function addTransition($transition, State $to = null, $guard = null, $action = null);
 
     /**
-     * Set Type
+     * Set Type.
      *
      * @param string $type
      *
@@ -40,35 +37,35 @@ interface State extends StateVisitorClient
     public function setType($type);
 
     /**
-     * Is Initial
+     * Is Initial.
      *
      * @return bool
      */
     public function isInitial();
 
     /**
-     * Is Normal
+     * Is Normal.
      *
      * @return bool
      */
     public function isNormal();
 
     /**
-     * Is Terminal
+     * Is Terminal.
      *
      * @return bool
      */
     public function isTerminal();
 
     /**
-     * Get Transitions
+     * Get Transitions.
      *
      * @return Transition[]
      */
     public function getTransitions();
 
     /**
-     * Create Transition
+     * Create Transition.
      *
      * Fluid counterpart to addTransition
      *
@@ -80,7 +77,7 @@ interface State extends StateVisitorClient
     public function when($label, callable $guard = null);
 
     /**
-     * Copy State
+     * Copy State.
      *
      * Perform a deep clone
      *
@@ -91,17 +88,16 @@ interface State extends StateVisitorClient
     public function copy(&$visited = []);
 
     /**
-     * Accept Visitor
+     * Accept Visitor.
      *
-     * @param StateVisitor $visitor
-     * @param State[]      $visited
+     * @param State[] $visited
      *
      * @return void
      */
     public function accept(StateVisitor $visitor, &$visited = []);
 
     /**
-     * Get Label
+     * Get Label.
      *
      * @return string
      */

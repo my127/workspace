@@ -2,14 +2,11 @@
 
 namespace my127\FSM\Runner;
 
-use Exception;
 use my127\FSM\Context;
-use my127\FSM\Runner\Runner;
 use my127\FSM\State\State;
 use my127\FSM\State\StateException;
 use my127\FSM\Stateful;
 use my127\FSM\Transition\Transition;
-use Traversable;
 
 class SequenceRunner implements Runner
 {
@@ -24,12 +21,11 @@ class SequenceRunner implements Runner
     private $originalContext;
 
     /**
-     * Sequence Runner
+     * Sequence Runner.
      *
      * Treats input as a sequence of symbols, in turn each is passed to the machine
      * taking the first accepting path at each state.
      *
-     * @param State    $initialState
      * @param Stateful $context
      */
     public function __construct(State $initialState, Stateful $context = null)
@@ -44,7 +40,7 @@ class SequenceRunner implements Runner
     }
 
     /**
-     * Get Context
+     * Get Context.
      *
      * @return Stateful
      */
@@ -54,9 +50,7 @@ class SequenceRunner implements Runner
     }
 
     /**
-     * Set Context
-     *
-     * @param Stateful $context
+     * Set Context.
      *
      * @return void
      */
@@ -66,7 +60,7 @@ class SequenceRunner implements Runner
     }
 
     /**
-     * Transitions available from current state
+     * Transitions available from current state.
      *
      * @return Transition[]
      */
@@ -75,11 +69,10 @@ class SequenceRunner implements Runner
         return $this->context->getCurrentState()->getTransitions();
     }
 
-
     /**
-     * Input
-
-     * @param array|Traversable $input
+     * Input.
+     *
+     * @param array|\Traversable $input
      *
      * @return mixed[]|false
      */
@@ -113,7 +106,7 @@ class SequenceRunner implements Runner
     }
 
     /**
-     * Advance
+     * Advance.
      *
      * Attempt to advance the machine with the given input, optionally try
      * and follow the exact path as given by the transition.
@@ -122,27 +115,22 @@ class SequenceRunner implements Runner
      * @param Transition $transition Take this path, otherwise try all paths
      *
      * @return mixed
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     private function apply($input = null, Transition $transition = null)
     {
         $state = $this->context->getCurrentState();
 
         if ($transition === null && !($transition = $this->can($input))) {
-            throw new StateException(
-                sprintf(
-                    'No transition from %s accepted %s',
-                    (string)$state,
-                    $input
-                )
-            );
+            throw new StateException(sprintf('No transition from %s accepted %s', (string) $state, $input));
         }
 
         return $transition->apply($input, $this->context, $this);
     }
 
     /**
-     * Can Advance
+     * Can Advance.
      *
      * Determine if the machine can be advanced, if so return the
      * valid transition.
@@ -156,7 +144,8 @@ class SequenceRunner implements Runner
      * @param Transition $transition If specified only this transition will be tested
      *
      * @return Transition|false
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     private function can($input, $transition = null)
     {
@@ -178,9 +167,7 @@ class SequenceRunner implements Runner
     }
 
     /**
-     * Alias of input
-     *
-     * @param $input
+     * Alias of input.
      *
      * @return mixed
      */
@@ -190,7 +177,7 @@ class SequenceRunner implements Runner
     }
 
     /**
-     * Get Current State
+     * Get Current State.
      *
      * @return State
      */

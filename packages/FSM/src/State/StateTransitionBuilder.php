@@ -2,52 +2,48 @@
 
 namespace my127\FSM\State;
 
-use Exception;
-use my127\FSM\Transition\DefaultTransition;
 use my127\FSM\Definition;
-use my127\FSM\State\State;
+use my127\FSM\Transition\DefaultTransition;
 
 class StateTransitionBuilder
 {
     /**
-     * Label
+     * Label.
      *
      * @var string
      */
     private $label = null;
 
     /**
-     * From
+     * From.
      *
      * @var State
      */
     private $from;
 
     /**
-     * To
+     * To.
      *
      * @var State
      */
     private $to = null;
 
     /**
-     * Guard
+     * Guard.
      *
      * @var callable
      */
     private $guard = null;
 
     /**
-     * Action
+     * Action.
      *
      * @var callable
      */
     private $action = null;
 
     /**
-     * State Transition Builder
-     *
-     * @param State $from
+     * State Transition Builder.
      */
     public function __construct(State $from)
     {
@@ -55,7 +51,7 @@ class StateTransitionBuilder
     }
 
     /**
-     * To
+     * To.
      *
      * @param State $state
      *
@@ -69,7 +65,7 @@ class StateTransitionBuilder
     }
 
     /**
-     * When
+     * When.
      *
      * @param string   $label
      * @param callable $guard
@@ -85,7 +81,7 @@ class StateTransitionBuilder
     }
 
     /**
-     * Then
+     * Then.
      *
      * @param string $action
      *
@@ -99,19 +95,20 @@ class StateTransitionBuilder
     }
 
     /**
-     * Done
+     * Done.
      *
      * @return Definition
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function done()
     {
         if ($this->to === null) {
-            throw new Exception('Missing To State');
+            throw new \Exception('Missing To State');
         }
 
         if ($this->label == null) {
-            throw new Exception('Missing Label');
+            throw new \Exception('Missing Label');
         }
 
         $this->from->addTransition(new DefaultTransition($this->label, $this->to, $this->guard, $this->action));

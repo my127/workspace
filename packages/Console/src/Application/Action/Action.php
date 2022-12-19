@@ -7,5 +7,6 @@ use my127\Console\Usage\Input;
 interface Action
 {
     public function __invoke(Input $input);
+
     public static function getName(): string;
 }

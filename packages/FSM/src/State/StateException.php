@@ -2,9 +2,6 @@
 
 namespace my127\FSM\State;
 
-use Exception;
-
-class StateException extends Exception
+class StateException extends \Exception
 {
-
 }

@@ -120,7 +120,7 @@ class InputSequenceFactoryTest extends TestCase
     public function doubleDashes()
     {
         $result = $this->inputSequenceFactory->createFrom(['--'], $this->optionDefinitionCollection);
-        
+
         $this->assertInstanceOf(InputSequence::class, $result);
         $this->assertCount(0, $result);
     }

@@ -256,6 +256,7 @@ class UsageParserBuilder
 
     private function parseDoubleDash()
     {
+        throw new \Exception('Double-dash cannot be specified in usage definition.');
     }
 
     private function parseSingleDash()

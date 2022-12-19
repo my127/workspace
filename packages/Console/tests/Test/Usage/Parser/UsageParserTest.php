@@ -331,4 +331,58 @@ class UsageParserTest extends TestCase
         $result = usage('[-hv] foo bar', '--unknown foo bar');
         $this->assertFalse($result);
     }
+
+    /**
+     * @test
+     */
+    public function doubleDashesCanotBeDefinedInUsage()
+    {
+        $this->expectException('Exception');
+        $result = usage('foo bar -- <more>', 'foo bar -- more');
+    }
+
+    /**
+     * @test
+     */
+    public function doubleDashesHaveNoEffectBetweeCommands()
+    {
+        $result = usage('foo bar', 'foo -- bar');
+        $this->assertIsArray($result);
+        $this->assertTrue(count($result) == 2);
+        $this->assertEquals("command('foo')", $result[0]);
+        $this->assertEquals("command('bar')", $result[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function doubleDashesHaveNoEffectBetweenArguments()
+    {
+        $result = usage('foo bar <val1> <val2> <val3> <val4>', 'foo bar val1 val2 -- val3 val4');
+        $this->assertIsArray($result);
+        $this->assertTrue(count($result) == 6);
+        $this->assertEquals("command('foo')", $result[0]);
+        $this->assertEquals("command('bar')", $result[1]);
+        $this->assertEquals("argument('val1', 'val1')", $result[2]);
+        $this->assertEquals("argument('val2', 'val2')", $result[3]);
+        $this->assertEquals("argument('val3', 'val3')", $result[4]);
+        $this->assertEquals("argument('val4', 'val4')", $result[5]);
+    }
+
+    /**
+     * @test
+     */
+    public function allSymbolsAfterDoubleDashesAreTreatedAsArguments()
+    {
+        $result = usage('foo bar [--opt1] <val1> <val2> <val3> <val4>', 'foo bar --opt1 -- --opt1 -o this that');
+        $this->assertIsArray($result);
+        $this->assertTrue(count($result) == 7);
+        $this->assertEquals("command('foo')", $result[0]);
+        $this->assertEquals("command('bar')", $result[1]);
+        $this->assertEquals("option('opt1', 'true')", $result[2]);
+        $this->assertEquals("argument('val1', '--opt1')", $result[3]);
+        $this->assertEquals("argument('val2', '-o')", $result[4]);
+        $this->assertEquals("argument('val3', 'this')", $result[5]);
+        $this->assertEquals("argument('val4', 'that')", $result[6]);
+    }
 }

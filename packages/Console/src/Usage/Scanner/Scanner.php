@@ -136,8 +136,9 @@ class Scanner
                         case $this->is('-'):
                             // long option or double dash
 
-                            if (($this->i >= $this->length) || $this->is(' ')) {
+                            if (($this->i >= $this->length) || $this->is(' ') || $this->is(']')) {
                                 $token = new Token(Token::T_DOUBLE_DASH, '--');
+                                $this->i -= 2;
                                 break;
                             }
 

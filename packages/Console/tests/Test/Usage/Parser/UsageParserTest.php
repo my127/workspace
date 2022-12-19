@@ -335,16 +335,28 @@ class UsageParserTest extends TestCase
     /**
      * @test
      */
-    public function doubleDashesCanotBeDefinedInUsage()
+    public function doubleDashesCannotBeRequiredInUsage()
     {
         $this->expectException('Exception');
-        $result = usage('foo bar -- <more>', 'foo bar -- more');
+        $result = usage('foo -- bar', '');
     }
 
     /**
      * @test
      */
-    public function doubleDashesHaveNoEffectBetweeCommands()
+    public function doubleDashesCanBeOptionalInUsage()
+    {
+        $result = usage('foo [--] bar', 'foo -- bar');
+        $this->assertIsArray($result);
+        $this->assertTrue(count($result) == 2);
+        $this->assertEquals("command('foo')", $result[0]);
+        $this->assertEquals("command('bar')", $result[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function doubleDashesHaveNoEffectBetweenCommands()
     {
         $result = usage('foo bar', 'foo -- bar');
         $this->assertIsArray($result);

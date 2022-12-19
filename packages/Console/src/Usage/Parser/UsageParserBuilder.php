@@ -256,7 +256,10 @@ class UsageParserBuilder
 
     private function parseDoubleDash()
     {
-        throw new \Exception('Double-dash cannot be specified in usage definition.');
+        $this->expect(Token::T_DOUBLE_DASH);
+        if ($this->mode == self::MODE_REQUIRED) {
+            throw new \Exception('Double-dash cannot be required in usage definition as double-dashes in command are discarded.');
+        }
     }
 
     private function parseSingleDash()

@@ -5,7 +5,7 @@ namespace my127\Workspace\Types\Attribute;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Utility\Arr;
 
-class Collection implements \ArrayAccess
+class Collection
 {
     /** @var mixed[][] */
     private $attributes = [];
@@ -81,49 +81,6 @@ class Collection implements \ArrayAccess
     private function isExpression($value): bool
     {
         return is_string($value) && $value != '' && $value[0] == '=';
-    }
-
-    public function offsetExists($offset): bool
-    {
-        if ($this->cache === null) {
-            $this->buildAttributeCache();
-        }
-
-        $array = &$this->cache;
-
-        if (strpos($offset, '.') === false) {
-            return array_key_exists($offset, $array);
-        }
-
-        $segments = explode('.', $offset);
-        krsort($segments);
-
-        while (($segment = array_pop($segments)) !== null) {
-            if (!array_key_exists($segment, $array)) {
-                return false;
-            }
-
-            $array = &$array[$segment];
-        }
-
-        return true;
-    }
-
-    public function offsetGet($offset): mixed
-    {
-        return $this->get($offset);
-    }
-
-    public function offsetSet($offset, $value): void
-    {
-        $this->set($offset, $value);
-    }
-
-    public function offsetUnset($offset): void
-    {
-        foreach ($this->attributes as &$attributes) {
-            Arr::forget($attributes, $offset);
-        }
     }
 
     private function buildAttributeCache()

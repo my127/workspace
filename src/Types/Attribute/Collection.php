@@ -33,9 +33,10 @@ class Collection
         $this->cache = null;
         $this->attributes[$precedence] = array_replace_recursive($this->attributes[$precedence], $attributes);
         $this->attributeMetadata = array_merge_recursive(
+            $this->attributeMetadata,
             array_fill_keys(
                 $this->getAllAttributeKeys($attributes), [0 => ['source' => $source]]
-            ), $this->attributeMetadata
+            )
         );
     }
 
@@ -95,7 +96,7 @@ class Collection
 
     public function getAttributeMetadata(string $key): mixed
     {
-        return this->attributeMetadata[$key] ?? null;
+        return $this->attributeMetadata[$key] ?? null;
     }
 
     private function getAllAttributeKeys($attributes, $parent = null): array

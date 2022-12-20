@@ -134,22 +134,22 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                     $this->workspace->run('install --step=overlay');
                     $this->workspace->run('install --step=prepare');
                 });
-
-            $this->application->section('config dump')
-                ->option('--key=<key>   Attribute key to dump.')
-                ->usage('config dump --key=<key>')
-                ->action(function (Input $input) use ($environment) {
-                    $key = $input->getOption('key');
-                    $key = $key->value();
-                    $attribute = $environment->getAttribute($key);
-                    if ($attribute === null) {
-                        echo sprintf("Attribute with key %s not found\n", $key);
-
-                        return;
-                    }
-                    var_dump($attribute);
-                });
         }
+
+        $this->application->section('config dump')
+            ->option('--key=<key>   Attribute key to dump.')
+            ->usage('config dump --key=<key>')
+            ->action(function (Input $input) use ($environment) {
+                $key = $input->getOption('key');
+                $key = $key->value();
+                $attribute = $environment->getAttribute($key);
+                if ($attribute === null) {
+                    echo sprintf("Attribute with key %s not found\n", $key);
+
+                    return;
+                }
+                var_dump($attribute);
+            });
     }
 
     public function setInputGlobal(BeforeActionEvent $event)

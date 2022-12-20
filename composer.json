@@ -5,10 +5,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "my127/my127": "dev-master",
         "symfony/config": "^6.1",
         "symfony/console": "^6.1",
         "symfony/dependency-injection": "^6.1",
+        "symfony/event-dispatcher": "^6.1",
         "symfony/expression-language": "^6.1",
         "symfony/finder": "^6.1",
         "symfony/yaml": "^6.1",
@@ -22,11 +22,17 @@
         "phpstan/phpstan": "^1.2"
     },
     "autoload": {
-        "psr-4": {"my127\\Workspace\\": "src/"}
+        "psr-4": {
+            "my127\\Workspace\\": "src/",
+            "my127\\Console\\": "packages/Console/src/",
+            "my127\\FSM\\": "packages/FSM/src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "my127\\Workspace\\Tests\\": "tests/"
+            "my127\\Workspace\\Tests\\": "tests/",
+            "my127\\Console\\Tests\\": "packages/Console/tests/",
+            "my127\\FSM\\Tests\\": "packages/FSM/tests/"
         }
     },
     "scripts": {

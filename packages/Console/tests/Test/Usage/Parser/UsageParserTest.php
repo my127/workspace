@@ -338,7 +338,8 @@ class UsageParserTest extends TestCase
     public function doubleDashesCannotBeRequiredInUsage()
     {
         $this->expectException('Exception');
-        $result = usage('foo -- bar', '');
+        $this->expectExceptionMessage('Double-dash cannot be _required_ in usage as they are discarded from command.');
+        $result = usage('foo -- bar', 'foo -- bar');
     }
 
     /**

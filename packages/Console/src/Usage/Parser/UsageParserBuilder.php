@@ -258,7 +258,7 @@ class UsageParserBuilder
     {
         $this->expect(Token::T_DOUBLE_DASH);
         if ($this->mode == self::MODE_REQUIRED) {
-            throw new \Exception('Double-dash cannot be required in usage definition as double-dashes in command are discarded.');
+            throw new \Exception('Double-dash cannot be _required_ in usage as they are discarded from command.');
         }
     }
 

@@ -70,6 +70,7 @@ class Loader
                     'metadata' => [
                         'path' => $directory,
                         'scope' => $scope,
+                        'file' => basename($file),
                     ],
                     'declaration' => $declaration,
                     'body' => $body,

@@ -57,9 +57,9 @@ class Builder implements EnvironmentBuilder
             foreach ($definitions->findByType($type) as $definition) {
                 /** @var Definition $definition */
                 if ($definition->getKey() == '~') {
-                    $this->attributes->add($definition->getValue(), $this->resolveAttributePrecedence($definition));
+                    $this->attributes->add($definition->getValue(), $definition->getSource(), $this->resolveAttributePrecedence($definition));
                 } else {
-                    $this->attributes->set($definition->getKey(), $definition->getValue(), $this->resolveAttributePrecedence($definition));
+                    $this->attributes->set($definition->getKey(), $definition->getValue(), $definition->getSource(), $this->resolveAttributePrecedence($definition));
                 }
             }
         }
@@ -81,7 +81,7 @@ class Builder implements EnvironmentBuilder
                 throw new \Exception('MY127WS_ATTRIBUTES must be a YAML object.');
             }
 
-            $this->attributes->add($attributes, 10);
+            $this->attributes->add($attributes, 'Environment Variables', 10);
         }
 
         $this->expressionLanguage->addFunction(new ExpressionFunction('attr',

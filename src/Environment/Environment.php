@@ -46,6 +46,11 @@ class Environment
         return $this->attributes->get($key);
     }
 
+    public function getAttributeMetadata(string $key): mixed
+    {
+        return $this->attributes->getAttributeMetadata($key);
+    }
+
     public function build()
     {
         $this->prepareEnvironmentForBuild();
@@ -55,7 +60,7 @@ class Environment
             $builder->build($this, $this->definitions);
         }
 
-        $this->attributes->set('host.os', strtolower(PHP_OS_FAMILY));
+        $this->attributes->set('host.os', strtolower(PHP_OS_FAMILY), 'src/Environment/Environment.php');
     }
 
     private function prepareEnvironmentForBuild()

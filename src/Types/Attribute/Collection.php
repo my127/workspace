@@ -10,6 +10,9 @@ class Collection implements \ArrayAccess
     /** @var mixed[][] */
     private $attributes = [];
 
+    /** @var mixed[][] */
+    private $attributeMetadata = [];
+
     /** @var Expression */
     private $expression;
 
@@ -21,7 +24,7 @@ class Collection implements \ArrayAccess
         $this->expression = $expression;
     }
 
-    public function add(array $attributes, int $precedence = 1): void
+    public function add(array $attributes, string $source, int $precedence = 1): void
     {
         if (!isset($this->attributes[$precedence])) {
             $this->attributes[$precedence] = [];
@@ -29,6 +32,11 @@ class Collection implements \ArrayAccess
 
         $this->cache = null;
         $this->attributes[$precedence] = array_replace_recursive($this->attributes[$precedence], $attributes);
+        $this->attributeMetadata = array_merge_recursive(
+            array_fill_keys(
+                $this->getAllAttributeKeys($attributes), [0 => ['source' => $source]]
+            ), $this->attributeMetadata
+        );
     }
 
     public function get(string $key, $default = null)
@@ -56,13 +64,13 @@ class Collection implements \ArrayAccess
         return $value;
     }
 
-    public function set(string $key, $value, int $precedence = 1): void
+    public function set(string $key, $value, string $source, int $precedence = 1): void
     {
         $attributes = [];
 
         Arr::set($attributes, $key, $value);
 
-        $this->add($attributes, $precedence);
+        $this->add($attributes, $source, $precedence);
     }
 
     private function evaluate(&$value): void
@@ -126,5 +134,27 @@ class Collection implements \ArrayAccess
         foreach ($this->attributes as &$attributes) {
             $this->cache = array_replace_recursive($this->cache, $attributes);
         }
+    }
+
+    public function getAttributeMetadata(string $key): mixed
+    {
+        return array_key_exists($key, $this->attributeMetadata) ? $this->attributeMetadata[$key] : null;
+    }
+
+    private function getAllAttributeKeys($attributes, $parent = null): array
+    {
+        $keys = [];
+
+        foreach ($attributes as $k => $v) {
+            $currentKey = is_null($parent) ? $k : $parent . '.' . $k;
+            $keys[] = $currentKey;
+            if (is_array($v)) {
+                $keys = array_merge($keys, $this->getAllAttributeKeys($v, $currentKey));
+            } else {
+                $keys[] = is_null($parent) ? $v : $parent . '.' . $v;
+            }
+        }
+
+        return $keys;
     }
 }

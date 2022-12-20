@@ -94,6 +94,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 ],
                 'namespace' => $this->workspace->name,
             ],
+            'src/Types/Workspace/Builder.php',
             AttributeBuilder::PRECEDENCE_WORKSPACE_DEFAULT
         );
 
@@ -149,6 +150,11 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                     return;
                 }
                 var_dump($attribute);
+                echo "specified in:\n";
+                array_map(
+                    function ($a) { echo $a['source'] . "\n"; }
+                    , array_reverse($environment->getAttributeMetadata($key))
+                );
             });
     }
 

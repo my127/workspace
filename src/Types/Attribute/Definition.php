@@ -23,6 +23,9 @@ class Definition implements WorkspaceDefinition
     private $scope;
 
     /** @var string */
+    private $file;
+
+    /** @var string */
     private $type;
 
     /** @var int */
@@ -46,6 +49,16 @@ class Definition implements WorkspaceDefinition
     public function getScope(): int
     {
         return $this->scope;
+    }
+
+    public function getFile(): string
+    {
+        return $this->file;
+    }
+
+    public function getSource(): string
+    {
+        return $this->path . '/' . $this->file;
     }
 
     public function getType(): string

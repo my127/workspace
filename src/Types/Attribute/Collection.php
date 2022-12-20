@@ -95,7 +95,7 @@ class Collection
 
     public function getAttributeMetadata(string $key): mixed
     {
-        return array_key_exists($key, $this->attributeMetadata) ? $this->attributeMetadata[$key] : null;
+        return this->attributeMetadata[$key] ?? null;
     }
 
     private function getAllAttributeKeys($attributes, $parent = null): array

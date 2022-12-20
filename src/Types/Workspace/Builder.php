@@ -152,8 +152,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 var_dump($attribute);
                 echo "specified in:\n";
                 array_map(
-                    function ($a) { echo $a['source'] . "\n"; }
-                    , array_reverse($environment->getAttributeMetadata($key))
+                    function ($a) { echo $a['source'] . "\n"; }, array_reverse($environment->getAttributeMetadata($key))
                 );
             });
     }

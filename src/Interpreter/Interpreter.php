@@ -51,7 +51,7 @@ class Interpreter
         preg_match(self::RUNTIME_DETAILS_PATTERN, trim(strtok($script, "\n")), $match);
 
         if (!isset($match['interpreter'])) {
-            throw new \Exception("Script does not specify an interpreter e.g. `#!php` or `#!bash`.");
+            throw new \Exception('Script does not specify an interpreter e.g. `#!php` or `#!bash`.');
         }
 
         $runtime['interpreter'] = $match['interpreter'];

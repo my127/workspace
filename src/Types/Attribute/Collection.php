@@ -158,18 +158,10 @@ class Collection implements \ArrayAccess
             if (is_array($v)) {
                 $keys = array_merge($keys, $this->getAllAttributeKeys($v, $currentKey));
             } else {
-                $this->evaluateSimpleAttributeReferencesOnly($v);
                 $keys[] = $currentKey;
             }
         }
 
         return $keys;
-    }
-
-    private function evaluateSimpleAttributeReferencesOnly(&$value)
-    {
-        if ($this->isExpression($value) && strpos($value, '(') === false) {
-            $this->evaluate($value);
-        }
     }
 }

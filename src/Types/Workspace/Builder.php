@@ -17,6 +17,7 @@ use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Definition as ConfdDefinition;
 use my127\Workspace\Types\Harness\Definition as HarnessDefinition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Path;
 
 class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberInterface
 {
@@ -152,7 +153,9 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 var_dump($attribute);
                 echo "specified in:\n";
                 array_map(
-                    function ($a) { echo $a['source'] . "\n"; }, $environment->getAttributeMetadata($key)
+                    function ($a) { 
+                        echo Path::makeRelative($a['source'], getcwd()) . "\n"; 
+                    }, $environment->getAttributeMetadata($key)
                 );
             });
     }

@@ -40,7 +40,7 @@ class Collection implements \ArrayAccess
         );
         array_walk(
             $this->attributeMetadata,
-            function ($value) {
+            function (&$value) {
                 ksort($value['source']);
             }
         );
@@ -145,16 +145,7 @@ class Collection implements \ArrayAccess
 
     public function getAttributeMetadata(string $key): mixed
     {
-        if (isset($this->attributeMetadata[$key])) {
-            if (isset($this->attributeMetadata[$key]['source'])) {
-                ksort($this->attributeMetadata[$key]['source']);
-            }
-
-            return $this->attributeMetadata[$key];
-        }
-
-        return null;
-        // return $this->attributeMetadata[$key] ?? null;
+        return $this->attributeMetadata[$key] ?? null;
     }
 
     private function getAllAttributeKeys($attributes, $parent = null): array
@@ -167,10 +158,18 @@ class Collection implements \ArrayAccess
             if (is_array($v)) {
                 $keys = array_merge($keys, $this->getAllAttributeKeys($v, $currentKey));
             } else {
+                $this->evaluateSimpleAttributeReferencesOnly($v);
                 $keys[] = $currentKey;
             }
         }
 
         return $keys;
+    }
+
+    private function evaluateSimpleAttributeReferencesOnly(&$value)
+    {
+        if ($this->isExpression($value) && strpos($value, '(') === false) {
+            $this->evaluate($value);
+        }
     }
 }

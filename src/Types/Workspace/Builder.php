@@ -152,8 +152,8 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                     return;
                 }
                 echo "attribute value:\n\n";
-                echo preg_replace('/^/m', '    ', Yaml::dump($attribute, 99, 2));
-                echo "\nspecified in:\n\n";
+                echo preg_replace('/^/m', '  ', Yaml::dump($attribute, 99, 2));
+                echo "\n\nspecified in:\n\n";
                 array_map(
                     function ($a) {
                         echo '  - ' . Path::makeRelative($a, getcwd()) . "\n";

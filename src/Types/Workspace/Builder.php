@@ -18,6 +18,7 @@ use my127\Workspace\Types\Confd\Definition as ConfdDefinition;
 use my127\Workspace\Types\Harness\Definition as HarnessDefinition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Yaml;
 
 class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberInterface
 {
@@ -150,13 +151,16 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
                     return;
                 }
-                var_dump($attribute);
-                echo "specified in:\n";
+                echo "attribute value:\n\n";
+                echo preg_replace('/^/m', '    ', Yaml::dump($attribute, 99, 2));
+                echo "\nspecified in:\n\n";
                 array_map(
-                    function ($a) { 
-                        echo Path::makeRelative($a['source'], getcwd()) . "\n"; 
-                    }, $environment->getAttributeMetadata($key)
+                    function ($a) {
+                        echo '  - ' . Path::makeRelative($a, getcwd()) . "\n";
+                    },
+                    $environment->getAttributeMetadata($key)['source']
                 );
+                echo "\n";
             });
     }
 

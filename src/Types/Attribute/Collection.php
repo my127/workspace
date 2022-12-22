@@ -35,8 +35,14 @@ class Collection implements \ArrayAccess
         $this->attributeMetadata = array_merge_recursive(
             $this->attributeMetadata,
             array_fill_keys(
-                $this->getAllAttributeKeys($attributes), [0 => ['source' => $source]]
+                $this->getAllAttributeKeys($attributes), ['source' => ['_' . $precedence => $source]]
             )
+        );
+        array_walk(
+            $this->attributeMetadata,
+            function ($value) {
+                ksort($value['source']);
+            }
         );
     }
 
@@ -139,7 +145,16 @@ class Collection implements \ArrayAccess
 
     public function getAttributeMetadata(string $key): mixed
     {
-        return $this->attributeMetadata[$key] ?? null;
+        if (isset($this->attributeMetadata[$key])) {
+            if (isset($this->attributeMetadata[$key]['source'])) {
+                ksort($this->attributeMetadata[$key]['source']);
+            }
+
+            return $this->attributeMetadata[$key];
+        }
+
+        return null;
+        // return $this->attributeMetadata[$key] ?? null;
     }
 
     private function getAllAttributeKeys($attributes, $parent = null): array
@@ -152,7 +167,7 @@ class Collection implements \ArrayAccess
             if (is_array($v)) {
                 $keys = array_merge($keys, $this->getAllAttributeKeys($v, $currentKey));
             } else {
-                $keys[] = is_null($parent) ? $v : $parent . '.' . $v;
+                $keys[] = $currentKey;
             }
         }
 

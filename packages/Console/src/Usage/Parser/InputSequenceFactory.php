@@ -15,6 +15,7 @@ class InputSequenceFactory
     ): ?InputSequence {
         $options = [];
         $positional = [];
+        $previousDoubleDash = false;
 
         for ($i = 0, $max = count($symbols); $i < $max; ++$i) {
             $symbol = $symbols[$i];
@@ -25,7 +26,7 @@ class InputSequenceFactory
 
             // Command or Argument
 
-            if ($symbol[0] != '-') {
+            if ($symbol[0] != '-' || $previousDoubleDash) {
                 $positional[] = $symbol;
                 continue;
             }
@@ -42,7 +43,7 @@ class InputSequenceFactory
             // Double Dash
 
             if ($size == 2 && $symbol[1] == '-') {
-                $positional[] = $symbol;
+                $previousDoubleDash = true;
                 continue;
             }
 

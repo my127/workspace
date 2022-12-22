@@ -256,6 +256,10 @@ class UsageParserBuilder
 
     private function parseDoubleDash()
     {
+        $this->expect(Token::T_DOUBLE_DASH);
+        if ($this->mode == self::MODE_REQUIRED) {
+            throw new \Exception('Double-dash cannot be _required_ in usage as they are discarded from command.');
+        }
     }
 
     private function parseSingleDash()

@@ -2,9 +2,9 @@
 
 namespace Test\my127\Workspace\Types;
 
-use my127\Workspace\Tests\IntegrationTestCase;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Path\Paths\CWD;
+use my127\Workspace\Tests\IntegrationTestCase;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 
 class AttributeTest extends IntegrationTestCase
@@ -148,45 +148,45 @@ EOD
     {
         $attributes = new AttributeCollection(new Expression(new CWD()));
 
-        $attrData0 = array(
-          'level1' => array(
-            'level2a' => array(
+        $attrData0 = [
+          'level1' => [
+            'level2a' => [
               'level3a' => 'val3a',
               'level3b' => 'val3b',
-              'level3c' => 'val3c'
-            ),
-            'level2b' => array(
-              'level3d' => 'val3d'
-            )
-          )
-        );
-
-        $attrData1 = array(
-          'level1' => array(
-            'level2a' => array(
-              'level3a' => 'val3a',
-              'level3b' => 'val3b',
-              'level3c' => 'val3c'
-            ),
-            'level2b' => array(
+              'level3c' => 'val3c',
+            ],
+            'level2b' => [
               'level3d' => 'val3d',
-              'level3e' => array(
-                'level4a' => 'val4a',
-                'level4b' => 'val4b'
-              )
-            )
-          )
-        );
+            ],
+          ],
+        ];
 
-        $attrData2 = array(
-          'level1' => array(
-            'level2b' => array(
-              'level3e' => array(
-                'level4a' => 'val4a-override'
-              )
-            )
-          )
-        );
+        $attrData1 = [
+          'level1' => [
+            'level2a' => [
+              'level3a' => 'val3a',
+              'level3b' => 'val3b',
+              'level3c' => 'val3c',
+            ],
+            'level2b' => [
+              'level3d' => 'val3d',
+              'level3e' => [
+                'level4a' => 'val4a',
+                'level4b' => 'val4b',
+              ],
+            ],
+          ],
+        ];
+
+        $attrData2 = [
+          'level1' => [
+            'level2b' => [
+              'level3e' => [
+                'level4a' => 'val4a-override',
+              ],
+            ],
+          ],
+        ];
 
         $attributes->add($attrData0, 'attrData0 array', 1);
         $attributes->add($attrData2, 'attrData2 array', 5);

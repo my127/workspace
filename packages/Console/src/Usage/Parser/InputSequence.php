@@ -8,8 +8,8 @@ use my127\Console\Usage\Model\OptionDefinition;
 class InputSequence implements \Countable
 {
     /**
-     * @param array<string, list<OptionDefinition>> $options
-     * @param array<string, string> $positional
+     * @param array<string, list<Option>> $options
+     * @param array<int, string>          $positional
      */
     public function __construct(private $options, private $positional)
     {
@@ -61,6 +61,7 @@ class InputSequence implements \Countable
     {
         $args = array_reverse($this->positional);
         array_shift($args);
+
         return implode(' ', $args);
     }
 }

@@ -21,7 +21,7 @@ class EchoOutput implements OutputInterface
     public function writeln(string|iterable $messages, int $options = 0): void
     {
         foreach ((array) $messages as $message) {
-            echo $message. "\n";
+            echo $message . "\n";
         }
     }
 

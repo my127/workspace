@@ -2,7 +2,6 @@
 
 namespace my127\Console;
 
-use Symfony\Component\Console\Output\ConsoleOutput;
 use my127\Console\Application\Action\ActionCollection;
 use my127\Console\Application\Application;
 use my127\Console\Application\Executor;
@@ -32,7 +31,7 @@ class Console
         );
 
         $application = new Application($executor, $dispatcher, $name, $description, $version);
-        $application->plugin(new ContextualHelpPlugin($optionDefinitionParser, (new EchoOutput())));
+        $application->plugin(new ContextualHelpPlugin($optionDefinitionParser, new EchoOutput()));
         $application->plugin(new VersionInfoPlugin());
 
         return $application;

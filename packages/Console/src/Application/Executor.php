@@ -24,7 +24,6 @@ class Executor implements SectionVisitor
     public const EXIT_ERROR = 1;
     public const EXIT_COMMAND_NOT_FOUND = 127;
 
-
     /**
      * @var EventDispatcher
      */
@@ -113,6 +112,7 @@ class Executor implements SectionVisitor
         }
 
         $this->invokeAction($action);
+
         return 0;
     }
 

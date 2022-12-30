@@ -28,6 +28,7 @@ class IntegrationTestCase extends TestCase
 
         return $process;
     }
+
     public function workspaceCommand(string $command, string $subPath = null, array $env = []): Process
     {
         $process = $this->workspaceProcess($command, $subPath, $env);

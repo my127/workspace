@@ -2,7 +2,6 @@
 
 namespace my127\Console\Usage\Model;
 
-use ArrayIterator;
 use IteratorAggregate;
 
 /**

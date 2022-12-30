@@ -11,20 +11,20 @@ class ApplicationTest extends IntegrationTestCase
     {
         self::assertEquals(
             Executor::EXIT_COMMAND_NOT_FOUND,
-            $this->workspaceCommand('foobar')->run()
+            $this->workspaceProcess('foobar')->run()
         );
     }
 
     public function testPrintsCommandNotFoundWhenInvokedWithArguments(): void
     {
-        $process = $this->workspaceCommand('foobar');
+        $process = $this->workspaceProcess('foobar');
         $process->run();
         self::assertStringContainsString('not recognised', $process->getOutput());
     }
 
     public function testDoesNotPrintCommandNotFoundWhenInvokedWithNoArguments(): void
     {
-        $process = $this->workspaceCommand('');
+        $process = $this->workspaceProcess('');
         $process->run();
         self::assertStringNotContainsString('not recognised', $process->getOutput());
     }

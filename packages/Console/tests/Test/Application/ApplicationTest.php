@@ -17,7 +17,7 @@ class ApplicationTest extends TestCase
      *
      * @test
      */
-    public function optionsAreAddedToUsageDefinitionsByDefault()
+    public function optionsAreAddedToUsageDefinitionsByDefault(): void
     {
         $application = Console::application('foo')
             ->option('-d, --debug')
@@ -35,7 +35,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function whenNoUsageIsSpecifiedActionIsStillTriggeredByUsageMatchingContext()
+    public function whenNoUsageIsSpecifiedActionIsStillTriggeredByUsageMatchingContext(): void
     {
         $triggered = false;
 
@@ -57,7 +57,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function invalidUsageEventDispatchedWhenNoUsageMatchFound()
+    public function invalidUsageEventDispatchedWhenNoUsageMatchFound(): void
     {
         $triggered = false;
 
@@ -84,7 +84,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function eventTriggeredBeforeContextActionsInvoked()
+    public function eventTriggeredBeforeContextActionsInvoked(): void
     {
         $triggered = false;
 
@@ -110,7 +110,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function contextActionsCanBeStoppedFromRunning()
+    public function contextActionsCanBeStoppedFromRunning(): void
     {
         $triggered = false;
 
@@ -135,7 +135,7 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function actionsCanTakeArgument()
+    public function actionsCanTakeArgument(): void
     {
         $actionResult = '';
         $application = Console::application('foo');

@@ -2,12 +2,15 @@
 
 namespace my127\Console;
 
+use Symfony\Component\Console\Output\ConsoleOutput;
 use my127\Console\Application\Action\ActionCollection;
 use my127\Console\Application\Application;
 use my127\Console\Application\Executor;
 use my127\Console\Application\Plugin\ContextualHelpPlugin;
 use my127\Console\Application\Plugin\VersionInfoPlugin;
+use my127\Console\Console\EchoOutput;
 use my127\Console\Factory\OptionValueFactory;
+use my127\Console\Usage\Input;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
 use my127\Console\Usage\Parser\OptionDefinitionParser;
 use my127\Console\Usage\Parser\UsageParserBuilder;
@@ -29,13 +32,13 @@ class Console
         );
 
         $application = new Application($executor, $dispatcher, $name, $description, $version);
-        $application->plugin(new ContextualHelpPlugin($optionDefinitionParser));
+        $application->plugin(new ContextualHelpPlugin($optionDefinitionParser, (new EchoOutput())));
         $application->plugin(new VersionInfoPlugin());
 
         return $application;
     }
 
-    public static function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepository = null)
+    public static function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepository = null): Input|bool
     {
         $cmd = empty($cmd) ? [] : preg_split('/\s+/', $cmd);
         $optionValueFactory = new OptionValueFactory();

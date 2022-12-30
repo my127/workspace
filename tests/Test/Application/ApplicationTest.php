@@ -7,6 +7,14 @@ use my127\Workspace\Tests\IntegrationTestCase;
 
 class ApplicationTest extends IntegrationTestCase
 {
+    public function testExitsWithZeroExitCodeOnSuccess(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_OK,
+            $this->workspaceProcess('version')->run()
+        );
+    }
+
     public function testExitsWithNonZeroExitCodeOnCommandNotFound(): void
     {
         self::assertEquals(

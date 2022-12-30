@@ -20,11 +20,11 @@ class Application extends ConsoleApplication
         $this->environment = $environment;
     }
 
-    public function run(?array $argv = null): void
+    public function run(?array $argv = null): int
     {
         $this->option('-v, --verbose    Increase verbosity');
         $this->environment->build();
-        parent::run($argv);
+        return parent::run($argv);
     }
 
     public static function getVersion(): string

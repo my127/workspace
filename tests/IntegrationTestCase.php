@@ -21,11 +21,10 @@ class IntegrationTestCase extends TestCase
     public function workspaceCommand(string $command, string $subPath = null, array $env = []): Process
     {
         $process = Process::fromShellCommandline(
-            sprintf(__DIR__ . '/../ws.phar %s', $command),
+            sprintf(__DIR__ . '/../bin/workspace %s', $command),
             $this->workspace()->path($subPath),
             $env
         );
-        $process->mustRun();
 
         return $process;
     }

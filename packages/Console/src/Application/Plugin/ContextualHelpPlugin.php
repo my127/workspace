@@ -2,7 +2,9 @@
 
 namespace my127\Console\Application\Plugin;
 
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use my127\Console\Application\Application;
 use my127\Console\Application\Event\BeforeActionEvent;
 use my127\Console\Application\Event\InvalidUsageEvent;
@@ -47,6 +49,11 @@ class ContextualHelpPlugin implements Plugin
             ->on(
                 Executor::EVENT_INVALID_USAGE,
                 function (InvalidUsageEvent $e) {
+                    if ($e->getInputSequence()->count() > 1) {
+                        $style = new SymfonyStyle(new ArrayInput([]), $this->output);
+                        $style->error(sprintf('Command "%s" not recognised', $e->getInputSequence()->toArgumentString()));
+                    }
+
                     $argv = $e->getInputSequence();
                     $parts = [];
 

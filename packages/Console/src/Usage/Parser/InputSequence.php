@@ -56,4 +56,11 @@ class InputSequence implements \Countable
     {
         return count($this->positional) + count($this->options);
     }
+
+    public function toArgumentString(): string
+    {
+        $args = array_reverse($this->positional);
+        array_shift($args);
+        return implode(' ', $args);
+    }
 }

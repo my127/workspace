@@ -101,12 +101,10 @@ class Executor implements SectionVisitor
             return self::EXIT_COMMAND_NOT_FOUND;
         }
 
-        // TODO: what does this condition imply?
         if ($this->beforeAction()->isActionPrevented()) {
             return self::EXIT_OK;
         }
 
-        // TODO: what does this condition imply?
         if (($action = $this->matchedSection->getAction()) === null) {
             return self::EXIT_OK;
         }

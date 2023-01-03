@@ -2,8 +2,8 @@
 
 namespace my127\Console\Application\Plugin;
 
-use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use my127\Console\Application\Application;
@@ -24,7 +24,7 @@ class ContextualHelpPlugin implements Plugin
      */
     private $root;
 
-    public function __construct(private OptionDefinitionParser $optionDefinitionParser, private OutputInterface $output)
+    public function __construct(private OptionDefinitionParser $optionDefinitionParser, private ConsoleOutputInterface $output)
     {
     }
 
@@ -51,7 +51,8 @@ class ContextualHelpPlugin implements Plugin
                 Executor::EVENT_INVALID_USAGE,
                 function (InvalidUsageEvent $e) {
                     if ($e->getInputSequence()->count() > 1) {
-                        throw new RuntimeException(sprintf('Command "%s" not recognised', $e->getInputSequence()->toArgumentString()));
+                        $style = new SymfonyStyle(new ArrayInput([]), $this->output->getErrorOutput());
+                        $style->error(sprintf('Command "%s" not recognised', $e->getInputSequence()->toArgumentString()));
                     }
                     $argv = $e->getInputSequence();
                     $parts = [];

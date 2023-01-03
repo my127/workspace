@@ -68,7 +68,7 @@ services:
     class: Symfony\Component\EventDispatcher\EventDispatcher
     public: true
 
-  Symfony\Component\Console\Output\OutputInterface:
+  Symfony\Component\Console\Output\ConsoleOutputInterface:
     alias: Symfony\Component\Console\Output\ConsoleOutput
 
   Symfony\Component\Console\Output\ConsoleOutput:

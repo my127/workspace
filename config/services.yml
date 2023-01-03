@@ -68,10 +68,8 @@ services:
     class: Symfony\Component\EventDispatcher\EventDispatcher
     public: true
 
-  # default output to stderr output
   Symfony\Component\Console\Output\OutputInterface:
-    alias: my127\Console\Console\StdErrOutput
-
+    alias: Symfony\Component\Console\Output\ConsoleOutput
   Symfony\Component\Console\Output\ConsoleOutput:
     class: Symfony\Component\Console\Output\ConsoleOutput
 

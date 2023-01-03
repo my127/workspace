@@ -2,10 +2,6 @@
 
 namespace my127\Console\Application\Plugin;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use my127\Console\Application\Application;
 use my127\Console\Application\Event\BeforeActionEvent;
 use my127\Console\Application\Event\InvalidUsageEvent;
@@ -16,6 +12,9 @@ use my127\Console\Usage\Model\BooleanOptionValue;
 use my127\Console\Usage\Model\OptionDefinition;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
 use my127\Console\Usage\Parser\OptionDefinitionParser;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ContextualHelpPlugin implements Plugin
 {
@@ -71,7 +70,7 @@ class ContextualHelpPlugin implements Plugin
 
     private function displayHelpPage(Section $section): void
     {
-        $this->output->writeln(sprintf('%s', ($section->getDescription() ?: $section->getName())));
+        $this->output->writeln(sprintf('%s', $section->getDescription() ?: $section->getName()));
         $this->output->writeln('');
 
         if (count($section->getUsageDefinitions()) > 0) {
@@ -106,7 +105,6 @@ class ContextualHelpPlugin implements Plugin
         if (empty($children = $section->getChildren())) {
             return;
         }
-
 
         $this->output->writeln('<fg=yellow>Sub Commands:</>');
 

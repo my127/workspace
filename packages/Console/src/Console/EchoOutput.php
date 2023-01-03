@@ -3,13 +3,15 @@
 namespace my127\Console\Console;
 
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This class is here simply to preserve compatiblity with the PHPUnit
  * tests which use output buffering to capture output.
  */
-class EchoOutput implements OutputInterface
+class EchoOutput implements ConsoleOutputInterface
 {
     public function write(string|iterable $messages, bool $newline = false, int $options = 0): void
     {
@@ -68,6 +70,20 @@ class EchoOutput implements OutputInterface
     }
 
     public function getFormatter(): OutputFormatterInterface
+    {
+        throw new \Exception('Not supported');
+    }
+
+    public function getErrorOutput(): OutputInterface
+    {
+        return $this;
+    }
+
+    public function setErrorOutput(OutputInterface $error): void
+    {
+    }
+
+    public function section(): ConsoleSectionOutput
     {
         throw new \Exception('Not supported');
     }

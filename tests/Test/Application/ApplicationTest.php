@@ -27,13 +27,13 @@ class ApplicationTest extends IntegrationTestCase
     {
         $process = $this->workspaceProcess('foobar');
         $process->run();
-        self::assertStringContainsString('not recognised', $process->getOutput());
+        self::assertStringContainsString('not recognised', $process->getErrorOutput());
     }
 
     public function testDoesNotPrintCommandNotFoundWhenInvokedWithNoArguments(): void
     {
         $process = $this->workspaceProcess('');
         $process->run();
-        self::assertStringNotContainsString('not recognised', $process->getOutput());
+        self::assertStringNotContainsString('not recognised', $process->getErrorOutput());
     }
 }

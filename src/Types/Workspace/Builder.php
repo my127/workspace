@@ -5,6 +5,7 @@ namespace my127\Workspace\Types\Workspace;
 use my127\Console\Application\Event\BeforeActionEvent;
 use my127\Console\Application\Executor;
 use my127\Console\Usage\Input;
+use my127\Console\Usage\Model\BooleanOptionValue;
 use my127\Workspace\Application;
 use my127\Workspace\Definition\Collection as DefinitionCollection;
 use my127\Workspace\Definition\Definition as WorkspaceDefinition;
@@ -141,6 +142,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
         $this->application->section('config dump')
             ->option('--key=<key>   Attribute key to dump.')
+            ->option('--simple      If set, only the final file where attribute specified is displayed.')
             ->usage('config dump --key=<key>')
             ->action(function (Input $input) use ($environment) {
                 $key = $input->getOption('key');
@@ -151,16 +153,26 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
 
                     return;
                 }
-                echo "attribute value:\n\n";
-                echo preg_replace('/^/m', '  ', Yaml::dump($attribute, 99, 2));
-                echo "\n\nspecified in:\n\n";
-                array_map(
-                    function ($a) {
-                        echo '  - ' . Path::makeRelative($a, getcwd()) . "\n";
-                    },
-                    $environment->getAttributeMetadata($key)['source']
-                );
-                echo "\n";
+                $simpleOutput = $input->getOption('simple');
+                $simpleOutput = $simpleOutput instanceof BooleanOptionValue ? $simpleOutput->value() : false;
+                if ($simpleOutput) {
+                    if (is_array($attribute)) {
+                        var_dump($attribute);
+                    } else {
+                        echo $attribute . "\n";
+                    }
+                } else {
+                    echo "attribute value:\n\n";
+                    echo preg_replace('/^/m', '  ', Yaml::dump($attribute, 99, 2));
+                    echo "\n\nspecified in:\n\n";
+                    array_map(
+                        function ($a) {
+                            echo '  - ' . Path::makeRelative($a, getcwd()) . "\n";
+                        },
+                        $environment->getAttributeMetadata($key)['source']
+                    );
+                    echo "\n";
+                }
             });
     }
 

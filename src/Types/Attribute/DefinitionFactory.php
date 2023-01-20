@@ -55,7 +55,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $this->prototype = new Definition();
 
-        foreach (['key', 'value', 'path', 'scope', 'type', 'priority'] as $name) {
+        foreach (['key', 'value', 'path', 'scope', 'file', 'type', 'priority'] as $name) {
             $this->properties[$name] = new \ReflectionProperty(Definition::class, $name);
             $this->properties[$name]->setAccessible(true);
         }
@@ -85,6 +85,7 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
     {
         $values['path'] = $metadata['path'];
         $values['scope'] = $metadata['scope'];
+        $values['file'] = $metadata['file'];
     }
 
     private function parseDeclaration(array &$values, $declaration)

@@ -125,14 +125,14 @@ class Application
         return $this->root->get($this->root->getName() . ' ' . $name);
     }
 
-    public function run(?array $argv = null): void
+    public function run(?array $argv = null): int
     {
         if ($argv === null) {
             global $argv;
             $argv[0] = $this->root->getName();
         }
 
-        $this->executor->run($this->root, $argv);
+        return $this->executor->run($this->root, $argv);
     }
 
     public function getRootSection(): Section

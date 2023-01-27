@@ -2,12 +2,24 @@
 
 namespace my127\Console\Usage\Model;
 
+use IteratorAggregate;
+
+/**
+ * @implements IteratorAggregate<string,OptionDefinition>
+ */
 class OptionDefinitionCollection implements \IteratorAggregate, \Countable
 {
+    /**
+     * @var array<string, OptionDefinition>
+     */
     private $options = [];
+
+    /**
+     * @var array<string, OptionDefinition>
+     */
     private $map = [];
 
-    public function add(OptionDefinition $optionDefinition)
+    public function add(OptionDefinition $optionDefinition): void
     {
         $this->options[$optionDefinition->getLabel()] = $optionDefinition;
 
@@ -20,7 +32,7 @@ class OptionDefinitionCollection implements \IteratorAggregate, \Countable
         }
     }
 
-    public function find($optionName)
+    public function find($optionName): ?OptionDefinition
     {
         return (isset($this->map[$optionName])) ? $this->map[$optionName] : null;
     }
@@ -30,7 +42,7 @@ class OptionDefinitionCollection implements \IteratorAggregate, \Countable
         return new \ArrayIterator($this->options);
     }
 
-    public function merge(OptionDefinitionCollection $toMerge)
+    public function merge(OptionDefinitionCollection $toMerge): OptionDefinitionCollection
     {
         $merged = clone $this;
 

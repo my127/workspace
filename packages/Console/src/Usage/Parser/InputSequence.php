@@ -2,30 +2,30 @@
 
 namespace my127\Console\Usage\Parser;
 
+use my127\Console\Usage\Model\Option;
 use my127\Console\Usage\Model\OptionDefinition;
 
 class InputSequence implements \Countable
 {
-    private $options = [];
-    private $positional = [];
-
-    public function __construct($options, $positional)
+    /**
+     * @param array<string, list<Option>> $options
+     * @param array<int, string>          $positional
+     */
+    public function __construct(private $options, private $positional)
     {
-        $this->options = $options;
-        $this->positional = $positional;
     }
 
-    public function peek()
+    public function peek(): ?string
     {
-        return end($this->positional);
+        return end($this->positional) ?: null;
     }
 
-    public function pop()
+    public function pop(): ?string
     {
-        return array_pop($this->positional);
+        return array_pop($this->positional) ?: null;
     }
 
-    public function getOption(OptionDefinition $definition)
+    public function getOption(OptionDefinition $definition): ?Option
     {
         $key = $definition->getLabel();
 
@@ -42,12 +42,12 @@ class InputSequence implements \Countable
         return $option;
     }
 
-    public function hasPositional()
+    public function hasPositional(): bool
     {
         return !empty($this->positional);
     }
 
-    public function hasOption(OptionDefinition $definition)
+    public function hasOption(OptionDefinition $definition): bool
     {
         return isset($this->options[$definition->getLabel()]);
     }
@@ -55,5 +55,13 @@ class InputSequence implements \Countable
     public function count(): int
     {
         return count($this->positional) + count($this->options);
+    }
+
+    public function toArgumentString(): string
+    {
+        $args = array_reverse($this->positional);
+        array_shift($args);
+
+        return implode(' ', $args);
     }
 }

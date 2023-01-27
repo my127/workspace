@@ -20,6 +20,9 @@ class Executor implements SectionVisitor
 {
     public const EVENT_INVALID_USAGE = 'my127.console.application.invalid_usage';
     public const EVENT_BEFORE_ACTION = 'my127.console.application.before_action';
+    public const EXIT_OK = 0;
+    public const EXIT_ERROR = 1;
+    public const EXIT_COMMAND_NOT_FOUND = 127;
 
     /**
      * @var EventDispatcher
@@ -85,7 +88,7 @@ class Executor implements SectionVisitor
         return $this->actions;
     }
 
-    public function run(Section $section, $argv = []): void
+    public function run(Section $section, $argv = []): int
     {
         $this->argv = $argv;
 
@@ -95,18 +98,20 @@ class Executor implements SectionVisitor
         if ($this->matchedSection === null || $this->matchedInput === null) {
             $this->invalidUsage($argv);
 
-            return;
+            return self::EXIT_COMMAND_NOT_FOUND;
         }
 
         if ($this->beforeAction()->isActionPrevented()) {
-            return;
+            return self::EXIT_OK;
         }
 
         if (($action = $this->matchedSection->getAction()) === null) {
-            return;
+            return self::EXIT_OK;
         }
 
         $this->invokeAction($action);
+
+        return 0;
     }
 
     public function visit(Section $section): bool

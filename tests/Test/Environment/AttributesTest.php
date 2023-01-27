@@ -16,9 +16,11 @@ command('get host os family'): |
 EOD
         );
 
+        $process = $this->workspaceCommand('get host os family');
+        $process->mustRun();
         $this->assertEquals(
             strtolower(PHP_OS_FAMILY),
-            $this->workspaceCommand('get host os family')->getOutput()
+            $process->getOutput()
         );
     }
 }

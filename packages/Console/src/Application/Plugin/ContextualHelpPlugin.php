@@ -12,6 +12,9 @@ use my127\Console\Usage\Model\BooleanOptionValue;
 use my127\Console\Usage\Model\OptionDefinition;
 use my127\Console\Usage\Model\OptionDefinitionCollection;
 use my127\Console\Usage\Parser\OptionDefinitionParser;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ContextualHelpPlugin implements Plugin
 {
@@ -20,14 +23,8 @@ class ContextualHelpPlugin implements Plugin
      */
     private $root;
 
-    /**
-     * @var OptionDefinitionParser
-     */
-    private $optionDefinitionParser;
-
-    public function __construct(OptionDefinitionParser $optionDefinitionParser)
+    public function __construct(private OptionDefinitionParser $optionDefinitionParser, private ConsoleOutputInterface $output)
     {
-        $this->optionDefinitionParser = $optionDefinitionParser;
     }
 
     public function setup(Application $application): void
@@ -52,6 +49,10 @@ class ContextualHelpPlugin implements Plugin
             ->on(
                 Executor::EVENT_INVALID_USAGE,
                 function (InvalidUsageEvent $e) {
+                    if ($e->getInputSequence()->count() > 1) {
+                        $style = new SymfonyStyle(new ArrayInput([]), $this->output->getErrorOutput());
+                        $style->error(sprintf('Command "%s" not recognised', $e->getInputSequence()->toArgumentString()));
+                    }
                     $argv = $e->getInputSequence();
                     $parts = [];
 
@@ -69,20 +70,19 @@ class ContextualHelpPlugin implements Plugin
 
     private function displayHelpPage(Section $section): void
     {
-        // Description
-        echo "\n\033[1m" . ($section->getDescription() ?: $section->getName()) . "\033[0m\n\n";
+        $this->output->writeln(sprintf('%s', $section->getDescription() ?: $section->getName()));
+        $this->output->writeln('');
 
-        // Usage
         if (count($section->getUsageDefinitions()) > 0) {
-            echo "\033[33mUsage:\033[0m\n";
+            $this->output->writeln('<fg=yellow>Usage:</>');
             foreach ($section->getUsageDefinitions() as $usageDefinition) {
-                echo "  {$usageDefinition}\n";
+                $this->output->writeln(sprintf('  %s', $usageDefinition));
             }
-            echo "\n\n";
+            $this->output->writeln('');
         } elseif ($section->getAction() !== null) {
-            echo "\033[33mUsage:\033[0m\n";
-            echo "  {$section->getName()} [options]";
-            echo "\n\n";
+            $this->output->writeln('<fg=yellow>Usage:</>');
+            $this->output->writeln(sprintf('  %s [options]', $section->getName()));
+            $this->output->writeln('');
         }
 
         // Command Options
@@ -97,13 +97,16 @@ class ContextualHelpPlugin implements Plugin
         $this->displayOptionsHelp("\033[33mGlobal Options:\033[0m", $this->root->getOptions());
     }
 
+    /**
+     * @return void
+     */
     private function displaySubCommandHelp(Section $section)
     {
         if (empty($children = $section->getChildren())) {
             return;
         }
 
-        echo "\033[33mSub Commands:\033[0m\n";
+        $this->output->writeln('<fg=yellow>Sub Commands:</>');
 
         $lines = [];
         $padding = 0;
@@ -128,20 +131,18 @@ class ContextualHelpPlugin implements Plugin
         $padding += 4;
 
         foreach ($lines as $line) {
-            echo '  ' . "\033[32m" . str_pad($line['name'], $padding) . "\033[0m" . $line['description'] . "\n";
+            $this->output->writeln(sprintf('  <fg=green>%s</>%s', str_pad($line['name'], $padding), $line['description']));
         }
-
-        echo "\n";
     }
 
+    /**
+     * @param list<OptionDefinition> $options
+     */
     private function displayOptionsHelp(string $heading, array $options): void
     {
         $padding = 0;
         $lines = [];
 
-        /**
-         * @var OptionDefinition $option
-         */
         foreach ($this->getOptionCollection($options) as $option) {
             $description = $option->getDescription();
 
@@ -160,13 +161,12 @@ class ContextualHelpPlugin implements Plugin
         $padding += 4;
 
         if (!empty($lines)) {
-            echo $heading . "\n";
+            $this->output->writeln($heading);
 
             foreach ($lines as $line) {
-                echo "\033[32m" . str_pad($line['definition'], $padding) . "\033[0m" . $line['description'] . "\n";
+                $this->output->writeln(sprintf('<fg=green>%s</>%s', str_pad($line['definition'], $padding), $line['description']));
             }
-
-            echo "\n";
+            $this->output->writeln('');
         }
     }
 

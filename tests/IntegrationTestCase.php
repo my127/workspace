@@ -18,13 +18,20 @@ class IntegrationTestCase extends TestCase
         return Workspace::create(__DIR__ . '/Workspace');
     }
 
-    public function workspaceCommand(string $command, string $subPath = null, array $env = []): Process
+    public function workspaceProcess(string $command, string $subPath = null, array $env = []): Process
     {
         $process = Process::fromShellCommandline(
-            sprintf(__DIR__ . '/../ws.phar %s', $command),
+            sprintf(__DIR__ . '/../bin/workspace %s', $command),
             $this->workspace()->path($subPath),
             $env
         );
+
+        return $process;
+    }
+
+    public function workspaceCommand(string $command, string $subPath = null, array $env = []): Process
+    {
+        $process = $this->workspaceProcess($command, $subPath, $env);
         $process->mustRun();
 
         return $process;

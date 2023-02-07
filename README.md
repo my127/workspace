@@ -6,7 +6,7 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 
 ### Getting Started
 #### Requirements
- - `PHP-7.3+`
+ - `PHP-8.1+`
  - `sodium` php extension installed and activated in php.ini if it's not enabled by default
  - `curl` if you wish to use the global traefik proxy
  - `docker 17.04.0+`
@@ -16,7 +16,7 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 
 Download the `ws` file from the [Latest Release](https://github.com/my127/workspace/releases/latest) make executable and move to a location in your PATH, eg.
 ```bash
-curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.2.1/ws
+curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.3.0/ws
 chmod +x ws && sudo mv ws /usr/local/bin/ws
 ```
 
@@ -80,9 +80,7 @@ HOST_OS_FAMILY=darwin docker-compose up -d
 
 You can now do:
 ```bash
-docker-compose exec -u build builder73 /app/build.sh
-docker-compose exec -u build builder74 /app/build.sh
-docker-compose exec -u build builder80 /app/build.sh
+docker-compose exec -u build builder81 /app/build.sh
 ```
 
 ### Release

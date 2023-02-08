@@ -28,10 +28,10 @@ jobs:
         run: composer compile ${{ github.event.release.tag_name }}
 
       - name: Check existence of compiled .phar
-        run: test -e my127ws.phar && exit 0 || exit 10
+        run: test -e ws.phar && exit 0 || exit 10
 
       - name: Rename PHAR
-        run: mv my127ws.phar ws
+        run: mv ws.phar ws
       
       - name: Generate sha256sum
         run: sha256sum ws > ws.sha256sum

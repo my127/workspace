@@ -49,7 +49,7 @@ class ContextualHelpPlugin implements Plugin
             ->on(
                 Executor::EVENT_INVALID_USAGE,
                 function (InvalidUsageEvent $e) {
-                    if ($e->getInputSequence()->count() > 1) {
+                    if ($e->getInputSequence()->count() > 2 || is_null($e->getOptions()->find('help'))) {
                         $style = new SymfonyStyle(new ArrayInput([]), $this->output->getErrorOutput());
                         $style->error(sprintf('Command "%s" not recognised', $e->getInputSequence()->toArgumentString()));
                     }

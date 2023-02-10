@@ -98,7 +98,15 @@ class Executor implements SectionVisitor
         if ($this->matchedSection === null || $this->matchedInput === null) {
             $this->invalidUsage($argv);
 
-            return self::EXIT_COMMAND_NOT_FOUND;
+            $argvWithoutOptions = array_filter($argv, function($value) {
+                return strpos($value, '--') !== 0;
+            });
+
+            if (count($argvWithoutOptions) == 1) {
+                return self::EXIT_OK;
+            } else {
+                return self::EXIT_COMMAND_NOT_FOUND;
+            }
         }
 
         if ($this->beforeAction()->isActionPrevented()) {

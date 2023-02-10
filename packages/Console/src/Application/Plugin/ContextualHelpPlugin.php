@@ -4,7 +4,7 @@ namespace my127\Console\Application\Plugin;
 
 use my127\Console\Application\Application;
 use my127\Console\Application\Event\BeforeActionEvent;
-use my127\Console\Application\Event\InvalidUsageEvent;
+use my127\Console\Application\Event\DisplayUsageEvent;
 use my127\Console\Application\Executor;
 use my127\Console\Application\Section\Section;
 use my127\Console\Usage\Exception\NoSuchOptionException;
@@ -47,9 +47,9 @@ class ContextualHelpPlugin implements Plugin
                 }
             )
             ->on(
-                Executor::EVENT_INVALID_USAGE,
-                function (InvalidUsageEvent $e) {
-                    if ($e->getInputSequence()->count() > 2 || is_null($e->getOptions()->find('help'))) {
+                Executor::EVENT_DISPLAY_USAGE,
+                function (DisplayUsageEvent $e) {
+                    if ($e->getInputSequence()->count() > 1 && !$e->validCommand()) {
                         $style = new SymfonyStyle(new ArrayInput([]), $this->output->getErrorOutput());
                         $style->error(sprintf('Command "%s" not recognised', $e->getInputSequence()->toArgumentString()));
                     }

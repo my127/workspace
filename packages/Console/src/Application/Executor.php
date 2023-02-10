@@ -4,7 +4,7 @@ namespace my127\Console\Application;
 
 use my127\Console\Application\Action\ActionCollection;
 use my127\Console\Application\Event\BeforeActionEvent;
-use my127\Console\Application\Event\InvalidUsageEvent;
+use my127\Console\Application\Event\DisplayUsageEvent;
 use my127\Console\Application\Section\Section;
 use my127\Console\Application\Section\SectionVisitor;
 use my127\Console\Factory\OptionValueFactory;
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Executor implements SectionVisitor
 {
-    public const EVENT_INVALID_USAGE = 'my127.console.application.invalid_usage';
+    public const EVENT_DISPLAY_USAGE = 'my127.console.application.display_usage';
     public const EVENT_BEFORE_ACTION = 'my127.console.application.before_action';
     public const EXIT_OK = 0;
     public const EXIT_ERROR = 1;
@@ -96,15 +96,13 @@ class Executor implements SectionVisitor
         $this->root->accept($this);
 
         if ($this->matchedSection === null || $this->matchedInput === null) {
-            $this->invalidUsage($argv);
+            if (count($argv) == 1 || (count($argv) == 2 && ($argv[1] == '--help' || $argv[1] == '-h'))) {
+                $this->displayUsage($argv, true);
 
-            $argvWithoutOptions = array_filter($argv, function ($value) {
-                return strpos($value, '--') !== 0;
-            });
-
-            if (count($argvWithoutOptions) == 1) {
                 return self::EXIT_OK;
             } else {
+                $this->displayUsage($argv, false);
+
                 return self::EXIT_COMMAND_NOT_FOUND;
             }
         }
@@ -181,14 +179,15 @@ class Executor implements SectionVisitor
         return $collection;
     }
 
-    private function invalidUsage($argv): InvalidUsageEvent
+    private function displayUsage($argv, $validCommand): DisplayUsageEvent
     {
         $this->dispatcher->dispatch(
-            $event = new InvalidUsageEvent(
+            $event = new DisplayUsageEvent(
                 $argv,
-                $this->buildOptionCollection($this->root->getOptions())
+                $this->buildOptionCollection($this->root->getOptions()),
+                $validCommand
             ),
-            self::EVENT_INVALID_USAGE
+            self::EVENT_DISPLAY_USAGE
         );
 
         return $event;

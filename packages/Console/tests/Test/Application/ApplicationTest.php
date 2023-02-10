@@ -57,13 +57,13 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    public function invalidUsageEventDispatchedWhenNoUsageMatchFound(): void
+    public function displayUsageEventDispatchedWhenNoUsageMatchFound(): void
     {
         $triggered = false;
 
         $application = Console::application('foo')
             ->on(
-                Executor::EVENT_INVALID_USAGE, function () use (&$triggered) {
+                Executor::EVENT_DISPLAY_USAGE, function () use (&$triggered) {
                     $triggered = true;
                 }
             )
@@ -77,6 +77,34 @@ class ApplicationTest extends TestCase
         $this->expectOutputRegex('/Usage:/');
 
         $application->run([]);
+
+        $this->assertTrue($triggered);
+    }
+
+    /**
+     * @test
+     */
+    public function displayUsageEventDispatchedWithHelpOption(): void
+    {
+        $triggered = false;
+
+        $application = Console::application('foo')
+            ->option('-h, --help    Show help message')
+            ->on(
+                Executor::EVENT_DISPLAY_USAGE, function () use (&$triggered) {
+                    $triggered = true;
+                }
+            )
+            ->usage('bar')
+            ->action(
+                function () {
+                    $this->fail('I should not be able to get here.');
+                }
+            );
+
+        $this->expectOutputRegex('/Usage:/');
+
+        $application->run(['foo', '--help bar']);
 
         $this->assertTrue($triggered);
     }

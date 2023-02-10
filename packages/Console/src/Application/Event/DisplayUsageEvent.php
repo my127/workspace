@@ -7,11 +7,11 @@ use my127\Console\Usage\Parser\InputSequence;
 use my127\Console\Usage\Parser\InputSequenceFactory;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class InvalidUsageEvent extends Event
+class DisplayUsageEvent extends Event
 {
     private InputSequence $input;
 
-    public function __construct($args, private OptionDefinitionCollection $options)
+    public function __construct($args, private OptionDefinitionCollection $options, private bool $validCommand = true)
     {
         $this->input = (new InputSequenceFactory())->createFrom($args, $options, true);
     }
@@ -21,8 +21,8 @@ class InvalidUsageEvent extends Event
         return clone $this->input;
     }
 
-    public function getOptions(): OptionDefinitionCollection
+    public function validCommand(): bool
     {
-        return $this->options;
+        return $this->validCommand;
     }
 }

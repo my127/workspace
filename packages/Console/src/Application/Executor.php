@@ -98,7 +98,7 @@ class Executor implements SectionVisitor
         if ($this->matchedSection === null || $this->matchedInput === null) {
             $this->invalidUsage($argv);
 
-            $argvWithoutOptions = array_filter($argv, function($value) {
+            $argvWithoutOptions = array_filter($argv, function ($value) {
                 return strpos($value, '--') !== 0;
             });
 

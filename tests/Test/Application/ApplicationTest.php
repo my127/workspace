@@ -36,4 +36,60 @@ class ApplicationTest extends IntegrationTestCase
         $process->run();
         self::assertStringNotContainsString('not recognised', $process->getErrorOutput());
     }
+
+    public function testExitsWithZeroExitCodeWithNoCommand(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_OK,
+            $this->workspaceProcess('')->run()
+        );
+    }
+
+    public function testExitsWithZeroExitCodeWithLongHelpOption(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_OK,
+            $this->workspaceProcess('--help')->run()
+        );
+    }
+
+    public function testExitsWithZeroExitCodeWithShortHelpOption(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_OK,
+            $this->workspaceProcess('-h')->run()
+        );
+    }
+
+    public function testExitsWithZeroExitCodeWithLongHelpOptionOnValidCommand(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_OK,
+            $this->workspaceProcess('--help version')->run()
+        );
+    }
+
+    public function testExitsWithZeroExitCodeWithShortHelpOptionOnValidCommand(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_OK,
+            $this->workspaceProcess('-h version')->run()
+        );
+    }
+
+    public function testExitsWithCommandNotFoundExitCodeWithLongHelpOptionOnInvalidCommand(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_COMMAND_NOT_FOUND,
+            $this->workspaceProcess('--help idonotexist')->run()
+        );
+    }
+
+    public function testExitsWithCommandNotFoundExitCodeWithShortHelpOptionOnInvalidCommand(): void
+    {
+        self::assertEquals(
+            Executor::EXIT_COMMAND_NOT_FOUND,
+            $this->workspaceProcess('-h idonotexist')->run()
+        );
+    }
 }

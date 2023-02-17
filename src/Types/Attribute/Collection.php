@@ -31,6 +31,7 @@ class Collection implements \ArrayAccess
         }
 
         $this->cache = null;
+
         $this->attributes[$precedence] = array_replace_recursive($this->attributes[$precedence], $attributes);
 
         $this->attributeMetadata = array_merge_recursive(

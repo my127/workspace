@@ -32,6 +32,7 @@ class Collection implements \ArrayAccess
 
         $this->cache = null;
         $this->attributes[$precedence] = array_replace_recursive($this->attributes[$precedence], $attributes);
+
         $this->attributeMetadata = array_merge_recursive(
             $this->attributeMetadata,
             array_fill_keys(
@@ -41,6 +42,13 @@ class Collection implements \ArrayAccess
         array_walk(
             $this->attributeMetadata,
             function (&$value) {
+                array_walk(
+                    $value['source'],
+                    function (&$source) {
+                        // de-dupe when attribute defined twice in same file with attribute('...') and yaml
+                        $source = is_array($source) ? $source[0] : $source;
+                    }
+                );
                 ksort($value['source']);
             }
         );

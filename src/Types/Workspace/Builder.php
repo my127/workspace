@@ -162,7 +162,17 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                         echo $attribute . "\n";
                     }
                 } else {
-                    echo "attribute value:\n\n";
+                    echo "attribute type:\n\n  ";
+                    if (is_array($attribute)) {
+                        echo 'array';
+                    } elseif (preg_match('/^\d+$/', $attribute)) {
+                        echo 'integer';
+                    } elseif (preg_match('/^\d+\.\d+$/', $attribute)) {
+                        echo 'float';
+                    } else {
+                        echo 'string';
+                    }
+                    echo "\n\nattribute value:\n\n";
                     echo preg_replace('/^/m', '  ', Yaml::dump($attribute, 99, 2));
                     echo "\n\nspecified in:\n\n";
                     array_map(

@@ -200,4 +200,18 @@ EOD
         $this->assertEquals('attrData2 array', array_pop($sources));
         $this->assertEquals('attrData1 array', array_pop($sources));
     }
+
+    /** @test */
+    public function duplicateAttributeDefinitionDoesNotCauseErrorInConfigDump()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+attribute('message'): Hello World
+
+attributes:
+    message: Olleh Dlrow
+EOD
+        );
+
+        $this->assertFalse(strpos($this->workspaceCommand('config dump --key=message')->getOutput(), 'World'));
+    }
 }

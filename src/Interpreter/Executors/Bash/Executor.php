@@ -17,7 +17,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd, $env), $descriptorSpec, $pipes);
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($_ENV, $env));
 
         $status = 255;
         if (is_resource($process)) {
@@ -37,13 +37,31 @@ class Executor implements InterpreterExecutor
             $script = substr_replace($script, 'echo -n ', $pos, 1);
         }
 
-        exec($this->buildCommand($script, $args, $cwd, $env), $output, $status);
+        $descriptorSpec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => STDERR,
+        ];
+
+        $pipes = [];
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($_ENV, $env));
+
+        $output = '';
+        $status = 255;
+        if (is_resource($process)) {
+            fclose($pipes[0]);
+
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+
+            $status = proc_close($process);
+        }
 
         if ($status !== 0) {
             exit($status);
         }
 
-        return implode("\n", $output);
+        return $output;
     }
 
     public function getName(): string
@@ -51,22 +69,25 @@ class Executor implements InterpreterExecutor
         return self::NAME;
     }
 
-    private function buildCommand(string $script, array $args, ?string $cwd, array $env): string
+    private function buildCommand(string $script, array $args, ?string $cwd): array
     {
         $home = home();
         $header = "#!/bin/bash\n"
                  . ". {$home}/.my127/workspace/lib/sidekick.sh\n";
 
-        foreach ($args as $key => $value) {
-            $header .= $key . '="' . addslashes($value) . '"' . "\n";
-        }
-
-        foreach ($env as $key => $value) {
-            $header .= 'export ' . $key . '="' . addslashes($value) . '"' . "\n";
+        foreach (array_keys($args) as $index => $key) {
+            $header .= $key . '=$' . ($index + 1) . "\n";
         }
 
         $header .= 'cd ' . ($cwd ?? getcwd());
 
-        return 'bash -e -c ' . escapeshellarg(substr_replace($script, $header, 0, strpos($script, "\n")));
+        return [
+            'bash',
+            '-e',
+            '-c',
+            substr_replace($script, $header, 0, strpos($script, "\n")),
+            '--',
+            ...array_values($args),
+        ];
     }
 }

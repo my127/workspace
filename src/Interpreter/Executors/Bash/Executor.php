@@ -69,6 +69,11 @@ class Executor implements InterpreterExecutor
         return self::NAME;
     }
 
+    /**
+     * @param string[] $args arguments to the command
+     *
+     * @return string[]
+     **/
     private function buildCommand(string $script, array $args, ?string $cwd): array
     {
         $home = home();

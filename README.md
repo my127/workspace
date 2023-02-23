@@ -16,7 +16,7 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 
 Download the `ws` file from the [Latest Release](https://github.com/my127/workspace/releases/latest) make executable and move to a location in your PATH, eg.
 ```bash
-curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.3.0/ws
+curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.3.1/ws
 chmod +x ws && sudo mv ws /usr/local/bin/ws
 ```
 

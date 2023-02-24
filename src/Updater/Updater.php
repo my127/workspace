@@ -23,24 +23,28 @@ class Updater
         $this->output = $output ?: new StdOutput();
     }
 
-    public function update(string $currentVersion, string $targetPath)
+    public function updateLatest(string $currentVersion, string $targetPath)
+    {
+        $latest = $this->getLatestRelease();
+        if (!$latest->isMoreRecentThan($currentVersion)) {
+            throw new NoUpdateAvailableException($currentVersion);
+        }
+        $this->doUpdate($currentVersion, $latest, $targetPath);
+    }
+
+    private function doUpdate(string $currentVersion, Release $release, string $targetPath)
     {
         if (empty($currentVersion)) {
             throw new NoVersionDeterminedException();
         }
 
-        $latest = $this->getLatestRelease();
-        if (!$latest->isMoreRecentThan($currentVersion)) {
-            throw new NoUpdateAvailableException($currentVersion);
-        }
-
         $temp = tempnam(sys_get_temp_dir(), 'workspace-update-') . '.phar';
 
         try {
-            $this->output->infof('Downloading new version (%s) from %s', $latest->getVersion(), $latest->getUrl());
-            $releaseData = @file_get_contents($latest->getUrl());
+            $this->output->infof('Downloading new version (%s) from %s', $release->getVersion(), $release->getUrl());
+            $releaseData = @file_get_contents($release->getUrl());
             if ($releaseData === false) {
-                throw new \RuntimeException(sprintf('Unable to download latest release at %s', $latest->getUrl()), self::CODE_ERR_FETCHING_NEXT_RELEASE);
+                throw new \RuntimeException(sprintf('Unable to download latest release at %s', $release->getUrl()), self::CODE_ERR_FETCHING_NEXT_RELEASE);
             }
 
             $this->output->infof('Writing to %s', $temp);
@@ -67,18 +71,12 @@ class Updater
     private function getLatestRelease(): Release
     {
         try {
-            $releases = file_get_contents($this->apiUrl, false, $this->createStreamContext());
+            $release = file_get_contents($this->apiUrl . '/latest', false, $this->createStreamContext());
         } catch (\Throwable $e) {
-            throw new \RuntimeException('Error fetching releases from GitHub.', self::CODE_ERR_FETCHING_RELEASES);
+            throw new \RuntimeException('Error fetching latest release from GitHub.', self::CODE_ERR_FETCHING_RELEASES);
         }
 
-        $releases = json_decode($releases);
-
-        if (count($releases) === 0) {
-            throw new \RuntimeException('No releases present in the GitHub API response.', self::CODE_NO_RELEASES);
-        }
-
-        $latest = $releases[0];
+        $latest = json_decode($release);
 
         return new Release($latest->assets[0]->browser_download_url, $latest->tag_name);
     }

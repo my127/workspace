@@ -162,7 +162,7 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                         echo $attribute . "\n";
                     }
                 } else {
-                    echo "attribute type: ";
+                    echo 'attribute type: ';
                     if (is_array($attribute)) {
                         echo 'array';
                     } elseif (preg_match('/^\d+$/', $attribute)) {

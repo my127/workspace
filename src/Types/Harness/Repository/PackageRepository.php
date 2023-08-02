@@ -70,17 +70,17 @@ class PackageRepository implements Repository
     public function getAllPackages(): array
     {
         $this->importPackagesFromSources();
-        $this->packages;
 
-        $availablePackages = array_keys($this->packages);
+        // $availablePackages = array_keys($this->packages);
 
         // $candidate = null;
-        foreach ($availablePackages as $availablePackage) {
-            $availableVersions = array_keys($this->packages[$availablePackage]);
+        // foreach ($availablePackages as $availablePackage) {
+        //     $availableVersions = array_keys($this->packages[$availablePackage]);
             // foreach ($availableVersions as $availableVersion) {
             // should I write here the code the print the table of Harnes, version 1.x, Version 2.x , version x.y etc... ?    
             // }
-        }
+        // }
+        return $this->packages;
     }
 
     public function addPackage(string $name, string $version, array $dist): void

@@ -40,7 +40,18 @@ class PackageRepositoryTest extends IntegrationTestCase
         self::assertEquals('bar', $package->getName());
         self::assertEquals('v1.0.0', $package->getVersion());
     }
+    /** @test */
+    public function itGetsAllPackages(): void
+    {
+        $repository = $this->createRepository();
+        $repository->addPackage('foo/bar', 'v1.0.0', []);
+        $repository->addPackage('foo/bar', 'v2.0.0', []);
+        $repository->addPackage('foo/bar2', 'v1.0.0', []);
+        $repository->addPackage('foo/bar3', 'v.0.0', []);
+        $repository->getAllPackages();
 
+        self::assertEquals(4, count($repository));
+    }
     /** @test */
     public function itImportsPackageFromSource(): void
     {

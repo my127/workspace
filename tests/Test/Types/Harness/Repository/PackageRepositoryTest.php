@@ -40,17 +40,27 @@ class PackageRepositoryTest extends IntegrationTestCase
         self::assertEquals('bar', $package->getName());
         self::assertEquals('v1.0.0', $package->getVersion());
     }
+
     /** @test */
-    public function itGetsAllPackages(): void
+    public function itGetsAllPackagesAndVersions(): void
     {
         $repository = $this->createRepository();
         $repository->addPackage('foo/bar', 'v1.0.0', []);
-        $repository->addPackage('foo/bar', 'v2.0.0', []);
         $repository->addPackage('foo/bar2', 'v1.0.0', []);
-        $repository->addPackage('foo/bar3', 'v.0.0', []);
-        $repository->getAllPackages();
-
-        self::assertEquals(4, count($repository));
+        $repository->addPackage('foo/bar2', 'v2.0.0', []);
+        $repository->addPackage('foo/bar3', 'v1.0.0', []);
+        $repository->addPackage('foo/bar3', 'v2.0.0', []);
+        $repository->addPackage('foo/bar3', 'v3.0.0', []);
+        $packages = $repository->getAllPackages();
+        
+        self::assertEquals(true, is_array($packages));
+        self::assertCount(3, $packages);
+        $availableVersions = array_keys($packages['foo/bar']);
+        self::assertCount(1, $availableVersions);
+        $availableVersions = array_keys($packages['foo/bar2']);
+        self::assertCount(2, $availableVersions);
+        $availableVersions = array_keys($packages['foo/bar3']);
+        self::assertCount(3, $availableVersions);
     }
     /** @test */
     public function itImportsPackageFromSource(): void

@@ -76,9 +76,9 @@ class PackageRepository implements Repository
         // $candidate = null;
         // foreach ($availablePackages as $availablePackage) {
         //     $availableVersions = array_keys($this->packages[$availablePackage]);
-            // foreach ($availableVersions as $availableVersion) {
-            // should I write here the code the print the table of Harnes, version 1.x, Version 2.x , version x.y etc... ?    
-            // }
+        //     foreach ($availableVersions as $availableVersion) {
+        //     # should I write here the code the print the table of Harnes, version 1.x, Version 2.x , version x.y etc... ?
+        //    }
         // }
         return $this->packages;
     }

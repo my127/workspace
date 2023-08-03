@@ -52,16 +52,23 @@ class PackageRepositoryTest extends IntegrationTestCase
         $repository->addPackage('foo/bar3', 'v2.0.0', []);
         $repository->addPackage('foo/bar3', 'v3.0.0', []);
         $packages = $repository->getAllPackages();
-        
+
         self::assertEquals(true, is_array($packages));
         self::assertCount(3, $packages);
+
         $availableVersions = array_keys($packages['foo/bar']);
+
         self::assertCount(1, $availableVersions);
+
         $availableVersions = array_keys($packages['foo/bar2']);
+
         self::assertCount(2, $availableVersions);
+
         $availableVersions = array_keys($packages['foo/bar3']);
+
         self::assertCount(3, $availableVersions);
     }
+
     /** @test */
     public function itImportsPackageFromSource(): void
     {

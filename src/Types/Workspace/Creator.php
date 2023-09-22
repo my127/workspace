@@ -96,7 +96,7 @@ class Creator
 
         $packageDir = tempnam(sys_get_temp_dir(), 'my127ws');
         if ($packageDir === false) {
-            throw new \Exception('Could not create temporary ' . $packageDir . ' directory for harness');
+            throw new \Exception('Could not create temporary directory for harness');
         }
         unlink($packageDir);
         if (!mkdir($packageDir, 0700)) {

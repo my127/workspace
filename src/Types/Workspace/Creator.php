@@ -109,7 +109,9 @@ class Creator
         }
 
         $harnessYaml = file_get_contents($packageDir . '/harness.yml');
-        exec('rm -rf ' . escapeshellarg($packageDir));
+        if (is_dir($packageDir)) {
+            exec('rm -rf ' . escapeshellarg($packageDir));
+        }
         unlink($packageTarball);
 
         if ($harnessYaml === false) {

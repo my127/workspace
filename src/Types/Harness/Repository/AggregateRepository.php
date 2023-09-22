@@ -21,7 +21,7 @@ class AggregateRepository implements Repository
     public function get(string $package): Package
     {
         $parts = parse_url($package);
-        if (empty($parts['scheme']) || empty($parts['host']) || empty($parts['path'])) {
+        if ($parts === false || (empty($parts['scheme']) && str_contains($parts['path'], ':'))) {
             return $this->packageRepository->get($package);
         }
 

@@ -55,14 +55,14 @@ attribute('aws'):
   s3: s3://bucket
   id: my-id-here
   key: my-key-here
-  
+
 command('assets download'):
   env:
     - AWS_ID:  =@('aws.id')
-    - AWS_KEY: =@('aws.key') 
+    - AWS_KEY: =@('aws.key')
   exec: |
     #!interpreter(workspace:/)|@
-    passthru ws.aws s3 sync @('aws.s3') assets/development
+    passthru ws-aws s3 sync @('aws.s3') assets/development
 ```
 
 This is a more complex example showing how the attribute filter `|@` can be used to place values directly into a script before it is executed.
@@ -74,14 +74,14 @@ attribute('aws'):
   s3: s3://bucket/path
   id: my-id-here
   key: my-key-here
-  
+
 command('assets download'):
   env:
     - AWS_ID:  =@('aws.id')
-    - AWS_KEY: =@('aws.key') 
+    - AWS_KEY: =@('aws.key')
   exec: |
     #!interpreter(workspace:/)|=
-    passthru ws.aws s3 sync ={ @('aws.s3') ~ '/assets/development' } assets/development
+    passthru ws-aws s3 sync ={ @('aws.s3') ~ '/assets/development' } assets/development
 ```
 
-There may be times when you need more complex logic than a simple replacement, in these cases the expression filter `|=` can be used. 
+There may be times when you need more complex logic than a simple replacement, in these cases the expression filter `|=` can be used.

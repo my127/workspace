@@ -22,6 +22,10 @@ class Installer
         passthru('chmod +x ' . $path . '/lib/*.sh');
         passthru('chmod +x ' . $path . '/service/*/init.sh');
 
+        passthru(sprintf('cd %s/bin/ && ln -sf ./ws-aws ./ws.aws', $path));
+        passthru(sprintf('cd %s/bin/ && ln -sf ./ws-poweroff ./ws.poweroff', $path));
+        passthru(sprintf('cd %s/bin/ && ln -sf ./ws-service ./ws.service', $path));
+
         touch($path . '/.installed');
     }
 }

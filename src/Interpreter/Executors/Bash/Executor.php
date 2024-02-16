@@ -98,11 +98,6 @@ class Executor implements InterpreterExecutor
 
     private function buildEnv(): array
     {
-        return [
-            'HOME' => getenv('HOME', true),
-            'MY127WS_ENV' => getenv('MY127WS_ENV', true),
-            'MY127WS_HOME' => getenv('MY127WS_HOME', true),
-            'MY127WS_KEY' => getenv('MY127WS_KEY', true),
-        ];
+        return getenv(local_only: true);
     }
 }

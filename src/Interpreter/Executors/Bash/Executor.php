@@ -17,13 +17,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $manualEnv = [
-            'HOME' => getenv('HOME', true),
-            'MY127WS_ENV' => getenv('MY127WS_ENV', true),
-            'MY127WS_HOME' => getenv('MY127WS_HOME', true),
-            'MY127WS_KEY' => getenv('MY127WS_KEY', true),
-        ];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($manualEnv, $_ENV, $env));
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($this->buildEnv(), $_ENV, $env));
 
         $status = 255;
         if (is_resource($process)) {
@@ -50,7 +44,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($_ENV, $env));
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($this->buildEnv(), $_ENV, $env));
 
         $output = '';
         $status = 255;
@@ -99,6 +93,16 @@ class Executor implements InterpreterExecutor
             substr_replace($script, $header, 0, strpos($script, "\n")),
             '--',
             ...array_values($args),
+        ];
+    }
+
+    private function buildEnv(): array
+    {
+        return [
+            'HOME' => getenv('HOME', true),
+            'MY127WS_ENV' => getenv('MY127WS_ENV', true),
+            'MY127WS_HOME' => getenv('MY127WS_HOME', true),
+            'MY127WS_KEY' => getenv('MY127WS_KEY', true),
         ];
     }
 }

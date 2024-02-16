@@ -17,7 +17,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($this->buildEnv(), $_ENV, $env));
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($this->buildEnv(), $env));
 
         $status = 255;
         if (is_resource($process)) {
@@ -44,7 +44,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($this->buildEnv(), $_ENV, $env));
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($this->buildEnv(), $env));
 
         $output = '';
         $status = 255;

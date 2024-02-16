@@ -287,7 +287,7 @@ class Installer
     private function startRequiredServices(array $requiredServices): void
     {
         foreach ($requiredServices as $service) {
-            $this->workspace->exec('ws.service ' . $service . ' enable');
+            $this->workspace->exec('ws-service ' . $service . ' enable');
         }
     }
 }

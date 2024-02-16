@@ -17,7 +17,13 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($_ENV, $env));
+        $manualEnv = [
+            'HOME' => getenv('HOME', true),
+            'MY127WS_ENV' => getenv('MY127WS_ENV', true),
+            'MY127WS_HOME' => getenv('MY127WS_HOME', true),
+            'MY127WS_KEY' => getenv('MY127WS_KEY', true),
+        ];
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($manualEnv, $_ENV, $env));
 
         $status = 255;
         if (is_resource($process)) {

@@ -6,7 +6,6 @@ use my127\Workspace\Installer\Installer;
 use my127\Workspace\Utility\ErrorHandler;
 
 ini_set('display_errors', 'stderr');
-ini_set('variables_order', 'EGPCS');
 
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../config/_compiled/container.php';

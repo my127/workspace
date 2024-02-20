@@ -110,7 +110,7 @@ class ApplicationTest extends IntegrationTestCase
         $this->workspace();
         $process = $this->workspaceProcess('global service');
         $process->run();
-        self::assertStringContainsString("proxy\n", $process->getOutput());
+        self::assertStringContainsString("proxy\n", $process->getErrorOutput());
     }
 
     public function testGlobalServicesExist(): void

@@ -9,7 +9,7 @@ main()
 
     if [ -z "$service" ]; then
         echo "No service provided. Available services:" >&2
-        find "${DIR}/service/" -maxdepth 2 -name 'init.sh' >&2 | sed -E 's#.*/(.*)/init\.sh$#\1#g'
+        find "${DIR}/service/" -maxdepth 2 -name 'init.sh' | sed -E 's#.*/([^/]+)/init\.sh$#\1#g' >&2
         exit 1
     fi
 

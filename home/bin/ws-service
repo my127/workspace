@@ -29,7 +29,7 @@ bootstrap()
     # shellcheck source=../lib/sidekick.sh
     source "$DIR/lib/sidekick.sh"
 
-    if ! command -v docker 2>&1 > /dev/null; then
+    if ! command -v docker > /dev/null 2>&1; then
         echo "Warning: The docker command line tool is not installed" >&2
         return
     fi

@@ -137,7 +137,7 @@ main "$@"
         $this->createWorkspaceYml(<<<'EOD'
 command('global service test enable'): |
   #!bash
-  ws-service test enable
+  ws.service test enable
 EOD
         );
 

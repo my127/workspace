@@ -23,7 +23,7 @@ command('global service', 'global service'):
   description: Perform an action (start/stop etc.) on a global service
   exec: |
     #!bash|=
-    ws-service
+    ws.service
 
 command('global config get <key>', 'global config get'):
   description: Retrieve a given workspace configuration by key

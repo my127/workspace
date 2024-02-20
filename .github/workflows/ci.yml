@@ -5,6 +5,7 @@ on:
     push:
         branches:
             - '0.3.x'
+            - 'test-failure-for-global-services'
 
 env:
     fail-fast: true

@@ -104,4 +104,39 @@ class ApplicationTest extends IntegrationTestCase
         self::assertFileExists($homeFile);
         self::assertFileEquals($buildFile, $homeFile);
     }
+
+    public function testGlobalServicesList(): void
+    {
+        $this->workspace();
+        $process = $this->workspaceProcess('global service');
+        $process->run();
+        self::assertStringContainsString("proxy\n", $process->getOutput());
+    }
+
+    public function testGlobalServicesExist(): void
+    {
+        $this->workspace();
+        $initScript = $_SERVER['MY127WS_HOME'] . '/.my127/workspace/service/test/init.sh';
+        mkdir(dirname($initScript), 0755, true);
+        file_put_contents($initScript, '#!/bin/bash
+set -e
+
+DIR=""
+
+main()
+{
+    if [ "$1" = "enable" ]; then
+        echo "enabling"
+        exit
+    fi
+    exit 1
+}
+
+main "$1"
+');
+        chmod($initScript, 0755);
+        $process = $this->workspaceProcess('global service test enable');
+        $process->run();
+        self::assertEquals("enabling\n", $process->getOutput());
+    }
 }

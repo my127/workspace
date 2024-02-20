@@ -5,7 +5,13 @@ TRAEFIK_NETWORK="my127ws"
 
 main()
 {
-    local service=$1
+    local service="$1"
+
+    if [ -z "$service" ]; then
+        echo "No service provided. Available services:"
+        ls -1 "${DIR}"/service/*/init.sh | sed -E 's#.*/(.*)/init\.sh$#\1#g'
+        exit 1
+    fi
 
     if [ ! -f "${DIR}/service/${service}/init.sh" ]; then
         echo "Service by the name '${service}' does not exist."

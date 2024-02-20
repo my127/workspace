@@ -6,23 +6,22 @@ use my127\Workspace\Utility\Filesystem;
 
 class Workspace
 {
-    /**
-     * @var string
-     */
-    private $path;
-
-    public function __construct(string $path)
+    public function __construct(private string $path, private string $homePath)
     {
-        $this->path = $path;
+        putenv(sprintf('MY127WS_HOME=%s', $this->homePath));
+        $_SERVER['MY127WS_HOME'] = $this->homePath;
     }
 
-    public static function create(string $path): self
+    public static function create(string $path, string $homePath): self
     {
         if (empty($path)) {
             throw new \RuntimeException('Workspace path cannot be empty');
         }
+        if (empty($homePath)) {
+            throw new \RuntimeException('Workspace home directory path cannot be empty');
+        }
 
-        return new self($path);
+        return new self($path, $homePath);
     }
 
     public function exists(string $path): bool

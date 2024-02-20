@@ -121,8 +121,6 @@ class ApplicationTest extends IntegrationTestCase
         file_put_contents($initScript, '#!/bin/bash
 set -e
 
-DIR=""
-
 main()
 {
     if [ "$1" = "enable" ]; then
@@ -132,9 +130,17 @@ main()
     exit 1
 }
 
-main "$1"
+main "$@"
 ');
         chmod($initScript, 0755);
+
+        $this->createWorkspaceYml(<<<'EOD'
+command('global service test enable'): |
+  #!bash
+  ws-service test enable
+EOD
+        );
+
         $process = $this->workspaceProcess('global service test enable');
         $process->run();
         self::assertEquals("enabling\n", $process->getOutput());

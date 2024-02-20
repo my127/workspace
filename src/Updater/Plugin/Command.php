@@ -36,7 +36,7 @@ class Command implements Plugin
             }
 
             try {
-                $this->updater->update(BaseApplication::getVersion(), $pharPath);
+                $this->updater->updateLatest(BaseApplication::getVersion(), $pharPath);
             } catch (NoUpdateAvailableException $e) {
                 echo sprintf('You are already running the latest version of workspace: %s', $e->getCurrentVersion()) . PHP_EOL;
                 exit(1);

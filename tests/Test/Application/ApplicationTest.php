@@ -92,4 +92,16 @@ class ApplicationTest extends IntegrationTestCase
             $this->workspaceProcess('-h idonotexist')->run()
         );
     }
+
+    public function testInstallsHomeDirectoryContent(): void
+    {
+        $currentTime = microtime(true);
+        $buildFile = __DIR__ . '/../../../home/build';
+        $homeFile = $_SERVER['MY127WS_HOME'] . '/.my127/workspace/build';
+        file_put_contents($buildFile, $currentTime);
+        $this->workspace();
+        $this->workspaceProcess('')->run();
+        self::assertFileExists($homeFile);
+        self::assertFileEquals($buildFile, $homeFile);
+    }
 }

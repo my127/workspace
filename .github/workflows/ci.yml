@@ -25,7 +25,7 @@ jobs:
                   ignore_paths: "vendor vendor-bin"
 
     composer-validate:
-        name: "Composer validate (${{ matrix.php-version }} on ${{ matrix.php-version }})"
+        name: "Composer validate (${{ matrix.php-version }} on ${{ matrix.operating-system }})"
         runs-on: "${{ matrix.operating-system }}"
 
         strategy:
@@ -89,7 +89,7 @@ jobs:
                 run: "vendor/bin/php-cs-fixer fix --dry-run --diff --verbose"
 
     phpunit:
-        name: "PHPUnit (${{ matrix.php-version }} on ${{ matrix.php-version }})"
+        name: "PHPUnit (${{ matrix.php-version }} on ${{ matrix.operating-system }})"
         needs:
             - "composer-validate"
 

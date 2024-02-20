@@ -1,23 +1,23 @@
 
 command('global service logger (enable|disable)', 'global service logger'): |
   #!bash|=
-  ws-service logger ={input.command(4)}
+  ws.service logger ={input.command(4)}
 
 command('global service mail (enable|disable)', 'global service mail'):
   description: Actions for mailhog (mail.my127.site)
   exec: |
     #!bash|=
-    ws-service mail ={input.command(4)}
+    ws.service mail ={input.command(4)}
 
 command('global service proxy (enable|disable|restart)', 'global service proxy'):
   description: Actions for Traefik proxy (my127.site)
   exec: |
     #!bash|=
-    ws-service proxy ={input.command(4)}
+    ws.service proxy ={input.command(4)}
 
 command('global service tracing (start|stop|restart)', 'global service tracing'): |
   #!bash|=
-  ws-service tracing ={input.command(4)}
+  ws.service tracing ={input.command(4)}
 
 command('global service', 'global service'):
   description: Perform an action (start/stop etc.) on a global service
@@ -35,4 +35,4 @@ command('poweroff', 'poweroff'):
   description: Completely disable workspace by shutting down all containers
   exec: |
     #!bash(cwd:/)
-    ws-poweroff
+    ws.poweroff

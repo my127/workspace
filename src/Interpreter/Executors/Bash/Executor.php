@@ -17,8 +17,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $currentEnv = $this->buildEnv() ?: [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($currentEnv, $env));
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($_ENV, $env));
 
         $status = 255;
         if (is_resource($process)) {
@@ -45,8 +44,7 @@ class Executor implements InterpreterExecutor
         ];
 
         $pipes = [];
-        $currentEnv = $this->buildEnv() ?: [];
-        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($currentEnv, $env));
+        $process = proc_open($this->buildCommand($script, $args, $cwd), $descriptorSpec, $pipes, null, array_merge($_ENV, $env));
 
         $output = '';
         $status = 255;
@@ -96,13 +94,5 @@ class Executor implements InterpreterExecutor
             '--',
             ...array_values($args),
         ];
-    }
-
-    /**
-     * @return array<string,string>
-     */
-    private function buildEnv(): array
-    {
-        return getenv();
     }
 }

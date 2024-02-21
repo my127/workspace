@@ -9,7 +9,7 @@ TRAEFIK_NETWORK="my127ws"
 
 main()
 {
-    local service="$1"
+    local service="${1:-}"
 
     if [ -z "$service" ]; then
         echo "No service provided. Available services:" >&2

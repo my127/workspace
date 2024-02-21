@@ -5,10 +5,16 @@ TRAEFIK_NETWORK="my127ws"
 
 main()
 {
-    local service=$1
+    local service="$1"
+
+    if [ -z "$service" ]; then
+        echo "No service provided. Available services:" >&2
+        find "${DIR}/service/" -maxdepth 2 -name 'init.sh' | sed -E 's#.*/([^/]+)/init\.sh$#\1#g' >&2
+        exit 1
+    fi
 
     if [ ! -f "${DIR}/service/${service}/init.sh" ]; then
-        echo "Service by the name '${service}' does not exist."
+        echo "Service by the name '${service}' does not exist." >&2
         exit 1
     fi
 
@@ -22,6 +28,11 @@ bootstrap()
     DIR="$(cd "$(dirname "$0")" && cd ../ && pwd)"
     # shellcheck source=../lib/sidekick.sh
     source "$DIR/lib/sidekick.sh"
+
+    if ! command -v docker > /dev/null 2>&1; then
+        echo "Warning: The docker command line tool is not installed" >&2
+        return
+    fi
 
     if ! docker network ls | grep "${TRAEFIK_NETWORK}" > /dev/null; then
         run docker network create "$TRAEFIK_NETWORK"

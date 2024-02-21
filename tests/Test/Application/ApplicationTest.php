@@ -92,4 +92,57 @@ class ApplicationTest extends IntegrationTestCase
             $this->workspaceProcess('-h idonotexist')->run()
         );
     }
+
+    public function testInstallsHomeDirectoryContent(): void
+    {
+        $currentTime = microtime(true);
+        $buildFile = __DIR__ . '/../../../home/build';
+        $homeFile = $_SERVER['MY127WS_HOME'] . '/.my127/workspace/build';
+        file_put_contents($buildFile, $currentTime);
+        $this->workspace();
+        $this->workspaceProcess('')->run();
+        self::assertFileExists($homeFile);
+        self::assertFileEquals($buildFile, $homeFile);
+    }
+
+    public function testGlobalServicesList(): void
+    {
+        $this->workspace();
+        $process = $this->workspaceProcess('global service');
+        $process->run();
+        self::assertStringContainsString("proxy\n", $process->getErrorOutput());
+    }
+
+    public function testGlobalServicesExist(): void
+    {
+        $this->workspace();
+        $initScript = $_SERVER['MY127WS_HOME'] . '/.my127/workspace/service/test/init.sh';
+        mkdir(dirname($initScript), 0755, true);
+        file_put_contents($initScript, '#!/bin/bash
+set -e
+
+main()
+{
+    if [ "$1" = "enable" ]; then
+        echo "enabling"
+        exit
+    fi
+    exit 1
+}
+
+main "$@"
+');
+        chmod($initScript, 0755);
+
+        $this->createWorkspaceYml(<<<'EOD'
+command('global service test enable'): |
+  #!bash
+  ws-service test enable
+EOD
+        );
+
+        $process = $this->workspaceProcess('global service test enable');
+        $process->run();
+        self::assertEquals("enabling\n", $process->getOutput());
+    }
 }

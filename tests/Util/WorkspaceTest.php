@@ -13,7 +13,7 @@ class WorkspaceTest extends TestCase
      */
     public function testResetWorkspace(): void
     {
-        $workspace = Workspace::create(__DIR__ . '/../Workspace');
+        $workspace = Workspace::create(__DIR__ . '/../Workspace', __DIR__ . '/../WorkspaceHome');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
         $workspace->put('/barfoo/foobar', self::EXAMPLE_CONTENT);
         self::assertFileExists(__DIR__ . '/../Workspace/foobar');
@@ -28,7 +28,7 @@ class WorkspaceTest extends TestCase
      */
     public function testGetContents(): void
     {
-        $workspace = Workspace::create(__DIR__ . '/../Workspace');
+        $workspace = Workspace::create(__DIR__ . '/../Workspace', __DIR__ . '/../WorkspaceHome');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
         self::assertEquals(self::EXAMPLE_CONTENT, $workspace->getContents('foobar'));
     }
@@ -38,7 +38,7 @@ class WorkspaceTest extends TestCase
      */
     public function testFileExists(): void
     {
-        $workspace = Workspace::create(__DIR__ . '/../Workspace');
+        $workspace = Workspace::create(__DIR__ . '/../Workspace', __DIR__ . '/../WorkspaceHome');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
         self::assertTrue($workspace->exists('foobar'));
         self::assertFalse($workspace->exists('barfoo'));
@@ -49,7 +49,7 @@ class WorkspaceTest extends TestCase
      */
     public function testProvidesFullPathToFile(): void
     {
-        $workspace = Workspace::create(__DIR__ . '/../Workspace');
+        $workspace = Workspace::create(__DIR__ . '/../Workspace', __DIR__ . '/../WorkspaceHome');
         $workspace->put('foobar', self::EXAMPLE_CONTENT);
         self::assertEquals(__DIR__ . '/../Workspace/foobar', $workspace->path('foobar'));
     }

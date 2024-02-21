@@ -1,11 +1,15 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 DIR=""
 TRAEFIK_NETWORK="my127ws"
 
 main()
 {
-    local service="$1"
+    local service="${1:-}"
 
     if [ -z "$service" ]; then
         echo "No service provided. Available services:" >&2
@@ -34,7 +38,7 @@ bootstrap()
         return
     fi
 
-    if ! docker network ls | grep "${TRAEFIK_NETWORK}" > /dev/null; then
+    if ! docker network inspect "${TRAEFIK_NETWORK}" > /dev/null 2>&1; then
         run docker network create "$TRAEFIK_NETWORK"
     fi
 }

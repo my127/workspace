@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 DIR=""
 
 main()
@@ -36,7 +40,7 @@ bootstrap()
     # shellcheck source=../../lib/sidekick.sh
     source "$DIR/../../lib/sidekick.sh"
 
-    cd "$DIR" || exit 1
+    cd "$DIR"
 }
 
 bootstrap

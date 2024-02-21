@@ -38,7 +38,7 @@ bootstrap()
         return
     fi
 
-    if ! docker network inspect "${TRAEFIK_NETWORK}" > /dev/null; then
+    if ! docker network inspect "${TRAEFIK_NETWORK}" > /dev/null 2>&1; then
         run docker network create "$TRAEFIK_NETWORK"
     fi
 }

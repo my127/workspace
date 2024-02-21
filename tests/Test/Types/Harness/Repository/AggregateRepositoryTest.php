@@ -38,4 +38,49 @@ class AggregateRepositoryTest extends TestCase
 
         $this->assertInstanceOf(Package::class, $got);
     }
+
+    /** @test */
+    public function itUsesArchiveRepositoryForFileUriBasedPackageNames()
+    {
+        $archiveRepo = $this->createStub(Repository::class);
+        $packageRepo = $this->createStub(Repository::class);
+
+        $package1 = new Package();
+        $archiveRepo->method('get')->willReturn($package1);
+
+        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $got = $sut->get('file:///home/inviqa/go/master.tgz');
+
+        $this->assertInstanceOf(Package::class, $got);
+    }
+
+    /** @test */
+    public function itUsesArchiveRepositoryForFileBasedPackageNames()
+    {
+        $archiveRepo = $this->createStub(Repository::class);
+        $packageRepo = $this->createStub(Repository::class);
+
+        $package1 = new Package();
+        $archiveRepo->method('get')->willReturn($package1);
+
+        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $got = $sut->get('/home/inviqa/go/master.tgz');
+
+        $this->assertInstanceOf(Package::class, $got);
+    }
+
+    /** @test */
+    public function itUsesArchiveRepositoryForUriWithoutPathBasedPackageNames()
+    {
+        $archiveRepo = $this->createStub(Repository::class);
+        $packageRepo = $this->createStub(Repository::class);
+
+        $package1 = new Package();
+        $archiveRepo->method('get')->willReturn($package1);
+
+        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $got = $sut->get('example:<anything>');
+
+        $this->assertInstanceOf(Package::class, $got);
+    }
 }

@@ -8,7 +8,7 @@ name: Attach PHAR to release
 jobs:
   build:
     name: Compile and upload Phar
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
 
       - name: Rename PHAR
         run: mv ws.phar ws
-      
+
       - name: Generate sha256sum
         run: sha256sum ws > ws.sha256sum
 

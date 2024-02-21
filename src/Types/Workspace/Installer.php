@@ -182,7 +182,7 @@ class Installer
     {
         $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
         file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));
-        passthru('tar -zxf ' . $packageTarball . ' --strip=1 -C .my127ws');
+        passthru('tar -zxf ' . escapeshellarg($packageTarball) . ' --strip=1 -C .my127ws');
         unlink($packageTarball);
     }
 

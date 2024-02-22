@@ -1,0 +1,26 @@
+providers:
+  file:
+    directory: /config
+    watch: true
+  docker:
+    exposedByDefault: false
+
+api:
+  dashboard: true
+  insecure: true
+
+accessLog: {}
+log: {}
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+    http:
+      tls: {}
+
+inactive.tracing:
+  jaeger:
+    samplingServerURL: http://jaeger:5778/sampling
+    localAgentHostPort: jaeger:6831

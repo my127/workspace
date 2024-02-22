@@ -1,0 +1,27 @@
+version: '3'
+services:
+  traefik:
+    container_name: my127ws-proxy2
+    build: traefik
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`my127.site`)
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - co.elastic.logs/module=traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.config/my127ws/proxy:/config
+      - ./traefik/root/tls:/tls
+    networks:
+      - private
+      - shared
+networks:
+  private:
+    external: false
+  shared:
+    external:
+      name: $TRAEFIK_NETWORK

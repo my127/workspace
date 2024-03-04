@@ -7,7 +7,7 @@ use my127\Workspace\Types\Harness\Repository\Exception\CouldNotLoadSource;
 use my127\Workspace\Types\Harness\Repository\Exception\UnknownPackage;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 
-class PackageRepository implements Repository
+class PackageRepository implements HandlingRepository
 {
     private const HARNESS_PACKAGE_PATTERN = '/^((?P<vendor>[a-z0-9-]+)\/)?(?P<harness>[a-z0-9-]+){1}(:(?P<version>[a-z0-9.-]+))?$/';
     private const HARNESS_VERSION_PATTERN = '/^v(?<major>[0-9x]+){1}(\.(?<minor>[0-9x]+))?(.(?<patch>[0-9x]+))?$/';
@@ -46,6 +46,13 @@ class PackageRepository implements Repository
             $this->properties[$name]->setAccessible(true);
         }
         $this->fileLoader = $fileLoader;
+    }
+
+    public function handles(string $uri): bool
+    {
+        $parts = parse_url($uri);
+
+        return ($parts === false || (empty($parts['scheme']) && str_contains($parts['path'], ':')));
     }
 
     public function get(string $package): Package

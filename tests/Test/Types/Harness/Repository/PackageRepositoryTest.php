@@ -12,6 +12,15 @@ use my127\Workspace\Types\Harness\Repository\PackageRepository;
 class PackageRepositoryTest extends IntegrationTestCase
 {
     /** @test */
+    public function itHandlesPackageNames()
+    {
+        $sut = $this->createRepository();
+
+        $this->assertTrue($sut->handles('test/package:v2.0.0'));
+        $this->assertFalse($sut->handles('foobar'));
+    }
+
+    /** @test */
     public function itThrowsExceptionWhenRequestingAnInvalidPackageName(): void
     {
         $this->expectException(\RuntimeException::class);

@@ -13,7 +13,7 @@ class LocalSyncRepositoryTest extends TestCase
     public function itCreatesAPackageFromThePackageUrl()
     {
         $sut = new LocalSyncRepository();
-        $got = $sut->get('sync:///foo/bar');
+        $got = $sut->get('sync://foo/bar');
 
         $this->assertEquals(new Package(['url' => '/foo/bar/', 'localsync' => true]), $got);
     }
@@ -23,7 +23,7 @@ class LocalSyncRepositoryTest extends TestCase
     {
         $sut = new LocalSyncRepository();
 
-        $this->assertTrue($sut->handles('sync:///foo/bar'));
+        $this->assertTrue($sut->handles('sync://foo/bar'));
         $this->assertFalse($sut->handles('file:///foo/bar'));
     }
 }

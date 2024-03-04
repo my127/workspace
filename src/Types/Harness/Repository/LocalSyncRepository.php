@@ -12,13 +12,13 @@ class LocalSyncRepository implements HandlingRepository
 {
     public function handles(string $uri): bool
     {
-        return str_starts_with($uri, 'sync:///');
+        return str_starts_with($uri, 'sync://');
     }
 
     public function get(string $package): Package
     {
         return new Package([
-            'url' => rtrim(substr($package, 7), '/') . '/',
+            'url' => rtrim(substr($package, 6), '/') . '/',
             'localsync' => true,
         ]);
     }

@@ -91,6 +91,10 @@ class Creator
 
     private function downloadAndExtractHarnessYml(Package $package): string
     {
+        if ($package->getDist()['localsync'] ?? false) {
+            return file_get_contents($package->getDist()['url'] . 'harness.yml');
+        }
+
         $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
         file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));
 

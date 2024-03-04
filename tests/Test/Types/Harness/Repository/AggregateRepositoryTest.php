@@ -3,6 +3,7 @@
 namespace Test\Types\Harness\Repository;
 
 use my127\Workspace\Types\Harness\Repository\AggregateRepository;
+use my127\Workspace\Types\Harness\Repository\LocalSyncRepository;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use PHPUnit\Framework\TestCase;
@@ -12,13 +13,14 @@ class AggregateRepositoryTest extends TestCase
     /** @test */
     public function itUsesPackageRepositoryForPackageNames()
     {
-        $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);
+        $archiveRepo = $this->createStub(Repository::class);
+        $localSyncRepo = $this->createStub(Repository::class);
 
         $package1 = new Package();
-        $archiveRepo->method('get')->willReturn($package1);
+        $packageRepo->method('get')->willReturn($package1);
 
-        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $sut = new AggregateRepository($packageRepo, $archiveRepo, $localSyncRepo);
         $got = $sut->get('inviqa/go:v0.7.0');
 
         $this->assertSame($package1, $got);
@@ -27,13 +29,14 @@ class AggregateRepositoryTest extends TestCase
     /** @test */
     public function itUsesArchiveRepositoryForUrlBasedPackageNames()
     {
-        $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);
+        $archiveRepo = $this->createStub(Repository::class);
+        $localSyncRepo = $this->createStub(Repository::class);
 
         $package1 = new Package();
         $archiveRepo->method('get')->willReturn($package1);
 
-        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $sut = new AggregateRepository($packageRepo, $archiveRepo, $localSyncRepo);
         $got = $sut->get('https://foo.com/inviqa/go/master.tgz');
 
         $this->assertInstanceOf(Package::class, $got);
@@ -42,13 +45,14 @@ class AggregateRepositoryTest extends TestCase
     /** @test */
     public function itUsesArchiveRepositoryForFileUriBasedPackageNames()
     {
-        $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);
+        $archiveRepo = $this->createStub(Repository::class);
+        $localSyncRepo = $this->createStub(Repository::class);
 
         $package1 = new Package();
         $archiveRepo->method('get')->willReturn($package1);
 
-        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $sut = new AggregateRepository($packageRepo, $archiveRepo, $localSyncRepo);
         $got = $sut->get('file:///home/inviqa/go/master.tgz');
 
         $this->assertInstanceOf(Package::class, $got);
@@ -57,13 +61,14 @@ class AggregateRepositoryTest extends TestCase
     /** @test */
     public function itUsesArchiveRepositoryForFileBasedPackageNames()
     {
-        $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);
+        $archiveRepo = $this->createStub(Repository::class);
+        $localSyncRepo = $this->createStub(Repository::class);
 
         $package1 = new Package();
         $archiveRepo->method('get')->willReturn($package1);
 
-        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $sut = new AggregateRepository($packageRepo, $archiveRepo, $localSyncRepo);
         $got = $sut->get('/home/inviqa/go/master.tgz');
 
         $this->assertInstanceOf(Package::class, $got);
@@ -72,15 +77,36 @@ class AggregateRepositoryTest extends TestCase
     /** @test */
     public function itUsesArchiveRepositoryForUriWithoutPathBasedPackageNames()
     {
-        $archiveRepo = $this->createStub(Repository::class);
         $packageRepo = $this->createStub(Repository::class);
+        $archiveRepo = $this->createStub(Repository::class);
+        $localSyncRepo = $this->createStub(Repository::class);
 
         $package1 = new Package();
         $archiveRepo->method('get')->willReturn($package1);
 
-        $sut = new AggregateRepository($archiveRepo, $packageRepo);
+        $sut = new AggregateRepository($packageRepo, $archiveRepo, $localSyncRepo);
         $got = $sut->get('example:<anything>');
 
         $this->assertInstanceOf(Package::class, $got);
+    }
+
+    /** @test */
+    public function itUsesLocalSyncRepositoryForSyncUriBasedPackageNames()
+    {
+        $packageRepo = $this->createStub(Repository::class);
+        $archiveRepo = $this->createStub(Repository::class);
+        $localSyncRepo = $this->createMock(LocalSyncRepository::class);
+
+        $package1 = new Package();
+        $localSyncRepo
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('/home/inviqa/go/master'))
+            ->willReturn($package1);
+
+        $sut = new AggregateRepository($packageRepo, $archiveRepo, $localSyncRepo);
+        $got = $sut->get('sync:///home/inviqa/go/master');
+
+        $this->assertEquals($package1, $got);
     }
 }

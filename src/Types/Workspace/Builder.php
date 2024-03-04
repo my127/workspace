@@ -122,14 +122,16 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                 ->usage('install')
                 ->option('--step=<step>   Step from which to start installer. [default: 1]')
                 ->option('--skip-events   If set events will not be triggered.')
+                ->option('--force         Force re-download and overwrite (in step=prepare)')
                 ->action(function (Input $input) {
                     $this->workspace->install($input);
                 });
 
             $this->application->section('harness download')
                 ->usage('harness download')
+                ->option('--force         Force re-download and overwrite')
                 ->action(function (Input $input) {
-                    $this->workspace->run('install --step=download');
+                    $this->workspace->run('install --step=download' . ($input->getOption('force')->value() ? ' --force' : ''));
                 });
 
             $this->application->section('harness prepare')

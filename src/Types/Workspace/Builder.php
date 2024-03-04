@@ -17,6 +17,7 @@ use my127\Workspace\Types\Attribute\Builder as AttributeBuilder;
 use my127\Workspace\Types\Attribute\Collection as AttributeCollection;
 use my127\Workspace\Types\Confd\Definition as ConfdDefinition;
 use my127\Workspace\Types\Harness\Definition as HarnessDefinition;
+use my127\Workspace\Types\Harness\Repository\PackageRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Yaml\Yaml;
@@ -34,6 +35,11 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
     private $workspace;
 
     /**
+     * @var PackageRepository
+     */
+    private $packageRepository;
+
+    /**
      * @var PHPExecutor
      */
     private $phpExecutor;
@@ -48,13 +54,14 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
      */
     private $expression;
 
-    public function __construct(Application $application, Workspace $workspace, PHPExecutor $phpExecutor, AttributeCollection $attributes, Expression $expression)
+    public function __construct(Application $application, AttributeCollection $attributes, Expression $expression, PackageRepository $packageRepository, PHPExecutor $phpExecutor, Workspace $workspace)
     {
         $this->application = $application;
-        $this->workspace = $workspace;
-        $this->phpExecutor = $phpExecutor;
         $this->attributes = $attributes;
         $this->expression = $expression;
+        $this->packageRepository = $packageRepository;
+        $this->phpExecutor = $phpExecutor;
+        $this->workspace = $workspace;
     }
 
     public function build(Environment $environment, DefinitionCollection $definitions)
@@ -139,6 +146,11 @@ class Builder extends Workspace implements EnvironmentBuilder, EventSubscriberIn
                     $this->workspace->run('install --step=prepare');
                 });
         }
+        $this->application->section('harness list')
+                ->usage('harness list')
+                ->action(function (Input $input) {
+                    $this->packageRepository->getAllPackages();
+                });
 
         $this->application->section('config dump')
             ->option('--key=<key>   Attribute key to dump.')

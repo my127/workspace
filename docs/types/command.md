@@ -66,7 +66,7 @@ as the last part in the command and must be read using `input.command(index)`, 0
 command('cmd [--option]'):
   env:
     VERBATIM: = input.option('option')
-    YES_OR_NO: = boolToString(input.option('option'))
+    YES_OR_NO: = input.option('option') ? 'yes' : 'no'
   exec: |
     #!bash
     echo "'${VERBATIM}'"
@@ -74,6 +74,8 @@ command('cmd [--option]'):
 ```
 
 For a boolean option, `input.option` will read a `'1'` if given, `''` (empty string) otherwise.
+The Inviqa base docker harness contains a convenient `boolToString()` function that provides
+the yes/no conversion done here manually.  
 
 ```
 command('cmd [-iou]'):

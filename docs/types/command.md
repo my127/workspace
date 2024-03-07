@@ -83,7 +83,7 @@ command('cmd [-iou]'):
     OPT_U: = input.option('u')
 ```
 
-Sequence hortcut for defining multiple bool options.
+Sequence shortcut for defining multiple bool options.
 
 ### Value options
 ```

@@ -51,11 +51,13 @@ services:
     arguments:
       - '@my127\Workspace\Types\Harness\Repository\PackageRepository'
       - '@my127\Workspace\Types\Harness\Repository\LocalSyncRepository'
-      - '@my127\Workspace\Types\Harness\Repository\ArchiveRepository'
+      - '@my127\Workspace\Types\Harness\Repository\GithubRepository'
+      - '@my127\Workspace\Types\Harness\Repository\ArchiveRepository' # this is catch-all and must stay last
 
   my127\Workspace\Types\Harness\Repository\ArchiveRepository: ~
   my127\Workspace\Types\Harness\Repository\PackageRepository: ~
   my127\Workspace\Types\Harness\Repository\LocalSyncRepository: ~
+  my127\Workspace\Types\Harness\Repository\GithubRepository: ~
 
   my127\Workspace\Types\Harness\Repository\Repository $packages: '@my127\Workspace\Types\Harness\Repository\AggregateRepository'
 

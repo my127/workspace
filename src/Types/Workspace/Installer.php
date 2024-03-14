@@ -3,6 +3,7 @@
 namespace my127\Workspace\Types\Workspace;
 
 use Composer\Semver\Semver;
+use CzProject\GitPhp\Git;
 use my127\Workspace\Application;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
@@ -12,6 +13,8 @@ use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use my127\Workspace\Types\Harness\Repository\Repository;
+use my127\Workspace\Utility\Filesystem;
+use my127\Workspace\Utility\TmpNamType;
 use Symfony\Component\Yaml\Yaml;
 
 class Installer
@@ -182,6 +185,12 @@ class Installer
     {
         if ($package->getDist()['localsync'] ?? false) {
             passthru('rsync -r ' . escapeshellarg($package->getDist()['url']) . ' .my127ws');
+        } else if($package->getDist()['git'] ?? false) {
+            $packageDirPath = Filesystem::tempname(TmpNamType::PATH);
+            $git = new Git();
+            $git->cloneRepository($package->getDist()['url'], $packageDirPath, ['-q', '--depth', '1', '--branch', $package->getDist()['ref']]);
+            passthru('rsync -r --exclude .git/ ' . escapeshellarg($packageDirPath) . '/ .my127ws');
+            Filesystem::rrmdir($packageDirPath);
         } else {
             $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
             file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));

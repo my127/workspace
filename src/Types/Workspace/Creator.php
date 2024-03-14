@@ -5,7 +5,11 @@ namespace my127\Workspace\Types\Workspace;
 use my127\Workspace\Types\Crypt\Key;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use my127\Workspace\Types\Harness\Repository\Repository;
+use my127\Workspace\Utility\Filesystem;
+use my127\Workspace\Utility\TmpNamType;
 use Symfony\Component\Yaml\Yaml;
+use CzProject\GitPhp\Git;
+use function unlink;
 
 class Creator
 {
@@ -52,7 +56,7 @@ class Creator
 
         $harnessLayers = [$harness];
 
-        $harnessData = $this->parseYamlMergeStreams($this->downloadAndExtractHarnessYml($package));
+        $harnessData = $this->parseYamlMergeStreams($this->acquireAndExtractHarnessYml($package));
         if (!is_array($harnessData)) {
             throw new \Exception('Could not parse the harness\'s harness.yml file');
         }
@@ -89,10 +93,22 @@ class Creator
         return $mergedDocument;
     }
 
-    private function downloadAndExtractHarnessYml(Package $package): string
+    private function acquireAndExtractHarnessYml(Package $package): string
     {
         if ($package->getDist()['localsync'] ?? false) {
             return file_get_contents($package->getDist()['url'] . 'harness.yml');
+        }
+
+        if ($package->getDist()['git'] ?? false) {
+            $packageDirPath = Filesystem::tempname(TmpNamType::PATH);
+
+            $git = new Git();
+            $git->cloneRepository($package->getDist()['url'], $packageDirPath, ['-q', '--depth', '1', '--branch', $package->getDist()['ref']]);
+
+            $yaml = file_get_contents($packageDirPath . '/harness.yml');
+            Filesystem::rrmdir($packageDirPath);
+
+            return $yaml;
         }
 
         $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');

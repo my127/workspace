@@ -80,6 +80,8 @@ class Workspace extends Definition implements \ArrayAccess
         $step = $step instanceof StringOptionValue ? $step->value() : '';
         $cascade = true;
         $events = $input->getOption('skip-events');
+        $force = (bool) $input->getOption('force')->value();
+
         $events = $events instanceof BooleanOptionValue ? !$events->value() : true;
 
         if (!is_numeric($step)) {
@@ -87,7 +89,7 @@ class Workspace extends Definition implements \ArrayAccess
             $step = $installer->getStep($step);
         }
 
-        $installer->install($step, $cascade, $events);
+        $installer->install($step, $cascade, $events, $force);
     }
 
     public function refresh(): void

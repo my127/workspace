@@ -16,4 +16,15 @@ class ArchiveRepositoryTest extends TestCase
 
         $this->assertEquals(new Package(['url' => 'https://github.com/inviqa/harness-go/archive/master.tar.gz']), $got);
     }
+
+    /** @test */
+    public function itHandlesAllUrls()
+    {
+        $sut = new ArchiveRepository();
+
+        $this->assertTrue($sut->handles('https://foo.com/inviqa/go/master.tgz'));
+        $this->assertTrue($sut->handles('file:///home/inviqa/go/master.tgz'));
+        $this->assertTrue($sut->handles('/home/inviqa/go/master.tgz'));
+        $this->assertTrue($sut->handles('example:<anything>'));
+    }
 }

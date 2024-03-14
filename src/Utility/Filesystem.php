@@ -4,6 +4,8 @@ namespace my127\Workspace\Utility;
 
 class Filesystem
 {
+    public const TMPNAM_DEFAULT_PREFIX = 'my127ws';
+
     public static function upsearch(string $name, string $startFrom): ?string
     {
         $path = null;
@@ -44,7 +46,7 @@ class Filesystem
         $dir = opendir($src);
 
         if (!is_dir($dst)) {
-            mkdir($dst);
+            \mkdir($dst);
         }
 
         while (false !== ($file = readdir($dir))) {
@@ -74,5 +76,31 @@ class Filesystem
         }
 
         return $fileList;
+    }
+
+    public static function tempname(TmpNamType $type = TmpNamType::PATH, string $prefix = self::TMPNAM_DEFAULT_PREFIX): string
+    {
+        if (false === ($tmpFilePath = tempnam(sys_get_temp_dir(), $prefix))) {
+            throw new \Exception('Could not create temporary ' . $type->value);
+        }
+
+        if ($type === TmpNamType::FILE) {
+            return $tmpFilePath;
+        }
+
+        if (unlink($tmpFilePath) === false) {
+            throw new \Exception('Could not remove temporary filepath ' . $tmpFilePath);
+        }
+
+        if ($type === TmpNamType::PATH) {
+            return $tmpFilePath;
+        }
+
+        \mkdir($tmpFilePath, 0777, true);
+        if (\mkdir($tmpFilePath, 0777, true) === false) {
+            throw new \Exception('Could not create temporary directory ' . $tmpFilePath);
+        }
+
+        return $tmpFilePath;
     }
 }

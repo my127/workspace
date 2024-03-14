@@ -3,6 +3,7 @@
 namespace my127\Workspace\Types\Workspace;
 
 use Composer\Semver\Semver;
+use CzProject\GitPhp\Git;
 use my127\Workspace\Application;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Terminal\Terminal;
@@ -12,6 +13,8 @@ use my127\Workspace\Types\Crypt\Crypt;
 use my127\Workspace\Types\Harness\Harness;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use my127\Workspace\Types\Harness\Repository\Repository;
+use my127\Workspace\Utility\Filesystem;
+use my127\Workspace\Utility\TmpNamType;
 use Symfony\Component\Yaml\Yaml;
 
 class Installer
@@ -101,7 +104,7 @@ class Installer
         return $this->stepMap[$step];
     }
 
-    public function install($step = null, $cascade = true, $events = true)
+    public function install($step = null, $cascade = true, $events = true, $force = false)
     {
         $packages = array_map(
             function ($harnessName) {
@@ -120,7 +123,7 @@ class Installer
                 if ($events) {
                     $this->workspace->trigger('before.harness.install');
                 }
-                $this->downloadAndExtractHarnessPackages($packages);
+                $this->downloadAndExtractHarnessPackages($packages, $force);
                 break;
             case self::STEP_OVERLAY:
                 if (($overlayPath = $this->workspace->getOverlayPath()) !== null) {
@@ -166,24 +169,34 @@ class Installer
     /**
      * @param Package[] $packages
      */
-    private function downloadAndExtractHarnessPackages(array $packages)
+    private function downloadAndExtractHarnessPackages(array $packages, bool $force)
     {
         $harnessInstallPath = $this->workspace->getPath() . '/.my127ws';
 
-        if (!is_dir($harnessInstallPath)) {
-            mkdir($harnessInstallPath, 0755, true);
+        if (!is_dir($harnessInstallPath) || $force) {
+            @mkdir($harnessInstallPath, 0755, true);
             foreach ($packages as $package) {
-                $this->downloadAndExtractHarnessPackage($package);
+                $this->acquireHarnessPackage($package);
             }
         }
     }
 
-    private function downloadAndExtractHarnessPackage(Package $package): void
+    private function acquireHarnessPackage(Package $package): void
     {
-        $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
-        file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));
-        passthru('tar -zxf ' . escapeshellarg($packageTarball) . ' --strip=1 -C .my127ws');
-        unlink($packageTarball);
+        if ($package->getDist()['localsync'] ?? false) {
+            passthru('rsync -r ' . escapeshellarg($package->getDist()['url']) . ' .my127ws');
+        } elseif ($package->getDist()['git'] ?? false) {
+            $packageDirPath = Filesystem::tempname(TmpNamType::PATH);
+            $git = new Git();
+            $git->cloneRepository($package->getDist()['url'], $packageDirPath, ['-q', '--depth', '1', '--branch', $package->getDist()['ref']]);
+            passthru('rsync -r --exclude .git/ ' . escapeshellarg($packageDirPath) . '/ .my127ws');
+            Filesystem::rrmdir($packageDirPath);
+        } else {
+            $packageTarball = tempnam(sys_get_temp_dir(), 'my127ws');
+            file_put_contents($packageTarball, file_get_contents($package->getDist()['url']));
+            passthru('tar -zxf ' . escapeshellarg($packageTarball) . ' --strip=1 -C .my127ws');
+            unlink($packageTarball);
+        }
     }
 
     private function ensureRequiredAttributesArePresent(array $required): void

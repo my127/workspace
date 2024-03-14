@@ -6,25 +6,25 @@ use my127\Workspace\Types\Harness\Repository\Package\Package;
 
 class AggregateRepository implements Repository
 {
-    /** @var Repository */
-    private $packageRepository;
+    /** @var HandlingRepository[] */
+    private array $repositories;
 
-    /** @var Repository */
-    private $archiveRepository;
-
-    public function __construct(Repository $packageRepository, Repository $archiveRepository)
+    public function __construct(HandlingRepository ...$repositories)
     {
-        $this->packageRepository = $packageRepository;
-        $this->archiveRepository = $archiveRepository;
+        $this->repositories = $repositories;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function get(string $package): Package
     {
-        $parts = parse_url($package);
-        if ($parts === false || (empty($parts['scheme']) && str_contains($parts['path'], ':'))) {
-            return $this->packageRepository->get($package);
+        foreach ($this->repositories as $repository) {
+            if ($repository->handles($package)) {
+                return $repository->get($package);
+            }
         }
 
-        return $this->archiveRepository->get($package);
+        throw new \Exception(sprintf('No handler found for URI "%s"', $package));
     }
 }

@@ -173,7 +173,7 @@ class Installer
     {
         $harnessInstallPath = $this->workspace->getPath() . '/.my127ws';
 
-        if (!is_dir($harnessInstallPath) || $force ) {
+        if (!is_dir($harnessInstallPath) || $force) {
             @mkdir($harnessInstallPath, 0755, true);
             foreach ($packages as $package) {
                 $this->acquireHarnessPackage($package);
@@ -185,7 +185,7 @@ class Installer
     {
         if ($package->getDist()['localsync'] ?? false) {
             passthru('rsync -r ' . escapeshellarg($package->getDist()['url']) . ' .my127ws');
-        } else if($package->getDist()['git'] ?? false) {
+        } elseif ($package->getDist()['git'] ?? false) {
             $packageDirPath = Filesystem::tempname(TmpNamType::PATH);
             $git = new Git();
             $git->cloneRepository($package->getDist()['url'], $packageDirPath, ['-q', '--depth', '1', '--branch', $package->getDist()['ref']]);

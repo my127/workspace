@@ -2,7 +2,6 @@
 
 namespace Test\Types\Harness\Repository;
 
-use my127\Workspace\Types\Harness\Repository\ArchiveRepository;
 use my127\Workspace\Types\Harness\Repository\LocalSyncRepository;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +17,7 @@ class LocalSyncRepositoryTest extends TestCase
         $this->assertEquals(new Package(['url' => '/foo/bar/', 'localsync' => true]), $got);
     }
 
-    /* @test **/
+    /* @test * */
     public function itHandlesOnlySyncUrls()
     {
         $sut = new LocalSyncRepository();

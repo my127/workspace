@@ -80,7 +80,7 @@ class Workspace extends Definition implements \ArrayAccess
         $step = $step instanceof StringOptionValue ? $step->value() : '';
         $cascade = true;
         $events = $input->getOption('skip-events');
-        $force = !!$input->getOption('force')?->value() ?? false;
+        $force = (bool) $input->getOption('force')->value();
 
         $events = $events instanceof BooleanOptionValue ? !$events->value() : true;
 

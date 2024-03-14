@@ -17,7 +17,7 @@ class GitRepositoryTest extends TestCase
         $this->assertEquals(new Package(['url' => 'git@github.com:inviqa/harness-base-php.git', 'ref' => '0.4.x', 'git' => true]), $got);
     }
 
-    /* @test **/
+    /* @test * */
     public function itHandlesOnlyGithubSshUrls()
     {
         $sut = new GithubRepository();

@@ -2,14 +2,13 @@
 
 namespace my127\Workspace\Types\Workspace;
 
+use CzProject\GitPhp\Git;
 use my127\Workspace\Types\Crypt\Key;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 use my127\Workspace\Types\Harness\Repository\Repository;
 use my127\Workspace\Utility\Filesystem;
 use my127\Workspace\Utility\TmpNamType;
 use Symfony\Component\Yaml\Yaml;
-use CzProject\GitPhp\Git;
-use function unlink;
 
 class Creator
 {
@@ -118,7 +117,7 @@ class Creator
         if ($packageDir === false) {
             throw new \Exception('Could not create temporary directory for harness');
         }
-        unlink($packageDir);
+        \unlink($packageDir);
         if (!mkdir($packageDir, 0700)) {
             throw new \Exception('Could not create temporary ' . $packageDir . ' directory for harness');
         }
@@ -132,7 +131,7 @@ class Creator
         if (is_dir($packageDir)) {
             exec('rm -rf ' . escapeshellarg($packageDir));
         }
-        unlink($packageTarball);
+        \unlink($packageTarball);
 
         if ($harnessYaml === false) {
             throw new \Exception('Could not parse the harness\'s harness.yml file');

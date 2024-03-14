@@ -2,7 +2,6 @@
 
 namespace my127\Workspace\Types\Harness\Repository;
 
-use Exception;
 use my127\Workspace\Types\Harness\Repository\Package\Package;
 
 class AggregateRepository implements Repository
@@ -16,9 +15,7 @@ class AggregateRepository implements Repository
     }
 
     /**
-     * @param string $package
-     * @return Package
-     * @throws Exception
+     * @throws \Exception
      */
     public function get(string $package): Package
     {
@@ -28,6 +25,6 @@ class AggregateRepository implements Repository
             }
         }
 
-        throw new Exception(sprintf('No handler found for URI "%s"', $package));
+        throw new \Exception(sprintf('No handler found for URI "%s"', $package));
     }
 }

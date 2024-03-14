@@ -52,7 +52,7 @@ class PackageRepository implements HandlingRepository
     {
         $parts = parse_url($uri);
 
-        return ($parts === false || (empty($parts['scheme']) && str_contains($parts['path'], ':')));
+        return $parts === false || (empty($parts['scheme']) && str_contains($parts['path'], ':'));
     }
 
     public function get(string $package): Package

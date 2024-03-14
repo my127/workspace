@@ -2,7 +2,6 @@
 
 namespace Test\Types\Harness\Repository;
 
-use Exception;
 use my127\Workspace\Types\Harness\Repository\AggregateRepository;
 use my127\Workspace\Types\Harness\Repository\HandlingRepository;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +43,7 @@ class AggregateRepositoryTest extends TestCase
 
         $sut = new AggregateRepository($repoNo);
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $sut->get('foobar');
     }

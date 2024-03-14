@@ -2,8 +2,6 @@
 
 namespace my127\Workspace\Utility;
 
-use function mkdir;
-
 class Filesystem
 {
     public const TMPNAM_DEFAULT_PREFIX = 'my127ws';
@@ -48,7 +46,7 @@ class Filesystem
         $dir = opendir($src);
 
         if (!is_dir($dst)) {
-            mkdir($dst);
+            \mkdir($dst);
         }
 
         while (false !== ($file = readdir($dir))) {
@@ -90,8 +88,7 @@ class Filesystem
             return $tmpFilePath;
         }
 
-
-        if (false === unlink($tmpFilePath)) {
+        if (unlink($tmpFilePath) === false) {
             throw new \Exception('Could not remove temporary filepath ' . $tmpFilePath);
         }
 
@@ -99,8 +96,8 @@ class Filesystem
             return $tmpFilePath;
         }
 
-        mkdir($tmpFilePath, 0777, true);
-        if (false === mkdir($tmpFilePath, 0777, true)) {
+        \mkdir($tmpFilePath, 0777, true);
+        if (\mkdir($tmpFilePath, 0777, true) === false) {
             throw new \Exception('Could not create temporary directory ' . $tmpFilePath);
         }
 

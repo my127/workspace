@@ -120,6 +120,9 @@ class Section
         return $childSection->get($name);
     }
 
+    /**
+     * @return Section[]
+     */
     public function getChildren(): array
     {
         return $this->children;

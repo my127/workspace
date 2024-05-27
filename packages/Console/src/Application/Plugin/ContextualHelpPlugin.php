@@ -15,7 +15,6 @@ use my127\Console\Usage\Parser\OptionDefinitionParser;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function usort;
 
 class ContextualHelpPlugin implements Plugin
 {
@@ -99,9 +98,6 @@ class ContextualHelpPlugin implements Plugin
         $this->displayOptionsHelp("\033[33mGlobal Options:\033[0m", $this->root->getOptions());
     }
 
-    /**
-     * @return void
-     */
     private function displaySubCommandHelp(Section $section): void
     {
         if (empty($children = $section->getChildren())) {
@@ -113,7 +109,7 @@ class ContextualHelpPlugin implements Plugin
         $lines = [];
         $padding = 0;
 
-        usort($children, fn(Section $one, Section $two) => strcasecmp($one->getName(), $two->getName()));
+        \usort($children, fn (Section $one, Section $two) => strcasecmp($one->getName(), $two->getName()));
         foreach ($children as $child) {
             $name = $child->getName();
             $line = [

@@ -50,7 +50,7 @@ class OptionDefinition
         ?string $shortName = null,
         ?string $longName = null,
         ?string $description = null,
-        ?string $argument = null
+        ?string $argument = null,
     ) {
         $this->shortName = $shortName;
         $this->longName = $longName;

@@ -6,15 +6,14 @@ use my127\Console\Usage\Model\OptionDefinitionCollection;
 /**
  * Usage.
  *
- * @param string                     $definition
- * @param string                     $cmd
- * @param OptionDefinitionCollection $optionRepository
+ * @param string $definition
+ * @param string $cmd
  *
  * @return false|string[]
  *
  * @throws Exception
  */
-function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepository = null)
+function usage($definition, $cmd = null, ?OptionDefinitionCollection $optionRepository = null)
 {
     $result = Console::usage($definition, $cmd, $optionRepository);
 

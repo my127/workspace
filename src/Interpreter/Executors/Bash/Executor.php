@@ -8,7 +8,7 @@ class Executor implements InterpreterExecutor
 {
     public const NAME = 'bash';
 
-    public function exec(string $script, array $args = [], string $cwd = null, array $env = []): void
+    public function exec(string $script, array $args = [], ?string $cwd = null, array $env = []): void
     {
         $descriptorSpec = [
             0 => STDIN,
@@ -30,7 +30,7 @@ class Executor implements InterpreterExecutor
         }
     }
 
-    public function capture(string $script, array $args = [], string $cwd = null, array $env = []): string
+    public function capture(string $script, array $args = [], ?string $cwd = null, array $env = []): string
     {
         $pos = strrpos($script, "\n") + 1;
 

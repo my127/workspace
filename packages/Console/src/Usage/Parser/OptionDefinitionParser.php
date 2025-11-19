@@ -54,7 +54,7 @@ class OptionDefinitionParser
             }
         }
 
-            goto buildOptionDefinition;
+        goto buildOptionDefinition;
 
         parseShortName:
 
@@ -77,7 +77,7 @@ class OptionDefinitionParser
             goto buildOptionDefinition;
         }
 
-            goto hasArgument;
+        goto hasArgument;
 
         hasArgument:
 
@@ -93,7 +93,7 @@ class OptionDefinitionParser
             goto parseArgument;
         }
 
-            goto modeSelect;
+        goto modeSelect;
 
         parseArgument:
 
@@ -121,7 +121,7 @@ class OptionDefinitionParser
             }
         }
 
-            goto buildOptionDefinition;
+        goto buildOptionDefinition;
 
         hasDefault:
 

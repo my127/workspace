@@ -8,7 +8,7 @@ use my127\FSM\Transition\Transition;
 
 class UsageParserContext implements Stateful
 {
-    private $currentState = null;
+    private $currentState;
 
     /**
      * @var \SplObjectStorage
@@ -40,17 +40,11 @@ class UsageParserContext implements Stateful
         $this->currentState = $state;
     }
 
-    /**
-     * @return mixed
-     */
     public function getData(Transition $transition)
     {
         return isset($this->data[$transition]) ? $this->data[$transition] : null;
     }
 
-    /**
-     * @param mixed $data
-     */
     public function setData(Transition $transition, $data)
     {
         $this->data[$transition] = $data;

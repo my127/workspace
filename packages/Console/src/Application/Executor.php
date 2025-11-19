@@ -27,22 +27,22 @@ class Executor implements SectionVisitor
     /**
      * @var EventDispatcher
      */
-    private $dispatcher = null;
+    private $dispatcher;
 
     /**
      * @var OptionDefinitionParser
      */
-    private $optionParser = null;
+    private $optionParser;
 
     /**
      * @var UsageParserBuilder
      */
-    private $usageParserBuilder = null;
+    private $usageParserBuilder;
 
     /**
      * @var Section
      */
-    private $root = null;
+    private $root;
 
     /**
      * @var string[]
@@ -52,12 +52,12 @@ class Executor implements SectionVisitor
     /**
      * @var Section
      */
-    private $matchedSection = null;
+    private $matchedSection;
 
     /**
      * @var Input
      */
-    private $matchedInput = null;
+    private $matchedInput;
 
     /**
      * @var ActionCollection
@@ -74,7 +74,7 @@ class Executor implements SectionVisitor
         UsageParserBuilder $usageParserBuilder,
         OptionDefinitionParser $optionParser,
         ActionCollection $actions,
-        OptionValueFactory $optionValueFactory
+        OptionValueFactory $optionValueFactory,
     ) {
         $this->dispatcher = $dispatcher;
         $this->optionParser = $optionParser;

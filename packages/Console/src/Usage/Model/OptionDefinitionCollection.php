@@ -2,10 +2,8 @@
 
 namespace my127\Console\Usage\Model;
 
-use IteratorAggregate;
-
 /**
- * @implements IteratorAggregate<string,OptionDefinition>
+ * @implements \IteratorAggregate<string,OptionDefinition>
  */
 class OptionDefinitionCollection implements \IteratorAggregate, \Countable
 {

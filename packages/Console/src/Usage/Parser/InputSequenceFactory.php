@@ -11,7 +11,7 @@ class InputSequenceFactory
     public function createFrom(
         $symbols,
         OptionDefinitionCollection $definitionRepository,
-        ?bool $ignoreMissingOption = false
+        ?bool $ignoreMissingOption = false,
     ): ?InputSequence {
         $options = [];
         $positional = [];

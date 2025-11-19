@@ -4,11 +4,11 @@ namespace my127\Console\Application\Section;
 
 class Section
 {
-    private $name = null;
-    private $description = null;
+    private $name;
+    private $description;
     private $usageDefinitions = [];
     private $options = [];
-    private $action = null;
+    private $action;
 
     /**
      * @var Section[]

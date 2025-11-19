@@ -28,7 +28,7 @@ class UsageParser
     public function __construct(
         Definition $usageDefinition,
         OptionDefinitionCollection $optionRepository,
-        OptionValueFactory $optionValueFactory
+        OptionValueFactory $optionValueFactory,
     ) {
         $this->usageDefinition = $usageDefinition;
         $this->optionRepository = $optionRepository;

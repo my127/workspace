@@ -35,33 +35,22 @@ class OptionTransition implements Transition
         $this->optionDefinition = $optionDefinition;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTo()
     {
         return $this->to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setTo(State $state)
     {
         $this->to = $state;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function accept(StateVisitor $visitor, &$visited = [])
     {
         $this->to->accept($visitor, $visited);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @var InputSequence
      * @var UsageParserContext
      * @var BacktrackingRunner
@@ -72,8 +61,6 @@ class OptionTransition implements Transition
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @var InputSequence
      * @var UsageParserContext
      * @var BacktrackingRunner
@@ -85,17 +72,11 @@ class OptionTransition implements Transition
         return $input->getOption($this->optionDefinition);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function copy(&$visited = [])
     {
         return new self($this->optionDefinition, $this->to->copy($visited));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString()
     {
         $names = [];

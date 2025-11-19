@@ -33,7 +33,7 @@ class Definition implements StateVisitorClient
      *
      * @var State
      */
-    private $initialState = null;
+    private $initialState;
 
     /**
      * StepRunner Factory.
@@ -45,10 +45,9 @@ class Definition implements StateVisitorClient
     /**
      * Definition.
      *
-     * @param string        $label
-     * @param RunnerFactory $runnerFactory
+     * @param string $label
      */
-    public function __construct($label, RunnerFactory $runnerFactory = null)
+    public function __construct($label, ?RunnerFactory $runnerFactory = null)
     {
         $this->label = $label;
         $this->runnerFactory = $runnerFactory;
@@ -109,12 +108,11 @@ class Definition implements StateVisitorClient
      * @param string|Transition $transition
      * @param string|State      $from
      * @param string|State      $to
-     * @param callable          $guard
      * @param string|callable   $action
      *
      * @return void
      */
-    public function addTransition($transition, $from, $to = null, callable $guard = null, $action = null)
+    public function addTransition($transition, $from, $to = null, ?callable $guard = null, $action = null)
     {
         if (!($from instanceof State)) {
             $from = $this->getState($from);
@@ -192,13 +190,11 @@ class Definition implements StateVisitorClient
     /**
      * Build as FSM.
      *
-     * @param Stateful $context
-     *
      * @return Runner
      *
      * @throws \Exception
      */
-    public function toFSM(Stateful $context = null)
+    public function toFSM(?Stateful $context = null)
     {
         return $this->getRunnerFactory()->buildFSM($this->getInitialState(), $context);
     }
@@ -206,11 +202,9 @@ class Definition implements StateVisitorClient
     /**
      * Build as Lambda.
      *
-     * @param Stateful $context
-     *
      * @return callable
      */
-    public function toLambda(Stateful $context = null)
+    public function toLambda(?Stateful $context = null)
     {
         return $this->toFSM($context)->getLambda();
     }

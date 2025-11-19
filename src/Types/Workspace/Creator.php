@@ -13,7 +13,7 @@ class Creator
     {
     }
 
-    public function create(string $name, ?string $harness = null, string $dir = null)
+    public function create(string $name, ?string $harness = null, ?string $dir = null)
     {
         if ($dir === null) {
             $dir = './' . $name;

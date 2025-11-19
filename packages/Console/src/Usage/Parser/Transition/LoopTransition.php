@@ -23,33 +23,22 @@ class LoopTransition implements Transition
         $this->to = $to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTo()
     {
         return $this->to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setTo(State $state)
     {
         $this->to = $state;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function accept(StateVisitor $visitor, &$visited = [])
     {
         $this->to->accept($visitor, $visited);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @var InputSequence
      * @var UsageParserContext
      * @var BacktrackingRunner
@@ -69,8 +58,6 @@ class LoopTransition implements Transition
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @var InputSequence
      * @var UsageParserContext
      * @var BacktrackingRunner
@@ -82,17 +69,11 @@ class LoopTransition implements Transition
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function copy(&$visited = [])
     {
         return new self($this->to->copy($visited));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString()
     {
         return 'loop';

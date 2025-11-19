@@ -25,10 +25,8 @@ class SequenceRunner implements Runner
      *
      * Treats input as a sequence of symbols, in turn each is passed to the machine
      * taking the first accepting path at each state.
-     *
-     * @param Stateful $context
      */
-    public function __construct(State $initialState, Stateful $context = null)
+    public function __construct(State $initialState, ?Stateful $context = null)
     {
         if ($context === null) {
             $context = new Context();
@@ -111,14 +109,11 @@ class SequenceRunner implements Runner
      * Attempt to advance the machine with the given input, optionally try
      * and follow the exact path as given by the transition.
      *
-     * @param mixed      $input
      * @param Transition $transition Take this path, otherwise try all paths
-     *
-     * @return mixed
      *
      * @throws \Exception
      */
-    private function apply($input = null, Transition $transition = null)
+    private function apply($input = null, ?Transition $transition = null)
     {
         $state = $this->context->getCurrentState();
 
@@ -168,8 +163,6 @@ class SequenceRunner implements Runner
 
     /**
      * Alias of input.
-     *
-     * @return mixed
      */
     public function __invoke($input)
     {

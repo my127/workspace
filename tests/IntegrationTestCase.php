@@ -18,7 +18,7 @@ class IntegrationTestCase extends TestCase
         return Workspace::create(__DIR__ . '/Workspace', __DIR__ . '/WorkspaceHome');
     }
 
-    public function workspaceProcess(string $command, string $subPath = null, array $env = []): Process
+    public function workspaceProcess(string $command, ?string $subPath = null, array $env = []): Process
     {
         $env['MY127WS_HOME'] = isset($env['MY127WS_HOME']) ? $env['MY127WS_HOME'] : __DIR__ . '/WorkspaceHome';
 
@@ -31,7 +31,7 @@ class IntegrationTestCase extends TestCase
         return $process;
     }
 
-    public function workspaceCommand(string $command, string $subPath = null, array $env = []): Process
+    public function workspaceCommand(string $command, ?string $subPath = null, array $env = []): Process
     {
         $process = $this->workspaceProcess($command, $subPath, $env);
         $process->mustRun();

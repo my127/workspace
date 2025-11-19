@@ -12,7 +12,7 @@
         "symfony/expression-language": "^6.1",
         "symfony/finder": "^6.1",
         "symfony/yaml": "^6.1",
-        "twig/twig": "^2.13",
+        "twig/twig": "^2.16.1",
         "composer/semver": "^3.4"
     },
     "require-dev": {

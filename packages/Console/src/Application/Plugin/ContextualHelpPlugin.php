@@ -97,10 +97,7 @@ class ContextualHelpPlugin implements Plugin
         $this->displayOptionsHelp("\033[33mGlobal Options:\033[0m", $this->root->getOptions());
     }
 
-    /**
-     * @return void
-     */
-    private function displaySubCommandHelp(Section $section)
+    private function displaySubCommandHelp(Section $section): void
     {
         if (empty($children = $section->getChildren())) {
             return;
@@ -111,9 +108,7 @@ class ContextualHelpPlugin implements Plugin
         $lines = [];
         $padding = 0;
 
-        /**
-         * @var Section $child
-         */
+        \usort($children, fn (Section $one, Section $two) => strcasecmp($one->getName(), $two->getName()));
         foreach ($children as $child) {
             $name = $child->getName();
             $line = [

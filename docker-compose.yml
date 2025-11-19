@@ -1,11 +1,10 @@
-version: '3'
 services:
-
-  builder81:
+  builder83:
     build:
       context: .
       args:
-        PHP_VERSION: 8.1
+        PHP_VERSION: 8.3
+        DISTRO_CODENAME: trixie
     environment:
       HOST_OS_FAMILY:
     volumes:

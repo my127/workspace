@@ -1,5 +1,6 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}
+ARG DISTRO_CODENAME
+FROM php:${PHP_VERSION}-${DISTRO_CODENAME}
 
 RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -s dist-upgrade | grep "^Inst" | \
@@ -10,7 +11,7 @@ RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -qq -y --no-install-recommends install \
     git \
     libzip-dev \
-    libzip4 \
+    libzip5 \
     wget \
     zlib1g-dev \
  \

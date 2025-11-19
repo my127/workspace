@@ -1,3 +1,3 @@
-FROM traefik:1.7-alpine
+FROM traefik:v2
 
 COPY root /

@@ -12,11 +12,9 @@ class RunnerFactory
     /**
      * Build FSM.
      *
-     * @param Stateful $context
-     *
      * @return Runner
      */
-    public function buildFSM(State $initialState, Stateful $context = null)
+    public function buildFSM(State $initialState, ?Stateful $context = null)
     {
         return new $this->defaultRunner($initialState, $context);
     }

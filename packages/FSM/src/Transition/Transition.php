@@ -36,18 +36,12 @@ interface Transition extends StateVisitorClient
     /**
      * Can Accept Input.
      *
-     * @param mixed $input
-     *
      * @return bool
      */
     public function can($input, Stateful $context, Runner $runner);
 
     /**
      * Apply Transition.
-     *
-     * @param mixed $input
-     *
-     * @return mixed
      */
     public function apply($input, Stateful $context, Runner $runner);
 

@@ -6,7 +6,7 @@ use my127\FSM\State\State;
 
 class Context implements Stateful
 {
-    private $currentState = null;
+    private $currentState;
 
     /**
      * Get Current State.

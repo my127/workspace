@@ -14,12 +14,12 @@ class Executor implements InterpreterExecutor
     /** @var array */
     private $globals;
 
-    public function exec(string $script, array $args = [], string $cwd = null, array $env = []): void
+    public function exec(string $script, array $args = [], ?string $cwd = null, array $env = []): void
     {
         $this->run($script, $args, $cwd, $env);
     }
 
-    public function capture(string $script, array $args = [], string $cwd = null, array $env = [])
+    public function capture(string $script, array $args = [], ?string $cwd = null, array $env = [])
     {
         $pos = strrpos($script, "\n") + 1;
 
@@ -35,7 +35,7 @@ class Executor implements InterpreterExecutor
         $this->globals[$name] = $value;
     }
 
-    private function run(string $script, array $args = [], string $cwd = null, array $env = [])
+    private function run(string $script, array $args = [], ?string $cwd = null, array $env = [])
     {
         $this->environment['cwd'] = getcwd();
         $this->environment['env'] = [];

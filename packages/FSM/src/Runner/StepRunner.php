@@ -22,10 +22,8 @@ class StepRunner implements Runner
      *
      * A basic machine runner where each call to input correlates to a single
      * transition in the machine.
-     *
-     * @param Stateful $context
      */
-    public function __construct(State $initialState, Stateful $context = null)
+    public function __construct(State $initialState, ?Stateful $context = null)
     {
         $this->context = $context ?: new Context();
         $this->context->setCurrentState($initialState);
@@ -67,14 +65,11 @@ class StepRunner implements Runner
      * Attempt to advance the machine with the given input, optionally try
      * and follow the exact path as given by the transition.
      *
-     * @param mixed      $input
      * @param Transition $transition Take this path, otherwise try all paths
-     *
-     * @return mixed
      *
      * @throws \Exception
      */
-    public function apply($input = null, Transition $transition = null)
+    public function apply($input = null, ?Transition $transition = null)
     {
         $state = $this->context->getCurrentState();
 
@@ -134,8 +129,6 @@ class StepRunner implements Runner
 
     /**
      * Input.
-     *
-     * @return mixed
      */
     public function input($input)
     {
@@ -144,8 +137,6 @@ class StepRunner implements Runner
 
     /**
      * Alias of Input.
-     *
-     * @return mixed
      */
     public function __invoke($input)
     {

@@ -37,7 +37,7 @@ class Console
         return $application;
     }
 
-    public static function usage($definition, $cmd = null, OptionDefinitionCollection $optionRepository = null): Input|bool
+    public static function usage($definition, $cmd = null, ?OptionDefinitionCollection $optionRepository = null): Input|bool
     {
         $cmd = empty($cmd) ? [] : preg_split('/\s+/', $cmd);
         $optionValueFactory = new OptionValueFactory();

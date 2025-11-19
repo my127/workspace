@@ -34,7 +34,7 @@ class Scanner
      *
      * @var Token
      */
-    private $peeked = null;
+    private $peeked;
 
     /**
      * Command & Usage Scanner.

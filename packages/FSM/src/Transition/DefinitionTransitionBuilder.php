@@ -12,35 +12,35 @@ class DefinitionTransitionBuilder
      *
      * @var string
      */
-    private $label = null;
+    private $label;
 
     /**
      * From.
      *
      * @var State
      */
-    private $from = null;
+    private $from;
 
     /**
      * To.
      *
      * @var State
      */
-    private $to = null;
+    private $to;
 
     /**
      * Guard.
      *
      * @var callable
      */
-    private $guard = null;
+    private $guard;
 
     /**
      * Action.
      *
      * @var callable
      */
-    private $action = null;
+    private $action;
 
     /**
      * Definition.
@@ -95,12 +95,11 @@ class DefinitionTransitionBuilder
     /**
      * When.
      *
-     * @param string   $label
-     * @param callable $guard
+     * @param string $label
      *
      * @return $this
      */
-    public function when($label, callable $guard = null)
+    public function when($label, ?callable $guard = null)
     {
         $this->label = $label;
         $this->guard = $guard;

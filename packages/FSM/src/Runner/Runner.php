@@ -8,8 +8,6 @@ interface Runner
 {
     /**
      * Input.
-     *
-     * @return mixed
      */
     public function input($input);
 
@@ -20,8 +18,6 @@ interface Runner
 
     /**
      * Alias of input.
-     *
-     * @return mixed
      */
     public function __invoke($input);
 

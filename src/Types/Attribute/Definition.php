@@ -13,7 +13,6 @@ class Definition implements WorkspaceDefinition
     /** @var string */
     private $key;
 
-    /** @var mixed */
     private $value;
 
     /** @var string */

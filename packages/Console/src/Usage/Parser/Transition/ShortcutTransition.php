@@ -20,41 +20,26 @@ class ShortcutTransition implements Transition
         $this->to = $to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTo()
     {
         return $this->to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setTo(State $state)
     {
         $this->to = $state;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function accept(StateVisitor $visitor, &$visited = [])
     {
         $this->to->accept($visitor, $visited);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function can($input, Stateful $context, Runner $runner)
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function apply($input, Stateful $context, Runner $runner)
     {
         $context->setCurrentState($this->to);
@@ -62,17 +47,11 @@ class ShortcutTransition implements Transition
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function copy(&$visited = [])
     {
         return new self($this->to->copy($visited));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString()
     {
         return '*';

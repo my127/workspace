@@ -149,43 +149,43 @@ EOD
         $attributes = new AttributeCollection(new Expression(new CWD()));
 
         $attrData0 = [
-          'level1' => [
-            'level2a' => [
-              'level3a' => 'val3a',
-              'level3b' => 'val3b',
-              'level3c' => 'val3c',
+            'level1' => [
+                'level2a' => [
+                    'level3a' => 'val3a',
+                    'level3b' => 'val3b',
+                    'level3c' => 'val3c',
+                ],
+                'level2b' => [
+                    'level3d' => 'val3d',
+                ],
             ],
-            'level2b' => [
-              'level3d' => 'val3d',
-            ],
-          ],
         ];
 
         $attrData1 = [
-          'level1' => [
-            'level2a' => [
-              'level3a' => 'val3a',
-              'level3b' => 'val3b',
-              'level3c' => 'val3c',
+            'level1' => [
+                'level2a' => [
+                    'level3a' => 'val3a',
+                    'level3b' => 'val3b',
+                    'level3c' => 'val3c',
+                ],
+                'level2b' => [
+                    'level3d' => 'val3d',
+                    'level3e' => [
+                        'level4a' => 'val4a',
+                        'level4b' => 'val4b',
+                    ],
+                ],
             ],
-            'level2b' => [
-              'level3d' => 'val3d',
-              'level3e' => [
-                'level4a' => 'val4a',
-                'level4b' => 'val4b',
-              ],
-            ],
-          ],
         ];
 
         $attrData2 = [
-          'level1' => [
-            'level2b' => [
-              'level3e' => [
-                'level4a' => 'val4a-override',
-              ],
+            'level1' => [
+                'level2b' => [
+                    'level3e' => [
+                        'level4a' => 'val4a-override',
+                    ],
+                ],
             ],
-          ],
         ];
 
         $attributes->add($attrData0, 'attrData0 array', 1);

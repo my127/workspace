@@ -80,7 +80,7 @@ class Installer
         AttributeCollection $attributes,
         Path $path,
         ConfdFactory $confd,
-        Crypt $crypt
+        Crypt $crypt,
     ) {
         $this->workspace = $workspace;
         $this->packages = $packages;

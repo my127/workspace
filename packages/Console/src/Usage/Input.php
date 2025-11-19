@@ -29,7 +29,7 @@ class Input implements \ArrayAccess, \Countable, \IteratorAggregate
     public function __construct(
         $args,
         OptionDefinitionCollection $optionRepository,
-        OptionValueFactory $optionValueFactory
+        OptionValueFactory $optionValueFactory,
     ) {
         $this->args = $args;
         $this->optionValueFactory = $optionValueFactory;
@@ -89,57 +89,36 @@ class Input implements \ArrayAccess, \Countable, \IteratorAggregate
         return (count($values) == 1) ? $values[0] : $values;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists($offset): bool
     {
         return $this->args[$offset];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetGet($offset): mixed
     {
         return $this->args[$offset];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet($offset, $value): void
     {
         $this->args[$offset] = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetUnset($offset): void
     {
         unset($this->args[$offset]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function count(): int
     {
         return count($this->args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString()
     {
         return implode(

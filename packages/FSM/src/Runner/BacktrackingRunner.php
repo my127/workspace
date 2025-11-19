@@ -15,8 +15,6 @@ class BacktrackingRunner implements Runner
 {
     /**
      * Current Input.
-     *
-     * @var mixed
      */
     private $input;
 
@@ -63,10 +61,8 @@ class BacktrackingRunner implements Runner
      * a customised __clone().
      *
      * This isn't efficient :) If your FSM is large or very recursive then you're going to run out of memory quickly...
-     *
-     * @param Stateful $context
      */
-    public function __construct(State $initialState, Stateful $context = null)
+    public function __construct(State $initialState, ?Stateful $context = null)
     {
         $this->context = $context ?: new Context();
         $this->context->setCurrentState($initialState);
@@ -209,8 +205,6 @@ class BacktrackingRunner implements Runner
 
     /**
      * Alias of input.
-     *
-     * @return mixed
      */
     public function __invoke($input)
     {

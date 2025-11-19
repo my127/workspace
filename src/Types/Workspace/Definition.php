@@ -12,7 +12,7 @@ class Definition implements WorkspaceDefinition
     protected $name;
 
     /** @var ?string */
-    protected $description = null;
+    protected $description;
 
     /** @var ?string[] */
     protected $harnessLayers = [];
@@ -21,7 +21,7 @@ class Definition implements WorkspaceDefinition
     protected $path;
 
     /** @var ?string */
-    protected $overlay = null;
+    protected $overlay;
 
     /** @var array|null */
     protected $require;

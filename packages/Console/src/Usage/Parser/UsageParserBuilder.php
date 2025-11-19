@@ -62,12 +62,11 @@ class UsageParserBuilder
     /**
      * Create Command Parser.
      *
-     * @param string                     $definition
-     * @param OptionDefinitionCollection $definitionRepository
+     * @param string $definition
      *
      * @return UsageParser
      */
-    public function createUsageParser($definition, OptionDefinitionCollection $definitionRepository = null)
+    public function createUsageParser($definition, ?OptionDefinitionCollection $definitionRepository = null)
     {
         $this->stack = [];
         $this->sequences = [];

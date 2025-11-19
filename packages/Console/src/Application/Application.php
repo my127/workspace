@@ -44,7 +44,7 @@ class Application
         EventDispatcher $dispatcher,
         string $name,
         string $description = '',
-        string $version = ''
+        string $version = '',
     ) {
         $this->version = $version;
         $this->executor = $executor;

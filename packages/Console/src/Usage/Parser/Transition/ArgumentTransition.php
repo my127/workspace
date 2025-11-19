@@ -30,33 +30,22 @@ class ArgumentTransition implements Transition
         $this->to = $to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTo()
     {
         return $this->to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setTo(State $state)
     {
         $this->to = $state;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function accept(StateVisitor $visitor, &$visited = [])
     {
         $this->to->accept($visitor, $visited);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @var InputSequence
      * @var UsageParserContext
      * @var BacktrackingRunner
@@ -67,8 +56,6 @@ class ArgumentTransition implements Transition
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @var InputSequence
      * @var UsageParserContext
      * @var BacktrackingRunner
@@ -80,17 +67,11 @@ class ArgumentTransition implements Transition
         return new Argument($this->argument, $input->pop());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function copy(&$visited = [])
     {
         return new self($this->argument, $this->to->copy($visited));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString()
     {
         return '<' . $this->argument . '>';

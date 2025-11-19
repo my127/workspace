@@ -45,13 +45,12 @@ class DefaultState implements State
      * addTransition(Label, To [,Guard [,Action]])
      *
      * @param string|Transition $transition
-     * @param State             $to
      * @param callable          $guard
      * @param callable          $action
      *
      * @return void
      */
-    public function addTransition($transition, State $to = null, $guard = null, $action = null)
+    public function addTransition($transition, ?State $to = null, $guard = null, $action = null)
     {
         if (!($transition instanceof Transition)) {
             $transition = new DefaultTransition($transition, $to, $guard, $action);
@@ -117,12 +116,11 @@ class DefaultState implements State
      *
      * Fluid counterpart to addTransition
      *
-     * @param string   $label
-     * @param callable $guard
+     * @param string $label
      *
      * @return StateTransitionBuilder
      */
-    public function when($label, callable $guard = null)
+    public function when($label, ?callable $guard = null)
     {
         return (new StateTransitionBuilder($this))->when($label, $guard);
     }

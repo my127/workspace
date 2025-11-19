@@ -19,7 +19,7 @@ class ErrorHandler
             string $message,
             string $file,
             int $line,
-            ?array $context = null
+            ?array $context = null,
         ) use ($format): ?bool {
             $format->error(sprintf(
                 '%s in %s:%s',

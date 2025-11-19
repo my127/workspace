@@ -15,7 +15,7 @@ class Expression extends SymfonyExpressionLanguage
      */
     private $path;
 
-    public function __construct(Path $path, CacheItemPoolInterface $cache = null, $providers = [])
+    public function __construct(Path $path, ?CacheItemPoolInterface $cache = null, $providers = [])
     {
         parent::__construct($cache, $providers);
 

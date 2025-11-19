@@ -17,12 +17,12 @@ class Executor implements InterpreterExecutor
         $this->expression = $expression;
     }
 
-    public function exec(string $script, array $args = [], string $cwd = null, array $env = []): void
+    public function exec(string $script, array $args = [], ?string $cwd = null, array $env = []): void
     {
         $this->expression->evaluate($this->getExpressionFromScript($script), $args);
     }
 
-    public function capture(string $script, array $args = [], string $cwd = null, array $env = []): string
+    public function capture(string $script, array $args = [], ?string $cwd = null, array $env = []): string
     {
         return $this->expression->evaluate($this->getExpressionFromScript($script), $args);
     }

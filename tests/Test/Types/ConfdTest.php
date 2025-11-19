@@ -34,8 +34,7 @@ confd('workspace:/'):
 command('apply config'): |
   #!php
   $ws->confd('workspace:/')->apply();
-EOD
-            , 'confd/simple');
+EOD, 'confd/simple');
 
         $this->workspaceCommand('apply config');
 
@@ -52,8 +51,7 @@ confd('workspace:/'):
 command('apply config'): |
   #!php
   $ws->confd('workspace:/')->apply();
-EOD
-            , 'confd/simple');
+EOD, 'confd/simple');
 
         $this->workspaceCommand('apply config');
 
@@ -71,8 +69,7 @@ confd('workspace:/'):
 command('apply config'): |
   #!php
   $ws->confd('workspace:/')->apply();
-EOD
-            , 'confd/simple');
+EOD, 'confd/simple');
 
         $this->workspaceCommand('apply config');
 
@@ -90,8 +87,7 @@ confd('workspace:/'):
 command('apply config'): |
   #!php
   $ws->confd('workspace:/')->apply();
-EOD
-            , 'confd/simple');
+EOD, 'confd/simple');
 
         $this->workspaceCommand('apply config');
 

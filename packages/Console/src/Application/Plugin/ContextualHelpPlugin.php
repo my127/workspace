@@ -65,8 +65,7 @@ class ContextualHelpPlugin implements Plugin
 
                     $this->displayHelpPage($section);
                 }
-            )
-        ;
+            );
     }
 
     private function displayHelpPage(Section $section): void

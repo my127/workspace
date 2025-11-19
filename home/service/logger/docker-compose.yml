@@ -1,7 +1,4 @@
-version: "3.5"
-
 services:
-
   kibana:
     build:
       context: kibana
@@ -33,9 +30,9 @@ services:
       - elasticsearch
       - kibana
     volumes:
-     - filebeat_data:/usr/share/filebeat/data:rw
-     - /var/lib/docker/containers:/var/lib/docker/containers
-     - /var/run/docker.sock:/var/run/docker.sock
+      - filebeat_data:/usr/share/filebeat/data:rw
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - traefik.enable=false
     networks:

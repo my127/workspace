@@ -12,7 +12,7 @@
         "symfony/expression-language": "^6.1",
         "symfony/finder": "^6.1",
         "symfony/yaml": "^6.1",
-        "twig/twig": "^2.16.1",
+        "twig/twig": "^3.22",
         "composer/semver": "^3.4"
     },
     "require-dev": {
@@ -59,9 +59,6 @@
     "config": {
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true
-        },
-        "audit": {
-            "block-insecure": false
         }
     }
 }

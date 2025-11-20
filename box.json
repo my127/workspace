@@ -5,7 +5,6 @@
   "directories-bin": [
     "config",
     "home",
-    "vendor/twig/twig/lib",
     "vendor/twig/twig/src"
   ],
   "files-bin": [

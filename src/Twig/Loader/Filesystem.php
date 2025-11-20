@@ -2,7 +2,10 @@
 
 namespace my127\Workspace\Twig\Loader;
 
-class Filesystem extends \Twig_Loader_Filesystem
+use Twig\Loader\FilesystemLoader;
+use Twig\Source;
+
+class Filesystem extends FilesystemLoader
 {
     private $path;
 
@@ -13,7 +16,7 @@ class Filesystem extends \Twig_Loader_Filesystem
         $this->path = $rootPath;
     }
 
-    public function getSourceContext($name)
+    public function getSourceContext($name): Source
     {
         $path = $this->findTemplate($name);
         $content = file_get_contents($path);
@@ -21,7 +24,7 @@ class Filesystem extends \Twig_Loader_Filesystem
         $content = str_replace("@('", "attr('", $content);
         $content = str_replace('@("', 'attr("', $content);
 
-        return new \Twig_Source($content, $name, $path);
+        return new Source($content, $name, $path);
     }
 
     public function getRootPath(): string

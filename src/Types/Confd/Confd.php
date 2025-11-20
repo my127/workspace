@@ -5,6 +5,7 @@ namespace my127\Workspace\Types\Confd;
 use my127\Workspace\Expression\Expression;
 use my127\Workspace\Path\Path;
 use my127\Workspace\Twig\Loader\Filesystem;
+use Twig\Environment;
 
 class Confd
 {
@@ -14,7 +15,7 @@ class Confd
     private $definition;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -33,7 +34,7 @@ class Confd
      */
     private $rootPath;
 
-    public function __construct(Path $path, Definition $definition, \Twig_Environment $twig, Expression $expression)
+    public function __construct(Path $path, Definition $definition, Environment $twig, Expression $expression)
     {
         $this->definition = $definition;
         $this->twig = $twig;

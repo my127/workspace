@@ -1,3 +1,3 @@
-FROM traefik:v2
+FROM traefik:v3
 
 COPY root /

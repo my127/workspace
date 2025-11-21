@@ -1,7 +1,6 @@
 providers:
   file:
     directory: /config
-    watch: true
   docker:
     exposedByDefault: false
 
@@ -17,6 +16,7 @@ entryPoints:
     address: ":80"
   https:
     address: ":443"
+    http3: {}
     http:
       tls: {}
 

@@ -5,7 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
-      - 443:443
+      - 443:443/tcp
+      - 443:443/udp
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik.rule=Host(`my127.site`)

@@ -6,6 +6,7 @@ providers:
 
 api:
   dashboard: true
+  disableDashboardAd: true
   insecure: true
 
 accessLog: {}

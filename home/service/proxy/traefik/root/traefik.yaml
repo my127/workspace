@@ -1,7 +1,6 @@
 providers:
   file:
     directory: /config
-    watch: true
   docker:
     exposedByDefault: false
 

@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Application extends ConsoleApplication
 {
-    private const DEFAULT_VERSION = '0.2.x-dev';
+    private const DEFAULT_VERSION = '0.4.x-dev';
 
     /** @var Environment */
     private $environment;

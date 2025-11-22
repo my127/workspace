@@ -48,6 +48,6 @@ class Command
 
     private function isExpression(string $value): bool
     {
-        return is_string($value) && ($value[0] == '=');
+        return $value[0] == '=';
     }
 }

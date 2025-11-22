@@ -53,10 +53,6 @@ class Creator
         $harnessLayers = [$harness];
 
         $harnessData = $this->parseYamlMergeStreams($this->downloadAndExtractHarnessYml($package));
-        if (!is_array($harnessData)) {
-            throw new \Exception('Could not parse the harness\'s harness.yml file');
-        }
-
         foreach ($harnessData as $key => $value) {
             if (str_starts_with($key, 'harness(')) {
                 if (isset($value['parentLayers'])) {

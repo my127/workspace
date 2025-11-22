@@ -197,7 +197,7 @@ class Installer
 
         foreach (['standard', 'secret'] as $type) {
             foreach ($required[$type] ?? [] as $attribute) {
-                if (isset($this->attributes[$attribute]) && $this->attributes[$attribute] !== null) {
+                if (isset($this->attributes[$attribute])) {
                     continue;
                 }
 
@@ -212,7 +212,7 @@ class Installer
 
         foreach (['standard_file', 'secret_file'] as $type) {
             foreach ($required[$type] ?? [] as $attribute) {
-                if (isset($this->attributes[$attribute]) && $this->attributes[$attribute] !== null) {
+                if (isset($this->attributes[$attribute])) {
                     continue;
                 }
 

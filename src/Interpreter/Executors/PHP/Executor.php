@@ -21,10 +21,10 @@ class Executor implements InterpreterExecutor
 
     public function capture(string $script, array $args = [], ?string $cwd = null, array $env = [])
     {
-        $pos = strrpos($script, "\n") + 1;
+        $pos = strrpos($script, "\n");
 
-        if ($pos !== false && $script[$pos] == '=') {
-            $script = substr_replace($script, 'return ', $pos, 1);
+        if ($pos !== false && $script[$pos + 1] == '=') {
+            $script = substr_replace($script, 'return ', $pos + 1, 1);
         }
 
         return $this->run($script, $args, $cwd, $env);

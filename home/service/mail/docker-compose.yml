@@ -1,6 +1,6 @@
 services:
   mailhog:
-    image: axllent/mailpit
+    image: axllent/mailpit:v1.28
     restart: unless-stopped
     labels:
       - traefik.frontend.rule=Host:mail.my127.site

@@ -5,10 +5,10 @@ services:
     depends_on:
       - elasticsearch
     labels:
-      - traefik.backend=kibana
-      - traefik.frontend.rule=Host:kibana.my127.site
+      - traefik.enable=true
+      - traefik.http.routers.kibana.rule=Host(`kibana.my127.site`)
+      - traefik.http.services.kibana.loadbalancer.server.port=5601
       - traefik.docker.network=${TRAEFIK_NETWORK}
-      - traefik.port=5601
     networks:
       - shared
       - private

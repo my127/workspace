@@ -3,8 +3,9 @@ services:
     image: mailhog/mailhog:v1.0.1
     restart: unless-stopped
     labels:
-      - traefik.frontend.rule=Host:mail.my127.site
-      - traefik.port=8025
+      - traefik.enable=true
+      - traefik.http.routers.mail.rule=Host(`mail.my127.site`)
+      - traefik.http.services.mail.loadbalancer.server.port=8025
     networks:
       - private
       - shared

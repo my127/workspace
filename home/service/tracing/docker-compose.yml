@@ -8,10 +8,10 @@ services:
       # to use IPv4.
       JAEGER_AGENT_HOST: 127.0.0.1
     labels:
-      - traefik.backend=my127ws-tracing-jaeger
-      - traefik.frontend.rule=Host:tracing.my127.site
-      - traefik.docker.network=my127ws
-      - traefik.port=16686
+      - traefik.enable=true
+      - traefik.http.routers.my127ws-tracing-jaeger.rule=Host(`tracing.my127.site`)
+      - traefik.http.services.my127ws-tracing-jaeger.loadbalancer.server.port=16686
+      - traefik.docker.network=${TRAEFIK_NETWORK}
     restart: unless-stopped
 
 networks:

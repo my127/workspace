@@ -1,11 +1,15 @@
 services:
   mailhog:
-    image: mailhog/mailhog:v1.0.1
+    image: axllent/mailpit:v1.28
     restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.mail.rule=Host(`mail.my127.site`)
       - traefik.http.services.mail.loadbalancer.server.port=8025
+    environment:
+      MP_SMTP_BIND_ADDR: 0.0.0.0:1025
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
       - private
       - shared

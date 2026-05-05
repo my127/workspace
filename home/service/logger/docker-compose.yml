@@ -5,10 +5,10 @@ services:
     depends_on:
       - elasticsearch
     labels:
-      - traefik.backend=kibana
-      - traefik.frontend.rule=Host:kibana.my127.site
+      - traefik.enable=true
+      - traefik.http.routers.kibana.rule=Host(`kibana.my127.site`)
+      - traefik.http.services.kibana.loadbalancer.server.port=5601
       - traefik.docker.network=${TRAEFIK_NETWORK}
-      - traefik.port=5601
     networks:
       - shared
       - private
@@ -18,8 +18,6 @@ services:
       context: elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
-    labels:
-      - traefik.enable=false
     networks:
       - private
 
@@ -33,8 +31,6 @@ services:
       - filebeat_data:/usr/share/filebeat/data:rw
       - /var/lib/docker/containers:/var/lib/docker/containers
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - traefik.enable=false
     networks:
       - private
 
@@ -49,8 +45,6 @@ services:
       - /proc:/hostfs/proc:ro
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
     command: ["-system.hostfs=/hostfs"]
-    labels:
-      - traefik.enable=false
     networks:
       - private
       - shared

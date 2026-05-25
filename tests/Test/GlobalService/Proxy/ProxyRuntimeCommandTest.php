@@ -1,0 +1,176 @@
+<?php
+
+namespace my127\Workspace\Tests\Test\GlobalService\Proxy;
+
+use my127\Workspace\Tests\IntegrationTestCase;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
+
+class ProxyRuntimeCommandTest extends IntegrationTestCase
+{
+    private ?Process $server = null;
+    private ?string $serverUrl = null;
+
+    protected function tearDown(): void
+    {
+        if ($this->server !== null) {
+            $this->server->stop();
+        }
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cleanInstalledHome();
+        $this->cleanProxyDomainRegistry();
+    }
+
+    public function testPrintsTraefikHostRuleForGlobalService(): void
+    {
+        $this->addCustomDomain();
+
+        self::assertSame(
+            "Host(`mail.my127.site`) || Host(`mail.domain.site`)\n",
+            $this->workspaceCommand('global service proxy config rule mail')->getOutput()
+        );
+        self::assertSame(
+            "Host(`my127.site`) || Host(`domain.site`)\n",
+            $this->workspaceCommand('global service proxy config rule proxy')->getOutput()
+        );
+    }
+
+    public function testPrintsTraefikTlsConfiguration(): void
+    {
+        $this->addCustomDomain();
+
+        $tls = Yaml::parse($this->workspaceCommand('global service proxy config tls')->getOutput());
+
+        self::assertSame([
+            'certFile' => '/tls/my127.site.crt',
+            'keyFile' => '/tls/my127.site.key',
+        ], $tls['tls']['stores']['default']['defaultCertificate']);
+        self::assertSame([
+            [
+                'certFile' => '/tls/domain.site.crt',
+                'keyFile' => '/tls/domain.site.key',
+            ],
+        ], $tls['tls']['certificates']);
+    }
+
+    public function testDownloadsConfiguredCertificates(): void
+    {
+        $this->startCertificateServer();
+        $this->writeGlobalConfig(<<<YAML
+attribute('global.service.proxy.https.crt'): {$this->serverUrl}/my127.site.crt
+attribute('global.service.proxy.https.key'): {$this->serverUrl}/my127.site.key
+YAML);
+        $this->workspaceCommand(
+            'global service proxy config domain add acme ' .
+            '--name=domain.site ' .
+            "--crt={$this->serverUrl}/domain.site.crt " .
+            "--key={$this->serverUrl}/domain.site.key"
+        );
+
+        $this->workspaceCommand('global service proxy config certificates download tls');
+
+        self::assertSame('default certificate', $this->workspace()->getContents('tls/my127.site.crt'));
+        self::assertSame('default key', $this->workspace()->getContents('tls/my127.site.key'));
+        self::assertSame('custom certificate', $this->workspace()->getContents('tls/domain.site.crt'));
+        self::assertSame('custom key', $this->workspace()->getContents('tls/domain.site.key'));
+    }
+
+    private function startCertificateServer(): void
+    {
+        $this->workspace()->put('certs/my127.site.crt', 'default certificate');
+        $this->workspace()->put('certs/my127.site.key', 'default key');
+        $this->workspace()->put('certs/domain.site.crt', 'custom certificate');
+        $this->workspace()->put('certs/domain.site.key', 'custom key');
+
+        $socket = stream_socket_server('tcp://127.0.0.1:0');
+        if ($socket === false) {
+            throw new \RuntimeException('Could not reserve local HTTP port.');
+        }
+        $address = stream_socket_get_name($socket, false);
+        fclose($socket);
+
+        $this->serverUrl = 'http://' . $address;
+        $this->server = new Process([PHP_BINARY, '-S', $address, '-t', $this->workspace()->path('certs')]);
+        $this->server->start();
+
+        for ($i = 0; $i < 30; ++$i) {
+            if (@file_get_contents($this->serverUrl . '/my127.site.crt') === 'default certificate') {
+                return;
+            }
+            usleep(100000);
+        }
+
+        throw new \RuntimeException('Certificate fixture server did not start.');
+    }
+
+    private function writeGlobalConfig(string $contents): void
+    {
+        $configDir = $_SERVER['MY127WS_HOME'] . '/.config/my127/workspace';
+        if (!is_dir($configDir)) {
+            mkdir($configDir, 0755, true);
+        }
+
+        file_put_contents($configDir . '/test.yml', $contents);
+    }
+
+    private function addCustomDomain(): void
+    {
+        $this->workspaceCommand(
+            'global service proxy config domain add acme ' .
+            '--name=domain.site ' .
+            '--crt=https://certs.domain.site/fullchain.pem ' .
+            '--key=https://certs.domain.site/privkey.pem'
+        );
+    }
+
+    private function cleanInstalledHome(): void
+    {
+        $homeDir = $_SERVER['MY127WS_HOME'] . '/.my127/workspace';
+
+        if (!is_dir($homeDir)) {
+            return;
+        }
+
+        $this->remove($homeDir);
+    }
+
+    private function cleanProxyDomainRegistry(): void
+    {
+        $configDir = $_SERVER['MY127WS_HOME'] . '/.config/my127/workspace';
+
+        if (!is_dir($configDir)) {
+            return;
+        }
+
+        foreach (glob($configDir . '/*.yml') as $file) {
+            unlink($file);
+        }
+    }
+
+    private function remove(string $path): void
+    {
+        $node = new \SplFileInfo($path);
+
+        if (in_array($node->getType(), ['socket', 'file', 'link'])) {
+            unlink($path);
+
+            return;
+        }
+
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($files as $file) {
+            $this->remove($file->getPathName());
+        }
+
+        rmdir($path);
+    }
+}

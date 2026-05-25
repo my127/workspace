@@ -9,7 +9,7 @@ services:
       - 443:443/udp
     labels:
       - traefik.enable=true
-      - traefik.http.routers.traefik.rule=Host(`my127.site`)
+      - traefik.http.routers.traefik.rule=${TRAEFIK_PROXY_RULE}
       - traefik.http.services.traefik.loadbalancer.server.port=8080
       - co.elastic.logs/module=traefik
     volumes:

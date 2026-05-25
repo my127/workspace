@@ -8,17 +8,17 @@ DIR=""
 
 main()
 {
-    if [ "$1" = "enable" ]; then
+    if [[ "$1" = "enable" ]]; then
         enable
         exit
     fi
 
-    if [ "$1" = "disable" ]; then
+    if [[ "$1" = "disable" ]]; then
         disable
         exit
     fi
 
-    if [ "$1" = "restart" ]; then
+    if [[ "$1" = "restart" ]]; then
         restart
         exit
     fi
@@ -26,23 +26,27 @@ main()
 
 enable()
 (
-    cd "$DIR"
+    local TRAEFIK_PROXY_RULE
+
+    cd "${DIR}"
 
     if ! docker ps | grep my127ws-proxy > /dev/null; then
 
-        if [ ! -d "traefik/root/tls" ]; then
+        if [[ ! -d "traefik/root/tls" ]]; then
             run mkdir -p traefik/root/tls
         fi
 
-        run curl --fail --location --output traefik/root/tls/my127.site.crt "$(ws global config get global.service.proxy.https.crt)"
-        run curl --fail --location --output traefik/root/tls/my127.site.key "$(ws global config get global.service.proxy.https.key)"
+        TRAEFIK_PROXY_RULE="$(ws global service proxy config rule proxy)"
+        update_env_generated_key ".env" "TRAEFIK_PROXY_RULE" "${TRAEFIK_PROXY_RULE}"
+        run ws global service proxy config certificates download traefik/root/tls
+        run bash -c 'ws global service proxy config tls > traefik/root/config/tls.yaml'
         run docker-compose -p my127ws-proxy up --force-recreate --build -d traefik
     fi
 )
 
 disable()
 (
-    cd "$DIR"
+    cd "${DIR}"
 
     if docker ps | grep my127ws-proxy > /dev/null; then
         run docker-compose -p my127ws-proxy rm --stop --force traefik
@@ -58,8 +62,8 @@ restart()
 bootstrap()
 {
     DIR="$(cd "$(dirname "$0")" && pwd)"
-    # shellcheck source=../../lib/sidekick.sh
-    source "$DIR/../../lib/sidekick.sh"
+    # shellcheck source=home/lib/sidekick.sh
+    source "${DIR}/../../lib/sidekick.sh"
 }
 
 bootstrap

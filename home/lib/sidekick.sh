@@ -11,9 +11,13 @@ INDICATOR_PASSTHRU="37m"
 
 prompt()
 {
-    if [ "${RUN_CWD}" != "$(pwd)" ]; then
-        RUN_CWD="$(pwd)"
-        echo -e "\\033[1m[\\033[0m$(pwd)\\033[1m]:\\033[0m" >&2
+    local CWD
+
+    CWD="$(pwd)"
+
+    if [[ "${RUN_CWD}" != "${CWD}" ]]; then
+        RUN_CWD="${CWD}"
+        echo -e "\\033[1m[\\033[0m${CWD}\\033[1m]:\\033[0m" >&2
     fi
 }
 
@@ -27,10 +31,10 @@ run()
         DEPRECATED_MODE=yes
     fi
 
-    if [ "$VERBOSE" = "no" ]; then
+    if [[ "${VERBOSE}" = "no" ]]; then
 
         prompt
-        if [ "${DEPRECATED_MODE}" = "yes" ]; then
+        if [[ "${DEPRECATED_MODE}" = "yes" ]]; then
             echo "  > ${COMMAND_DEPRECATED[*]}" >&2
             COMMAND=(bash -e -c "${COMMAND_DEPRECATED[@]}")
         else
@@ -52,7 +56,7 @@ run()
 
             return 1
         fi
-    elif [ "${DEPRECATED_MODE}" = "yes" ]; then
+    elif [[ "${DEPRECATED_MODE}" = "yes" ]]; then
         passthru "${COMMAND_DEPRECATED[@]}"
     else
         passthru "${COMMAND[@]}"
@@ -71,7 +75,7 @@ passthru()
 
     prompt
 
-    if [ "${DEPRECATED_MODE}" = "yes" ]; then
+    if [[ "${DEPRECATED_MODE}" = "yes" ]]; then
         echo -e "\\033[${INDICATOR_PASSTHRU}■\\033[0m > $*" >&2
         bash -e -c "${COMMAND_DEPRECATED[@]}"
     else
@@ -82,9 +86,32 @@ passthru()
 
 setCommandIndicator()
 {
-    echo -ne "\\033[1A" >&2 
+    echo -ne "\\033[1A" >&2
     echo -ne "\\033[$1" >&2
     echo -n "■" >&2
     echo -ne "\\033[0m" >&2
     echo -ne "\\033[1E" >&2
+}
+
+update_env_generated_key()
+{
+    local -r FILE="$1"
+    local -r KEY="$2"
+    local -r VALUE="$3"
+    local TEMP_FILE
+    local LINE
+
+    TEMP_FILE="$(mktemp "${FILE}.XXXXXX")"
+
+    if [[ -f "${FILE}" ]]; then
+        while IFS= read -r LINE || [[ -n "${LINE}" ]]; do
+            case "${LINE}" in
+                "${KEY}="*) ;;
+                *) printf '%s\n' "${LINE}" >> "${TEMP_FILE}" ;;
+            esac
+        done < "${FILE}"
+    fi
+
+    printf '%s=%s\n' "${KEY}" "${VALUE}" >> "${TEMP_FILE}"
+    mv "${TEMP_FILE}" "${FILE}"
 }

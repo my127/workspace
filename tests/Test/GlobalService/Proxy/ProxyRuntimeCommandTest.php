@@ -58,6 +58,40 @@ class ProxyRuntimeCommandTest extends IntegrationTestCase
         ], $tls['tls']['certificates']);
     }
 
+    public function testRejectsRuntimeTlsFilenameCollisions(): void
+    {
+        $this->writeGlobalConfig(<<<'YAML'
+attributes:
+  global:
+    service:
+      proxy:
+        domains:
+          acme:
+            name: domain.site
+            https:
+              crt: https://certs.domain.site/fullchain.pem
+              key: https://certs.domain.site/privkey.pem
+            crt_file: shared.pem
+            key_file: domain.key
+          other:
+            name: other.site
+            https:
+              crt: https://certs.other.site/fullchain.pem
+              key: https://certs.other.site/privkey.pem
+            crt_file: other.crt
+            key_file: SHARED.PEM
+YAML);
+
+        $process = $this->workspaceProcess('global service proxy config tls');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'already uses local TLS filename "SHARED.PEM"',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+    }
+
     public function testDownloadsConfiguredCertificates(): void
     {
         $this->startCertificateServer();

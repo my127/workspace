@@ -37,7 +37,7 @@ command('global service proxy config domain remove <id>', 'global service proxy 
   description: Remove a registered Global Proxy domain
   exec: |
     #!php(cwd:/)
-    \my127\Workspace\GlobalService\Proxy\ProxyDomainCommand::domainRemove($input, home());
+    \my127\Workspace\GlobalService\Proxy\ProxyDomainCommand::domainRemove($ws['global.service.proxy.domains'] ?? [], $input, home());
 
 command('global service proxy config domain import <source>', 'global service proxy config domain import'):
   description: Import registered Global Proxy domains

@@ -58,6 +58,7 @@ class ProxyDomainCommand
             throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is not registered. Use add %s to register it.', $id, $id));
         }
 
+        self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id]);
         ProxyDomainConfiguration::assertNoConflicts($domains, $id, $domain);
 
         $registeredDomains[$id] = $domain;
@@ -67,7 +68,7 @@ class ProxyDomainCommand
         echo "Run ws global service proxy restart to apply certificate and TLS changes.\n";
     }
 
-    public static function domainRemove(Input $input, string $home): void
+    public static function domainRemove(array $domains, Input $input, string $home): void
     {
         $id = $input->argument('id');
         ProxyDomainConfiguration::assertValidId($id);
@@ -78,6 +79,8 @@ class ProxyDomainCommand
         if (!isset($registeredDomains[$id])) {
             throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is not registered.', $id));
         }
+
+        self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id]);
 
         unset($registeredDomains[$id]);
         $registry->write($registeredDomains);
@@ -111,6 +114,18 @@ class ProxyDomainCommand
 
             try {
                 $domain = ProxyDomainConfiguration::normalizeDomain($id, is_array($importDomain) ? $importDomain : []);
+
+                if (isset($domains[$id]) && !isset($registeredDomains[$id])) {
+                    if (ProxyDomainConfiguration::normalizeDomain($id, $domains[$id]) == $domain) {
+                        fwrite(STDERR, sprintf("Proxy Domain \"%s\" is already configured.\n", $id));
+                        ++$unchanged;
+                        continue;
+                    }
+
+                    fwrite(STDERR, sprintf("Skipping Proxy Domain \"%s\" because it is already configured outside the registry.\n", $id));
+                    ++$skipped;
+                    continue;
+                }
 
                 if (isset($registeredDomains[$id])) {
                     if (ProxyDomainConfiguration::normalizeDomain($id, $registeredDomains[$id]) == $domain) {
@@ -169,6 +184,16 @@ class ProxyDomainCommand
         }
 
         return $value;
+    }
+
+    private static function assertRegistryDomainIsEffective(array $domains, string $id, array $registeredDomain): void
+    {
+        if (
+            !isset($domains[$id])
+            || ProxyDomainConfiguration::normalizeDomain($id, $domains[$id]) != ProxyDomainConfiguration::normalizeDomain($id, $registeredDomain)
+        ) {
+            throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is configured outside the registry. Remove that global config override before using this registry command.', $id));
+        }
     }
 
     private static function readSource(string $source): string

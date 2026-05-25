@@ -12,7 +12,7 @@ class ProxyDomainConfiguration
         string $crt,
         string $key,
         ?string $crtFile = null,
-        ?string $keyFile = null
+        ?string $keyFile = null,
     ): array {
         self::assertValidId($id);
 
@@ -75,6 +75,8 @@ class ProxyDomainConfiguration
             $domains[$id] = self::normalizeDomain($id, $domain, $id === 'default');
         }
 
+        self::assertNoDomainCollectionConflicts($domains);
+
         return $domains;
     }
 
@@ -99,16 +101,16 @@ class ProxyDomainConfiguration
                 continue;
             }
 
-            if ($existingDomain['name'] === $domain['name']) {
+            if (strcasecmp($existingDomain['name'], $domain['name']) === 0) {
                 throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already uses name "%s".', $existingId, $domain['name']));
             }
 
-            if ($existingDomain['crt_file'] === $domain['crt_file']) {
-                throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already uses certificate filename "%s".', $existingId, $domain['crt_file']));
-            }
-
-            if ($existingDomain['key_file'] === $domain['key_file']) {
-                throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already uses key filename "%s".', $existingId, $domain['key_file']));
+            foreach (['crt_file', 'key_file'] as $existingKey) {
+                foreach (['crt_file', 'key_file'] as $newKey) {
+                    if (strcasecmp($existingDomain[$existingKey], $domain[$newKey]) === 0) {
+                        throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already uses local TLS filename "%s".', $existingId, $domain[$newKey]));
+                    }
+                }
             }
         }
     }
@@ -152,6 +154,32 @@ class ProxyDomainConfiguration
         foreach (['crt_file', 'key_file'] as $key) {
             if (!self::isSimpleFilename($domain[$key])) {
                 throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" %s must be a simple basename.', $id, $key));
+            }
+        }
+
+        if (strcasecmp($domain['crt_file'], $domain['key_file']) === 0) {
+            throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" certificate and key filenames must be different.', $id));
+        }
+    }
+
+    private static function assertNoDomainCollectionConflicts(array $domains): void
+    {
+        $names = [];
+        $files = [];
+
+        foreach ($domains as $id => $domain) {
+            $name = strtolower($domain['name']);
+            if (isset($names[$name])) {
+                throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already uses name "%s".', $names[$name], $domain['name']));
+            }
+            $names[$name] = $id;
+
+            foreach (['crt_file', 'key_file'] as $key) {
+                $file = strtolower($domain[$key]);
+                if (isset($files[$file])) {
+                    throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already uses local TLS filename "%s".', $files[$file], $domain[$key]));
+                }
+                $files[$file] = $id;
             }
         }
     }

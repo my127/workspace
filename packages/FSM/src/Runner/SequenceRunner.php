@@ -146,7 +146,7 @@ class SequenceRunner implements Runner
     {
         $state = $this->context->getCurrentState();
 
-        if (!($transition instanceof Transition)) {
+        if (!$transition instanceof Transition) {
             foreach ($state->getTransitions() as $candidate) {
                 if (!$candidate->can($input, $this->context, $this)) {
                     continue;

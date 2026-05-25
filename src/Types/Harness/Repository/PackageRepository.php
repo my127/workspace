@@ -43,7 +43,6 @@ class PackageRepository implements Repository
 
         foreach (['name', 'version', 'dist'] as $name) {
             $this->properties[$name] = new \ReflectionProperty(Package::class, $name);
-            $this->properties[$name]->setAccessible(true);
         }
         $this->fileLoader = $fileLoader;
     }

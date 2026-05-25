@@ -9,3 +9,25 @@ services:
       HOST_OS_FAMILY:
     volumes:
       - .:/app
+
+  builder84:
+    build:
+      context: .
+      args:
+        PHP_VERSION: 8.4
+        DISTRO_CODENAME: trixie
+    environment:
+      HOST_OS_FAMILY:
+    volumes:
+      - .:/app
+
+  builder85:
+    build:
+      context: .
+      args:
+        PHP_VERSION: 8.5
+        DISTRO_CODENAME: trixie
+    environment:
+      HOST_OS_FAMILY:
+    volumes:
+      - .:/app

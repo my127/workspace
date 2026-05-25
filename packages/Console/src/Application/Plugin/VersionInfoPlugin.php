@@ -8,6 +8,5 @@ class VersionInfoPlugin implements Plugin
 {
     public function setup(Application $application): void
     {
-        return;
     }
 }

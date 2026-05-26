@@ -52,7 +52,7 @@ class Updater
                 throw new \RuntimeException(sprintf('Unable to write to %s', $temp));
             }
 
-            if (chmod($temp, 0755 & ~umask()) === false) {
+            if (chmod($temp, 0777 & ~umask()) === false) {
                 throw new \RuntimeException(sprintf('Unable to set permissions on %s', $temp));
             }
 
@@ -60,7 +60,30 @@ class Updater
             $phar = new \Phar($temp);
             unset($phar);
             $this->output->infof('Download OK. Copying into place at %s', $targetPath);
-            rename($temp, $targetPath);
+            $result = false;
+            if (!file_exists($targetPath)) {
+                if (!rename($temp, $targetPath)) {
+                    throw new \RuntimeException(sprintf('Unable to write to %s', $targetPath));
+                }
+            } else {
+                unlink($temp);
+
+                if (chmod($targetPath, 0777 & ~umask()) === false) {
+                    throw new \RuntimeException(sprintf('Unable to set permissions on %s', $targetPath));
+                }
+
+                $fp = fopen($targetPath, 'wb'); // truncate in place
+
+                if ($fp === false)) {
+                    throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
+                }
+                if (fwrite($fp, $releaseData) === false) {
+                    throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
+                }
+                if (fclose($fp) === false) {
+                    throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
+                }
+            }
             $this->output->success('Done.');
         } catch (\Error $e) {
             @unlink($temp);

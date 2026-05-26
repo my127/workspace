@@ -64,7 +64,7 @@ class DefinitionTransitionBuilder
      */
     public function from($state, $type = State::TYPE_NORMAL)
     {
-        if (!($state instanceof State)) {
+        if (!$state instanceof State) {
             $state = $this->definition->getState($state, $type);
         }
 
@@ -83,7 +83,7 @@ class DefinitionTransitionBuilder
      */
     public function to($state, $type = State::TYPE_NORMAL)
     {
-        if (!($state instanceof State)) {
+        if (!$state instanceof State) {
             $state = $this->definition->getState($state, $type);
         }
 

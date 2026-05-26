@@ -12,7 +12,6 @@
     "home/service/mail/.env",
     "home/service/proxy/.env"
   ],
-  "metadata": "my127\\Workspace\\Application::getMetadata",
   "blacklist": [
     "tools/scripts/compile.sh",
  

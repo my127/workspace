@@ -63,7 +63,7 @@ class Definition implements StateVisitorClient
      */
     public function addState($state, $type = State::TYPE_NORMAL)
     {
-        if (!($state instanceof State)) {
+        if (!$state instanceof State) {
             $state = new DefaultState($state, $type);
         }
 
@@ -114,11 +114,11 @@ class Definition implements StateVisitorClient
      */
     public function addTransition($transition, $from, $to = null, ?callable $guard = null, $action = null)
     {
-        if (!($from instanceof State)) {
+        if (!$from instanceof State) {
             $from = $this->getState($from);
         }
 
-        if (!($transition instanceof Transition)) {
+        if (!$transition instanceof Transition) {
             $transition = new DefaultTransition(
                 $transition,
                 ($to instanceof State) ? $to : $this->getState($to),

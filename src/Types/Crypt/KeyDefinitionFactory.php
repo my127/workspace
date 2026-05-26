@@ -36,7 +36,6 @@ class KeyDefinitionFactory implements WorkspaceDefinitionFactory
 
         foreach (['name', 'key', 'path', 'scope'] as $name) {
             $this->properties[$name] = new \ReflectionProperty(KeyDefinition::class, $name);
-            $this->properties[$name]->setAccessible(true);
         }
     }
 

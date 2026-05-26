@@ -35,7 +35,6 @@ class DefinitionFactory implements WorkspaceDefinitionFactory
 
         foreach (['name', 'url', 'path', 'scope'] as $name) {
             $this->properties[$name] = new \ReflectionProperty(Definition::class, $name);
-            $this->properties[$name]->setAccessible(true);
         }
     }
 

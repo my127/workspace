@@ -52,7 +52,7 @@ class DefaultState implements State
      */
     public function addTransition($transition, ?State $to = null, $guard = null, $action = null)
     {
-        if (!($transition instanceof Transition)) {
+        if (!$transition instanceof Transition) {
             $transition = new DefaultTransition($transition, $to, $guard, $action);
         }
 

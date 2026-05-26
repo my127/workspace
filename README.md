@@ -2,13 +2,23 @@
 
 Workspace is a tool to orchestrate and bring consistency to your project environments.
 
+## Table of Contents
+
+- [Documentation](#documentation)
+  - [Getting Started](#getting-started)
+  - [Anatomy of a workspace](#anatomy-of-a-workspace)
+  - [Tutorials](#tutorials)
+  - [Building](#building)
+- [Release](#release)
+  - [Performing a Release](#performing-a-release)
+
 ## Documentation
 
 ### Getting Started
 
 #### Requirements
 
-- `PHP-8.3+`
+- `PHP 8.3+`
 - `sodium` php extension installed and activated in php.ini if it's not enabled by default
 - `curl` if you wish to use the global traefik proxy
 - `docker 17.04.0+`
@@ -19,19 +29,19 @@ Workspace is a tool to orchestrate and bring consistency to your project environ
 Download the `ws` file from the [Latest Release](https://github.com/my127/workspace/releases/latest) make executable and move to a location in your PATH, eg.
 
 ```bash
-curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.3.2/ws
+curl --output ./ws --location https://github.com/my127/workspace/releases/download/0.4.x/ws
 chmod +x ws && sudo mv ws /usr/local/bin/ws
 ```
 
 Confirm you can run the `ws` command, e.g.
 
-```
+```bash
 ws --help
 ```
 
 #### Creating a workspace
 
-```
+```text
 # TODO
 ```
 
@@ -74,26 +84,28 @@ To test the build in multiple PHP versions, there is a docker-compose.yml provid
 To build:
 
 ```bash
-docker-compose build --pull
+docker compose build --pull
 ```
 
 To fix volume permissions, if you are using Linux, run:
 
 ```bash
-HOST_OS_FAMILY=linux docker-compose up -d
+HOST_OS_FAMILY=linux docker compose up -d
 ```
 
 If you are using macOS, run:
 
 ```bash
-HOST_OS_FAMILY=darwin docker-compose up -d
+HOST_OS_FAMILY=darwin docker compose up -d
 ```
 
 You can now do:
 
 ```bash
-docker-compose exec -u build builder83 /app/build.sh
+docker compose exec -u build builder83 /app/build.sh
 ```
+
+Available builders are `builder83`, `builder84`, and `builder85`.
 
 ### Release
 

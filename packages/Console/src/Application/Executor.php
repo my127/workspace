@@ -100,11 +100,10 @@ class Executor implements SectionVisitor
                 $this->displayUsage($argv, true);
 
                 return self::EXIT_OK;
-            } else {
-                $this->displayUsage($argv, false);
-
-                return self::EXIT_COMMAND_NOT_FOUND;
             }
+            $this->displayUsage($argv, false);
+
+            return self::EXIT_COMMAND_NOT_FOUND;
         }
 
         if ($this->beforeAction()->isActionPrevented()) {
@@ -153,15 +152,14 @@ class Executor implements SectionVisitor
                 $this->matchedSection = $section;
 
                 return false;
-            } else {
-                $parser = $this->usageParserBuilder->createUsageParser($usageDefinition, $options);
+            }
+            $parser = $this->usageParserBuilder->createUsageParser($usageDefinition, $options);
 
-                if (($input = $parser->parse($this->argv)) !== false) {
-                    $this->matchedInput = $input;
-                    $this->matchedSection = $section;
+            if (($input = $parser->parse($this->argv)) !== false) {
+                $this->matchedInput = $input;
+                $this->matchedSection = $section;
 
-                    return false;
-                }
+                return false;
             }
         }
 

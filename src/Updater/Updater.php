@@ -56,7 +56,6 @@ class Updater
             $phar = new \Phar($temp);
             unset($phar);
             $this->output->infof('Download OK. Copying into place at %s', $targetPath);
-            $result = false;
             if (!file_exists($targetPath)) {
                 if (chmod($temp, 0777 & ~umask()) === false) {
                     throw new \RuntimeException(sprintf('Unable to set permissions on %s', $temp));

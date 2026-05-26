@@ -68,15 +68,7 @@ class Updater
                 if (chmod($targetPath, 0777 & ~umask()) === false) {
                     throw new \RuntimeException(sprintf('Unable to set permissions on %s', $targetPath));
                 }
-
-                $fp = fopen($targetPath, 'wb'); // truncate in place
-                if ($fp === false) {
-                    throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
-                }
-                if (fwrite($fp, $releaseData) === false) {
-                    throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
-                }
-                if (fclose($fp) === false) {
+                if (file_put_contents($targetPath, $releaseData) === false) {
                     throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
                 }
             }

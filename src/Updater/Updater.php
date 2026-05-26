@@ -52,22 +52,19 @@ class Updater
                 throw new \RuntimeException(sprintf('Unable to write to %s', $temp));
             }
 
-            if (chmod($temp, 0777 & ~umask()) === false) {
-                throw new \RuntimeException(sprintf('Unable to set permissions on %s', $temp));
-            }
-
             $this->output->info('Validating the downloaded phar...');
             $phar = new \Phar($temp);
             unset($phar);
             $this->output->infof('Download OK. Copying into place at %s', $targetPath);
             $result = false;
             if (!file_exists($targetPath)) {
+                if (chmod($temp, 0777 & ~umask()) === false) {
+                    throw new \RuntimeException(sprintf('Unable to set permissions on %s', $temp));
+                }
                 if (!rename($temp, $targetPath)) {
                     throw new \RuntimeException(sprintf('Unable to write to %s', $targetPath));
                 }
             } else {
-                unlink($temp);
-
                 if (chmod($targetPath, 0777 & ~umask()) === false) {
                     throw new \RuntimeException(sprintf('Unable to set permissions on %s', $targetPath));
                 }
@@ -87,6 +84,8 @@ class Updater
         } catch (\Error $e) {
             @unlink($temp);
             throw new \RuntimeException('Error occurred processing the update: ' . $e->getMessage(), 0, $e);
+        } finally {
+            @unlink($temp);
         }
     }
 

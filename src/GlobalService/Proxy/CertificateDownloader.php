@@ -35,12 +35,7 @@ class CertificateDownloader
                 }
             }
 
-            throw new \RuntimeException(sprintf(
-                'Could not download certificate sources for Proxy Domain "%s". Check %s and verify the configured URLs are reachable. %s',
-                $id,
-                $registryPath,
-                $e->getMessage()
-            ), 0, $e);
+            throw new \RuntimeException(sprintf('Could not download certificate sources for Proxy Domain "%s". Check %s and verify the configured URLs are reachable. %s', $id, $registryPath, $e->getMessage()), 0, $e);
         }
     }
 

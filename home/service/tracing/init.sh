@@ -8,17 +8,17 @@ DIR=""
 
 main()
 {
-    if [[ "$1" = "enable" ]] || [[ "$1" = "start" ]]; then
+    if [ "$1" = "enable" ] || [ "$1" = "start" ]; then
         start
         exit
     fi
 
-    if [[ "$1" = "disable" ]] || [[ "$1" = "stop" ]]; then
+    if [ "$1" = "disable" ] || [ "$1" = "stop" ]; then
         stop
         exit
     fi
 
-    if [[ "$1" = "restart" ]]; then
+    if [ "$1" = "restart" ]; then
         restart
         exit
     fi
@@ -28,10 +28,10 @@ start()
 (
     local TRAEFIK_TRACING_RULE
 
-    cd "${DIR}"
+    cd "$DIR"
 
     TRAEFIK_TRACING_RULE="$(ws global service proxy config rule tracing)"
-    update_env_generated_key ".env" "TRAEFIK_TRACING_RULE" "${TRAEFIK_TRACING_RULE}"
+    updateEnvGeneratedKey ".env" "TRAEFIK_TRACING_RULE" "$TRAEFIK_TRACING_RULE"
     run docker-compose -p my127ws-tracing pull
     run docker-compose -p my127ws-tracing up -d
 
@@ -47,14 +47,14 @@ start()
 stop()
 (
     local DO_PROXY_RESTART="${1:-yes}"
-    cd "${DIR}"
+    cd "$DIR"
 
     local TRAEFIK_CONFIG="${DIR}/../proxy/traefik/root/traefik.toml"
-    if [[ "${DO_PROXY_RESTART}" = "yes" ]] && grep -q '\[tracing\]' "${TRAEFIK_CONFIG}"; then
+    if [ "$DO_PROXY_RESTART" = "yes" ] && grep -q '\[tracing\]' "${TRAEFIK_CONFIG}"; then
       cp "${TRAEFIK_CONFIG}" "${TRAEFIK_CONFIG}.before-tracing-inactive"
       sed 's/\[tracing\]/\[inactive.tracing\]/' "${TRAEFIK_CONFIG}.before-tracing-inactive" > "${TRAEFIK_CONFIG}"
       rm "${TRAEFIK_CONFIG}.before-tracing-inactive"
-      if [[ "${DO_PROXY_RESTART}" = "yes" ]]; then
+      if [ "$DO_PROXY_RESTART" = "yes" ]; then
         passthru ws global service proxy restart
       fi
     fi
@@ -70,8 +70,8 @@ restart()
 bootstrap()
 {
     DIR="$(cd "$(dirname "$0")" && pwd)"
-    # shellcheck source=home/lib/sidekick.sh
-    source "${DIR}/../../lib/sidekick.sh"
+    # shellcheck source=../../lib/sidekick.sh
+    source "$DIR/../../lib/sidekick.sh"
 }
 
 bootstrap

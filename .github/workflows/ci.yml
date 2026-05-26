@@ -82,7 +82,7 @@ jobs:
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
                 with:
-                    composer-options: "--no-scripts"
+                    composer-options: "--no-scripts --locked"
 
             -
                 name: "Run friendsofphp/php-cs-fixer"
@@ -120,6 +120,8 @@ jobs:
             -
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
+                with:
+                    composer-options: "--no-scripts --locked"
             -
                 name: "Build ws.phar"
                 run: "composer compile"
@@ -158,7 +160,7 @@ jobs:
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
                 with:
-                    composer-options: "--no-scripts"
+                    composer-options: "--no-scripts --locked"
             -
                 name: "Build container"
                 run: "bin/build"

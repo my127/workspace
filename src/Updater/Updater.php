@@ -82,7 +82,6 @@ class Updater
             }
             $this->output->success('Done.');
         } catch (\Error $e) {
-            @unlink($temp);
             throw new \RuntimeException('Error occurred processing the update: ' . $e->getMessage(), 0, $e);
         } finally {
             @unlink($temp);

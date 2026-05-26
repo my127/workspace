@@ -73,8 +73,7 @@ class Updater
                 }
 
                 $fp = fopen($targetPath, 'wb'); // truncate in place
-
-                if ($fp === false)) {
+                if ($fp === false) {
                     throw new \RuntimeException(sprintf('Unable write to %s', $targetPath));
                 }
                 if (fwrite($fp, $releaseData) === false) {

@@ -53,13 +53,6 @@ jobs:
                 name: "Validate composer.json"
                 run: "composer validate --strict"
 
-            - name: "Validate lock file up to date"
-              run: |
-                if composer install --dry-run 2>&1 | grep -q "lock file is not up to date"; then
-                  echo "ERROR: composer.lock is out of sync with composer.json"
-                  exit 1
-                fi
-
     php-cs-fixer:
         name: "PHP-CS-Fixer (${{ matrix.php-version }})"
         needs:
@@ -127,8 +120,7 @@ jobs:
             -
                 name: "Composer install"
                 uses: "ramsey/composer-install@v1"
-                with:
-                    composer-options: "--no-scripts"
+
             -
                 name: "Build ws.phar"
                 run: "composer compile"

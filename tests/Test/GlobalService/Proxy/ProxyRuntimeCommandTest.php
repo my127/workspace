@@ -58,6 +58,26 @@ class ProxyRuntimeCommandTest extends IntegrationTestCase
         ], $tls['tls']['certificates']);
     }
 
+    public function testWritesTraefikTlsConfigurationToOutputFile(): void
+    {
+        $this->addCustomDomain();
+
+        $this->workspaceCommand('global service proxy config tls --output=tls.yaml');
+
+        $tls = Yaml::parse($this->workspace()->getContents('tls.yaml'));
+
+        self::assertSame([
+            'certFile' => '/tls/my127.site.crt',
+            'keyFile' => '/tls/my127.site.key',
+        ], $tls['tls']['stores']['default']['defaultCertificate']);
+        self::assertSame([
+            [
+                'certFile' => '/tls/domain.site.crt',
+                'keyFile' => '/tls/domain.site.key',
+            ],
+        ], $tls['tls']['certificates']);
+    }
+
     public function testRejectsRuntimeTlsFilenameCollisions(): void
     {
         $this->writeGlobalConfig(<<<'YAML'

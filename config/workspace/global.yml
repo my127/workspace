@@ -75,7 +75,7 @@ command('global service proxy config rule <service>', 'global service proxy conf
 
     ProxyRuntimeCommand::rule($domains, $input);
 
-command('global service proxy config tls', 'global service proxy config tls'):
+command('global service proxy config tls [--output=<file>]', 'global service proxy config tls'):
   description: Print Traefik TLS configuration
   exec: |
     #!php(cwd:/)
@@ -83,7 +83,7 @@ command('global service proxy config tls', 'global service proxy config tls'):
 
     $domains = $ws['global.service.proxy.domains'] ?? [];
 
-    ProxyRuntimeCommand::tls($domains);
+    ProxyRuntimeCommand::tls($domains, $input);
 
 command('global service proxy config certificates download <dir>', 'global service proxy config certificates download'):
   description: Download configured Global Proxy certificates

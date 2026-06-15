@@ -39,7 +39,7 @@ enable()
         TRAEFIK_PROXY_RULE="$(ws global service proxy config rule proxy)"
         updateEnvGeneratedKey ".env" "TRAEFIK_PROXY_RULE" "$TRAEFIK_PROXY_RULE"
         run ws global service proxy config certificates download traefik/root/tls
-        run bash -c 'ws global service proxy config tls > traefik/root/config/tls.yaml'
+        run ws global service proxy config tls --output=traefik/root/config/tls.yaml
         run docker-compose -p my127ws-proxy up --force-recreate --build -d traefik
     fi
 )

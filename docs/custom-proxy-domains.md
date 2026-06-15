@@ -18,13 +18,6 @@ The built-in `my127.site` domain remains available by default. Do not add it to
 A proxy domain must be registered before the Global Proxy can serve it. The
 certificate and key must be reachable `http://` or `https://` URLs.
 
-```bash
-ws global service proxy config domain add mydomain \
-  --name=mydomain.site \
-  --crt=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.crt \
-  --key=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.key
-```
-
 Certificate URLs may point at private locations that are already readable from
 the machine, such as a raw file URL in a private GitHub repository.
 
@@ -32,16 +25,32 @@ The certificate must cover the bare domain and the subdomains used by projects
 or global services. For example, a certificate for `mydomain.site` should also
 cover `*.mydomain.site`.
 
-You can inspect, import, replace, or remove registered domains with:
+The following commands are alternatives for common tasks. Run the one that
+matches the change you want to make.
 
 ```bash
+# List registered proxy domains.
 ws global service proxy config domain list
+
+# Register one domain manually.
+ws global service proxy config domain add mydomain \
+  --name=mydomain.site \
+  --crt=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.crt \
+  --key=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.key
+
+# Import domains from a local file.
 ws global service proxy config domain import proxy-domains.yml
+
+# Import domains from a URL, such as a private GitHub repository.
 ws global service proxy config domain import https://raw.githubusercontent.com/my-org/proxy-config/main/proxy-domains.yml
+
+# Replace one registered domain.
 ws global service proxy config domain update mydomain \
   --name=mydomain.site \
   --crt=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.crt \
   --key=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.key
+
+# Remove one registered domain.
 ws global service proxy config domain remove mydomain
 ```
 

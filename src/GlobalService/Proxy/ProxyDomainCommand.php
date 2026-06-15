@@ -139,7 +139,7 @@ class ProxyDomainCommand
                     continue;
                 }
 
-                ProxyDomainConfiguration::assertNoConflicts(array_replace($domains, $registeredDomains), $id, $domain);
+                ProxyDomainConfiguration::assertNoConflicts(array_replace($registeredDomains, $domains), $id, $domain);
 
                 $registeredDomains[$id] = $domain;
                 ++$imported;

@@ -272,9 +272,38 @@ YAML);
         self::assertSame('team.site', $list['domains']['team']['name']);
     }
 
+    public function testImportRejectsConflictsWithEffectiveGlobalConfig(): void
+    {
+        $this->addRegistryDomainShadowedByGlobalOverride();
+        $this->workspace()->put('imports/domains.yml', <<<'YAML'
+attributes:
+  global:
+    service:
+      proxy:
+        domains:
+          team:
+            name: override.site
+            https:
+              crt: https://certs.override.site/fullchain.pem
+              key: https://certs.override.site/privkey.pem
+YAML);
+
+        $process = $this->workspaceProcess('global service proxy config domain import imports/domains.yml');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'already uses name "override.site"',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $domains = Yaml::parseFile($this->registryPath())['attributes']['global']['service']['proxy']['domains'];
+        self::assertSame(['acme'], array_keys($domains));
+    }
+
     public function testUpdateFailsWhenARegisteredDomainIsShadowedByAnotherGlobalConfig(): void
     {
-        $this->addShadowedRegistryDomain();
+        $this->addRegistryDomainShadowedByGlobalOverride();
 
         $process = $this->workspaceProcess(
             'global service proxy config domain update acme ' .
@@ -296,7 +325,7 @@ YAML);
 
     public function testRemoveFailsWhenARegisteredDomainIsShadowedByAnotherGlobalConfig(): void
     {
-        $this->addShadowedRegistryDomain();
+        $this->addRegistryDomainShadowedByGlobalOverride();
 
         $process = $this->workspaceProcess('global service proxy config domain remove acme');
         $process->run();
@@ -350,7 +379,7 @@ YAML);
         file_put_contents($configDir . '/' . $filename, $contents);
     }
 
-    private function addShadowedRegistryDomain(): void
+    private function addRegistryDomainShadowedByGlobalOverride(): void
     {
         $this->workspaceCommand(
             'global service proxy config domain add acme ' .

@@ -15,17 +15,13 @@ ws global service proxy restart
 ```bash
 ws global service proxy config domain add mydomain \
   --name=mydomain.site \
-  --crt=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.crt \
-  --key=https://raw.githubusercontent.com/my-org/private-proxy-config/main/certs/mydomain.site.key
+  --crt=<certificate-url> \
+  --key=<key-url>
 ws global service proxy restart
 ```
 
-Set the project domain in `workspace.yml`:
-
-```yaml
-attributes:
-  domain: mydomain.site
-```
+See [Custom Global Proxy domains](custom-proxy-domains.md) for import, update,
+remove, and project configuration examples.
 
 ## How-to receive email
 

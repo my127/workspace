@@ -25,7 +25,7 @@ command('global service proxy config domain list', 'global service proxy config 
 
     ProxyDomainCommand::domainList($domains);
 
-command('global service proxy config domain add <id> [--name=<name>] [--crt=<crt>] [--key=<key>] [--crt-file=<crt-file>] [--key-file=<key-file>]', 'global service proxy config domain add'):
+command('global service proxy config domain add <id> --name=<name> --crt=<crt> --key=<key> [--crt-file=<crt-file>] [--key-file=<key-file>]', 'global service proxy config domain add'):
   description: Register a Global Proxy domain
   exec: |
     #!php(cwd:/)
@@ -35,7 +35,7 @@ command('global service proxy config domain add <id> [--name=<name>] [--crt=<crt
 
     ProxyDomainCommand::domainAdd($domains, $input, home());
 
-command('global service proxy config domain update <id> [--name=<name>] [--crt=<crt>] [--key=<key>] [--crt-file=<crt-file>] [--key-file=<key-file>]', 'global service proxy config domain update'):
+command('global service proxy config domain update <id> --name=<name> --crt=<crt> --key=<key> [--crt-file=<crt-file>] [--key-file=<key-file>]', 'global service proxy config domain update'):
   description: Replace a registered Global Proxy domain
   exec: |
     #!php(cwd:/)

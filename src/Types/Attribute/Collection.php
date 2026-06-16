@@ -47,7 +47,7 @@ class Collection implements \ArrayAccess
                     $value['source'],
                     function (&$source) {
                         // de-dupe when attribute defined twice in same file with attribute('...') and yaml
-                        $source = is_array($source) ? $source[0] : $source;
+                        $source = is_array($source) ? end($source) : $source;
                     }
                 );
                 ksort($value['source']);

@@ -324,6 +324,35 @@ YAML);
         self::assertSame(['acme'], array_keys($domains));
     }
 
+    public function testImportRejectsConflictsWithShadowedRegistryDomains(): void
+    {
+        $this->addRegistryDomainShadowedByGlobalOverride();
+        $this->workspace()->put('imports/domains.yml', <<<'YAML'
+attributes:
+  global:
+    service:
+      proxy:
+        domains:
+          team:
+            name: domain.site
+            https:
+              crt: https://certs.team.site/fullchain.pem
+              key: https://certs.team.site/privkey.pem
+YAML);
+
+        $process = $this->workspaceProcess('global service proxy config domain import imports/domains.yml');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'already uses name "domain.site"',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $domains = Yaml::parseFile($this->registryPath())['attributes']['global']['service']['proxy']['domains'];
+        self::assertSame(['acme'], array_keys($domains));
+    }
+
     public function testUpdateFailsWhenARegisteredDomainIsShadowedByAnotherGlobalConfig(): void
     {
         $this->addRegistryDomainShadowedByGlobalOverride();

@@ -66,6 +66,7 @@ class ProxyDomainCommand
 
         self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id], $workspace, $registry->path());
         ProxyDomainConfiguration::assertNoConflicts($domains, $id, $domain);
+        ProxyDomainConfiguration::assertNoConflicts($registeredDomains, $id, $domain);
 
         $registeredDomains[$id] = $domain;
         $registry->write($registeredDomains);

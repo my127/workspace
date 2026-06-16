@@ -368,6 +368,53 @@ YAML);
         self::assertSame('domain.site', $list['domains']['acme']['name']);
     }
 
+    public function testUpdateRejectsConflictsWithShadowedRegistryDomains(): void
+    {
+        $this->workspaceCommand(
+            'global service proxy config domain add acme ' .
+            '--name=domain.site ' .
+            '--crt=https://certs.domain.site/fullchain.pem ' .
+            '--key=https://certs.domain.site/privkey.pem'
+        );
+        $this->workspaceCommand(
+            'global service proxy config domain add team ' .
+            '--name=team.site ' .
+            '--crt=https://certs.team.site/fullchain.pem ' .
+            '--key=https://certs.team.site/privkey.pem'
+        );
+        $this->writeGlobalConfig(<<<'YAML'
+attributes:
+  global:
+    service:
+      proxy:
+        domains:
+          acme:
+            name: override.site
+            https:
+              crt: https://certs.override.site/fullchain.pem
+              key: https://certs.override.site/privkey.pem
+            crt_file: override.site.crt
+            key_file: override.site.key
+YAML, 'zz-override.yml');
+
+        $process = $this->workspaceProcess(
+            'global service proxy config domain update team ' .
+            '--name=domain.site ' .
+            '--crt=https://certs.updated.site/fullchain.pem ' .
+            '--key=https://certs.updated.site/privkey.pem'
+        );
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'already uses name "domain.site"',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $domains = Yaml::parseFile($this->registryPath())['attributes']['global']['service']['proxy']['domains'];
+        self::assertSame('team.site', $domains['team']['name']);
+    }
+
     public function testRemoveFailsWhenARegisteredDomainIsShadowedByHigherPrecedenceConfig(): void
     {
         $this->workspaceCommand(

@@ -45,13 +45,14 @@ The certificate and key URLs are read from the attributes in `domains.yml`; the
 layout below keeps them together only to make the example easy to follow.
 
 GitHub raw URLs work only for public repositories because Workspace does not
-authenticate to GitHub. For private certificate material, use organisation-only
-HTTP(S) URLs reachable from developer machines.
+authenticate to GitHub. Use them for `domains.yml`, or for disposable test
+certificates. For private keys, use organisation-only HTTP(S) URLs reachable
+from developer machines.
 
 Suggested structure for one or more domains:
 
 ```text
-public-proxy-config/
+proxy-config/
 ├── domains.yml
 └── certs/
     ├── mydomain.site/
@@ -79,8 +80,8 @@ ws global service proxy config domain list
 # Register one domain manually.
 ws global service proxy config domain add mydomain \
   --name=mydomain.site \
-  --crt=https://raw.githubusercontent.com/my-org/public-proxy-config/main/certs/mydomain.site/fullchain.pem \
-  --key=https://raw.githubusercontent.com/my-org/public-proxy-config/main/certs/mydomain.site/privkey.pem
+  --crt=https://proxy-config.example.internal/certs/mydomain.site/fullchain.pem \
+  --key=https://proxy-config.example.internal/certs/mydomain.site/privkey.pem
 
 # Import domains from a local file.
 ws global service proxy config domain import domains.yml
@@ -94,8 +95,8 @@ ws global service proxy config domain import https://proxy-config.example.intern
 # Replace one registered domain.
 ws global service proxy config domain update mydomain \
   --name=mydomain.site \
-  --crt=https://raw.githubusercontent.com/my-org/public-proxy-config/main/certs/mydomain.site/fullchain.pem \
-  --key=https://raw.githubusercontent.com/my-org/public-proxy-config/main/certs/mydomain.site/privkey.pem
+  --crt=https://proxy-config.example.internal/certs/mydomain.site/fullchain.pem \
+  --key=https://proxy-config.example.internal/certs/mydomain.site/privkey.pem
 
 # Remove one registered domain.
 ws global service proxy config domain remove mydomain
@@ -112,8 +113,8 @@ attributes:
           mydomain:
             name: mydomain.site
             https:
-              crt: https://raw.githubusercontent.com/my-org/public-proxy-config/main/certs/mydomain.site/fullchain.pem
-              key: https://raw.githubusercontent.com/my-org/public-proxy-config/main/certs/mydomain.site/privkey.pem
+              crt: https://proxy-config.example.internal/certs/mydomain.site/fullchain.pem
+              key: https://proxy-config.example.internal/certs/mydomain.site/privkey.pem
             crt_file: mydomain.site.crt
             key_file: mydomain.site.key
           otherdomain:

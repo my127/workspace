@@ -214,4 +214,20 @@ EOD
 
         $this->assertFalse(strpos($this->workspaceCommand('config dump --key=message')->getOutput(), 'World'));
     }
+
+    /** @test */
+    public function attributeMetadataSourceUsesLatestSourceAtTheSamePrecedence()
+    {
+        $attributes = new AttributeCollection(new Expression(new CWD()));
+
+        $attributes->add(['message' => 'first'], 'first.yml', 1);
+        $attributes->add(['message' => 'second'], 'second.yml', 1);
+
+        $metadata = $attributes->getAttributeMetadata('message');
+        $this->assertNotNull($metadata);
+
+        $sources = $metadata['source'];
+        $this->assertEquals('second.yml', array_pop($sources));
+        $this->assertEquals('second', $attributes->get('message'));
+    }
 }

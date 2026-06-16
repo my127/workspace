@@ -6,6 +6,15 @@ use Symfony\Component\Yaml\Yaml;
 
 class ProxyDomainConfiguration
 {
+    public static function assertDomainMap(mixed $domains): array
+    {
+        if (!is_array($domains)) {
+            throw new \InvalidArgumentException('global.service.proxy.domains must be a map.');
+        }
+
+        return $domains;
+    }
+
     public static function createDomain(
         string $id,
         string $name,
@@ -72,6 +81,10 @@ class ProxyDomainConfiguration
         }
 
         foreach ($domains as $id => $domain) {
+            if (!is_array($domain)) {
+                throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" must be a map.', $id));
+            }
+
             $domains[$id] = self::normalizeDomain($id, $domain, $id === 'default');
         }
 

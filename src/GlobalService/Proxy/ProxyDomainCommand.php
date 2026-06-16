@@ -3,6 +3,7 @@
 namespace my127\Workspace\GlobalService\Proxy;
 
 use my127\Console\Usage\Input;
+use my127\Workspace\Types\Workspace\Workspace;
 use Symfony\Component\Yaml\Yaml;
 
 class ProxyDomainCommand
@@ -39,7 +40,7 @@ class ProxyDomainCommand
         echo "Run ws global service proxy restart to apply certificate and TLS changes.\n";
     }
 
-    public static function domainUpdate(array $domains, Input $input, string $home): void
+    public static function domainUpdate(array $domains, Input $input, string $home, Workspace $workspace): void
     {
         $id = $input->argument('id');
         $domain = ProxyDomainConfiguration::createDomain(
@@ -58,7 +59,7 @@ class ProxyDomainCommand
             throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is not registered. Use add %s to register it.', $id, $id));
         }
 
-        self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id]);
+        self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id], $workspace, $registry->path());
         ProxyDomainConfiguration::assertNoConflicts($domains, $id, $domain);
 
         $registeredDomains[$id] = $domain;
@@ -68,7 +69,7 @@ class ProxyDomainCommand
         echo "Run ws global service proxy restart to apply certificate and TLS changes.\n";
     }
 
-    public static function domainRemove(array $domains, Input $input, string $home): void
+    public static function domainRemove(array $domains, Input $input, string $home, Workspace $workspace): void
     {
         $id = $input->argument('id');
         ProxyDomainConfiguration::assertValidId($id);
@@ -80,7 +81,7 @@ class ProxyDomainCommand
             throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is not registered.', $id));
         }
 
-        self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id]);
+        self::assertRegistryDomainIsEffective($domains, $id, $registeredDomains[$id], $workspace, $registry->path());
 
         unset($registeredDomains[$id]);
         $registry->write($registeredDomains);
@@ -186,13 +187,25 @@ class ProxyDomainCommand
         return $value;
     }
 
-    private static function assertRegistryDomainIsEffective(array $domains, string $id, array $registeredDomain): void
+    private static function assertRegistryDomainIsEffective(array $domains, string $id, array $registeredDomain, Workspace $workspace, string $registryPath): void
     {
         if (
             !isset($domains[$id])
             || ProxyDomainConfiguration::normalizeDomain($id, $domains[$id]) != ProxyDomainConfiguration::normalizeDomain($id, $registeredDomain)
         ) {
             throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is configured outside the registry. Remove that global config override before using this registry command.', $id));
+        }
+
+        $registryPath = realpath($registryPath) ?: $registryPath;
+        foreach (['name', 'https.crt', 'https.key', 'crt_file', 'key_file'] as $key) {
+            $metadata = $workspace->attributeMetadata(sprintf('global.service.proxy.domains.%s.%s', $id, $key));
+            $sources = is_array($metadata) ? ($metadata['source'] ?? []) : [];
+            $effectiveSource = $sources === [] ? null : end($sources);
+            $effectiveSource = $effectiveSource === null ? null : (realpath($effectiveSource) ?: $effectiveSource);
+
+            if ($effectiveSource !== $registryPath) {
+                throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is configured outside the registry. Remove that global config override before using this registry command.', $id));
+            }
         }
     }
 

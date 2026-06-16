@@ -3,6 +3,7 @@
 namespace my127\Workspace\Tests\Test\GlobalService\Proxy;
 
 use my127\Workspace\Tests\IntegrationTestCase;
+use my127\Workspace\Utility\Filesystem;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
@@ -112,6 +113,26 @@ YAML);
         );
     }
 
+    public function testRejectsScalarProxyDomainEntries(): void
+    {
+        $this->writeGlobalConfig(<<<'YAML'
+attributes:
+  global:
+    service:
+      proxy:
+        domains:
+          acme: disabled
+YAML);
+
+        $process = $this->workspaceProcess('global service proxy config rule mail');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        $output = $process->getOutput() . $process->getErrorOutput();
+        self::assertStringContainsString('Proxy Domain', $output);
+        self::assertStringContainsString('"acme" must be a map', $output);
+    }
+
     public function testDownloadsConfiguredCertificates(): void
     {
         $this->startCertificateServer();
@@ -190,7 +211,7 @@ YAML);
             return;
         }
 
-        $this->remove($homeDir);
+        Filesystem::rrmdir($homeDir);
     }
 
     private function cleanProxyDomainRegistry(): void
@@ -204,27 +225,5 @@ YAML);
         foreach (glob($configDir . '/*.yml') as $file) {
             unlink($file);
         }
-    }
-
-    private function remove(string $path): void
-    {
-        $node = new \SplFileInfo($path);
-
-        if (in_array($node->getType(), ['socket', 'file', 'link'])) {
-            unlink($path);
-
-            return;
-        }
-
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($files as $file) {
-            $this->remove($file->getPathName());
-        }
-
-        rmdir($path);
     }
 }

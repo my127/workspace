@@ -3,6 +3,7 @@
 namespace my127\Workspace\Tests\Test\GlobalService\Proxy;
 
 use my127\Workspace\Tests\IntegrationTestCase;
+use my127\Workspace\Utility\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 class ProxyDomainCommandTest extends IntegrationTestCase
@@ -323,6 +324,28 @@ YAML);
         self::assertSame('override.site', $list['domains']['acme']['name']);
     }
 
+    public function testUpdateFailsWhenARegisteredDomainIsShadowedByIdenticalGlobalConfig(): void
+    {
+        $this->addRegistryDomainShadowedByIdenticalGlobalOverride();
+
+        $process = $this->workspaceProcess(
+            'global service proxy config domain update acme ' .
+            '--name=updated.site ' .
+            '--crt=https://certs.updated.site/fullchain.pem ' .
+            '--key=https://certs.updated.site/privkey.pem'
+        );
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'configured outside the registry',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $list = Yaml::parse($this->workspaceCommand('global service proxy config domain list')->getOutput());
+        self::assertSame('domain.site', $list['domains']['acme']['name']);
+    }
+
     public function testRemoveFailsWhenARegisteredDomainIsShadowedByAnotherGlobalConfig(): void
     {
         $this->addRegistryDomainShadowedByGlobalOverride();
@@ -340,6 +363,39 @@ YAML);
         self::assertArrayHasKey('acme', $domains);
     }
 
+    public function testRemoveFailsWhenARegisteredDomainIsShadowedByIdenticalGlobalConfig(): void
+    {
+        $this->addRegistryDomainShadowedByIdenticalGlobalOverride();
+
+        $process = $this->workspaceProcess('global service proxy config domain remove acme');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'configured outside the registry',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $domains = Yaml::parseFile($this->registryPath())['attributes']['global']['service']['proxy']['domains'];
+        self::assertArrayHasKey('acme', $domains);
+    }
+
+    public function testListRejectsScalarEffectiveProxyDomainsConfig(): void
+    {
+        $this->writeGlobalConfig(<<<'YAML'
+attribute('global.service.proxy.domains'): disabled
+YAML);
+
+        $process = $this->workspaceProcess('global service proxy config domain list');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'global.service.proxy.domains must be a map',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+    }
+
     private function cleanInstalledHome(): void
     {
         $homeDir = $_SERVER['MY127WS_HOME'] . '/.my127/workspace';
@@ -348,7 +404,7 @@ YAML);
             return;
         }
 
-        $this->remove($homeDir);
+        Filesystem::rrmdir($homeDir);
     }
 
     private function cleanProxyDomainRegistry(): void
@@ -403,25 +459,27 @@ attributes:
 YAML, 'zz-override.yml');
     }
 
-    private function remove(string $path): void
+    private function addRegistryDomainShadowedByIdenticalGlobalOverride(): void
     {
-        $node = new \SplFileInfo($path);
-
-        if (in_array($node->getType(), ['socket', 'file', 'link'])) {
-            unlink($path);
-
-            return;
-        }
-
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $this->workspaceCommand(
+            'global service proxy config domain add acme ' .
+            '--name=domain.site ' .
+            '--crt=https://certs.domain.site/fullchain.pem ' .
+            '--key=https://certs.domain.site/privkey.pem'
         );
-
-        foreach ($files as $file) {
-            $this->remove($file->getPathName());
-        }
-
-        rmdir($path);
+        $this->writeGlobalConfig(<<<'YAML'
+attributes:
+  global:
+    service:
+      proxy:
+        domains:
+          acme:
+            name: domain.site
+            https:
+              crt: https://certs.domain.site/fullchain.pem
+              key: https://certs.domain.site/privkey.pem
+            crt_file: domain.site.crt
+            key_file: domain.site.key
+YAML, 'zz-override.yml');
     }
 }

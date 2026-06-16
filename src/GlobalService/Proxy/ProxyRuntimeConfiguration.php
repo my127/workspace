@@ -6,16 +6,16 @@ use Symfony\Component\Yaml\Yaml;
 
 class ProxyRuntimeConfiguration
 {
-    private const SERVICE_HOST_PREFIX = [
-        'proxy' => '',
-        'mail' => 'mail.',
-        'logger' => 'kibana.',
-        'tracing' => 'tracing.',
-    ];
-
     public static function traefikRule(array $domains, string $service): string
     {
-        if (!isset(self::SERVICE_HOST_PREFIX[$service])) {
+        $serviceHostPrefix = [
+            'proxy' => '',
+            'mail' => 'mail.',
+            'logger' => 'kibana.',
+            'tracing' => 'tracing.',
+        ];
+
+        if (!isset($serviceHostPrefix[$service])) {
             throw new \InvalidArgumentException(sprintf('Unsupported Global Proxy rule service "%s".', $service));
         }
 
@@ -26,7 +26,7 @@ class ProxyRuntimeConfiguration
 
         $hosts = [];
         foreach ($domains as $domain) {
-            $hosts[] = sprintf('Host(`%s%s`)', self::SERVICE_HOST_PREFIX[$service], $domain['name']);
+            $hosts[] = sprintf('Host(`%s%s`)', $serviceHostPrefix[$service], $domain['name']);
         }
 
         return implode(' || ', $hosts);

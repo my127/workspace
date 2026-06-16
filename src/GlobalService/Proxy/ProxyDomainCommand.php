@@ -29,10 +29,15 @@ class ProxyDomainCommand
             throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already exists. Use update %s to replace it.', $id, $id));
         }
 
-        ProxyDomainConfiguration::assertNoConflicts($domains, $id, $domain);
-
         $registry = new ProxyDomainRegistry($home);
         $registeredDomains = $registry->read();
+        if (isset($registeredDomains[$id])) {
+            throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" already exists. Use update %s to replace it.', $id, $id));
+        }
+
+        ProxyDomainConfiguration::assertNoConflicts($domains, $id, $domain);
+        ProxyDomainConfiguration::assertNoConflicts($registeredDomains, $id, $domain);
+
         $registeredDomains[$id] = $domain;
         $registry->write($registeredDomains);
 
@@ -200,13 +205,29 @@ class ProxyDomainCommand
         foreach (['name', 'https.crt', 'https.key', 'crt_file', 'key_file'] as $key) {
             $metadata = $workspace->attributeMetadata(sprintf('global.service.proxy.domains.%s.%s', $id, $key));
             $sources = is_array($metadata) ? ($metadata['source'] ?? []) : [];
-            $effectiveSource = $sources === [] ? null : end($sources);
+            $effectiveSource = self::effectiveAttributeSource($sources);
             $effectiveSource = $effectiveSource === null ? null : (realpath($effectiveSource) ?: $effectiveSource);
 
             if ($effectiveSource !== $registryPath) {
                 throw new \InvalidArgumentException(sprintf('Proxy Domain "%s" is configured outside the registry. Remove that global config override before using this registry command.', $id));
             }
         }
+    }
+
+    private static function effectiveAttributeSource(array $sources): ?string
+    {
+        $effectivePrecedence = null;
+        $effectiveSource = null;
+
+        foreach ($sources as $precedence => $source) {
+            $precedence = (int) substr($precedence, 1);
+            if ($effectivePrecedence === null || $precedence > $effectivePrecedence) {
+                $effectivePrecedence = $precedence;
+                $effectiveSource = $source;
+            }
+        }
+
+        return $effectiveSource;
     }
 
     private static function readSource(string $source): string

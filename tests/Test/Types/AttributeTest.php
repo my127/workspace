@@ -230,4 +230,20 @@ EOD
         $this->assertEquals('second.yml', array_pop($sources));
         $this->assertEquals('second', $attributes->get('message'));
     }
+
+    /** @test */
+    public function attributeMetadataSourceUsesHighestNumericPrecedence()
+    {
+        $attributes = new AttributeCollection(new Expression(new CWD()));
+
+        $attributes->add(['message' => 'normal'], 'normal.yml', 6);
+        $attributes->add(['message' => 'environment'], 'environment.yml', 10);
+
+        $metadata = $attributes->getAttributeMetadata('message');
+        $this->assertNotNull($metadata);
+
+        $sources = $metadata['source'];
+        $this->assertEquals('environment.yml', array_pop($sources));
+        $this->assertEquals('environment', $attributes->get('message'));
+    }
 }

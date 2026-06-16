@@ -50,7 +50,9 @@ class Collection implements \ArrayAccess
                         $source = is_array($source) ? end($source) : $source;
                     }
                 );
-                ksort($value['source']);
+                uksort($value['source'], function ($a, $b) {
+                    return (int) substr($a, 1) <=> (int) substr($b, 1);
+                });
             }
         );
     }

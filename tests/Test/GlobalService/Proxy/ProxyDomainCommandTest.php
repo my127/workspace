@@ -230,6 +230,28 @@ YAML);
         );
     }
 
+    public function testAddRejectsConflictsWithShadowedRegistryDomains(): void
+    {
+        $this->addRegistryDomainShadowedByGlobalOverride();
+
+        $process = $this->workspaceProcess(
+            'global service proxy config domain add team ' .
+            '--name=domain.site ' .
+            '--crt=https://certs.team.site/fullchain.pem ' .
+            '--key=https://certs.team.site/privkey.pem'
+        );
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'already uses name "domain.site"',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $domains = Yaml::parseFile($this->registryPath())['attributes']['global']['service']['proxy']['domains'];
+        self::assertSame(['acme'], array_keys($domains));
+    }
+
     public function testImportSkipsDomainsAlreadyConfiguredOutsideTheRegistry(): void
     {
         $this->writeGlobalConfig(<<<'YAML'
@@ -344,6 +366,45 @@ YAML);
 
         $list = Yaml::parse($this->workspaceCommand('global service proxy config domain list')->getOutput());
         self::assertSame('domain.site', $list['domains']['acme']['name']);
+    }
+
+    public function testRemoveFailsWhenARegisteredDomainIsShadowedByHigherPrecedenceConfig(): void
+    {
+        $this->workspaceCommand(
+            'global service proxy config domain add acme ' .
+            '--name=domain.site ' .
+            '--crt=https://certs.domain.site/fullchain.pem ' .
+            '--key=https://certs.domain.site/privkey.pem'
+        );
+        $process = $this->workspaceProcess(
+            'global service proxy config domain remove acme',
+            null,
+            [
+                'MY127WS_ATTR_PROXY_DOMAIN_OVERRIDE' => <<<'YAML'
+global:
+  service:
+    proxy:
+      domains:
+        acme:
+          name: domain.site
+          https:
+            crt: https://certs.domain.site/fullchain.pem
+            key: https://certs.domain.site/privkey.pem
+          crt_file: domain.site.crt
+          key_file: domain.site.key
+YAML,
+            ]
+        );
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'configured outside the registry',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+
+        $domains = Yaml::parseFile($this->registryPath())['attributes']['global']['service']['proxy']['domains'];
+        self::assertArrayHasKey('acme', $domains);
     }
 
     public function testRemoveFailsWhenARegisteredDomainIsShadowedByAnotherGlobalConfig(): void

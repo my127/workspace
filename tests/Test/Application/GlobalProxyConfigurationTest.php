@@ -65,23 +65,11 @@ YAML
         );
         $this->workspaceCommand('', null, $env);
 
-        $root = dirname(__DIR__, 3);
-        $fakeBin = $this->workspace()->path('fake-bin');
-        mkdir($fakeBin);
-        symlink($root . '/bin/workspace', $fakeBin . '/ws');
-        $this->workspace()->put('fake-bin/docker', <<<'BASH'
-#!/bin/bash
-exit 0
-BASH
-        );
-        $this->workspace()->put('fake-bin/docker-compose', <<<'BASH'
+        $this->prepareFakeServiceTools($env, <<<'BASH'
 #!/bin/bash
 echo "$MY127WS_PROXY_DOMAIN" > "$MY127WS_TEST_OUTPUT"
 BASH
         );
-        chmod($this->workspace()->path('fake-bin/docker'), 0755);
-        chmod($this->workspace()->path('fake-bin/docker-compose'), 0755);
-        $env['PATH'] = $fakeBin . ':' . getenv('PATH');
         $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-domain-output');
 
         $this->workspace()->put('workspace.yml', <<<'YAML'
@@ -96,32 +84,71 @@ YAML
         self::assertSame("dev.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
     }
 
-    public function testGlobalProxyServiceCommandPassesProjectProxyConfiguration(): void
+    public function testDirectMailServicePathPreservesShellProxyDomain(): void
     {
-        $env = $this->isolatedHomeEnvironment();
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): dev.example.test
+YAML
+        );
         $this->workspaceCommand('', null, $env);
 
-        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
-        $this->writeFakeWsServiceRecorder();
+        $this->prepareFakeServiceTools($env, <<<'BASH'
+#!/bin/bash
+echo "$MY127WS_PROXY_DOMAIN" > "$MY127WS_TEST_OUTPUT"
+BASH
+        );
+        $env['MY127WS_PROXY_DOMAIN'] = 'shell.example.test';
+        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-domain-output');
 
         $this->workspace()->put('workspace.yml', <<<'YAML'
-attribute('global.service.proxy.domain'): project.example.test
-attribute('global.service.proxy.https.crt'): https://certs.example.test/project.crt
-attribute('global.service.proxy.https.key'): https://certs.example.test/project.key
-attribute('global.service.proxy.https.crt_file'): project.crt
-attribute('global.service.proxy.https.key_file'): project.key
+command('direct service mail enable'): |
+  #!bash
+  ws-service mail enable
+YAML
+        );
+
+        $this->workspaceCommand('direct service mail enable', null, $env);
+
+        self::assertSame("shell.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+    }
+
+    public function testGlobalProxyServiceCommandPassesProjectProxyConfiguration(): void
+    {
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): global.example.test
+attribute('global.service.proxy.https.crt'): https://certs.example.test/global.crt
+attribute('global.service.proxy.https.key'): https://certs.example.test/global.key
+YAML
+        );
+        $this->workspaceCommand('', null, $env);
+
+        $this->prepareFakeProxyServiceTools($env);
+        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
+
+        $this->createProxyTestWorkspace();
+        $this->workspace()->put('workspace.override.yml', <<<'YAML'
+attribute.override('global.service.proxy.domain'): project.example.test
+attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
+attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
+attribute.override('global.service.proxy.https.crt_file'): project.crt
+attribute.override('global.service.proxy.https.key_file'): project.key
 YAML
         );
 
         $this->workspaceCommand('global service proxy restart', null, $env);
 
         $expected = <<<'TEXT'
-proxy restart
 project.example.test
 https://certs.example.test/project.crt
 https://certs.example.test/project.key
 project.crt
 project.key
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /tls/project.crt
+        keyFile: /tls/project.key
 TEXT
         ;
         self::assertSame($expected . "\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
@@ -129,38 +156,95 @@ TEXT
 
     public function testGlobalProxyServiceCommandAllowsShellEnvironmentOverride(): void
     {
-        $env = $this->isolatedHomeEnvironment();
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): global.example.test
+attribute('global.service.proxy.https.crt'): https://certs.example.test/global.crt
+attribute('global.service.proxy.https.key'): https://certs.example.test/global.key
+YAML
+        );
         $this->workspaceCommand('', null, $env);
 
+        $this->prepareFakeProxyServiceTools($env);
         $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
         $env['MY127WS_PROXY_DOMAIN'] = 'shell.example.test';
         $env['MY127WS_PROXY_HTTPS_CRT'] = 'https://certs.example.test/shell.crt';
         $env['MY127WS_PROXY_HTTPS_KEY'] = 'https://certs.example.test/shell.key';
         $env['MY127WS_PROXY_HTTPS_CRT_FILE'] = 'shell.crt';
         $env['MY127WS_PROXY_HTTPS_KEY_FILE'] = 'shell.key';
-        $this->writeFakeWsServiceRecorder();
 
-        $this->workspace()->put('workspace.yml', <<<'YAML'
-attribute('global.service.proxy.domain'): project.example.test
-attribute('global.service.proxy.https.crt'): https://certs.example.test/project.crt
-attribute('global.service.proxy.https.key'): https://certs.example.test/project.key
-attribute('global.service.proxy.https.crt_file'): project.crt
-attribute('global.service.proxy.https.key_file'): project.key
+        $this->createProxyTestWorkspace();
+        $this->workspace()->put('workspace.override.yml', <<<'YAML'
+attribute.override('global.service.proxy.domain'): project.example.test
+attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
+attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
+attribute.override('global.service.proxy.https.crt_file'): project.crt
+attribute.override('global.service.proxy.https.key_file'): project.key
 YAML
         );
 
         $this->workspaceCommand('global service proxy restart', null, $env);
 
         $expected = <<<'TEXT'
-proxy restart
 shell.example.test
 https://certs.example.test/shell.crt
 https://certs.example.test/shell.key
 shell.crt
 shell.key
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /tls/shell.crt
+        keyFile: /tls/shell.key
 TEXT
         ;
         self::assertSame($expected . "\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+    }
+
+    public function testGlobalProxyServiceCommandRejectsInvalidTlsFilename(): void
+    {
+        $env = $this->isolatedHomeEnvironment();
+        $this->workspaceCommand('', null, $env);
+        $this->prepareFakeNoopProxyServiceTools($env);
+
+        $this->createProxyTestWorkspace();
+        $this->workspace()->put('workspace.override.yml', <<<'YAML'
+attribute.override('global.service.proxy.domain'): project.example.test
+attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
+attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
+attribute.override('global.service.proxy.https.crt_file'): ../project.crt
+attribute.override('global.service.proxy.https.key_file'): project.key
+YAML
+        );
+
+        $process = $this->workspaceProcess('global service proxy restart', null, $env);
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString('Invalid TLS filename: ../project.crt', $process->getErrorOutput());
+    }
+
+    public function testGlobalProxyServiceCommandRejectsSameTlsFilenames(): void
+    {
+        $env = $this->isolatedHomeEnvironment();
+        $this->workspaceCommand('', null, $env);
+        $this->prepareFakeNoopProxyServiceTools($env);
+
+        $this->createProxyTestWorkspace();
+        $this->workspace()->put('workspace.override.yml', <<<'YAML'
+attribute.override('global.service.proxy.domain'): project.example.test
+attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
+attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
+attribute.override('global.service.proxy.https.crt_file'): project.pem
+attribute.override('global.service.proxy.https.key_file'): project.pem
+YAML
+        );
+
+        $process = $this->workspaceProcess('global service proxy restart', null, $env);
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString('TLS certificate and key filenames must be different.', $process->getErrorOutput());
     }
 
     private function isolatedHomeEnvironment(?string $globalConfig = null): array
@@ -174,20 +258,74 @@ TEXT
         return ['MY127WS_HOME' => $home];
     }
 
-    private function writeFakeWsServiceRecorder(): void
+    private function createProxyTestWorkspace(): void
     {
-        $this->workspace()->put('home/.my127/workspace/bin/ws-service', <<<'BASH'
+        $this->workspace()->put('workspace.yml', "workspace('proxy-test'): ~\n");
+    }
+
+    private function prepareFakeProxyServiceTools(array &$env): void
+    {
+        $dockerComposeScript = <<<'BASH'
 #!/bin/bash
 {
-  printf '%s %s\n' "$1" "$2"
   printf '%s\n' "$MY127WS_PROXY_DOMAIN"
   printf '%s\n' "$MY127WS_PROXY_HTTPS_CRT"
   printf '%s\n' "$MY127WS_PROXY_HTTPS_KEY"
   printf '%s\n' "$MY127WS_PROXY_HTTPS_CRT_FILE"
   printf '%s\n' "$MY127WS_PROXY_HTTPS_KEY_FILE"
+  cat traefik/root/config/tls.yaml
 } > "$MY127WS_TEST_OUTPUT"
+BASH;
+
+        $this->prepareFakeServiceTools($env, $dockerComposeScript, true);
+    }
+
+    private function prepareFakeNoopProxyServiceTools(array &$env): void
+    {
+        $dockerComposeScript = <<<'BASH'
+#!/bin/bash
+exit 0
+BASH;
+
+        $this->prepareFakeServiceTools($env, $dockerComposeScript, true);
+    }
+
+    private function prepareFakeServiceTools(array &$env, string $dockerComposeScript, bool $includeCurl = false): void
+    {
+        $root = dirname(__DIR__, 3);
+        $fakeBin = $this->workspace()->path('fake-bin');
+        mkdir($fakeBin);
+        symlink($root . '/bin/workspace', $fakeBin . '/ws');
+        $this->workspace()->put('fake-bin/docker', <<<'BASH'
+#!/bin/bash
+exit 0
 BASH
         );
-        chmod($this->workspace()->path('home/.my127/workspace/bin/ws-service'), 0755);
+        $this->workspace()->put('fake-bin/docker-compose', $dockerComposeScript);
+        chmod($this->workspace()->path('fake-bin/docker'), 0755);
+        chmod($this->workspace()->path('fake-bin/docker-compose'), 0755);
+
+        if ($includeCurl) {
+            $this->workspace()->put('fake-bin/curl', <<<'BASH'
+#!/bin/bash
+output=""
+
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "--output" ]; then
+    shift
+    output="$1"
+  fi
+  shift || true
+done
+
+if [ -n "$output" ]; then
+  printf 'fake certificate\n' > "$output"
+fi
+BASH
+            );
+            chmod($this->workspace()->path('fake-bin/curl'), 0755);
+        }
+
+        $env['PATH'] = $fakeBin . ':' . getenv('PATH');
     }
 }

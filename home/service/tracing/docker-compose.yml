@@ -9,7 +9,7 @@ services:
       JAEGER_AGENT_HOST: 127.0.0.1
     labels:
       - traefik.enable=true
-      - traefik.http.routers.my127ws-tracing-jaeger.rule=Host(`tracing.my127.site`)
+      - traefik.http.routers.my127ws-tracing-jaeger.rule=Host(`tracing.${MY127WS_PROXY_DOMAIN:-my127.site}`)
       - traefik.http.services.my127ws-tracing-jaeger.loadbalancer.server.port=16686
       - traefik.docker.network=${TRAEFIK_NETWORK}
     restart: unless-stopped

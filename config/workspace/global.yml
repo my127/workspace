@@ -1,23 +1,37 @@
 
-command('global service logger (enable|disable)', 'global service logger'): |
-  #!bash|=
-  ws-service logger ={input.command(4)}
+command('global service logger (enable|disable)', 'global service logger'):
+  env:
+    MY127WS_PROXY_DOMAIN: = @('global.service.proxy.domain')
+  exec: |
+    #!bash|=
+    ws-service logger ={input.command(4)}
 
 command('global service mail (enable|disable)', 'global service mail'):
-  description: Actions for mailhog (mail.my127.site)
+  description: Actions for mailhog
+  env:
+    MY127WS_PROXY_DOMAIN: = @('global.service.proxy.domain')
   exec: |
     #!bash|=
     ws-service mail ={input.command(4)}
 
 command('global service proxy (enable|disable|restart)', 'global service proxy'):
-  description: Actions for Traefik proxy (my127.site)
+  description: Actions for Traefik proxy
+  env:
+    MY127WS_PROXY_DOMAIN: = @('global.service.proxy.domain')
+    MY127WS_PROXY_HTTPS_CRT: = @('global.service.proxy.https.crt')
+    MY127WS_PROXY_HTTPS_KEY: = @('global.service.proxy.https.key')
+    MY127WS_PROXY_HTTPS_CRT_FILE: = @('global.service.proxy.https.crt_file')
+    MY127WS_PROXY_HTTPS_KEY_FILE: = @('global.service.proxy.https.key_file')
   exec: |
     #!bash|=
     ws-service proxy ={input.command(4)}
 
-command('global service tracing (start|stop|restart)', 'global service tracing'): |
-  #!bash|=
-  ws-service tracing ={input.command(4)}
+command('global service tracing (start|stop|restart)', 'global service tracing'):
+  env:
+    MY127WS_PROXY_DOMAIN: = @('global.service.proxy.domain')
+  exec: |
+    #!bash|=
+    ws-service tracing ={input.command(4)}
 
 command('global service', 'global service'):
   description: Perform an action (start/stop etc.) on a global service

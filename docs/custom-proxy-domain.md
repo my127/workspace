@@ -143,9 +143,10 @@ attribute('global.service.proxy.https.crt'): https://raw.githubusercontent.com/m
 attribute('global.service.proxy.https.key'): https://raw.githubusercontent.com/my-org/workspace-proxy-certs/main/certs/dev.example.test/privkey.pem
 ```
 
-For organisation/private certificates, use an internal HTTP(S) location that is
+For organisation/private certificates, use an internal HTTPS location that is
 reachable from developer machines, such as a private website available on the
-company network or VPN.
+company network or VPN. Plain HTTP should only be used for disposable test
+material or when the local-network risk is explicitly accepted.
 
 The certificate must cover the configured domain and the subdomains used by
 projects and global services. For `dev.example.test`, the certificate should
@@ -253,6 +254,10 @@ ws global service logger enable
 ws global service tracing restart
 ```
 
+If a project also overrides `domain`, remove or restore that project override,
+run `ws harness prepare`, then restart or recreate the project containers using
+the project's normal workflow.
+
 ## Use the domain in a project
 
 Most Workspace harnesses define `domain: my127.site` in their harness
@@ -269,6 +274,15 @@ Project hostnames should then be under that suffix, such as:
 ```text
 my-project.dev.example.test
 ```
+
+After changing the project domain, regenerate the harness output:
+
+```bash
+ws harness prepare
+```
+
+Then restart or recreate the project containers using the project's normal
+workflow.
 
 For custom harnesses or manually maintained Compose files, update whichever
 hostname configuration the project uses. Workspace only changes the Global Proxy
@@ -288,19 +302,24 @@ project configuration.
 Precedence:
 
 ```text
-exported shell environment
-project/global Workspace attributes
+MY127WS_PROXY_* shell environment
+project attribute.override(...) entries
+global ~/.config/my127/workspace/proxy.yml attributes
 installed Workspace defaults
 ```
 
-For a project-specific proxy profile, set the proxy attributes in that project's
-`workspace.override.yml`:
+For a project/team-specific proxy profile, set the proxy attributes in the
+project's committed `workspace.yml`. Use `attribute.override(...)` so the
+project profile can override a machine-global `proxy.yml` when present:
 
 ```yaml
-attribute('global.service.proxy.domain'): dev.example.test
-attribute('global.service.proxy.https.crt'): https://proxy-config.example.internal/certs/dev.example.test/fullchain.pem
-attribute('global.service.proxy.https.key'): https://proxy-config.example.internal/certs/dev.example.test/privkey.pem
+attribute.override('global.service.proxy.domain'): dev.example.test
+attribute.override('global.service.proxy.https.crt'): https://proxy-config.example.internal/certs/dev.example.test/fullchain.pem
+attribute.override('global.service.proxy.https.key'): https://proxy-config.example.internal/certs/dev.example.test/privkey.pem
 ```
+
+Use `workspace.override.yml` only for developer-local proxy settings that should
+not be committed.
 
 Then restart the machine-global proxy from that project:
 

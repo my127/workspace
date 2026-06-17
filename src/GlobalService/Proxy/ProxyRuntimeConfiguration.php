@@ -17,7 +17,12 @@ class ProxyRuntimeConfiguration
 
         $hosts = [];
         foreach ($domains as $domain) {
-            $hosts[] = sprintf('Host(`%s%s`)', $hostPrefix, $domain['name']);
+            $host = $hostPrefix . $domain['name'];
+            if (strlen($host) > 253) {
+                throw new \InvalidArgumentException(sprintf('Global Proxy host "%s" exceeds the DNS hostname length limit.', $host));
+            }
+
+            $hosts[] = sprintf('Host(`%s`)', $host);
         }
 
         return implode(' || ', $hosts);

@@ -57,6 +57,19 @@ class ProxyRuntimeCommandTest extends IntegrationTestCase
         );
     }
 
+    public function testRejectsTooLongTraefikHostRulePrefix(): void
+    {
+        $prefix = implode('.', array_fill(0, 4, str_repeat('a', 63)));
+        $process = $this->workspaceProcess('global service proxy config rule ' . $prefix);
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'hostname length limit',
+            $process->getOutput() . $process->getErrorOutput()
+        );
+    }
+
     public function testPrintsTraefikTlsConfiguration(): void
     {
         $this->addCustomDomain();

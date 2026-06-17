@@ -51,7 +51,14 @@ class CertificateDownloader
             throw new \RuntimeException(sprintf('Could not create temporary file in %s.', $directory));
         }
 
-        file_put_contents($temporaryFile, $contents);
+        $written = file_put_contents($temporaryFile, $contents);
+        if ($written !== strlen($contents)) {
+            if (file_exists($temporaryFile)) {
+                unlink($temporaryFile);
+            }
+
+            throw new \RuntimeException(sprintf('Could not write temporary certificate file in %s.', $directory));
+        }
 
         return $temporaryFile;
     }

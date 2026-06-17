@@ -26,8 +26,12 @@ main()
 
 start()
 (
+    local TRAEFIK_TRACING_RULE
+
     cd "$DIR"
 
+    TRAEFIK_TRACING_RULE="$(ws global service proxy config rule tracing)"
+    updateEnvGeneratedKey ".env" "TRAEFIK_TRACING_RULE" "$TRAEFIK_TRACING_RULE"
     run docker-compose -p my127ws-tracing pull
     run docker-compose -p my127ws-tracing up -d
 

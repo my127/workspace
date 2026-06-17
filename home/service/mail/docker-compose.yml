@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.mail.rule=Host(`mail.my127.site`)
+      - traefik.http.routers.mail.rule=${TRAEFIK_MAIL_RULE}
       - traefik.http.services.mail.loadbalancer.server.port=8025
     networks:
       - private

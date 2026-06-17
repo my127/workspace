@@ -1,9 +1,9 @@
 
-command('global service logger (enable|disable)', 'global service logger'): |
+command('global service logger (enable|disable|restart)', 'global service logger'): |
   #!bash|=
   ws-service logger ={input.command(4)}
 
-command('global service mail (enable|disable)', 'global service mail'):
+command('global service mail (enable|disable|restart)', 'global service mail'):
   description: Actions for mailhog (mail.my127.site)
   exec: |
     #!bash|=
@@ -14,6 +14,94 @@ command('global service proxy (enable|disable|restart)', 'global service proxy')
   exec: |
     #!bash|=
     ws-service proxy ={input.command(4)}
+
+command('global service proxy config domain list', 'global service proxy config domain list'):
+  description: List configured Global Proxy domains
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyDomainCommand::domainList($domains);
+
+command('global service proxy config domain add <id> --name=<name> --crt=<certificate-url> --key=<key-url> [--crt-file=<filename>] [--key-file=<filename>]', 'global service proxy config domain add'):
+  description: Register a Global Proxy domain
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyDomainCommand::domainAdd($domains, $input, home());
+
+command('global service proxy config domain update <id> --name=<name> --crt=<certificate-url> --key=<key-url> [--crt-file=<filename>] [--key-file=<filename>]', 'global service proxy config domain update'):
+  description: Replace a registered Global Proxy domain
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyDomainCommand::domainUpdate($domains, $input, home(), $ws);
+
+command('global service proxy config domain remove <id>', 'global service proxy config domain remove'):
+  description: Remove a registered Global Proxy domain
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyDomainCommand::domainRemove($domains, $input, home(), $ws);
+
+command('global service proxy config domain import <source>', 'global service proxy config domain import'):
+  description: Import registered Global Proxy domains
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyDomainCommand::domainImport($domains, $input, home());
+
+command('global service proxy config rule [<host-prefix>]', 'global service proxy config rule'):
+  description: Print a Traefik Host rule for Global Proxy domains
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyRuntimeCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyRuntimeCommand::rule($domains, $input);
+
+command('global service proxy config tls [--output=<file>]', 'global service proxy config tls'):
+  description: Print Traefik TLS configuration
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyRuntimeCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyRuntimeCommand::tls($domains, $input);
+
+command('global service proxy config certificates download <dir>', 'global service proxy config certificates download'):
+  description: Download configured Global Proxy certificates
+  exec: |
+    #!php(cwd:/)
+    use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;
+    use my127\Workspace\GlobalService\Proxy\ProxyRuntimeCommand;
+
+    $domains = ProxyDomainConfiguration::assertDomainMap($ws['global.service.proxy.domains'] ?? []);
+
+    ProxyRuntimeCommand::downloadCertificates($domains, $input, home());
 
 command('global service tracing (start|stop|restart)', 'global service tracing'): |
   #!bash|=

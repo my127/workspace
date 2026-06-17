@@ -10,6 +10,19 @@ You need only to restart the Traefik proxy service:
 ws global service proxy restart
 ```
 
+## Custom proxy domains
+
+```bash
+ws global service proxy config domain add mydomain \
+  --name=mydomain.site \
+  --crt=<certificate-url> \
+  --key=<key-url>
+ws global service proxy restart
+```
+
+See [Custom Global Proxy domains](custom-proxy-domains.md) for import, update,
+remove, and project configuration examples.
+
 ## How-to receive email
 
 The email service is not running by default. It can be started with:

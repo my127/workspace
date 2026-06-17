@@ -11,9 +11,13 @@ INDICATOR_PASSTHRU="37m"
 
 prompt()
 {
-    if [ "${RUN_CWD}" != "$(pwd)" ]; then
-        RUN_CWD="$(pwd)"
-        echo -e "\\033[1m[\\033[0m$(pwd)\\033[1m]:\\033[0m" >&2
+    local CWD
+
+    CWD="$(pwd)"
+
+    if [ "${RUN_CWD}" != "$CWD" ]; then
+        RUN_CWD="$CWD"
+        echo -e "\\033[1m[\\033[0m$CWD\\033[1m]:\\033[0m" >&2
     fi
 }
 
@@ -82,9 +86,32 @@ passthru()
 
 setCommandIndicator()
 {
-    echo -ne "\\033[1A" >&2 
+    echo -ne "\\033[1A" >&2
     echo -ne "\\033[$1" >&2
     echo -n "■" >&2
     echo -ne "\\033[0m" >&2
     echo -ne "\\033[1E" >&2
+}
+
+updateEnvGeneratedKey()
+{
+    local -r FILE="$1"
+    local -r KEY="$2"
+    local -r VALUE="$3"
+    local TEMP_FILE
+    local LINE
+
+    TEMP_FILE="$(mktemp "$FILE.XXXXXX")"
+
+    if [ -f "$FILE" ]; then
+        while IFS= read -r LINE || [ -n "$LINE" ]; do
+            case "$LINE" in
+                "$KEY="*) ;;
+                *) printf '%s\n' "$LINE" >> "$TEMP_FILE" ;;
+            esac
+        done < "$FILE"
+    fi
+
+    printf '%s=%s\n' "$KEY" "$VALUE" >> "$TEMP_FILE"
+    mv "$TEMP_FILE" "$FILE"
 }

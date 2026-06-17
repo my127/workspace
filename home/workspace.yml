@@ -21,3 +21,11 @@ attributes.default:
         https:
           crt: https://my127.io/workspace/my127.site.crt
           key: https://my127.io/workspace/my127.site.key
+        domains:
+          default:
+            name: my127.site
+            https:
+              crt: = @('global.service.proxy.https.crt')
+              key: = @('global.service.proxy.https.key')
+            crt_file: my127.site.crt
+            key_file: my127.site.key

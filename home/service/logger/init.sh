@@ -17,21 +17,37 @@ main()
         disable
         exit
     fi
+
+    if [ "$1" = "restart" ]; then
+        restart
+        exit
+    fi
 }
 
 enable()
 {
+    local TRAEFIK_KIBANA_RULE
+
+    TRAEFIK_KIBANA_RULE="$(ws global service proxy config rule kibana)"
+    updateEnvGeneratedKey ".env" "TRAEFIK_KIBANA_RULE" "$TRAEFIK_KIBANA_RULE"
+
     if [ ! -f .flag-built ]; then
         run docker-compose -p my127ws-logger up -d --build
         touch .flag-built
     else
-        run docker-compose -p my127ws-logger start
+        run docker-compose -p my127ws-logger up -d
     fi
 }
 
 disable()
 {
     run docker-compose -p my127ws-logger stop
+}
+
+restart()
+{
+    disable
+    enable
 }
 
 bootstrap()

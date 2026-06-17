@@ -17,21 +17,37 @@ main()
         disable
         exit
     fi
+
+    if [ "$1" = "restart" ]; then
+        restart
+        exit
+    fi
 }
 
 enable()
 {
+    local TRAEFIK_MAIL_RULE
+
+    TRAEFIK_MAIL_RULE="$(ws global service proxy config rule mail)"
+    updateEnvGeneratedKey ".env" "TRAEFIK_MAIL_RULE" "$TRAEFIK_MAIL_RULE"
+
     if [ ! -f .flag-built ]; then
         run docker-compose -p my127ws-mail up -d --build
         touch .flag-built
     else
-        run docker-compose -p my127ws-mail start
+        run docker-compose -p my127ws-mail up -d
     fi
 }
 
 disable()
 {
     run docker-compose -p my127ws-mail stop
+}
+
+restart()
+{
+    disable
+    enable
 }
 
 bootstrap()

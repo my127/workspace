@@ -141,9 +141,14 @@ class Workspace extends Definition implements \ArrayAccess
         return isset($this->attributes[$offset]);
     }
 
-    public function offsetGet($offset): ?string
+    public function offsetGet($offset): mixed
     {
         return $this->attributes->get($offset);
+    }
+
+    public function attributeMetadata(string $key): mixed
+    {
+        return $this->attributes->getAttributeMetadata($key);
     }
 
     public function offsetSet($offset, $value): void

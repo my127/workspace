@@ -29,11 +29,11 @@ enable()
     cd "$DIR"
 
     if ! docker ps | grep my127ws-proxy > /dev/null; then
-        MY127WS_PROXY_DOMAIN="$(ws global config get global.service.proxy.domain)"
-        MY127WS_PROXY_HTTPS_CRT="$(ws global config get global.service.proxy.https.crt)"
-        MY127WS_PROXY_HTTPS_KEY="$(ws global config get global.service.proxy.https.key)"
-        MY127WS_PROXY_HTTPS_CRT_FILE="$(ws global config get global.service.proxy.https.crt_file)"
-        MY127WS_PROXY_HTTPS_KEY_FILE="$(ws global config get global.service.proxy.https.key_file)"
+        MY127WS_PROXY_DOMAIN="${MY127WS_PROXY_DOMAIN:-$(ws global config get global.service.proxy.domain)}"
+        MY127WS_PROXY_HTTPS_CRT="${MY127WS_PROXY_HTTPS_CRT:-$(ws global config get global.service.proxy.https.crt)}"
+        MY127WS_PROXY_HTTPS_KEY="${MY127WS_PROXY_HTTPS_KEY:-$(ws global config get global.service.proxy.https.key)}"
+        MY127WS_PROXY_HTTPS_CRT_FILE="${MY127WS_PROXY_HTTPS_CRT_FILE:-$(ws global config get global.service.proxy.https.crt_file)}"
+        MY127WS_PROXY_HTTPS_KEY_FILE="${MY127WS_PROXY_HTTPS_KEY_FILE:-$(ws global config get global.service.proxy.https.key_file)}"
         export MY127WS_PROXY_DOMAIN
 
         run mkdir -p traefik/root/tls traefik/root/config

@@ -21,7 +21,7 @@ main()
 
 enable()
 {
-    MY127WS_PROXY_DOMAIN="$(ws global config get global.service.proxy.domain)"
+    MY127WS_PROXY_DOMAIN="${MY127WS_PROXY_DOMAIN:-$(ws global config get global.service.proxy.domain)}"
     export MY127WS_PROXY_DOMAIN
 
     run docker-compose -p my127ws-mail up -d --build

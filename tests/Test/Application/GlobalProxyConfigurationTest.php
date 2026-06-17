@@ -96,6 +96,73 @@ YAML
         self::assertSame("dev.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
     }
 
+    public function testGlobalProxyServiceCommandPassesProjectProxyConfiguration(): void
+    {
+        $env = $this->isolatedHomeEnvironment();
+        $this->workspaceCommand('', null, $env);
+
+        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
+        $this->writeFakeWsServiceRecorder();
+
+        $this->workspace()->put('workspace.yml', <<<'YAML'
+attribute('global.service.proxy.domain'): project.example.test
+attribute('global.service.proxy.https.crt'): https://certs.example.test/project.crt
+attribute('global.service.proxy.https.key'): https://certs.example.test/project.key
+attribute('global.service.proxy.https.crt_file'): project.crt
+attribute('global.service.proxy.https.key_file'): project.key
+YAML
+        );
+
+        $this->workspaceCommand('global service proxy restart', null, $env);
+
+        $expected = <<<'TEXT'
+proxy restart
+project.example.test
+https://certs.example.test/project.crt
+https://certs.example.test/project.key
+project.crt
+project.key
+TEXT
+        ;
+        self::assertSame($expected . "\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+    }
+
+    public function testGlobalProxyServiceCommandAllowsShellEnvironmentOverride(): void
+    {
+        $env = $this->isolatedHomeEnvironment();
+        $this->workspaceCommand('', null, $env);
+
+        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
+        $env['MY127WS_PROXY_DOMAIN'] = 'shell.example.test';
+        $env['MY127WS_PROXY_HTTPS_CRT'] = 'https://certs.example.test/shell.crt';
+        $env['MY127WS_PROXY_HTTPS_KEY'] = 'https://certs.example.test/shell.key';
+        $env['MY127WS_PROXY_HTTPS_CRT_FILE'] = 'shell.crt';
+        $env['MY127WS_PROXY_HTTPS_KEY_FILE'] = 'shell.key';
+        $this->writeFakeWsServiceRecorder();
+
+        $this->workspace()->put('workspace.yml', <<<'YAML'
+attribute('global.service.proxy.domain'): project.example.test
+attribute('global.service.proxy.https.crt'): https://certs.example.test/project.crt
+attribute('global.service.proxy.https.key'): https://certs.example.test/project.key
+attribute('global.service.proxy.https.crt_file'): project.crt
+attribute('global.service.proxy.https.key_file'): project.key
+YAML
+        );
+
+        $this->workspaceCommand('global service proxy restart', null, $env);
+
+        $expected = <<<'TEXT'
+proxy restart
+shell.example.test
+https://certs.example.test/shell.crt
+https://certs.example.test/shell.key
+shell.crt
+shell.key
+TEXT
+        ;
+        self::assertSame($expected . "\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+    }
+
     private function isolatedHomeEnvironment(?string $globalConfig = null): array
     {
         $home = $this->workspace()->path('home');
@@ -105,5 +172,22 @@ YAML
         }
 
         return ['MY127WS_HOME' => $home];
+    }
+
+    private function writeFakeWsServiceRecorder(): void
+    {
+        $this->workspace()->put('home/.my127/workspace/bin/ws-service', <<<'BASH'
+#!/bin/bash
+{
+  printf '%s %s\n' "$1" "$2"
+  printf '%s\n' "$MY127WS_PROXY_DOMAIN"
+  printf '%s\n' "$MY127WS_PROXY_HTTPS_CRT"
+  printf '%s\n' "$MY127WS_PROXY_HTTPS_KEY"
+  printf '%s\n' "$MY127WS_PROXY_HTTPS_CRT_FILE"
+  printf '%s\n' "$MY127WS_PROXY_HTTPS_KEY_FILE"
+} > "$MY127WS_TEST_OUTPUT"
+BASH
+        );
+        chmod($this->workspace()->path('home/.my127/workspace/bin/ws-service'), 0755);
     }
 }

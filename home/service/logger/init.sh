@@ -21,12 +21,8 @@ main()
 
 enable()
 {
-    if [ ! -f .flag-built ]; then
-        run docker-compose -p my127ws-logger up -d --build
-        touch .flag-built
-    else
-        run docker-compose -p my127ws-logger start
-    fi
+    run docker-compose -p my127ws-logger up -d --build
+    touch .flag-built
 }
 
 disable()

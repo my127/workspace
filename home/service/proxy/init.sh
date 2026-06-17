@@ -36,6 +36,8 @@ enable()
         MY127WS_PROXY_HTTPS_KEY_FILE="${MY127WS_PROXY_HTTPS_KEY_FILE:-$(ws global config get global.service.proxy.https.key_file)}"
         export MY127WS_PROXY_DOMAIN
 
+        validate_tls_filenames "$MY127WS_PROXY_HTTPS_CRT_FILE" "$MY127WS_PROXY_HTTPS_KEY_FILE"
+
         run mkdir -p traefik/root/tls traefik/root/config
 
         run curl --fail --location --output "traefik/root/tls/${MY127WS_PROXY_HTTPS_CRT_FILE}" "${MY127WS_PROXY_HTTPS_CRT}"
@@ -58,6 +60,29 @@ restart()
 {
     disable
     enable
+}
+
+validate_tls_filenames()
+{
+    validate_tls_filename "$1"
+    validate_tls_filename "$2"
+
+    if [ "$1" = "$2" ]; then
+        echo "TLS certificate and key filenames must be different." >&2
+        exit 1
+    fi
+}
+
+validate_tls_filename()
+{
+    case "$1" in
+        ""|.|..|*/*)
+            echo "Invalid TLS filename: $1" >&2
+            exit 1
+            ;;
+        *)
+            ;;
+    esac
 }
 
 write_tls_config()

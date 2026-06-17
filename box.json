@@ -10,7 +10,8 @@
   "files-bin": [
     "home/service/logger/.env",
     "home/service/mail/.env",
-    "home/service/proxy/.env"
+    "home/service/proxy/.env",
+    "home/service/tracing/.env"
   ],
   "blacklist": [
     "tools/scripts/compile.sh",

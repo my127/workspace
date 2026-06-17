@@ -6,18 +6,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class ProxyRuntimeConfiguration
 {
-    public static function traefikRule(array $domains, string $service): string
+    public static function traefikRule(array $domains, ?string $hostPrefix): string
     {
-        $serviceHostPrefix = [
-            'proxy' => '',
-            'mail' => 'mail.',
-            'logger' => 'kibana.',
-            'tracing' => 'tracing.',
-        ];
-
-        if (!isset($serviceHostPrefix[$service])) {
-            throw new \InvalidArgumentException(sprintf('Unsupported Global Proxy rule service "%s".', $service));
-        }
+        $hostPrefix = self::normalizeHostPrefix($hostPrefix);
 
         $domains = ProxyDomainConfiguration::normalizeDomains($domains);
         if ($domains === []) {
@@ -26,7 +17,7 @@ class ProxyRuntimeConfiguration
 
         $hosts = [];
         foreach ($domains as $domain) {
-            $hosts[] = sprintf('Host(`%s%s`)', $serviceHostPrefix[$service], $domain['name']);
+            $hosts[] = sprintf('Host(`%s%s`)', $hostPrefix, $domain['name']);
         }
 
         return implode(' || ', $hosts);
@@ -64,5 +55,19 @@ class ProxyRuntimeConfiguration
             'certFile' => '/tls/' . $domain['crt_file'],
             'keyFile' => '/tls/' . $domain['key_file'],
         ];
+    }
+
+    private static function normalizeHostPrefix(?string $hostPrefix): string
+    {
+        if ($hostPrefix === null || $hostPrefix === '') {
+            return '';
+        }
+
+        $hostPrefix = rtrim($hostPrefix, '.');
+        if ($hostPrefix === '' || !preg_match('/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/', $hostPrefix)) {
+            throw new \InvalidArgumentException('Global Proxy host prefix must be DNS labels without the domain suffix.');
+        }
+
+        return $hostPrefix . '.';
     }
 }

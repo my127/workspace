@@ -36,7 +36,7 @@ enable()
             run mkdir -p traefik/root/tls
         fi
 
-        TRAEFIK_PROXY_RULE="$(ws global service proxy config rule proxy)"
+        TRAEFIK_PROXY_RULE="$(ws global service proxy config rule)"
         updateEnvGeneratedKey ".env" "TRAEFIK_PROXY_RULE" "$TRAEFIK_PROXY_RULE"
         run ws global service proxy config certificates download traefik/root/tls
         run ws global service proxy config tls --output=traefik/root/config/tls.yaml

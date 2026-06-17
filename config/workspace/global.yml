@@ -70,8 +70,8 @@ command('global service proxy config domain import <source>', 'global service pr
 
     ProxyDomainCommand::domainImport($domains, $input, home());
 
-command('global service proxy config rule <service>', 'global service proxy config rule'):
-  description: Print a Traefik Host rule for a Global Proxy service
+command('global service proxy config rule [<host-prefix>]', 'global service proxy config rule'):
+  description: Print a Traefik Host rule for Global Proxy domains
   exec: |
     #!php(cwd:/)
     use my127\Workspace\GlobalService\Proxy\ProxyDomainConfiguration;

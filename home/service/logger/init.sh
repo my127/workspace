@@ -28,7 +28,7 @@ enable()
 {
     local TRAEFIK_KIBANA_RULE
 
-    TRAEFIK_KIBANA_RULE="$(ws global service proxy config rule logger)"
+    TRAEFIK_KIBANA_RULE="$(ws global service proxy config rule kibana)"
     updateEnvGeneratedKey ".env" "TRAEFIK_KIBANA_RULE" "$TRAEFIK_KIBANA_RULE"
 
     if [ ! -f .flag-built ]; then

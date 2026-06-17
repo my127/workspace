@@ -8,7 +8,7 @@ class ProxyRuntimeCommand
 {
     public static function rule(array $domains, Input $input): void
     {
-        echo ProxyRuntimeConfiguration::traefikRule($domains, $input->argument('service')) . "\n";
+        echo ProxyRuntimeConfiguration::traefikRule($domains, $input->argument('host-prefix')) . "\n";
     }
 
     public static function tls(array $domains, Input $input): void

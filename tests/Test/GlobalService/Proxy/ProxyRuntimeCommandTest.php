@@ -27,7 +27,7 @@ class ProxyRuntimeCommandTest extends IntegrationTestCase
         $this->cleanProxyDomainRegistry();
     }
 
-    public function testPrintsTraefikHostRuleForGlobalService(): void
+    public function testPrintsTraefikHostRuleForHostPrefix(): void
     {
         $this->addCustomDomain();
 
@@ -37,7 +37,23 @@ class ProxyRuntimeCommandTest extends IntegrationTestCase
         );
         self::assertSame(
             "Host(`my127.site`) || Host(`domain.site`)\n",
-            $this->workspaceCommand('global service proxy config rule proxy')->getOutput()
+            $this->workspaceCommand('global service proxy config rule')->getOutput()
+        );
+        self::assertSame(
+            "Host(`kibana.my127.site`) || Host(`kibana.domain.site`)\n",
+            $this->workspaceCommand('global service proxy config rule kibana')->getOutput()
+        );
+    }
+
+    public function testRejectsInvalidTraefikHostRulePrefix(): void
+    {
+        $process = $this->workspaceProcess('global service proxy config rule bad_prefix');
+        $process->run();
+
+        self::assertNotSame(0, $process->getExitCode());
+        self::assertStringContainsString(
+            'host prefix must be DNS labels',
+            $process->getOutput() . $process->getErrorOutput()
         );
     }
 

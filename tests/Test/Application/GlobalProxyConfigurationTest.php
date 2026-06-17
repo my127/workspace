@@ -57,6 +57,45 @@ YAML
         self::assertFileDoesNotExist($root . '/home/service/proxy/traefik/root/config/tls.yaml');
     }
 
+    public function testDirectMailServicePathExportsConfiguredProxyDomain(): void
+    {
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): dev.example.test
+YAML
+        );
+        $this->workspaceCommand('', null, $env);
+
+        $root = dirname(__DIR__, 3);
+        $fakeBin = $this->workspace()->path('fake-bin');
+        mkdir($fakeBin);
+        symlink($root . '/bin/workspace', $fakeBin . '/ws');
+        $this->workspace()->put('fake-bin/docker', <<<'BASH'
+#!/bin/bash
+exit 0
+BASH
+        );
+        $this->workspace()->put('fake-bin/docker-compose', <<<'BASH'
+#!/bin/bash
+echo "$MY127WS_PROXY_DOMAIN" > "$MY127WS_TEST_OUTPUT"
+BASH
+        );
+        chmod($this->workspace()->path('fake-bin/docker'), 0755);
+        chmod($this->workspace()->path('fake-bin/docker-compose'), 0755);
+        $env['PATH'] = $fakeBin . ':' . getenv('PATH');
+        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-domain-output');
+
+        $this->workspace()->put('workspace.yml', <<<'YAML'
+command('direct service mail enable'): |
+  #!bash
+  ws-service mail enable
+YAML
+        );
+
+        $this->workspaceCommand('direct service mail enable', null, $env);
+
+        self::assertSame("dev.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+    }
+
     private function isolatedHomeEnvironment(?string $globalConfig = null): array
     {
         $home = $this->workspace()->path('home');

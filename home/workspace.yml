@@ -18,6 +18,9 @@ attributes.default:
   global:
     service:
       proxy:
+        domain: my127.site
         https:
           crt: https://my127.io/workspace/my127.site.crt
           key: https://my127.io/workspace/my127.site.key
+          crt_file: = @('global.service.proxy.domain') ~ '.crt'
+          key_file: = @('global.service.proxy.domain') ~ '.key'

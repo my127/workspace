@@ -16,12 +16,6 @@ command('global service mail (enable|disable)', 'global service mail'):
 
 command('global service proxy (enable|disable|restart)', 'global service proxy'):
   description: Actions for Traefik proxy
-  env:
-    MY127WS_PROXY_DOMAIN: = @('global.service.proxy.domain')
-    MY127WS_PROXY_HTTPS_CRT: = @('global.service.proxy.https.crt')
-    MY127WS_PROXY_HTTPS_KEY: = @('global.service.proxy.https.key')
-    MY127WS_PROXY_HTTPS_CRT_FILE: = @('global.service.proxy.https.crt_file')
-    MY127WS_PROXY_HTTPS_KEY_FILE: = @('global.service.proxy.https.key_file')
   exec: |
     #!bash|=
     ws-service proxy ={input.command(4)}

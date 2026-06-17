@@ -56,8 +56,9 @@ flowchart LR
   tlsConfig --> traefik
 ```
 
-The configured values are passed to Docker Compose as environment variables at
-runtime. The source of truth remains the global Workspace config file.
+The proxy init script reads these attributes from global Workspace config,
+downloads the configured certificate files, and exports the domain for Docker
+Compose labels. The source of truth remains the global Workspace config file.
 
 ## Create the proxy config file
 
@@ -120,7 +121,7 @@ proxy-config/
 
 GitHub raw URLs work only for public repositories because Workspace does not
 authenticate to GitHub. Use public GitHub raw URLs only for disposable test
-certificates.
+certificates. Do not publish a real private key in a public repository.
 
 Example public GitHub repository structure:
 

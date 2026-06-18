@@ -36,7 +36,7 @@ start()
       cp "${TRAEFIK_CONFIG}" "${TRAEFIK_CONFIG}.before-tracing-active"
       sed 's/\[inactive.tracing\]/\[tracing\]/' "${TRAEFIK_CONFIG}.before-tracing-active" > "${TRAEFIK_CONFIG}"
       rm "${TRAEFIK_CONFIG}.before-tracing-active"
-      passthru ws global service proxy restart
+      passthru "${MY127WS_WORKSPACE_BIN:-ws}" global service proxy restart
     fi
 )
 
@@ -51,7 +51,7 @@ stop()
       sed 's/\[tracing\]/\[inactive.tracing\]/' "${TRAEFIK_CONFIG}.before-tracing-inactive" > "${TRAEFIK_CONFIG}"
       rm "${TRAEFIK_CONFIG}.before-tracing-inactive"
       if [ "$DO_PROXY_RESTART" = "yes" ]; then
-        passthru ws global service proxy restart
+        passthru "${MY127WS_WORKSPACE_BIN:-ws}" global service proxy restart
       fi
     fi
     run docker-compose -p my127ws-tracing down -v --rmi local

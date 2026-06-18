@@ -60,10 +60,10 @@ flowchart LR
   tlsConfig --> traefik
 ```
 
-`ws-service` resolves proxy attributes before it calls a service `init.sh`.
-For the proxy service it exports the domain and certificate settings; for the
-other global services it exports the domain used by Docker Compose labels. The
-source of truth remains Workspace config.
+The internal `ws-service` wrapper resolves proxy attributes before it calls a
+service `init.sh`. For the proxy service it exports the domain and certificate
+settings; for the other global services it exports the domain used by Docker
+Compose labels. The source of truth remains Workspace config.
 
 ## Create the proxy config file
 
@@ -297,10 +297,10 @@ different suffix.
 
 ## Switch the proxy per project
 
-The Global Proxy still runs one domain at a time, but `ws-service` resolves
-proxy settings before calling the service scripts. This keeps `ws global service
-...`, required services started during `ws install`, and direct `ws-service ...`
-calls on the same proxy configuration path.
+The Global Proxy still runs one domain at a time, but the internal service
+wrapper resolves proxy settings before calling service scripts. This keeps
+`ws global service ...` commands and required services started during
+`ws install` on the same proxy configuration path.
 
 Precedence:
 
@@ -338,6 +338,8 @@ running the restart:
 MY127WS_PROXY_DOMAIN=dev.example.test \
 MY127WS_PROXY_HTTPS_CRT=https://proxy-config.example.internal/certs/dev.example.test/fullchain.pem \
 MY127WS_PROXY_HTTPS_KEY=https://proxy-config.example.internal/certs/dev.example.test/privkey.pem \
+MY127WS_PROXY_HTTPS_CRT_FILE=dev.example.test.crt \
+MY127WS_PROXY_HTTPS_KEY_FILE=dev.example.test.key \
 ws global service proxy restart
 ```
 

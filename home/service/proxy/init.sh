@@ -29,12 +29,12 @@ enable()
     cd "$DIR"
 
     if ! docker ps | grep my127ws-proxy > /dev/null; then
-        MY127WS_PROXY_DOMAIN="${MY127WS_PROXY_DOMAIN:-$(ws global config get global.service.proxy.domain)}"
-        MY127WS_PROXY_HTTPS_CRT="${MY127WS_PROXY_HTTPS_CRT:-$(ws global config get global.service.proxy.https.crt)}"
-        MY127WS_PROXY_HTTPS_KEY="${MY127WS_PROXY_HTTPS_KEY:-$(ws global config get global.service.proxy.https.key)}"
-        MY127WS_PROXY_HTTPS_CRT_FILE="${MY127WS_PROXY_HTTPS_CRT_FILE:-$(ws global config get global.service.proxy.https.crt_file)}"
-        MY127WS_PROXY_HTTPS_KEY_FILE="${MY127WS_PROXY_HTTPS_KEY_FILE:-$(ws global config get global.service.proxy.https.key_file)}"
-        export MY127WS_PROXY_DOMAIN
+        local PROXY_ENV_ERROR_MESSAGE="is required. Use ws global service proxy enable or ws global service proxy restart."
+
+        : "${MY127WS_PROXY_HTTPS_CRT:?$PROXY_ENV_ERROR_MESSAGE}"
+        : "${MY127WS_PROXY_HTTPS_KEY:?$PROXY_ENV_ERROR_MESSAGE}"
+        : "${MY127WS_PROXY_HTTPS_CRT_FILE:?$PROXY_ENV_ERROR_MESSAGE}"
+        : "${MY127WS_PROXY_HTTPS_KEY_FILE:?$PROXY_ENV_ERROR_MESSAGE}"
 
         validate_tls_filenames "$MY127WS_PROXY_HTTPS_CRT_FILE" "$MY127WS_PROXY_HTTPS_KEY_FILE"
 

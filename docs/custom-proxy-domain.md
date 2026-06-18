@@ -40,7 +40,8 @@ remote URL and it is not managed by a Workspace import command.
 flowchart LR
   configFile["~/.config/my127/workspace/proxy.yml"]
   attributes["global.service.proxy.* attributes"]
-  commands["ws global service proxy restart"]
+  commands["ws global service ...<br/>ws install required services"]
+  serviceWrapper["home/bin/ws-service"]
   init["home/service/proxy/init.sh"]
   compose["docker-compose labels"]
   tlsFiles["traefik/root/tls/<cert files>"]
@@ -49,7 +50,8 @@ flowchart LR
 
   configFile --> attributes
   attributes --> commands
-  commands --> init
+  commands --> serviceWrapper
+  serviceWrapper --> init
   init --> compose
   init --> tlsFiles
   init --> tlsConfig
@@ -58,9 +60,10 @@ flowchart LR
   tlsConfig --> traefik
 ```
 
-The proxy init script reads these attributes from global Workspace config,
-downloads the configured certificate files, and exports the domain for Docker
-Compose labels. The source of truth remains the global Workspace config file.
+`ws-service` resolves proxy attributes before it calls a service `init.sh`.
+For the proxy service it exports the domain and certificate settings; for the
+other global services it exports the domain used by Docker Compose labels. The
+source of truth remains Workspace config.
 
 ## Create the proxy config file
 
@@ -294,10 +297,10 @@ different suffix.
 
 ## Switch the proxy per project
 
-The Global Proxy still runs one domain at a time, but `ws global service ...`
-commands resolve proxy settings before calling the service scripts. This allows
-temporary overrides from either shell environment variables or the current
-project configuration.
+The Global Proxy still runs one domain at a time, but `ws-service` resolves
+proxy settings before calling the service scripts. This keeps `ws global service
+...`, required services started during `ws install`, and direct `ws-service ...`
+calls on the same proxy configuration path.
 
 Precedence:
 

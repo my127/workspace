@@ -112,6 +112,35 @@ YAML
         self::assertSame("shell.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
     }
 
+    public function testDirectMailServicePathUsesProjectProxyConfiguration(): void
+    {
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): global.example.test
+YAML
+        );
+        $this->workspaceCommand('', null, $env);
+
+        $this->prepareFakeServiceTools($env, <<<'BASH'
+#!/bin/bash
+echo "$MY127WS_PROXY_DOMAIN" > "$MY127WS_TEST_OUTPUT"
+BASH
+        );
+        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-domain-output');
+
+        $this->workspace()->put('workspace.yml', <<<'YAML'
+workspace('proxy-test'): ~
+attribute.override('global.service.proxy.domain'): project.example.test
+command('direct service mail enable'): |
+  #!bash
+  ws-service mail enable
+YAML
+        );
+
+        $this->workspaceCommand('direct service mail enable', null, $env);
+
+        self::assertSame("project.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+    }
+
     public function testGlobalProxyServiceCommandPassesProjectProxyConfiguration(): void
     {
         $env = $this->isolatedHomeEnvironment(<<<'YAML'

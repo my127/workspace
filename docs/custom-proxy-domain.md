@@ -16,7 +16,6 @@ domains.
 - [Apply the change](#apply-the-change)
 - [Revert to the default domain](#revert-to-the-default-domain)
 - [Use the domain in a project](#use-the-domain-in-a-project)
-- [Switch the proxy per project](#switch-the-proxy-per-project)
 - [Renew certificates](#renew-certificates)
 
 ## How it fits together
@@ -60,10 +59,13 @@ flowchart LR
   tlsConfig --> traefik
 ```
 
-The internal `ws-service` wrapper resolves proxy attributes before it calls a
-service `init.sh`. For the proxy service it exports the domain and certificate
-settings; for the other global services it exports the domain used by Docker
-Compose labels. The source of truth remains Workspace config.
+The internal `ws-service` wrapper resolves proxy attributes from the installed
+global Workspace config before it calls a service `init.sh`. For the proxy
+service it exports the domain and certificate settings; for the other global
+services it exports the domain used by Docker Compose labels.
+
+Project `workspace.yml` files do not override the Global Proxy runtime. Use
+`~/.config/my127/workspace/proxy.yml` to switch the machine-global proxy.
 
 ## Create the proxy config file
 
@@ -291,61 +293,9 @@ For custom harnesses or manually maintained Compose files, update whichever
 hostname configuration the project uses. Workspace only changes the Global Proxy
 domain and certificate; it does not rewrite project hostnames automatically.
 
-This simplified proxy configuration supports one certificate/domain set at a
-time, so switch the global proxy before working on a project that uses a
-different suffix.
-
-## Switch the proxy per project
-
-The Global Proxy still runs one domain at a time, but the internal service
-wrapper resolves proxy settings before calling service scripts. This keeps
-`ws global service ...` commands and required services started during
-`ws install` on the same proxy configuration path.
-
-Precedence:
-
-```text
-MY127WS_PROXY_* shell environment
-project attribute.override(...) entries
-global ~/.config/my127/workspace/proxy.yml attributes
-installed Workspace defaults
-```
-
-For a project/team-specific proxy profile, set the proxy attributes in the
-project's committed `workspace.yml`. Use `attribute.override(...)` so the
-project profile can override a machine-global `proxy.yml` when present:
-
-```yaml
-attribute.override('global.service.proxy.domain'): dev.example.test
-attribute.override('global.service.proxy.https.crt'): https://proxy-config.example.internal/certs/dev.example.test/fullchain.pem
-attribute.override('global.service.proxy.https.key'): https://proxy-config.example.internal/certs/dev.example.test/privkey.pem
-```
-
-Use `workspace.override.yml` only for developer-local proxy settings that should
-not be committed.
-
-Then restart the machine-global proxy from that project:
-
-```bash
-cd path/to/project
-ws global service proxy restart
-```
-
-For a one-off shell override, export or inline all matching proxy values before
-running the restart:
-
-```bash
-MY127WS_PROXY_DOMAIN=dev.example.test \
-MY127WS_PROXY_HTTPS_CRT=https://proxy-config.example.internal/certs/dev.example.test/fullchain.pem \
-MY127WS_PROXY_HTTPS_KEY=https://proxy-config.example.internal/certs/dev.example.test/privkey.pem \
-MY127WS_PROXY_HTTPS_CRT_FILE=dev.example.test.crt \
-MY127WS_PROXY_HTTPS_KEY_FILE=dev.example.test.key \
-ws global service proxy restart
-```
-
-Inline environment values are useful for temporary testing. Project attributes
-are easier to repeat when regularly switching between company and personal
-proxy domains.
+This proxy configuration supports one certificate/domain set at a time, so
+change `proxy.yml` and restart the global services before working on a project
+that uses a different suffix.
 
 ## Renew certificates
 

@@ -84,35 +84,7 @@ YAML
         self::assertSame("dev.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
     }
 
-    public function testDirectMailServicePathPreservesShellProxyDomain(): void
-    {
-        $env = $this->isolatedHomeEnvironment(<<<'YAML'
-attribute('global.service.proxy.domain'): dev.example.test
-YAML
-        );
-        $this->workspaceCommand('', null, $env);
-
-        $this->prepareFakeServiceTools($env, <<<'BASH'
-#!/bin/bash
-echo "$MY127WS_PROXY_DOMAIN" > "$MY127WS_TEST_OUTPUT"
-BASH
-        );
-        $env['MY127WS_PROXY_DOMAIN'] = 'shell.example.test';
-        $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-domain-output');
-
-        $this->workspace()->put('workspace.yml', <<<'YAML'
-command('direct service mail enable'): |
-  #!bash
-  ws-service mail enable
-YAML
-        );
-
-        $this->workspaceCommand('direct service mail enable', null, $env);
-
-        self::assertSame("shell.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
-    }
-
-    public function testDirectMailServicePathUsesProjectProxyConfiguration(): void
+    public function testDirectMailServicePathIgnoresProjectProxyConfiguration(): void
     {
         $env = $this->isolatedHomeEnvironment(<<<'YAML'
 attribute('global.service.proxy.domain'): global.example.test
@@ -138,10 +110,10 @@ YAML
 
         $this->workspaceCommand('direct service mail enable', null, $env);
 
-        self::assertSame("project.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
+        self::assertSame("global.example.test\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
     }
 
-    public function testGlobalProxyServiceCommandPassesProjectProxyConfiguration(): void
+    public function testGlobalProxyServiceCommandUsesGlobalConfigurationFromProject(): void
     {
         $env = $this->isolatedHomeEnvironment(<<<'YAML'
 attribute('global.service.proxy.domain'): global.example.test
@@ -154,77 +126,57 @@ YAML
         $this->prepareFakeProxyServiceTools($env);
         $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
 
-        $this->createProxyTestWorkspace();
-        $this->workspace()->put('workspace.override.yml', <<<'YAML'
+        $this->workspace()->put('workspace.yml', <<<'YAML'
+workspace('proxy-test'): ~
 attribute.override('global.service.proxy.domain'): project.example.test
 attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
 attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
-attribute.override('global.service.proxy.https.crt_file'): project.crt
-attribute.override('global.service.proxy.https.key_file'): project.key
 YAML
         );
 
         $this->workspaceCommand('global service proxy restart', null, $env);
 
         $expected = <<<'TEXT'
-project.example.test
-https://certs.example.test/project.crt
-https://certs.example.test/project.key
-project.crt
-project.key
+global.example.test
+https://certs.example.test/global.crt
+https://certs.example.test/global.key
+global.example.test.crt
+global.example.test.key
 tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /tls/project.crt
-        keyFile: /tls/project.key
+        certFile: /tls/global.example.test.crt
+        keyFile: /tls/global.example.test.key
 TEXT
         ;
         self::assertSame($expected . "\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
     }
 
-    public function testGlobalProxyServiceCommandAllowsShellEnvironmentOverride(): void
+    public function testGlobalProxyServiceCommandUsesInstalledDefaultsFromProject(): void
     {
-        $env = $this->isolatedHomeEnvironment(<<<'YAML'
-attribute('global.service.proxy.domain'): global.example.test
-attribute('global.service.proxy.https.crt'): https://certs.example.test/global.crt
-attribute('global.service.proxy.https.key'): https://certs.example.test/global.key
-YAML
-        );
+        $env = $this->isolatedHomeEnvironment();
         $this->workspaceCommand('', null, $env);
 
         $this->prepareFakeProxyServiceTools($env);
         $env['MY127WS_TEST_OUTPUT'] = $this->workspace()->path('proxy-service-output');
-        $env['MY127WS_PROXY_DOMAIN'] = 'shell.example.test';
-        $env['MY127WS_PROXY_HTTPS_CRT'] = 'https://certs.example.test/shell.crt';
-        $env['MY127WS_PROXY_HTTPS_KEY'] = 'https://certs.example.test/shell.key';
-        $env['MY127WS_PROXY_HTTPS_CRT_FILE'] = 'shell.crt';
-        $env['MY127WS_PROXY_HTTPS_KEY_FILE'] = 'shell.key';
 
         $this->createProxyTestWorkspace();
-        $this->workspace()->put('workspace.override.yml', <<<'YAML'
-attribute.override('global.service.proxy.domain'): project.example.test
-attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
-attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
-attribute.override('global.service.proxy.https.crt_file'): project.crt
-attribute.override('global.service.proxy.https.key_file'): project.key
-YAML
-        );
 
         $this->workspaceCommand('global service proxy restart', null, $env);
 
         $expected = <<<'TEXT'
-shell.example.test
-https://certs.example.test/shell.crt
-https://certs.example.test/shell.key
-shell.crt
-shell.key
+my127.site
+https://my127.io/workspace/my127.site.crt
+https://my127.io/workspace/my127.site.key
+my127.site.crt
+my127.site.key
 tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /tls/shell.crt
-        keyFile: /tls/shell.key
+        certFile: /tls/my127.site.crt
+        keyFile: /tls/my127.site.key
 TEXT
         ;
         self::assertSame($expected . "\n", file_get_contents($env['MY127WS_TEST_OUTPUT']));
@@ -232,43 +184,39 @@ TEXT
 
     public function testGlobalProxyServiceCommandRejectsInvalidTlsFilename(): void
     {
-        $env = $this->isolatedHomeEnvironment();
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): global.example.test
+attribute('global.service.proxy.https.crt'): https://certs.example.test/global.crt
+attribute('global.service.proxy.https.key'): https://certs.example.test/global.key
+attribute('global.service.proxy.https.crt_file'): ../global.crt
+attribute('global.service.proxy.https.key_file'): global.key
+YAML
+        );
         $this->workspaceCommand('', null, $env);
         $this->prepareFakeNoopProxyServiceTools($env);
 
         $this->createProxyTestWorkspace();
-        $this->workspace()->put('workspace.override.yml', <<<'YAML'
-attribute.override('global.service.proxy.domain'): project.example.test
-attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
-attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
-attribute.override('global.service.proxy.https.crt_file'): ../project.crt
-attribute.override('global.service.proxy.https.key_file'): project.key
-YAML
-        );
-
         $process = $this->workspaceProcess('global service proxy restart', null, $env);
         $process->run();
 
         self::assertNotSame(0, $process->getExitCode());
-        self::assertStringContainsString('Invalid TLS filename: ../project.crt', $process->getErrorOutput());
+        self::assertStringContainsString('Invalid TLS filename: ../global.crt', $process->getErrorOutput());
     }
 
     public function testGlobalProxyServiceCommandRejectsSameTlsFilenames(): void
     {
-        $env = $this->isolatedHomeEnvironment();
+        $env = $this->isolatedHomeEnvironment(<<<'YAML'
+attribute('global.service.proxy.domain'): global.example.test
+attribute('global.service.proxy.https.crt'): https://certs.example.test/global.crt
+attribute('global.service.proxy.https.key'): https://certs.example.test/global.key
+attribute('global.service.proxy.https.crt_file'): global.pem
+attribute('global.service.proxy.https.key_file'): global.pem
+YAML
+        );
         $this->workspaceCommand('', null, $env);
         $this->prepareFakeNoopProxyServiceTools($env);
 
         $this->createProxyTestWorkspace();
-        $this->workspace()->put('workspace.override.yml', <<<'YAML'
-attribute.override('global.service.proxy.domain'): project.example.test
-attribute.override('global.service.proxy.https.crt'): https://certs.example.test/project.crt
-attribute.override('global.service.proxy.https.key'): https://certs.example.test/project.key
-attribute.override('global.service.proxy.https.crt_file'): project.pem
-attribute.override('global.service.proxy.https.key_file'): project.pem
-YAML
-        );
-
         $process = $this->workspaceProcess('global service proxy restart', null, $env);
         $process->run();
 

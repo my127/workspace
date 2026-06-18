@@ -1,23 +1,27 @@
 
-command('global service logger (enable|disable)', 'global service logger'): |
-  #!bash|=
-  ws-service logger ={input.command(4)}
+command('global service logger (enable|disable)', 'global service logger'):
+  description: Actions for the logging service
+  exec: |
+    #!bash|=
+    ws-service logger ={input.command(4)}
 
 command('global service mail (enable|disable)', 'global service mail'):
-  description: Actions for mailhog (mail.my127.site)
+  description: Actions for mailhog
   exec: |
     #!bash|=
     ws-service mail ={input.command(4)}
 
 command('global service proxy (enable|disable|restart)', 'global service proxy'):
-  description: Actions for Traefik proxy (my127.site)
+  description: Actions for Traefik proxy
   exec: |
     #!bash|=
     ws-service proxy ={input.command(4)}
 
-command('global service tracing (start|stop|restart)', 'global service tracing'): |
-  #!bash|=
-  ws-service tracing ={input.command(4)}
+command('global service tracing (start|stop|restart)', 'global service tracing'):
+  description: Actions for the tracing service
+  exec: |
+    #!bash|=
+    ws-service tracing ={input.command(4)}
 
 command('global service', 'global service'):
   description: Perform an action (start/stop etc.) on a global service

@@ -116,4 +116,21 @@ EOD
 
         $this->assertEquals('["2","2"]', $this->workspaceCommand('array 2 2')->getOutput());
     }
+
+    /** @test */
+    public function workspaceArrayAccessCanReturnArrayAttributes()
+    {
+        $this->createWorkspaceYml(<<<'EOD'
+attribute('values'):
+  - one
+  - two
+
+command('values'): |
+  #!php
+  echo json_encode($ws['values']);
+EOD
+        );
+
+        $this->assertEquals('["one","two"]', $this->workspaceCommand('values')->getOutput());
+    }
 }

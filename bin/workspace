@@ -18,6 +18,9 @@ function main(): void
         install();
     }
 
+    $workspaceBin = $_SERVER['argv'][0] ?? __FILE__;
+    $workspaceBin = realpath($workspaceBin) ?: $workspaceBin;
+    putenv('MY127WS_WORKSPACE_BIN='.$workspaceBin);
     putenv('PATH='.home().'/.my127/workspace/bin:'.getenv('PATH'));
     $exitStatus = application()->run();
 

@@ -6,7 +6,7 @@ services:
       - elasticsearch
     labels:
       - traefik.enable=true
-      - traefik.http.routers.kibana.rule=Host(`kibana.my127.site`)
+      - traefik.http.routers.kibana.rule=Host(`kibana.${MY127WS_PROXY_DOMAIN:-my127.site}`)
       - traefik.http.services.kibana.loadbalancer.server.port=5601
       - traefik.docker.network=${TRAEFIK_NETWORK}
     networks:

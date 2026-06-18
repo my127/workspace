@@ -3,21 +3,26 @@
 workspace('global'):
   description: Manage and create your various workspaces
 
-command('create <name> [<harness> [--no-install] ]', 'create'): |
-  #!php(cwd:/)
-  $name    = $input->argument('name');
-  $harness = $input->argument('harness');
+command('create <name> [<harness> [--no-install] ]', 'create'):
+  description: Create a new workspace, optionally using a harness
+  exec: |
+    #!php(cwd:/)
+    $name    = $input->argument('name');
+    $harness = $input->argument('harness');
 
-  $ws->create($name, $harness);
+    $ws->create($name, $harness);
 
-  if ($input->option('no-install') !== true) {
-      $ws->passthru("cd $name; ws install");
-  }
+    if ($input->option('no-install') !== true) {
+        $ws->passthru("cd $name; ws install");
+    }
 
 attributes.default:
   global:
     service:
       proxy:
+        domain: my127.site
         https:
           crt: https://my127.io/workspace/my127.site.crt
           key: https://my127.io/workspace/my127.site.key
+          crt_file: = @('global.service.proxy.domain') ~ '.crt'
+          key_file: = @('global.service.proxy.domain') ~ '.key'

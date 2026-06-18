@@ -24,7 +24,29 @@ main()
 
     shift
 
+    cd "$DIR"
+    populate_proxy_environment "$service"
+
     "${DIR}/service/${service}/init.sh" "$@"
+}
+
+populate_proxy_environment()
+{
+    local workspace_bin="${MY127WS_WORKSPACE_BIN:-ws}"
+
+    MY127WS_PROXY_DOMAIN="$("$workspace_bin" global config get global.service.proxy.domain)"
+    export MY127WS_PROXY_DOMAIN
+
+    if [ "$1" = "proxy" ]; then
+        MY127WS_PROXY_HTTPS_CRT="$("$workspace_bin" global config get global.service.proxy.https.crt)"
+        MY127WS_PROXY_HTTPS_KEY="$("$workspace_bin" global config get global.service.proxy.https.key)"
+        MY127WS_PROXY_HTTPS_CRT_FILE="$("$workspace_bin" global config get global.service.proxy.https.crt_file)"
+        MY127WS_PROXY_HTTPS_KEY_FILE="$("$workspace_bin" global config get global.service.proxy.https.key_file)"
+        export MY127WS_PROXY_HTTPS_CRT
+        export MY127WS_PROXY_HTTPS_KEY
+        export MY127WS_PROXY_HTTPS_CRT_FILE
+        export MY127WS_PROXY_HTTPS_KEY_FILE
+    fi
 }
 
 bootstrap()
